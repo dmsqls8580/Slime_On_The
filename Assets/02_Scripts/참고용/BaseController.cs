@@ -4,15 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(StatManager))]
-[RequireComponent(typeof(StatusEffectManager))]
 public abstract class BaseController<TController, TState> : MonoBehaviour where TController : BaseController<TController, TState>
     where TState : Enum
-
 {
-    public StatManager         StatManager         { get; private set; }
-    public StatusEffectManager StatusEffectManager { get; private set; }
-
     private StateMachine<TController, TState> stateMachine;
     private IState<TController, TState>[] states;
     protected TState CurrentState;
@@ -20,8 +14,6 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
 
     protected virtual void Awake()
     {
-        StatManager = GetComponent<StatManager>();
-        StatusEffectManager = GetComponent<StatusEffectManager>();
         stateMachine = new StateMachine<TController, TState>();
         Controller = (TController)this;
     }
