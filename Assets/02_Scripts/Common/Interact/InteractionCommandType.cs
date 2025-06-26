@@ -1,4 +1,4 @@
-public enum InteractionType
+public enum InteractionCommandType
 {
     F,
     Space
