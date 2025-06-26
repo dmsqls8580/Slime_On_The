@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InteractionZone : MonoBehaviour
 {
-    // NPC, Building, 자원들(Mineral, Tree, Flower, Crop) || 통합으로 Resource
+    // NPC, Building, 자원들(Mineral, Tree, Flower, Crop) || 통합으로 Resource.
     [SerializeField] private LayerMask interactableMask;
 
     private HashSet<Collider2D> interactables = new HashSet<Collider2D>();

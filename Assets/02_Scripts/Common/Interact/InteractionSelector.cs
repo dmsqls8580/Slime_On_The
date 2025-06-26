@@ -8,10 +8,13 @@ public class InteractionSelector : MonoBehaviour
     [SerializeField] private LayerMask buildingMask;
     [SerializeField] private LayerMask resourceMask;
 
+    //TODO.
     //private Item currentQuickSlotItem;
 
-    private Collider2D fInteractable;     // F 키용
-    private Collider2D spaceInteractable; // Space 키용
+    // F 키 전용.
+    private Collider2D fInteractable;
+    // Space bar 키 전용.
+    private Collider2D spaceInteractable;
     public Collider2D FInteractable => fInteractable;
     public Collider2D SpaceInteractable => spaceInteractable;
 
@@ -42,9 +45,9 @@ public class InteractionSelector : MonoBehaviour
             return;
         }
 
-        // TODO
-        // 방법1: HashSet말고 List로 쓰기(정렬 지원 안함)
-        // 방법2: HashSet을 List로 변환 후 정렬하기
+        // TODO.
+        // 방법1: HashSet말고 List로 쓰기(정렬 지원 안함).
+        // 방법2: HashSet을 List로 변환 후 정렬하기.
         var sorted = interactables.OrderBy(collider =>
             Vector2.Distance(transform.position, collider.transform.position));
 
@@ -61,7 +64,9 @@ public class InteractionSelector : MonoBehaviour
                 {
                     newFInteractable = collider;
                     newSpaceInteractable = collider;
-                    break;    // 빌딩은 "F", "Space bar" 둘 다 할당
+
+                    // 빌딩은 "F", "Space bar" 둘 다 할당.
+                    break;
                 }
             }
             else if (IsInLayerMask(layer, npcMask))
@@ -69,7 +74,11 @@ public class InteractionSelector : MonoBehaviour
                 if (newFInteractable == null)
                 {
                     newFInteractable = collider;
-                    if (newSpaceInteractable != null) break;    // 둘 다 찾았으면 종료
+                    if (newSpaceInteractable != null)
+                    {
+                        // 둘 다 찾았으면 종료.
+                        break;
+                    }
                 }
             }
             else if (IsInLayerMask(layer, resourceMask))
@@ -77,7 +86,11 @@ public class InteractionSelector : MonoBehaviour
                 if (newSpaceInteractable == null && IsCompatibleWithCurrentQuickSlotItem(collider))
                 {
                     newSpaceInteractable = collider;
-                    if (newFInteractable != null) break;    // 둘 다 찾았으면 종료
+                    if (newFInteractable != null)
+                    {
+                        // 둘 다 찾았으면 종료.
+                        break;
+                    }
                 }
             }
             else
@@ -86,11 +99,11 @@ public class InteractionSelector : MonoBehaviour
             }
         }
 
-        // 변경된 경우에만 할당
+        // 변경된 경우에만 할당.
         if (newFInteractable != fInteractable || newSpaceInteractable != spaceInteractable)
         {
-            // TODO
-            // UI 갱신
+            // TODO.
+            // UI 갱신.
             fInteractable = newFInteractable;
             spaceInteractable = newSpaceInteractable;
         }
@@ -103,6 +116,7 @@ public class InteractionSelector : MonoBehaviour
 
     private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D collider)
     {
+        //TODO.
         //if (collider.TryGetComponent(out Resource resource))
         //{
         //    return resource.resourceType == currentQuickSlotItem.interactableResourceType;
