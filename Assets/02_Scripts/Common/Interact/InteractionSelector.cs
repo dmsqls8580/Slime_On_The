@@ -1,0 +1,113 @@
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+public class InteractionSelector : MonoBehaviour
+{
+    [SerializeField] private LayerMask npcMask;
+    [SerializeField] private LayerMask buildingMask;
+    [SerializeField] private LayerMask resourceMask;
+
+    //private Item currentQuickSlotItem;
+
+    private Collider2D fInteractable;     // F 키용
+    private Collider2D spaceInteractable; // Space 키용
+    public Collider2D FInteractable => fInteractable;
+    public Collider2D SpaceInteractable => spaceInteractable;
+
+    private InteractionZone interactionZone;
+    private HashSet<Collider2D> interactables;
+
+    private void Awake()
+    {
+        interactionZone = GetComponent<InteractionZone>();
+    }
+
+    private void Start()
+    {
+        interactables = interactionZone.Interactables;
+    }
+
+    private void Update()
+    {
+        Select();
+    }
+
+    private void Select()
+    {
+        if (interactables.Count <= 0)
+        {
+            fInteractable = null;
+            spaceInteractable = null;
+            return;
+        }
+
+        // TODO
+        // 방법1: HashSet말고 List로 쓰기(정렬 지원 안함)
+        // 방법2: HashSet을 List로 변환 후 정렬하기
+        var sorted = interactables.OrderBy(collider =>
+            Vector2.Distance(transform.position, collider.transform.position));
+
+        Collider2D newFInteractable = null;
+        Collider2D newSpaceInteractable = null;
+
+        foreach (Collider2D collider in sorted)
+        {
+            int layer = collider.gameObject.layer;
+
+            if (IsInLayerMask(layer, buildingMask))
+            {
+                if (newFInteractable == null && newSpaceInteractable == null)
+                {
+                    newFInteractable = collider;
+                    newSpaceInteractable = collider;
+                    break;    // 빌딩은 "F", "Space bar" 둘 다 할당
+                }
+            }
+            else if (IsInLayerMask(layer, npcMask))
+            {
+                if (newFInteractable == null)
+                {
+                    newFInteractable = collider;
+                    if (newSpaceInteractable != null) break;    // 둘 다 찾았으면 종료
+                }
+            }
+            else if (IsInLayerMask(layer, resourceMask))
+            {
+                if (newSpaceInteractable == null && IsCompatibleWithCurrentQuickSlotItem(collider))
+                {
+                    newSpaceInteractable = collider;
+                    if (newFInteractable != null) break;    // 둘 다 찾았으면 종료
+                }
+            }
+            else
+            {
+                Debug.Log("Collider의 Layer 오류 입니다.");
+            }
+        }
+
+        // 변경된 경우에만 할당
+        if (newFInteractable != fInteractable || newSpaceInteractable != spaceInteractable)
+        {
+            // TODO
+            // UI 갱신
+            fInteractable = newFInteractable;
+            spaceInteractable = newSpaceInteractable;
+        }
+    }
+
+    private bool IsInLayerMask(int layer, LayerMask mask)
+    {
+        return (mask.value & (1 << layer)) != 0;
+    }
+
+    private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D collider)
+    {
+        //if (collider.TryGetComponent(out Resource resource))
+        //{
+        //    return resource.resourceType == currentQuickSlotItem.interactableResourceType;
+        //}
+
+        return false;
+    }
+}
