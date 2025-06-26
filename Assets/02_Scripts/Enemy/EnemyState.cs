@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace  Enemyststes
 {
@@ -23,7 +25,7 @@ namespace  Enemyststes
         
         public void OnEnter(EnemyController owner)
         {
-            idleDuration = Random.Range(2f, 5f);
+            idleDuration = Random.Range(owner.MinMoveDelay, owner.MaxMoveDelay);
             idleTimer = 0f;
             owner.Animator.SetBool(isMovingHash, false);
             owner.Animator.ResetTrigger(attackHash);
@@ -32,6 +34,7 @@ namespace  Enemyststes
         public void OnUpdate(EnemyController owner)
         {
             idleTimer += Time.deltaTime;
+            Debug.Log("idleTimer: " + idleTimer);
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -39,9 +42,9 @@ namespace  Enemyststes
             
         }
 
-        public void OnExit(EnemyController entity)
+        public void OnExit(EnemyController owner)
         {
-            
+            owner.Animator.SetBool(isMovingHash, true);
         }
 
         public EnemyState CheckTransition(EnemyController owner)
@@ -53,7 +56,7 @@ namespace  Enemyststes
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
             // EnemyController에서 설정.
-            if (owner.Target != null) 
+            if (owner.ChaseTarget != null) 
             {
                 return EnemyState.Chase;
             }
@@ -72,30 +75,27 @@ namespace  Enemyststes
         private readonly int isMovingHash = Animator.StringToHash("IsMoving");
         private readonly int attackHash = Animator.StringToHash("Attack");
         
-        private float wanderDuration;
-        private float wanderTimer;
         public void OnEnter(EnemyController owner)
         {
-            wanderDuration = Random.Range(2f, 5f);
-            wanderTimer = 0f;
             owner.Animator.SetBool(isMovingHash, true);
             owner.Animator.ResetTrigger(attackHash);
             // 랜덤 방향으로 이동.
+            OnMoveRandom(owner);
         }
 
         public void OnUpdate(EnemyController owner)
         {
-            wanderTimer += Time.deltaTime;
+            
         }
 
         public void OnFixedUpdate(EnemyController owner)
         {
-            // 랜덤 방향으로 이동.
+            
         }
 
-        public void OnExit(EnemyController entity)
+        public void OnExit(EnemyController owner)
         {
-            
+            owner.Animator.SetBool(isMovingHash, false);
         }
 
         public EnemyState CheckTransition(EnemyController owner)
@@ -105,16 +105,36 @@ namespace  Enemyststes
                 return EnemyState.Dead;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (false)
+            if (owner.ChaseTarget != null)
             {
                 return EnemyState.Chase;
             }
-            // 일정 시간이 지나면 자동으로 idle 모드로 전환.
-            if (wanderTimer >= wanderDuration)
+            // 목적지로 이동이 끝나면 idle 모드로 전환.
+            if (ReachedDesination(owner))
             {
                 return EnemyState.Idle;
             }
             return EnemyState.Wander;
+        }
+        
+        // wanderRadius 내 랜덤한 위치로 이동
+        private void OnMoveRandom(EnemyController owner)
+        {
+            Vector2 randomCircle = Random.insideUnitCircle * owner.WanderRadius;
+            Vector3 randomPos =  owner.SpawnPos + new Vector3(randomCircle.x, 0, randomCircle.y);
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPos, out hit, owner.WanderRadius, NavMesh.AllAreas))
+            {
+                owner.Agent.SetDestination(hit.position);
+            }
+
+        }
+
+        // 이동이 끝났는지 판별
+        private bool ReachedDesination(EnemyController owner)
+        {
+            return !owner.Agent.pathPending && owner.Agent.remainingDistance <= owner.Agent.stoppingDistance;
         }
     }
     
@@ -131,7 +151,11 @@ namespace  Enemyststes
 
         public void OnUpdate(EnemyController owner)
         {
-            // owner의 위치를 추적해 이동.
+            // Target의 위치를 추적해 이동.
+            if (owner.ChaseTarget != null)
+            {
+                owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+            }
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -139,9 +163,10 @@ namespace  Enemyststes
             
         }
 
-        public void OnExit(EnemyController entity)
+        public void OnExit(EnemyController owner)
         {
-            
+            owner.Agent.ResetPath();
+            owner.Animator.SetBool(isTargetHash, false);
         }
 
         public EnemyState CheckTransition(EnemyController owner)
@@ -151,12 +176,13 @@ namespace  Enemyststes
                 return EnemyState.Dead;
             }
             // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-            if (false)
+            if (owner.ChaseTarget == null)
             {
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            if (false)
+            if (owner.ChaseTarget != null 
+                &&  Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <= owner.AttackRange)
             {
                 return EnemyState.Attack;
             }
@@ -198,14 +224,29 @@ namespace  Enemyststes
             }
         }
 
-        public void OnExit(EnemyController entity)
+        public void OnExit(EnemyController owner)
         {
             
         }
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            return EnemyState.Chase;
+            if (owner.isDead)
+            {
+                return EnemyState.Dead;
+            }
+            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+            if (owner.ChaseTarget == null)
+            {
+                return EnemyState.Idle;
+            }
+            // 플레이어가 공격 범위 밖으로 나갈 경우, Chase 모드로 전환.
+            if (owner.ChaseTarget != null 
+                &&  Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) > owner.AttackRange)
+            {
+                return EnemyState.Chase;
+            }
+            return EnemyState.Attack;
         }
     }
     
@@ -226,7 +267,7 @@ namespace  Enemyststes
             
         }
 
-        public void OnExit(EnemyController entity)
+        public void OnExit(EnemyController owner)
         {
             
         }
