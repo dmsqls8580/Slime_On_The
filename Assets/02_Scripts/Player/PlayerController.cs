@@ -22,17 +22,30 @@ namespace PlayerStates
         private SpriteRenderer _spriteRenderer;
 
         private Vector2  _moveInput;
-        private bool _attackTrigger;
         
         private float _finalAtk;
         private float _finalAtkSpd;
         
         public Vector2 MoveInput=>_moveInput;
+        public Rigidbody2D Rigidbody2D => _rigidbody2D;
+        
+        
+        private bool _attackTrigger;
         public bool AttackTrigger
         {
             get => _attackTrigger;
             set => _attackTrigger = value;
         }
+
+        private bool _dashTrigger;
+        public bool DashTrigger
+        {
+            get => _dashTrigger;
+            set => _dashTrigger = value;
+        }
+        
+        private Vector2 _lastMoveDir = Vector2.right; // 기본은 오른쪽
+        public Vector2 LastMoveDir => _lastMoveDir;
 
 
         protected override void Awake()
@@ -51,9 +64,17 @@ namespace PlayerStates
             base.Start();
 
             var action = _inputController.PlayerActions;
-            action.Move.performed += context => _moveInput = context.ReadValue<Vector2>();
-            action.Move.canceled += context => _moveInput = Vector2.zero;
+            action.Move.performed += context =>
+            {
+                _moveInput = context.ReadValue<Vector2>();
+                if (_moveInput.sqrMagnitude > 0.01f)
+                {
+                    _lastMoveDir = _moveInput.normalized;
+                }
+            };
+            action.Move.canceled += context => _moveInput = _rigidbody2D.velocity=Vector2.zero;
             action.Attack0.performed += context => _attackTrigger = true;
+            action.Dash.performed += context => _dashTrigger = true;
 
             _finalAtk = _toolController.GetAttackPow();
             _finalAtkSpd = _toolController.GetAttackSpd();

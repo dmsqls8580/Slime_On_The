@@ -43,6 +43,12 @@ namespace PlayerStates
             {
                 return PlayerState.Attack;
             }
+            
+            if (owner.DashTrigger)
+            {
+                owner.DashTrigger = false;
+                return PlayerState.Dash;
+            }
 
             if (owner.MoveInput.sqrMagnitude > 0.01f)
             {
@@ -76,6 +82,13 @@ namespace PlayerStates
         {
             if (owner.AttackTrigger)
                 return PlayerState.Attack;
+            
+            if (owner.DashTrigger)
+            {
+                owner.DashTrigger = false;
+                return PlayerState.Dash;
+            }
+            
             if (owner.MoveInput.sqrMagnitude < 0.01f)
             {
                 return PlayerState.Idle;
@@ -86,37 +99,45 @@ namespace PlayerStates
 
     public class DashState : IState<PlayerController, PlayerState>
     {
-        private float _dashDuration;
-        private float _dashSpeed;
-        private float _elapsedTime;
+        private float _dashDuration=0.2f;
+        private float _dashSpeed=15f;
+        private float _timer;
         private Vector2 _dashDirection;
-        private bool _isDashFinished;
         public void OnEnter(PlayerController owner)
         {
-            _isDashFinished = false;
-            _elapsedTime = 0f;
-
-            _dashDirection = owner.MoveInput.sqrMagnitude > 0.01f ? owner.MoveInput.normalized : Vector2.right;
+            _timer = 0f;
+            owner.Rigidbody2D.velocity=_dashDirection*_dashSpeed;
+            _dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
         }
 
         public void OnUpdate(PlayerController owner)
         {
-            throw new System.NotImplementedException();
+            _timer+= Time.deltaTime;
+
+            if (_timer >= _dashDuration)
+            {
+                owner.Rigidbody2D.velocity = Vector2.zero;
+            }
         }
 
         public void OnFixedUpdate(PlayerController owner)
         {
-            throw new System.NotImplementedException();
+            owner.Rigidbody2D.velocity = _dashDirection * _dashSpeed;
         }
 
         public void OnExit(PlayerController entity)
         {
-            throw new System.NotImplementedException();
+            entity.Rigidbody2D.velocity =Vector2.zero;
         }
 
         public PlayerState CheckTransition(PlayerController owner)
         {
-            throw new System.NotImplementedException();
+            if (_timer>=_dashDuration)
+            {
+                return owner.MoveInput.sqrMagnitude > 0.01f ? PlayerState.Move : PlayerState.Idle;
+            }
+
+            return PlayerState.Dash;
         }
     }
 
