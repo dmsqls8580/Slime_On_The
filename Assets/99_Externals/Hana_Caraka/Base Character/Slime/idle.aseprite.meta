@@ -168,8 +168,8 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 84
+      x: 25
+      y: 4
       width: 13
       height: 17
     spriteID: 18d4b8ece24974c478d086a7efed04ea
@@ -180,28 +180,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 84}
-  - name: idle_Frame_3
-    originalName: 
-    pivot: {x: 0.53846157, y: 0}
-    alignment: 9
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 25
-      y: 4
-      width: 13
-      height: 17
-    spriteID: f169766574f42244f9669f2b19e9442c
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
     uvTransform: {x: 25, y: 4}
-  - name: idle_Frame_4
+  - name: idle_Frame_3
     originalName: 
     pivot: {x: 0.53846157, y: 0}
     alignment: 9
@@ -212,7 +192,7 @@ ScriptedImporter:
       y: 58
       width: 13
       height: 18
-    spriteID: ca36d83a7f69037459236d84da297341
+    spriteID: f169766574f42244f9669f2b19e9442c
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -221,6 +201,26 @@ ScriptedImporter:
     edges: []
     tessellationDetail: 0
     uvTransform: {x: 4, y: 58}
+  - name: idle_Frame_4
+    originalName: 
+    pivot: {x: 0.46153846, y: -0.22222224}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 84
+      width: 13
+      height: 18
+    spriteID: ca36d83a7f69037459236d84da297341
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 84}
   - name: idle_Frame_5
     originalName: 
     pivot: {x: 0.53846157, y: -0.14285715}
@@ -229,7 +229,7 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 4
-      y: 109
+      y: 110
       width: 13
       height: 14
     spriteID: d8ada19afba111d438f49d03bd942faa
@@ -240,7 +240,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 4, y: 109}
+    uvTransform: {x: 4, y: 110}
   - name: idle_Frame_6
     originalName: 
     pivot: {x: 0.53846157, y: -0.14285715}
@@ -420,13 +420,13 @@ ScriptedImporter:
         x: 5
         y: 0
         width: 13
-        height: 17
+        height: 18
       spriteId: f169766574f42244f9669f2b19e9442c
     - name: idle_Frame_4
       frameIndex: 4
       cellRect:
-        x: 5
-        y: 0
+        x: 6
+        y: 4
         width: 13
         height: 18
       spriteId: ca36d83a7f69037459236d84da297341

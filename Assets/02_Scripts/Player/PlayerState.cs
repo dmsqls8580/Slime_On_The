@@ -65,6 +65,7 @@ namespace PlayerStates
 
         public void OnFixedUpdate(PlayerController owner)
         {
+            
         }
 
         public void OnExit(PlayerController entity)
@@ -85,9 +86,17 @@ namespace PlayerStates
 
     public class DashState : IState<PlayerController, PlayerState>
     {
+        private float _dashDuration;
+        private float _dashSpeed;
+        private float _elapsedTime;
+        private Vector2 _dashDirection;
+        private bool _isDashFinished;
         public void OnEnter(PlayerController owner)
         {
-            throw new System.NotImplementedException();
+            _isDashFinished = false;
+            _elapsedTime = 0f;
+
+            _dashDirection = owner.MoveInput.sqrMagnitude > 0.01f ? owner.MoveInput.normalized : Vector2.right;
         }
 
         public void OnUpdate(PlayerController owner)
