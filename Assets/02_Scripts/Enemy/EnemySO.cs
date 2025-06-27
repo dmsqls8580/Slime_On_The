@@ -11,11 +11,12 @@ public enum EnemyType
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObjects/EnemySO")]
 public class EnemySO : ScriptableObject
 {
-    public int EnemyIDX;
+    public int EnemyIDX;            // Enemy IDX
     
     [Header("EnemyStatus")]
-    public int Health;
-    public int AttackDamage;
+    public int Health;              // Enemy 체력
+    public int AttackDamage;        // Enemy 공격 데미지
+    public float AttackCooldown;    // Enemy 공격 쿨타임
     
     [Header("EnemyMove")]
     public float MoveSpeed;         // EnemyController에서 Agent의 이동 속도

@@ -34,7 +34,17 @@ namespace  Enemyststes
         public void OnUpdate(EnemyController owner)
         {
             idleTimer += Time.deltaTime;
-            Debug.Log("idleTimer: " + idleTimer);
+            
+            // 플레이어가 너무 가까이 있을 경우 감지
+            GameObject player = owner.ChaseTarget;
+            if (player != null)
+            {
+                float distance = Vector3.Distance(owner.transform.position, player.transform.position);
+                if (distance <= owner.AttackRange)
+                {
+                    owner.ChaseTarget = player;
+                }
+            }
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -54,8 +64,14 @@ namespace  Enemyststes
             {
                 return EnemyState.Dead;
             }
+            // 공격 범위 내에 있을 시 Attack 모드로 전환
+            if (owner.ChaseTarget != null
+                && Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
+                owner.AttackRange)
+            {
+                return EnemyState.Attack;
+            }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            // EnemyController에서 설정.
             if (owner.ChaseTarget != null) 
             {
                 return EnemyState.Chase;
@@ -85,7 +101,19 @@ namespace  Enemyststes
 
         public void OnUpdate(EnemyController owner)
         {
-            
+            GameObject player = owner.ChaseTarget;
+            if (player == null)
+            {
+                player = GameObject.FindWithTag("Player");
+            }
+            if (player != null)
+            {
+                float dist = Vector3.Distance(owner.transform.position, player.transform.position);
+                if (dist <= owner.AttackRange)
+                {
+                    owner.ChaseTarget = player;
+                }
+            }
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -103,6 +131,13 @@ namespace  Enemyststes
             if (owner.isDead)
             {
                 return EnemyState.Dead;
+            }
+            // 공격 범위 내에 있을 시 Attack 모드로 전환
+            if (owner.ChaseTarget != null
+                && Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
+                owner.AttackRange)
+            {
+                return EnemyState.Attack;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
             if (owner.ChaseTarget != null)
@@ -154,7 +189,17 @@ namespace  Enemyststes
             // Target의 위치를 추적해 이동.
             if (owner.ChaseTarget != null)
             {
-                owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                // 플레이어와 너무 가까이 붙으면 State가 변하지 않는 문제가 존재
+                float distance = Vector3.Distance(owner.ChaseTarget.transform.position, owner.transform.position);
+                
+                if (distance <= owner.AttackRange)
+                {
+                    owner.Agent.ResetPath();
+                }
+                else
+                {
+                    owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                }
             }
         }
 
@@ -181,7 +226,7 @@ namespace  Enemyststes
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            if (owner.ChaseTarget != null 
+            if (owner.ChaseTarget != null && owner.CanAttack()
                 &&  Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <= owner.AttackRange)
             {
                 return EnemyState.Attack;
@@ -195,33 +240,32 @@ namespace  Enemyststes
         private readonly int attackHash = Animator.StringToHash("Attack"); 
         
         // 공격 시 일정 시간 동안 몬스터 정지, 이후 다시 chase 모드로 전환하여 추격.
-        private float attackDelay = 2f; // 공격 후 딜레이
+        private float attackDelay = 0.5f;
         private float attackTimer = 0f;
         private bool isAttacking = false;
         
         public void OnEnter(EnemyController owner)
         {
-            attackTimer = 0f;
-            isAttacking = true;
             owner.Animator.SetTrigger(attackHash);
+            attackTimer = 0f;
+            isAttacking = false;
             // 공격 시 일시 경직
+            
         }
 
         public void OnUpdate(EnemyController owner)
         {
-            
+            attackTimer += Time.deltaTime;
+            if (!isAttacking && attackTimer >= attackDelay)
+            {
+                isAttacking = true;
+                attackTimer = 0f;
+            }
         }
 
         public void OnFixedUpdate(EnemyController owner)
         {
-            if (isAttacking)
-            {
-                attackTimer +=  Time.fixedDeltaTime;
-                if (attackTimer >= attackDelay)
-                {
-                    isAttacking = false;
-                }
-            }
+            
         }
 
         public void OnExit(EnemyController owner)
@@ -231,21 +275,26 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
+            float distance = Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
+                
+            // 플레이어 사망 시 Dead 모드로 전환
             if (owner.isDead)
             {
                 return EnemyState.Dead;
             }
-            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+            // 플레이어가 감지 범위 밖으로 나갈 시, Idle 모드로 전환
             if (owner.ChaseTarget == null)
             {
+                Debug.Log("플레이어가 감지 범위를 벗어났습니다.");
                 return EnemyState.Idle;
             }
-            // 플레이어가 공격 범위 밖으로 나갈 경우, Chase 모드로 전환.
-            if (owner.ChaseTarget != null 
-                &&  Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) > owner.AttackRange)
+            // 플레이어가 공격 범위 밖에 나갈 시 추격 모드로 전환
+            if (attackTimer >= attackDelay)
             {
+                owner.SetAttackCooldown();
                 return EnemyState.Chase;
             }
+            // 플레이어가 공격 범위 내에 있어도 쿨타임이 끝나지 않았다면 대기
             return EnemyState.Attack;
         }
     }

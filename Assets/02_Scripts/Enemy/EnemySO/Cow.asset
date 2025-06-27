@@ -15,8 +15,9 @@ MonoBehaviour:
   EnemyIDX: 0
   Health: 5
   AttackDamage: 5
-  AttackRange: 0.5
+  AttackCooldown: 2
   MoveSpeed: 2
   MaxMoveDelay: 2
   MinMoveDelay: 5
   WanderRadius: 5
+  AttackRange: 0.5
