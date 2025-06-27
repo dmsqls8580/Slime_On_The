@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/idle.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/idle.aseprite.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/run.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/run.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PlayerInput.inputactions" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/PlayerInput.inputactions.meta" beforeDir="false" />
-    </list>
+    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,9 +35,10 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/InputController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerActions.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/WeaponController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/ToolController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/interface/IWeapon.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/09_Settings/PlayerInput.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/99_Externals/Hana_Caraka/Base Character/Basic/idle.aseprite.meta" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.inputsystem@1.7.0/InputSystem/Plugins/PlayerInput/PlayerInput.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
@@ -131,7 +124,7 @@
       <option name="presentableId" value="Default" />
       <updated>1750815354952</updated>
       <workItem from="1750815356116" duration="2321000" />
-      <workItem from="1750899946556" duration="9614000" />
+      <workItem from="1750899946556" duration="18366000" />
     </task>
     <task id="LOCAL-00001" summary="feat: TestScene추가">
       <option name="closed" value="true" />
@@ -141,7 +134,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750835860767</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: Player InputSystem 기반 기본 이동, Idle애니메이션 구현">
+      <option name="closed" value="true" />
+      <created>1750938423711</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1750938423711</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -170,7 +171,8 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="chore: 불필요한 에셋 삭제" />
     <MESSAGE value="feat: TestScene추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: TestScene추가" />
+    <MESSAGE value="feat: Player InputSystem 기반 기본 이동, Idle애니메이션 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Player InputSystem 기반 기본 이동, Idle애니메이션 구현" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
