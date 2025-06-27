@@ -24,16 +24,16 @@ public class EnemyController : BaseController<EnemyController, EnemyState>
     public NavMeshAgent Agent    { get; private set; }
 
     private float attackCooldownTimer;
-    private float lastAngle;        // 몬스터 공격 범위 각도 기억용 필드
-    private bool lastFlipX = false; // 몬스터 회전 상태 기억용 필드
+    private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
+    private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;
     
     protected override void Awake()
     {
         base.Awake();
         Agent = GetComponent<NavMeshAgent>();
-        Agent.updateRotation = false;  // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
-        Agent.updateUpAxis = false;    //  회전 비활성화
+        Agent.updateRotation = false;                       // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
+        Agent.updateUpAxis = false;                         // 회전 비활성화
         Animator = GetComponentInChildren<Animator>();
         spriteRenderer =  GetComponentInChildren<SpriteRenderer>();
     }
