@@ -23,6 +23,7 @@ public class EnemySO : ScriptableObject
     public float MaxMoveDelay;      // EnemyState에서 Idle 상태 시 최대 지속 시간
     public float MinMoveDelay;      // EnemyState에서 Idle 상태 시 최소 지속 시간
     public float WanderRadius;      // EnemyState에서 Wander상태 시 배회하는 영역 반지름
-    public float AttackRange;       // EnemyCState에서 공격 State로 넘어가는 범위
+    public float SenseRange;        // EnemyState에서 player를 감지하는 범위
+    public float AttackRange;       // EnemyState에서 공격 State로 넘어가는 범위
 
 }

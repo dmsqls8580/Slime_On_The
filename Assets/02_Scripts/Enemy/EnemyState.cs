@@ -226,8 +226,10 @@ namespace  Enemyststes
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
+            float distance = Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
+            
             if (owner.ChaseTarget != null && owner.CanAttack()
-                &&  Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <= owner.AttackRange)
+                &&  distance <= owner.AttackRange)
             {
                 return EnemyState.Attack;
             }
@@ -275,8 +277,6 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            float distance = Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
-                
             // 플레이어 사망 시 Dead 모드로 전환
             if (owner.isDead)
             {
