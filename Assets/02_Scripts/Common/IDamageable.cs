@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IDamageable
 {
     public bool     IsDead   { get; }
-    public Collider Collider { get; }
+    public Collider2D Collider { get; }
 
     /// <summary>
     /// 대미지를 주는 메서드
