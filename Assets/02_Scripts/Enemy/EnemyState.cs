@@ -39,7 +39,7 @@ namespace  Enemyststes
             GameObject player = owner.ChaseTarget;
             if (player != null)
             {
-                float distance = Vector3.Distance(owner.transform.position, player.transform.position);
+                float distance = Vector2.Distance(owner.transform.position, player.transform.position);
                 if (distance <= owner.AttackRange)
                 {
                     owner.ChaseTarget = player;
@@ -66,7 +66,7 @@ namespace  Enemyststes
             }
             // 공격 범위 내에 있을 시 Attack 모드로 전환
             if (owner.ChaseTarget != null
-                && Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
+                && Vector2.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
                 owner.AttackRange)
             {
                 return EnemyState.Attack;
@@ -108,7 +108,7 @@ namespace  Enemyststes
             }
             if (player != null)
             {
-                float dist = Vector3.Distance(owner.transform.position, player.transform.position);
+                float dist = Vector2.Distance(owner.transform.position, player.transform.position);
                 if (dist <= owner.AttackRange)
                 {
                     owner.ChaseTarget = player;
@@ -134,7 +134,7 @@ namespace  Enemyststes
             }
             // 공격 범위 내에 있을 시 Attack 모드로 전환
             if (owner.ChaseTarget != null
-                && Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
+                && Vector2.Distance(owner.transform.position, owner.ChaseTarget.transform.position) <=
                 owner.AttackRange)
             {
                 return EnemyState.Attack;
@@ -190,7 +190,7 @@ namespace  Enemyststes
             if (owner.ChaseTarget != null)
             {
                 // 플레이어와 너무 가까이 붙으면 State가 변하지 않는 문제가 존재
-                float distance = Vector3.Distance(owner.ChaseTarget.transform.position, owner.transform.position);
+                float distance = Vector2.Distance(owner.ChaseTarget.transform.position, owner.transform.position);
                 
                 if (distance <= owner.AttackRange)
                 {
@@ -226,7 +226,7 @@ namespace  Enemyststes
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            float distance = Vector3.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
+            float distance = Vector2.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
             
             if (owner.ChaseTarget != null && owner.CanAttack()
                 &&  distance <= owner.AttackRange)
