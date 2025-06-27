@@ -8,7 +8,7 @@ namespace PlayerStates
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(ForceReceiver))]
-    public class PlayerController : BaseController<PlayerController, PlayerState>
+    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable
     {
         private static readonly int MouseX = Animator.StringToHash("mouseX");
         private static readonly int MouseY = Animator.StringToHash("mouseY");
@@ -85,23 +85,27 @@ namespace PlayerStates
 
         public override void Movement()
         {
-            base.Movement();
+            base.Movement();      
+            
+            float baseSpeed = 5f;
+            
+            Vector2 moveVelocity = Vector2.zero;
             //이동이 감지되지 않았을 때 외부힘을 통한 넉백
             if (_moveInput.magnitude < 0.01f)
             {
-                _rigidbody2D.MovePosition(_rigidbody2D.position + _forceReceiver.Force*Time.deltaTime);
-                return;
+                moveVelocity = _forceReceiver.Force;
             }
 
-            float baseSpeed = 5f;
             //todo: 베이스 스피드에 더해질 스탯의 값 (지금은 하드코딩)
             
             Vector2 move = _moveInput.normalized;
 
-            Vector2 totalMove = move * baseSpeed + _forceReceiver.Force;
+            moveVelocity = move * baseSpeed + _forceReceiver.Force;
 
-            _rigidbody2D.MovePosition(_rigidbody2D.position + totalMove * Time.deltaTime);
+            _rigidbody2D.velocity = moveVelocity;
         }
+
+        public IDamageable Target { get; private set; }
 
         public void Attack()
         {
