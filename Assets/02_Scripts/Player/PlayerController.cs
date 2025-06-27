@@ -5,7 +5,8 @@ namespace PlayerStates
 {
     
     [RequireComponent(typeof(InputController))]
-    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(Rigidbody2D))]
+    [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(ForceReceiver))]
     public class PlayerController : BaseController<PlayerController, PlayerState>
     {
@@ -14,10 +15,10 @@ namespace PlayerStates
         private ToolController _toolController;
         private InputController _inputController;
         
-        private CharacterController _characterController;
         private ForceReceiver _forceReceiver;
         
         private Animator _animator;
+        private Rigidbody2D _rigidbody2D;
         private SpriteRenderer _spriteRenderer;
 
         private Vector2  _moveInput;
@@ -38,7 +39,7 @@ namespace PlayerStates
         {
             base.Awake();
             _inputController = GetComponent<InputController>();
-            _characterController = GetComponent<CharacterController>();
+            _rigidbody2D = GetComponent<Rigidbody2D>();
             _forceReceiver = GetComponent<ForceReceiver>();
             
             _animator = GetComponentInChildren<Animator>();
@@ -88,19 +89,18 @@ namespace PlayerStates
             //이동이 감지되지 않았을 때 외부힘을 통한 넉백
             if (_moveInput.magnitude < 0.01f)
             {
-                _characterController.Move(_forceReceiver.Force*Time.deltaTime);
+                _rigidbody2D.MovePosition(_rigidbody2D.position + _forceReceiver.Force*Time.deltaTime);
                 return;
             }
 
             float baseSpeed = 5f;
             //todo: 베이스 스피드에 더해질 스탯의 값 (지금은 하드코딩)
             
-            
-            Vector3 move = (Vector3.right * _moveInput.x + Vector3.up * _moveInput.y).normalized;
+            Vector2 move = _moveInput.normalized;
 
-            Vector3 totalMove = move * baseSpeed + _forceReceiver.Force;
-            
-            _characterController.Move(totalMove*Time.deltaTime);
+            Vector2 totalMove = move * baseSpeed + _forceReceiver.Force;
+
+            _rigidbody2D.MovePosition(_rigidbody2D.position + totalMove * Time.deltaTime);
         }
 
         public void Attack()
