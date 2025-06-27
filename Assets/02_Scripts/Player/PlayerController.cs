@@ -13,6 +13,7 @@ namespace PlayerStates
         private static readonly int MouseY = Animator.StringToHash("mouseY");
         private ToolController _toolController;
         private InputController _inputController;
+        
         private CharacterController _characterController;
         private ForceReceiver _forceReceiver;
         
@@ -102,11 +103,6 @@ namespace PlayerStates
             _characterController.Move(totalMove*Time.deltaTime);
         }
 
-        public void Rotate()
-        {
-            
-        }
-
         public void Attack()
         {
             _attackTrigger = false;
@@ -116,18 +112,15 @@ namespace PlayerStates
         {
             Vector2 mouseScreenPos = _inputController.LookDirection;
 
-            // 마우스 화면 좌표 → 월드 좌표
             Vector3 mouseScreenPos3D = new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z));
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos3D);
             Vector3 playerPos = transform.position;
 
             Vector2 lookDir = (mouseWorldPos - playerPos).normalized;
 
-            // flip 처리
             if (lookDir.x != 0)
                 _spriteRenderer.flipX = lookDir.x < 0;
-
-            // Animator 파라미터 설정
+            
             _animator.SetFloat(MouseX, Mathf.Abs(lookDir.x));
             _animator.SetFloat(MouseY, lookDir.y);
         }
