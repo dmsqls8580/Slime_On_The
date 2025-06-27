@@ -14,9 +14,6 @@ public class SkillExecutor : MonoBehaviour
                case PlayerSkillType.Ranged:
                     ExecuteProjectile(skill, origin, dir);
                     break;
-               case PlayerSkillType.Dash:
-                    ExecuteDash(skill, origin, dir);
-                    break;
           }
      }
 
@@ -26,11 +23,6 @@ public class SkillExecutor : MonoBehaviour
      }
 
      public void ExecuteProjectile(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
-     {
-          
-     }
-
-     public void ExecuteDash(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
      {
           
      }
