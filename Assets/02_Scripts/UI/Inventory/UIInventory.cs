@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
@@ -5,6 +6,8 @@ public class UIInventory : UIBase
 {
     [SerializeField] private float tweenDuration = 0.3f;
     [SerializeField] private AnimationCurve openCloseCurve;
+    
+    [SerializeField] private List<InventorySlot> inventorySlots;
 
     private Vector2 originPosition;
     private Vector2 targetPosition;
@@ -15,6 +18,12 @@ public class UIInventory : UIBase
         originPosition = Contents.anchoredPosition;
         targetPosition = new Vector2(0, Contents.rect.height);
         Contents.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        for (int i = 0; i < inventorySlots.Count; i++)
+            inventorySlots[i].Initialize(i);
     }
     
     public override void Open()
