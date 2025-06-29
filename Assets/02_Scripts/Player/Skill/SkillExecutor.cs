@@ -9,7 +9,7 @@ public class SkillExecutor : MonoBehaviour
           switch (skill.skillType)
           {
                case PlayerSkillType.Melee:
-                    ExecuteMelee(skill, origin, dir);
+                    ExecuteMelee(skill, origin);
                     break;
                case PlayerSkillType.Ranged:
                     ExecuteProjectile(skill, origin, dir);
@@ -17,7 +17,7 @@ public class SkillExecutor : MonoBehaviour
           }
      }
 
-     public void ExecuteMelee(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
+     public void ExecuteMelee(PlayerSkillSO skill, Vector2 origin)
      {
           
      }
