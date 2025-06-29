@@ -5,19 +5,18 @@ using Enemyststes;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : BaseController<EnemyController, EnemyState>, IDamageable
+public class EnemyController : BaseController<EnemyController, EnemyState>, IDamageable, IAttackable, IPoolObject
 {
-    [SerializeField] private EnemySO enemySo;
+    [SerializeField] private EnemySO enemySO;
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
     
-    public bool IsDead { get; }
-    
-    public Collider2D Collider { get; }
-    
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
-    public bool isDead           { get; private set; }     // 사망 여부
     public Animator Animator     { get; private set; }     // 애니메이터
+
+    public float MaxHealth;                                // 최대 최력
+    public float CurrentHealth;                            // 현재 체력
+    public float AttackDamage    { get; private set; }     // 공격 데미지
     public Vector3 SpawnPos      { get; private set; }     // 스폰 위치
     public float WanderRadius    { get; private set; }     // 배회 반경
     public float SenseRange      { get; private set; }     // 감지 범위
@@ -25,16 +24,85 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public float MaxMoveDelay    { get; private set; }     // Idle 상태 최대 지속 시간
     public float AttackRange     { get; private set; }     // 공격 범위
     public float AttackCooldown  { get; private set; }     // 공격 쿨타임
-    public NavMeshAgent Agent    { get; private set; }
-
-    private float attackCooldownTimer;
+    public NavMeshAgent Agent    { get; private set; }     // 
+    public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
+    
+    private float attackCooldownTimer;                     // 몬스터 공격 속도 타이머
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
+    
+    /************************ IDamageable ***********************/ 
+    public bool IsDead { get; private set; }               // 사망 여부
+    
+    public Collider2D Collider { get; private set; }       // 몬스터 피격 콜라이더
+    
+    // Enemy 공격 메서드
+    public void TakeDamage(IAttackable attacker)
+    {
+        if (IsDead) return;
+        if (attacker != null)
+        {
+            // CurrentHealth -= attacker.AttackDamage;
+            if (CurrentHealth <= 0)
+            {
+                Dead();
+            }
+        }
+    }
+    
+    // Enemy 사망 여부 판별
+    public void Dead()
+    {
+        if (CurrentHealth <= 0)
+        {
+            IsDead = true;
+            ChangeState(EnemyState.Dead);
+            // 오브젝트 풀 반환
+        }
+        
+    }
+    
+    /************************ IAttackable ***********************/
+    public IDamageable Target => ChaseTarget != null ? 
+        ChaseTarget.GetComponent<IDamageable>() : null;
+
+    public void Attack()
+    {
+        if (Target != null && !Target.IsDead)
+        {
+            Target.TakeDamage(this);
+        }
+    }
+    
+    /************************ IPoolObject ***********************/
+    public GameObject GameObject => this.gameObject;
+    public string PoolID => enemySO.EnemyIDX;
+    public int PoolSize { get; }
+    
+    public void OnSpawnFromPool()
+    {
+        // Enemy 상태, 위치, NavMeshAgent, FSM 등 모든 초기화
+        IsDead = false;
+        CurrentHealth = MaxHealth;
+        transform.position = SpawnPos; // 혹은 원하는 위치
+        if (Agent.isOnNavMesh) Agent.Warp(transform.position);
+        ChangeState(EnemyState.Idle);
+    }
+
+    public void OnReturnToPool()
+    {
+        // 상태 정리, Agent.ResetPath() 등
+        Agent.ResetPath();
+        gameObject.SetActive(false);
+    }
+    
+    
     
     protected override void Awake()
     {
         base.Awake();
+        Collider = GetComponent<Collider2D>();
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;                       // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
         Agent.updateUpAxis = false;                         // 회전 비활성화
@@ -87,50 +155,27 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public override void FindTarget()
     {
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            ChaseTarget = other.gameObject;
-        }
-    }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            ChaseTarget = other.gameObject;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            float distance = Vector3.Distance(transform.position, other.transform.position);
             
-            // 콜라이더가 겹치면 ChaseTarget이 null이 되는 오류
-            // 플레이어가 감지 범위보다 멀리 있어야 null이 되도록 수정
-            if (distance > SenseRange)
-            {
-                ChaseTarget = null;
-            }
-        }
     }
+    
 
     // EnemySO에서 데이터를 가져와 몬스터 인스턴스에 적용
     private void SetEnemySOData()
     {
-        WanderRadius = enemySo.WanderRadius;
-        SenseRange = enemySo.SenseRange;
-        MinMoveDelay = enemySo.MinMoveDelay;
-        MaxMoveDelay = enemySo.MaxMoveDelay;
-        Agent.speed = enemySo.MoveSpeed;
-        AttackRange = enemySo.AttackRange;
-        AttackCooldown = enemySo.AttackCooldown;
+        // EnemyStatus
+        IsDead = false;
+        MaxHealth = enemySO.Health;
+        CurrentHealth = MaxHealth;
+        AttackDamage = enemySO.AttackDamage;
+        
+        // EnemyMove
+        WanderRadius = enemySO.WanderRadius;
+        SenseRange = enemySO.SenseRange;
+        MinMoveDelay = enemySO.MinMoveDelay;
+        MaxMoveDelay = enemySO.MaxMoveDelay;
+        Agent.speed = enemySO.MoveSpeed;
+        AttackRange = enemySO.AttackRange;
+        AttackCooldown = enemySO.AttackCooldown;
         
         // SenseRange 값을 senseRangeCollider의 반지름에 적용
         if (senseRangeCollider != null && senseRangeCollider is CircleCollider2D)
@@ -148,26 +193,24 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
         }
     }
-
+    
+    //  Enemy 공격 사이 대기 시간 초기화
     public void SetAttackCooldown()
     {
         attackCooldownTimer = AttackCooldown;
     }
 
+    // 몬스터 공격 가능 여부 판별
     public bool CanAttack()
     {
         attackCooldownTimer -= Time.deltaTime;
         return attackCooldownTimer <= 0f;
     }
-
     
-    public void TakeDamage(IAttackable attacker)
+    // 공격 범위 진입 여부 메서드 추가
+    public void SetPlayerInAttackRange(bool inRange)
     {
-        throw new NotImplementedException();
+        IsPlayerInAttackRange = inRange;
     }
-
-    public void Dead()
-    {
-        throw new NotImplementedException();
-    }
+    
 }

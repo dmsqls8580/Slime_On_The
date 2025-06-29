@@ -60,7 +60,7 @@ namespace  Enemyststes
         public EnemyState CheckTransition(EnemyController owner)
         {
             // 몬스터 사망시 Dead 모드로 전환.
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -128,7 +128,7 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -216,7 +216,7 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -226,10 +226,8 @@ namespace  Enemyststes
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            float distance = Vector2.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
-            
             if (owner.ChaseTarget != null && owner.CanAttack()
-                &&  distance <= owner.AttackRange)
+                &&  owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
@@ -251,8 +249,8 @@ namespace  Enemyststes
             owner.Animator.SetTrigger(attackHash);
             attackTimer = 0f;
             isAttacking = false;
-            // 공격 시 일시 경직
-            
+            // 공격 시 이동 정지
+            owner.Agent.ResetPath();
         }
 
         public void OnUpdate(EnemyController owner)
@@ -278,7 +276,7 @@ namespace  Enemyststes
         public EnemyState CheckTransition(EnemyController owner)
         {
             // 플레이어 사망 시 Dead 모드로 전환
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -301,9 +299,10 @@ namespace  Enemyststes
     
     public class DeadState : IState<EnemyController, EnemyState>
     {
+        private readonly int isDeadHash = Animator.StringToHash("Die");
         public void OnEnter(EnemyController owner)
         {
-            
+            owner.Animator.SetTrigger(isDeadHash);
         }
 
         public void OnUpdate(EnemyController owner)
@@ -323,7 +322,7 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            return owner.isDead? EnemyState.Dead : EnemyState.Idle;
+            return owner.IsDead? EnemyState.Dead : EnemyState.Idle;
         }
     }
 

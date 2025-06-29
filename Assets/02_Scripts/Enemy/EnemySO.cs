@@ -11,7 +11,7 @@ public enum EnemyType
 [CreateAssetMenu(fileName = "EnemyData", menuName = "ScriptableObjects/EnemySO")]
 public class EnemySO : ScriptableObject
 {
-    public int EnemyIDX;            // Enemy IDX
+    public string EnemyIDX;            // Enemy IDX
     
     [Header("EnemyStatus")]
     public int Health;              // Enemy 체력
