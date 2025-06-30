@@ -18,7 +18,8 @@ namespace  Enemyststes
     public class IdleState : IState<EnemyController, EnemyState>
     {
         private readonly int isMovingHash = Animator.StringToHash("IsMoving");
-        private readonly int attackHash = Animator.StringToHash("Attack");
+        private readonly int isTargetHash = Animator.StringToHash("IsTarget");
+        private readonly int isAttackingHash = Animator.StringToHash("IsAttacking");
         
         private float idleDuration;
         private float idleTimer;
@@ -28,7 +29,7 @@ namespace  Enemyststes
             idleDuration = Random.Range(owner.MinMoveDelay, owner.MaxMoveDelay);
             idleTimer = 0f;
             owner.Animator.SetBool(isMovingHash, false);
-            owner.Animator.ResetTrigger(attackHash);
+            owner.Animator.SetBool(isTargetHash, false);
         }
 
         public void OnUpdate(EnemyController owner)
@@ -60,7 +61,7 @@ namespace  Enemyststes
         public EnemyState CheckTransition(EnemyController owner)
         {
             // 몬스터 사망시 Dead 모드로 전환.
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -89,12 +90,13 @@ namespace  Enemyststes
     public class WanderState : IState<EnemyController, EnemyState>
     {
         private readonly int isMovingHash = Animator.StringToHash("IsMoving");
-        private readonly int attackHash = Animator.StringToHash("Attack");
+        private readonly int isTargetHash = Animator.StringToHash("IsTarget");
+        private readonly int isAttackingHash = Animator.StringToHash("IsAttacking");
         
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetBool(isMovingHash, true);
-            owner.Animator.ResetTrigger(attackHash);
+            owner.Animator.SetBool(isTargetHash, false);
             // 랜덤 방향으로 이동.
             OnMoveRandom(owner);
         }
@@ -128,7 +130,7 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -176,12 +178,11 @@ namespace  Enemyststes
     public class ChaseState : IState<EnemyController, EnemyState>
     {
         private readonly int isTargetHash = Animator.StringToHash("IsTarget");
-        private readonly int attackHash = Animator.StringToHash("Attack");
+        private readonly int isAttackingHash = Animator.StringToHash("IsAttacking");
         
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetBool(isTargetHash, true);
-            owner.Animator.ResetTrigger(attackHash);
         }
 
         public void OnUpdate(EnemyController owner)
@@ -211,12 +212,11 @@ namespace  Enemyststes
         public void OnExit(EnemyController owner)
         {
             owner.Agent.ResetPath();
-            owner.Animator.SetBool(isTargetHash, false);
         }
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
@@ -226,10 +226,7 @@ namespace  Enemyststes
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            float distance = Vector2.Distance(owner.transform.position, owner.ChaseTarget.transform.position);
-            
-            if (owner.ChaseTarget != null && owner.CanAttack()
-                &&  distance <= owner.AttackRange)
+            if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
@@ -239,29 +236,37 @@ namespace  Enemyststes
     
     public class AttackState : IState<EnemyController, EnemyState>
     {
-        private readonly int attackHash = Animator.StringToHash("Attack"); 
+        private readonly int isAttackingHash = Animator.StringToHash("IsAttacking"); 
         
         // 공격 시 일정 시간 동안 몬스터 정지, 이후 다시 chase 모드로 전환하여 추격.
-        private float attackDelay = 0.5f;
         private float attackTimer = 0f;
-        private bool isAttacking = false;
         
         public void OnEnter(EnemyController owner)
         {
-            owner.Animator.SetTrigger(attackHash);
+            owner.Animator.SetBool(isAttackingHash, true);
             attackTimer = 0f;
-            isAttacking = false;
-            // 공격 시 일시 경직
-            
+            // 공격 시 이동 정지
+            owner.Agent.ResetPath();
         }
 
         public void OnUpdate(EnemyController owner)
         {
             attackTimer += Time.deltaTime;
-            if (!isAttacking && attackTimer >= attackDelay)
+            if (attackTimer >= owner.AttackCooldown)
             {
-                isAttacking = true;
-                attackTimer = 0f;
+                if (owner.IsPlayerInAttackRange)
+                {
+                    // 공격 실행, 공격 시 정지
+                    owner.Attack();
+
+                    // 쿨타임 초기화
+                    attackTimer = 0f;
+                }
+                else
+                {
+                    owner.Animator.SetBool(isAttackingHash, false);
+                }
+                
             }
         }
 
@@ -272,26 +277,29 @@ namespace  Enemyststes
 
         public void OnExit(EnemyController owner)
         {
-            
+            owner.Animator.SetBool(isAttackingHash, false);
         }
 
         public EnemyState CheckTransition(EnemyController owner)
         {
             // 플레이어 사망 시 Dead 모드로 전환
-            if (owner.isDead)
+            if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
             // 플레이어가 감지 범위 밖으로 나갈 시, Idle 모드로 전환
             if (owner.ChaseTarget == null)
             {
-                Debug.Log("플레이어가 감지 범위를 벗어났습니다.");
+                Debug.Log("Idle");
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 밖에 나갈 시 추격 모드로 전환
-            if (attackTimer >= attackDelay)
+            if (!owner.IsPlayerInAttackRange)
             {
-                owner.SetAttackCooldown();
+                if (attackTimer >= owner.AttackCooldown)
+                {
+                    return EnemyState.Attack;
+                }
                 return EnemyState.Chase;
             }
             // 플레이어가 공격 범위 내에 있어도 쿨타임이 끝나지 않았다면 대기
@@ -301,9 +309,10 @@ namespace  Enemyststes
     
     public class DeadState : IState<EnemyController, EnemyState>
     {
+        private readonly int isDeadHash = Animator.StringToHash("Die");
         public void OnEnter(EnemyController owner)
         {
-            
+            owner.Animator.SetTrigger(isDeadHash);
         }
 
         public void OnUpdate(EnemyController owner)
@@ -323,7 +332,7 @@ namespace  Enemyststes
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            return owner.isDead? EnemyState.Dead : EnemyState.Idle;
+            return owner.IsDead? EnemyState.Dead : EnemyState.Idle;
         }
     }
 
