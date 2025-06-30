@@ -66,10 +66,4 @@ public class UIQuickSlot : MonoBehaviour
             slots[i].SetSelected(i == selectedIndex);
         }
     }
-    
-    public void SelectSlot(int index)
-    {
-        selectedIndex = index;
-        UpdateSelectedVisual();
-    }
 }
