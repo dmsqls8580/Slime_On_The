@@ -92,4 +92,9 @@ public class UIManager : Singleton<UIManager>
     {
         return UIDict.TryGetValue(typeof(T), out var ui) ? ui as T : null;
     }
+    
+#if UNITY_EDITOR
+    public Dictionary<Type, UIBase> DebugUIDict => UIDict;
+    public List<UIBase> DebugOpenedUIList => openedUIList;
+#endif
 }
