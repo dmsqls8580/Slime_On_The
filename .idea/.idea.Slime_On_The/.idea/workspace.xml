@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/01_Scenes/EnemyFSM.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01_Scenes/EnemyFSM.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/AttackRange.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/AttackRange.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/EnemyController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/EnemyController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/EnemyState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Enemy/EnemyState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Attack.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Attack.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Controller.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Idle.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Enemy/Cow/Idle.anim" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Enemy/TestEnemy/Attack.anim" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Enemy/TestEnemy/Attack.anim" afterDir="false" />
-    </list>
+    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,10 +14,16 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5e6ebaa7d75c4d5399dc81ecead6b43f952600/d6/0afa29bb/EditorUtility.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/91dfc2dc18dd4d3f98f344ca2d718967d400/97/9522a6c7/NavMeshAgent.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Enemy/AttackRange.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Interface/IWeapon.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Camp_Unity/250604Study/Assets/02_Scripts/Editor/GameManagerEditor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Camp_Unity/Sparta_Unity_Inter_Team/Assets/02. Scripts/UI/UIInventory.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../Camp_Unity/TowerDefense16/Assets/02.Scripts/Manager/AudioManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Manager/DragManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Manager/InventoryManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/UI/Inventory/FakeInventoryData.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/UI/Inventory/InventorySlot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/UI/Inventory/InventoryTestInitializer.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/UI/Inventory/QuickSlot.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/UI/TestBtn.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -42,7 +38,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feature/Enemy__IDamageable&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;UI/BaseUI&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -113,7 +109,12 @@
       <workItem from="1750815356116" duration="2321000" />
       <workItem from="1750821943212" duration="856000" />
       <workItem from="1750836064865" duration="1371000" />
-      <workItem from="1751241066436" duration="8648000" />
+      <workItem from="1750920198941" duration="7905000" />
+      <workItem from="1750937327038" duration="1201000" />
+      <workItem from="1751002222813" duration="239000" />
+      <workItem from="1751002471203" duration="5097000" />
+      <workItem from="1751202433637" duration="15303000" />
+      <workItem from="1751245382384" duration="3946000" />
     </task>
     <servers />
   </component>
@@ -127,17 +128,6 @@
     <option name="unityProjectFolder" value="true" />
   </component>
   <component name="UnityUnitTestConfiguration" currentTestLauncher="Both" />
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
-  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>

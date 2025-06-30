@@ -6,6 +6,8 @@ using UnityEngine;
 public class SceneOnlySingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T instance;
+    
+    public static bool HasInstance => instance != null;
 
     public static T Instance
     {
