@@ -14,8 +14,7 @@ public class PlayerSkillSO : ScriptableObject
     public float power;
     public float speed;
     public float range;
-
-    // 이펙트를 넣을 시 public GameObject effectPrefab;
+    
     public PlayerSkillType skillType;
      
 }

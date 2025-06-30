@@ -9,21 +9,26 @@ public class SkillExecutor : MonoBehaviour
           switch (skill.skillType)
           {
                case PlayerSkillType.Melee:
-                    ExecuteMelee(skill, origin, dir);
+                    ExecuteMelee(skill, origin);
                     break;
                case PlayerSkillType.Ranged:
-                    ExecuteProjectile(skill, origin, dir);
+                    ExecuteProjectile(skill, origin, dir, player.GetComponent<IAttackable>());
                     break;
           }
      }
 
-     public void ExecuteMelee(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
+     public void ExecuteMelee(PlayerSkillSO skill, Vector2 origin)
      {
-          
+
      }
 
-     public void ExecuteProjectile(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
+     public void ExecuteProjectile(PlayerSkillSO skill, Vector2 origin, Vector2 dir, IAttackable attacker)
      {
-          
+          float speed = skill.speed;
+          float damage = skill.power;
+          ProjectilePoolManager.Instance.Spawn(origin, dir, speed, damage, attacker);
      }
+
+     
+
 }
