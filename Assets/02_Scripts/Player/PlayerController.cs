@@ -3,15 +3,24 @@ using UnityEngine;
 namespace PlayerStates
 {
     [RequireComponent(typeof(InputController))]
+    [RequireComponent(typeof(PlayerAnimationController))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(ForceReceiver))]
-    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable
+    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
         private static readonly int MouseX = Animator.StringToHash("mouseX");
         private static readonly int MouseY = Animator.StringToHash("mouseY");
+
         private ToolController _toolController;
+
+        private PlayerAnimationController _playerAnimationController;
+        public PlayerAnimationController AnimationController => _playerAnimationController;
+
         private InputController _inputController;
+
+        private SkillExecutor _skillExecutor;
+        public SkillExecutor SkillExecutor => _skillExecutor;
 
         private ForceReceiver _forceReceiver;
 
@@ -19,8 +28,12 @@ namespace PlayerStates
         private Rigidbody2D _rigidbody2D;
         private SpriteRenderer _spriteRenderer;
 
-        [SerializeField] private Transform attackPivot;
+        public Transform attackPivotRotate;
+        public Transform attackPivot;
 
+        public Transform AttackPivot => attackPivot;
+
+        
         private Vector2 _moveInput;
 
         private float _finalAtk;
@@ -28,15 +41,6 @@ namespace PlayerStates
 
         public Vector2 MoveInput => _moveInput;
         public Rigidbody2D Rigidbody2D => _rigidbody2D;
-
-
-        private bool _attackTrigger;
-
-        public bool AttackTrigger
-        {
-            get => _attackTrigger;
-            set => _attackTrigger = value;
-        }
 
         private bool _dashTrigger;
 
@@ -50,13 +54,22 @@ namespace PlayerStates
         public Vector2 LastMoveDir => _lastMoveDir;
 
 
+        private bool _canAttack = true; // FSM이 공격을 받아들일 수 있는지
+        private bool _attackQueued = false; // 공격 입력이 들어왔는지
+
+        public bool AttackTrigger => _attackQueued && _canAttack;
+
+        public void ResetAttackTrigger() => _attackQueued = false;
+        public void EnableAttack() => _canAttack = true;
+        
         protected override void Awake()
         {
             base.Awake();
             _inputController = GetComponent<InputController>();
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _forceReceiver = GetComponent<ForceReceiver>();
-
+            _skillExecutor = GetComponent<SkillExecutor>();
+            _playerAnimationController = GetComponent<PlayerAnimationController>();
             _animator = GetComponentInChildren<Animator>();
             _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
@@ -75,34 +88,54 @@ namespace PlayerStates
                 }
             };
             action.Move.canceled += context => _moveInput = _rigidbody2D.velocity = Vector2.zero;
-            action.Attack0.performed += context => _attackTrigger = true;
+            action.Attack0.performed += context =>
+            {
+                if (_canAttack)
+                {
+                    _attackQueued = true;
+                }
+            };
             action.Dash.performed += context => _dashTrigger = true;
 
-            _finalAtk = _toolController.GetAttackPow();
-            _finalAtkSpd = _toolController.GetAttackSpd();
+          //  _finalAtk = _toolController.GetAttackPow();
+           // _finalAtkSpd = _toolController.GetAttackSpd();
         }
 
         private void LateUpdate()
         {
-            Vector2 lookDir= UpdatePlayerDirByMouse();
+            Vector2 lookDir = UpdatePlayerDirByMouse();
             ChangedAnimatorParams(lookDir);
             SpriteFlipX(lookDir);
             UpdateAttackPivotRotate();
         }
-        
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState state)
         {
-            return state switch
+            switch (state)
             {
-                PlayerState.Idle => new IdleState(),
-                PlayerState.Move => new MoveState(),
-                PlayerState.Dash => new DashState(),
-                PlayerState.Attack => new AttackState(5, 2),
-                PlayerState.Interact => new InteractState(),
-                PlayerState.Dead => new DeadState(),
-                _ => null
-            };
+                case PlayerState.Idle:
+                    return new IdleState();
+                case PlayerState.Move:
+                    return new MoveState();
+                case PlayerState.Dash:
+                    return new DashState();
+                case PlayerState.Attack0:
+                {
+                    var skill = PlayerSkillMananger.Instance.GetSkill(isSpecial: false);
+                    return new Attack0State(skill);
+                }
+                case PlayerState.Attack1:
+                {
+                    var skill = PlayerSkillMananger.Instance.GetSkill(isSpecial: true);
+                    return new Attack0State(skill);
+                }
+                case PlayerState.Interact:
+                    return new InteractState();
+                case PlayerState.Dead:
+                    return new DeadState();
+                default:
+                    return null;
+            }
         }
 
         public override void FindTarget()
@@ -110,17 +143,16 @@ namespace PlayerStates
             throw new System.NotImplementedException();
         }
 
-
-
         public IDamageable Target { get; private set; }
 
         public void Attack()
-        {
-            _attackTrigger = false;
+        {            
+            _attackQueued = false;     // 트리거 초기화 (입력 소비)
+            _canAttack = false;    
         }
 
         //-------------------------------------------------------------------------
-        
+
         public override void Movement()
         {
             base.Movement();
@@ -142,7 +174,8 @@ namespace PlayerStates
 
             _rigidbody2D.velocity = moveVelocity;
         }
-        private Vector2 UpdatePlayerDirByMouse()
+
+        public Vector2 UpdatePlayerDirByMouse()
         {
             Vector2 mouseScreenPos = _inputController.LookDirection;
 
@@ -152,7 +185,6 @@ namespace PlayerStates
             Vector3 playerPos = transform.position;
 
             return (mouseWorldPos - playerPos).normalized;
-
         }
 
         private void SpriteFlipX(Vector2 _lookDir)
@@ -170,13 +202,27 @@ namespace PlayerStates
         private void UpdateAttackPivotRotate()
         {
             Vector2 mouseScreenPos = _inputController.LookDirection;
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,Mathf.Abs(Camera.main.transform.position.z)));
-            Vector2 dir= (mouseWorldPos- attackPivot.position).normalized;
-            
-            float angle= Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            attackPivot.rotation = Quaternion.Euler(0, 0, angle + 180);
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
+                Mathf.Abs(Camera.main.transform.position.z)));
+            Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
+
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
-        
+
         //-------------------------------------------------------------------------
+        
+        
+        public bool IsDead { get; }
+        public Collider Collider { get; }
+        public void TakeDamage(IAttackable attacker)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Dead()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
