@@ -14,8 +14,7 @@ public class PlayerSkillSO : ScriptableObject
     public float power;
     public float speed;
     public float range;
-
-    public GameObject projectilePrefab;
+    
     public PlayerSkillType skillType;
      
 }

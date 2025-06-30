@@ -25,7 +25,9 @@ public class ProjectilePoolManager : MonoBehaviour
 
     private PlayerProjectile CreateFunc()
     {
-        throw new System.NotImplementedException();
+        var proj=  Instantiate(projectilePrefab);
+        proj.SetPool(_pool);
+        return proj;
     }
 
     private void OnGet(PlayerProjectile pobj)
@@ -43,8 +45,10 @@ public class ProjectilePoolManager : MonoBehaviour
         Destroy(pobj.gameObject);
     }
 
-    public void Spawn(Vector2 origin, Vector2 direction, float speed, IAttackable attacker)
+    public void Spawn(Vector2 origin, Vector2 direction, float speed, float damage, IAttackable attacker)
     {
-        
+        var projectile = _pool.Get();
+        projectile.transform.position = origin;
+        projectile.Init(direction, speed, damage, attacker);
     }
 }
