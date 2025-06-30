@@ -107,8 +107,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;                       // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
         Agent.updateUpAxis = false;                         // 회전 비활성화
-        Animator = GetComponentInChildren<Animator>();
-        spriteRenderer =  GetComponentInChildren<SpriteRenderer>();
+        Animator = GetComponent<Animator>();
+        spriteRenderer =  GetComponent<SpriteRenderer>();
     }
 
     protected override void Start()
