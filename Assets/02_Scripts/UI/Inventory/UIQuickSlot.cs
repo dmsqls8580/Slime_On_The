@@ -19,23 +19,25 @@ public class UIQuickSlot : MonoBehaviour
     
     private void Update()
     {
+        
         HandleNumberInput();
         HandleScrollInput();
     }
 
     private void HandleNumberInput()
     {
-        for (int i = 0; i <= 9; i++)
-        {
-            Key key = (Key)((int)Key.Digit0 + i);
-
-            if (Keyboard.current[key].wasPressedThisFrame)
-            {
-                selectedIndex = i == 0 ? 9 : i - 1; // 0 → 9번 슬롯, 1 → 0번 슬롯
-                UpdateSelectedVisual();
-                break;
-            }
-        }
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) { selectedIndex = 0; }
+        else if (Keyboard.current.digit2Key.wasPressedThisFrame) { selectedIndex = 1; }
+        else if (Keyboard.current.digit3Key.wasPressedThisFrame) { selectedIndex = 2; }
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame) { selectedIndex = 3; }
+        else if (Keyboard.current.digit5Key.wasPressedThisFrame) { selectedIndex = 4; }
+        else if (Keyboard.current.digit6Key.wasPressedThisFrame) { selectedIndex = 5; }
+        else if (Keyboard.current.digit7Key.wasPressedThisFrame) { selectedIndex = 6; }
+        else if (Keyboard.current.digit8Key.wasPressedThisFrame) { selectedIndex = 7; }
+        else if (Keyboard.current.digit9Key.wasPressedThisFrame) { selectedIndex = 8; }
+        else if (Keyboard.current.digit0Key.wasPressedThisFrame) { selectedIndex = 9; }
+    
+        UpdateSelectedVisual();
     }
     
     private void HandleScrollInput()
