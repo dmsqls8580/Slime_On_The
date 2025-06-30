@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5331348624307950478}
   - component: {fileID: 5601011502020738570}
   - component: {fileID: 1120012134116941702}
+  - component: {fileID: 8892307796316169578}
   m_Layer: 0
   m_Name: ToggleBtn
   m_TagString: Untagged
@@ -120,7 +121,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1838620107868828320}
+      - m_Target: {fileID: 8892307796316169578}
         m_TargetAssemblyTypeName: TestBtn, Assembly-CSharp
         m_MethodName: OnToggleInventory
         m_Mode: 1
@@ -132,6 +133,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &8892307796316169578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 789498428782829333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57cf3e14a8bbc614e8eddff06d3beb43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2175562975985101103
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,7 +269,6 @@ GameObject:
   - component: {fileID: 6225383369907452254}
   - component: {fileID: 7768991071311391771}
   - component: {fileID: 5917901666018353382}
-  - component: {fileID: 1838620107868828320}
   m_Layer: 0
   m_Name: Canvas_HUD
   m_TagString: Untagged
@@ -348,18 +360,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &1838620107868828320
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3220067383962588614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a53e339ba1bd03942847f53ec6729d62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5013591467162369609
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,8 +8,8 @@ public class FakeInventoryData
         List<ItemInstanceData> result = new();
         for (int i = 0; i < count; i++)
         {
-            var itemSo = itemPool[Random.Range(0, itemPool.Count)];
-            result.Add(new ItemInstanceData(itemSo, Random.Range(1, itemSo.MaxStack + 1)));
+            var itemSO = itemPool[Random.Range(0, itemPool.Count)];
+            result.Add(new ItemInstanceData(itemSO, Random.Range(1, itemSO.MaxStack + 1)));
         }
         return result;
     }
