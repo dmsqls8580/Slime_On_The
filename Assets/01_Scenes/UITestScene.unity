@@ -537,7 +537,6 @@ GameObject:
   - component: {fileID: 1081309221}
   - component: {fileID: 1081309220}
   - component: {fileID: 1081309219}
-  - component: {fileID: 1081309222}
   m_Layer: 0
   m_Name: Canvas_Crafting
   m_TagString: Untagged
@@ -628,19 +627,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 100
   m_TargetDisplay: 0
---- !u!114 &1081309222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1081309217}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c66ee478738d64683c84b410056742, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contents: {fileID: 2046335673}
 --- !u!1 &1757944948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1343,7 +1329,8 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1838620107868828320, guid: e12916362d947ee459ba9336fa68a1ab, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

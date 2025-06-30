@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +22,12 @@ public class UIQuickSlot : MonoBehaviour
         
         HandleNumberInput();
         HandleScrollInput();
+    }
+    
+    public void SelectSlot(int index)
+    {
+        selectedIndex = index;
+        UpdateSelectedVisual();
     }
 
     private void HandleNumberInput()
