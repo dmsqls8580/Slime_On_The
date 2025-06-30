@@ -1,23 +1,27 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler,
+    IPointerClickHandler
 {
     [SerializeField] protected Image iconImage;
     [SerializeField] protected TextMeshProUGUI itemNameTxt;
     [SerializeField] protected TextMeshProUGUI quantityTxt;
 
     public int SlotIndex { get; private set; }
-    
+
+    public UnityAction<int> onSlotClicked;
+
     public void Initialize(int index)
     {
         SlotIndex = index;
         InventoryManager.Instance.OnSlotChanged += OnSlotChanged;
-        OnSlotChanged(index); // 초기 갱신
+        OnSlotChanged(index);
     }
-    
+
     public ItemInstanceData GetData()
     {
         return InventoryManager.Instance.GetItem(SlotIndex);
@@ -31,9 +35,9 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public virtual void OnSlotSelectedChanged(bool isSelected)
     {
-        
+
     }
-    
+
     private void OnDestroy()
     {
         if (InventoryManager.HasInstance)
@@ -41,7 +45,7 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             InventoryManager.Instance.OnSlotChanged -= OnSlotChanged;
         }
     }
-    
+
     private void OnSlotChanged(int changedIdx)
     {
         if (changedIdx != SlotIndex) return;
@@ -62,7 +66,7 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (itemNameTxt != null) itemNameTxt.text = data.Name;
         }
     }
-    
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (InventoryManager.Instance.GetItem(SlotIndex)?.IsValid == true)
@@ -86,5 +90,13 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             return;
 
         InventoryManager.Instance.TrySwapOrMerge(DragManager.Instance.DraggedSlot.SlotIndex, this.SlotIndex);
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            onSlotClicked?.Invoke(SlotIndex);
+        }
     }
 }
