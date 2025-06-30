@@ -4,22 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="">
+    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="feat: 애니메이션 제작, 구현">
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationController.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationDataSO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationDataSO.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO/PlayerAnimation.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO/PlayerAnimation.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO/Ranged.asset" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO/Ranged.asset.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/03_Prefabs/Items/PlayerProjectile.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/03_Prefabs/Items/PlayerProjectile.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackDown.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackDown.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackLeftSide.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackLeftSide.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackRightSide.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackRightSide.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackUp.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackUp.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveDown.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveDown.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveLeftSide.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveLeftSide.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveRightSide.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveRightSide.anim.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveUp.anim" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveUp.anim.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerState.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerProjectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerProjectile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillMananger.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillTable.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillMananger.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/SkillExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/SkillExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Down.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Down.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Up.anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Up.anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/idle.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/idle.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/side(Idle).anim" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/side(Idle).anim.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/run.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/run.aseprite.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/idle.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/idle.aseprite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/idle.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/idle.aseprite.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Player.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Player.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/Projectile.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/Projectile.aseprite.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,8 +75,8 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/10/6e9b1654/GenericPool`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/82/5cf17a92/DictionaryPool`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/82/f8abfdea/CollectionPool`2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/fc/7040b390/IObjectPool`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillTable.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
@@ -70,6 +99,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;CodeLensConfigurable&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -136,7 +166,8 @@
       <workItem from="1750821943212" duration="856000" />
       <workItem from="1750836064865" duration="1371000" />
       <workItem from="1751048190411" duration="1903000" />
-      <workItem from="1751206567146" duration="4129000" />
+      <workItem from="1751206567146" duration="19000000" />
+      <workItem from="1751246123153" duration="3794000" />
     </task>
     <task id="LOCAL-00001" summary="docs: 문서 받아옴">
       <option name="closed" value="true" />
@@ -194,7 +225,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751025152178</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="fix: Animation BlendTree 구조로 변경&#10;feat: Projectile 스크립트 작성">
+      <option name="closed" value="true" />
+      <created>1751213433787</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1751213433787</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +267,9 @@
     <MESSAGE value="fix: 이동 로직 변경" />
     <MESSAGE value="style: 줄바꿈, feat: DashState 추가" />
     <MESSAGE value="feat: Dash기능 구현, SkillTable 생성" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Dash기능 구현, SkillTable 생성" />
+    <MESSAGE value="fix: Animation BlendTree 구조로 변경&#10;feat: Projectile 스크립트 작성" />
+    <MESSAGE value="feat: 애니메이션 제작, 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: 애니메이션 제작, 구현" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
