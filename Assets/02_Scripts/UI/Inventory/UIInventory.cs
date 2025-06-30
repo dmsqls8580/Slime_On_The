@@ -6,7 +6,6 @@ public class UIInventory : UIBase
 {
     [SerializeField] private float tweenDuration = 0.3f;
     [SerializeField] private AnimationCurve openCloseCurve;
-    
     [SerializeField] private List<InventorySlot> inventorySlots;
 
     private Vector2 originPosition;
@@ -23,7 +22,9 @@ public class UIInventory : UIBase
     private void Start()
     {
         for (int i = 0; i < inventorySlots.Count; i++)
+        {
             inventorySlots[i].Initialize(i);
+        }
     }
     
     public override void Open()
