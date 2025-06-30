@@ -214,7 +214,7 @@ namespace PlayerStates
         
         
         public bool IsDead { get; }
-        public Collider Collider { get; }
+        public Collider2D Collider { get; }
         public void TakeDamage(IAttackable attacker)
         {
             throw new System.NotImplementedException();

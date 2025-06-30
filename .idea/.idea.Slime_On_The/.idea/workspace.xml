@@ -4,51 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="feat: 애니메이션 제작, 구현">
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationController.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationDataSO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationDataSO.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO/PlayerAnimation.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerAnimationSO/PlayerAnimation.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO/Ranged.asset" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO/Ranged.asset.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/03_Prefabs/Items/PlayerProjectile.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/03_Prefabs/Items/PlayerProjectile.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackDown.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackDown.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackLeftSide.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackLeftSide.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackRightSide.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackRightSide.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackUp.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Attack/AttackUp.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveDown.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveDown.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveLeftSide.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveLeftSide.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveRightSide.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveRightSide.anim.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveUp.anim" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Move/MoveUp.anim.meta" afterDir="false" />
+    <list default="true" id="f33ba45e-39ea-421c-869a-f3af1bceafeb" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Slime_On_The/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/01_Scenes/PlayerTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerSkillSO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerState.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/PlayerState.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerProjectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerProjectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillTable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillMananger.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillTable.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/PlayerSkillMananger.cs.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/SkillExecutor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/SkillExecutor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/06_Animations/Player/Player.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/06_Animations/Player/Player.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Basic/walk.aseprite.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/Projectile.aseprite.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/Projectile.aseprite.meta" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +34,18 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/82/f8abfdea/CollectionPool`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f7237cf7abef49bfbb552d7eb076e422174200/fc/7040b390/IObjectPool`1.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3ea01e77be99618395f448b16bd7cc2bd4248bd9e5d8474964b2d97f39c5d74/System.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/01_Scenes/PlayerTest.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/01_Scenes/PlayerTest.unity" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/PlayerController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/PlayerSkillSO.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/PlayerState.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/Skill/PlayerProjectile.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/Skill/ProjectilePoolManager.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/02_Scripts/Player/Skill/SkillExecutor.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/06_Animations/Player/Player.controller" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/NormalAttack.aseprite.meta" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/thtld/Desktop/Sparta_Unity/Slime_On_The/Assets/99_Externals/Hana_Caraka/Base Character/Slime/Attack/Projectile.aseprite.meta" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
   <component name="ProjectColorInfo">{
@@ -167,7 +135,7 @@
       <workItem from="1750836064865" duration="1371000" />
       <workItem from="1751048190411" duration="1903000" />
       <workItem from="1751206567146" duration="19000000" />
-      <workItem from="1751246123153" duration="3794000" />
+      <workItem from="1751246123153" duration="4617000" />
     </task>
     <task id="LOCAL-00001" summary="docs: 문서 받아옴">
       <option name="closed" value="true" />
@@ -233,7 +201,39 @@
       <option name="project" value="LOCAL" />
       <updated>1751213433787</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: 애니메이션 제작, 구현">
+      <option name="closed" value="true" />
+      <created>1751251458504</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1751251458504</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refactor: 애니메이션, AttackPivot 수정, AttackCoolDown 적용">
+      <option name="closed" value="true" />
+      <created>1751251567868</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1751251567868</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat: 원거리 공격(Normal Attack) 추가">
+      <option name="closed" value="true" />
+      <created>1751251673413</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1751251673413</updated>
+    </task>
+    <task id="LOCAL-00012" summary="docs: 에디터 파일 업데이트">
+      <option name="closed" value="true" />
+      <created>1751251810362</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1751251810362</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -269,7 +269,10 @@
     <MESSAGE value="feat: Dash기능 구현, SkillTable 생성" />
     <MESSAGE value="fix: Animation BlendTree 구조로 변경&#10;feat: Projectile 스크립트 작성" />
     <MESSAGE value="feat: 애니메이션 제작, 구현" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 애니메이션 제작, 구현" />
+    <MESSAGE value="refactor: 애니메이션, AttackPivot 수정, AttackCoolDown 적용" />
+    <MESSAGE value="feat: 원거리 공격(Normal Attack) 추가" />
+    <MESSAGE value="docs: 에디터 파일 업데이트" />
+    <option name="LAST_COMMIT_MESSAGE" value="docs: 에디터 파일 업데이트" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
