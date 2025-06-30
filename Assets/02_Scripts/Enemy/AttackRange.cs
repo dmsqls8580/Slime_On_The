@@ -40,6 +40,11 @@ public class AttackRange : MonoBehaviour
     
     void OnDrawGizmos()
     {
+        if (circleCollider2D == null)
+        {
+            circleCollider2D = GetComponent<CircleCollider2D>();            
+        }
+        
         if (circleCollider2D is CircleCollider2D circle)
         {
             Gizmos.color = Color.red;

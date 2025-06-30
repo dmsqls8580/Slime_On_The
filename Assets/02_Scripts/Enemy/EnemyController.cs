@@ -194,6 +194,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
     
+    /*
     //  Enemy 공격 사이 대기 시간 초기화
     public void SetAttackCooldown()
     {
@@ -206,6 +207,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         attackCooldownTimer -= Time.deltaTime;
         return attackCooldownTimer <= 0f;
     }
+    */
     
     // 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool inRange)
