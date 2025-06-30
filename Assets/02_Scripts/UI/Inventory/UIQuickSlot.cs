@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,7 +10,8 @@ public class UIQuickSlot : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].Initialize(i); // 0~9 인덱스는 공유 영역
+            slots[i].Initialize(i);
+            slots[i].onSlotClicked = SelectSlot;
         }
         
         UpdateSelectedVisual();
@@ -22,6 +22,12 @@ public class UIQuickSlot : MonoBehaviour
         
         HandleNumberInput();
         HandleScrollInput();
+    }
+    
+    public void SelectSlot(int index)
+    {
+        selectedIndex = index;
+        UpdateSelectedVisual();
     }
 
     private void HandleNumberInput()
