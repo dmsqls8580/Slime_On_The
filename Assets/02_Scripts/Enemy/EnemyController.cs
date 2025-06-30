@@ -32,7 +32,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     
-    /************************ IDamageable ***********************/ 
+    /************************ IDamageable ***********************/
     public bool IsDead { get; private set; }               // 사망 여부
     
     public Collider2D Collider { get; private set; }       // 몬스터 피격 콜라이더
@@ -58,7 +58,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             IsDead = true;
             ChangeState(EnemyState.Dead);
-            // 오브젝트 풀 반환
+            // TODO: 오브젝트 풀 반환
         }
         
     }
@@ -121,6 +121,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     protected override void Update()
     {
         base.Update();
+        
+        Debug.Log(CurrentState);
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
