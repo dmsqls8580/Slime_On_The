@@ -5,11 +5,15 @@ using Enemyststes;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyController : BaseController<EnemyController, EnemyState>
+public class EnemyController : BaseController<EnemyController, EnemyState>, IDamageable
 {
     [SerializeField] private EnemySO enemySo;
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
+    
+    public bool IsDead { get; }
+    
+    public Collider2D Collider { get; }
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
     public bool isDead           { get; private set; }     // 사망 여부
@@ -50,7 +54,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>
     {
         base.Update();
         
-        Vector3 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
+        Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
         // 이동 중일 때만 각도/flipX 갱신
         if (velocityMagnitude > 0.01f)
@@ -58,7 +62,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>
             lastAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
             lastFlipX = Agent.velocity.x < 0;
         }
-        // 멈췄을 때는 마지막 값을 유지
+        // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
         
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
@@ -154,5 +158,16 @@ public class EnemyController : BaseController<EnemyController, EnemyState>
     {
         attackCooldownTimer -= Time.deltaTime;
         return attackCooldownTimer <= 0f;
+    }
+
+    
+    public void TakeDamage(IAttackable attacker)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Dead()
+    {
+        throw new NotImplementedException();
     }
 }
