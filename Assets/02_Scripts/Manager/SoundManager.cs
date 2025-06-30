@@ -1,26 +1,25 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public enum BGM
 {
-    InGame,
+    
 }
 
 public enum SFX
 {
-    FireArrow_1,
-    FireArrow_2,
-    Canon_1
+    
 }
 
 public class SoundManager : Singleton<SoundManager>
 {
+    [Header("BGM")]
     [SerializeField] private AudioSource BGMSource;
-    [SerializeField] private AudioSource SFXSource;
-
     [SerializeField] private List<AudioClip> BGMClips;
+    
+    [Header("SFX")]
+    [SerializeField] private AudioSource SFXSource;
     [SerializeField] private List<AudioClip> SFXClips;
 
 
@@ -28,6 +27,7 @@ public class SoundManager : Singleton<SoundManager>
     {
         base.Awake();
     }
+    
     public void ChangeBGM(BGM bgm)
     {
         AudioClip clip = BGMClips[(int)bgm];
