@@ -12,6 +12,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private Collider2D attackRangeCollider;
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
+    public EnemyState PreviousState      { get; set; }     // 이전 State
     public Animator Animator     { get; private set; }     // 애니메이터
 
     public float MaxHealth;                                // 최대 최력
@@ -211,7 +212,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     */
     
-    // 공격 범위 진입 여부 메서드 추가
+    // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool inRange)
     {
         IsPlayerInAttackRange = inRange;
