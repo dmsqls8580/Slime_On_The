@@ -11,7 +11,8 @@ public class UIQuickSlot : MonoBehaviour
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].Initialize(i); // 0~9 인덱스는 공유 영역
+            slots[i].Initialize(i);
+            slots[i].onSlotClicked = SelectSlot;
         }
         
         UpdateSelectedVisual();
@@ -59,5 +60,11 @@ public class UIQuickSlot : MonoBehaviour
         {
             slots[i].SetSelected(i == selectedIndex);
         }
+    }
+    
+    public void SelectSlot(int index)
+    {
+        selectedIndex = index;
+        UpdateSelectedVisual();
     }
 }

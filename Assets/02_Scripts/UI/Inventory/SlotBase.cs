@@ -1,9 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerClickHandler
 {
     [SerializeField] protected Image iconImage;
     [SerializeField] protected TextMeshProUGUI itemNameTxt;
@@ -11,11 +12,13 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public int SlotIndex { get; private set; }
     
+    public UnityAction<int> onSlotClicked;
+    
     public void Initialize(int index)
     {
         SlotIndex = index;
         InventoryManager.Instance.OnSlotChanged += OnSlotChanged;
-        OnSlotChanged(index); // 초기 갱신
+        OnSlotChanged(index); 
     }
     
     public ItemInstanceData GetData()
@@ -86,5 +89,13 @@ public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             return;
 
         InventoryManager.Instance.TrySwapOrMerge(DragManager.Instance.DraggedSlot.SlotIndex, this.SlotIndex);
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            onSlotClicked?.Invoke(SlotIndex);
+        }
     }
 }
