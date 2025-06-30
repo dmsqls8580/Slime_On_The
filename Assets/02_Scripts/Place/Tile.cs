@@ -10,8 +10,8 @@ public class Tile
     public PlaceType placeType;
     // 설치된 오브젝트.
     public GameObject placedObject;
-    // 특정 타입이 설치 가능한지 체크하는 함수.
 
+    // 특정 타입이 설치 가능한지 체크하는 함수.
     public bool CanPlace(PlaceType type)
     {
         return isPlaceable && placeType.HasFlag(type) && placedObject == null;
