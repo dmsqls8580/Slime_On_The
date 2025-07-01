@@ -19,7 +19,7 @@ namespace PlayerStates
         private InputController inputController;
         private SkillExecutor skillExecutor;
         public SkillExecutor SkillExecutor => skillExecutor;
-
+        
         private ForceReceiver forceReceiver;
         private Animator animator;
         private Rigidbody2D rigid2D;
@@ -50,6 +50,7 @@ namespace PlayerStates
         private bool attackQueued = false;
         public bool AttackTrigger => attackQueued && canAttack;
 
+        public StatBase AttackStat { get; }
         public IDamageable Target { get; private set; }
         public bool IsDead { get; }
         public Collider2D Collider { get; }
