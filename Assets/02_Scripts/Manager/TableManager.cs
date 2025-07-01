@@ -8,7 +8,6 @@ public class TableManager : Singleton<TableManager>
     [SerializeField]private List<ScriptableObject> tableList = new List<ScriptableObject>();
     
     private Dictionary<Type, ITable> tableDic = new Dictionary<Type, ITable>();
-
     protected override void Awake()
     {
         base.Awake();
@@ -18,7 +17,8 @@ public class TableManager : Singleton<TableManager>
             {
                 table.AutoAssignDatas();
                 table.CreateTable();
-                tableDic[table.Type]=table;
+                Type keyType = tableObj.GetType();
+                tableDic[tableObj.GetType()] = table;
             }
         }
     }
@@ -28,9 +28,9 @@ public class TableManager : Singleton<TableManager>
         return tableDic[typeof(T)] as T;
     }
 
+#if UNITY_EDITOR
     public void AutoAssignTables()
     {
-        tableList.Clear();
         
         string[] guids =
             UnityEditor.AssetDatabase.FindAssets("t:ScriptableObject", new[] { "Assets/10_Tables/Tables" });
@@ -51,4 +51,5 @@ public class TableManager : Singleton<TableManager>
 
         UnityEditor.EditorUtility.SetDirty(this);
     }
+    #endif
 }

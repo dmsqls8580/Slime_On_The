@@ -16,6 +16,16 @@ public class StatManager : MonoBehaviour
         {
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
+        foreach (var stat in _statProvider.Stats)
+        {
+            Debug.Log($"[Init] StatType: {stat.StatType}, Name: {stat.StatType.ToString()}, Value: {stat.Value}");
+        }
+        
+        Debug.Log("[Init] 등록된 최종 Stat 목록:");
+        foreach (var pair in Stats)
+        {
+            Debug.Log($"Stat Registered: {pair.Key} = {pair.Value.GetCurrent()}");
+        }
         OnStatChange?.Invoke();
     }
     
@@ -31,8 +41,7 @@ public class StatManager : MonoBehaviour
         {
             StatType.CurrentHp => new ResourceStat(_statType, _value),
             StatType.CurrentHunger => new ResourceStat(_statType, _value),
-            StatType.MaxSlimeGauge=> new ResourceStat(_statType, _value),
-            StatType.MaxMP=> new ResourceStat(_statType, _value),
+            StatType.CurrentSlimeGauge=> new ResourceStat(_statType, _value),
             //////////////////////////////////////////////////////////////////
             _ => new CalculateStat(_statType, _value),
         };
