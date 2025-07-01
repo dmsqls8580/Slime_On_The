@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class BaseTable<TKey, TValue> : ScriptableObject, ITable where TKey: notnull where TValue :ScriptableObject
 {
     [SerializeField] protected List<TValue> dataList = new List<TValue>();
-     public Dictionary<TKey,TValue> DataDic{ get; private set;} = new Dictionary<TKey,TValue>();
+    public Dictionary<TKey,TValue> DataDic{ get; private set;} = new Dictionary<TKey,TValue>();
 
     public Type Type { get; protected set;}
     protected abstract string[] DataPath { get; }
