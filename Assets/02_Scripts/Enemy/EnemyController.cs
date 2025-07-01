@@ -12,6 +12,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private Collider2D attackRangeCollider;
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
+    public EnemyState PreviousState      { get; set; }     // 이전 State
     public Animator Animator     { get; private set; }     // 애니메이터
 
     public float MaxHealth;                                // 최대 최력
@@ -32,7 +33,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     
-    /************************ IDamageable ***********************/ 
+    /************************ IDamageable ***********************/
     public bool IsDead { get; private set; }               // 사망 여부
     
     public Collider2D Collider { get; private set; }       // 몬스터 피격 콜라이더
@@ -58,7 +59,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             IsDead = true;
             ChangeState(EnemyState.Dead);
-            // 오브젝트 풀 반환
+            // TODO: 오브젝트 풀 반환
         }
         
     }
@@ -106,8 +107,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         Agent = GetComponent<NavMeshAgent>();
         Agent.updateRotation = false;                       // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
         Agent.updateUpAxis = false;                         // 회전 비활성화
-        Animator = GetComponentInChildren<Animator>();
-        spriteRenderer =  GetComponentInChildren<SpriteRenderer>();
+        Animator = GetComponent<Animator>();
+        spriteRenderer =  GetComponent<SpriteRenderer>();
     }
 
     protected override void Start()
@@ -121,6 +122,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     protected override void Update()
     {
         base.Update();
+        
+        Debug.Log(CurrentState);
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
@@ -209,7 +212,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     */
     
-    // 공격 범위 진입 여부 메서드 추가
+    // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool inRange)
     {
         IsPlayerInAttackRange = inRange;
