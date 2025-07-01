@@ -9,104 +9,92 @@ namespace PlayerStates
     [RequireComponent(typeof(ForceReceiver))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
-        private static readonly int MouseX = Animator.StringToHash("mouseX");
-        private static readonly int MouseY = Animator.StringToHash("mouseY");
+        private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
+        private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
 
-        private ToolController _toolController;
+        private ToolController toolController;
+        private PlayerAnimationController animationController;
+        public PlayerAnimationController AnimationController => animationController;
 
-        private PlayerAnimationController _playerAnimationController;
-        public PlayerAnimationController AnimationController => _playerAnimationController;
-
-        private InputController _inputController;
-
-        private SkillExecutor _skillExecutor;
-        public SkillExecutor SkillExecutor => _skillExecutor;
-
-        private ForceReceiver _forceReceiver;
-
-        private Animator _animator;
-        private Rigidbody2D _rigidbody2D;
-        private SpriteRenderer _spriteRenderer;
+        private InputController inputController;
+        private SkillExecutor skillExecutor;
+        public SkillExecutor SkillExecutor => skillExecutor;
+        
+        private ForceReceiver forceReceiver;
+        private Animator animator;
+        private Rigidbody2D rigid2D;
+        private SpriteRenderer spriteRenderer;
 
         public Transform attackPivotRotate;
         public Transform attackPivot;
-
         public Transform AttackPivot => attackPivot;
 
-        
-        private Vector2 _moveInput;
+        private Vector2 moveInput;
+        private Vector2 lastMoveDir = Vector2.right;
 
-        private float _finalAtk;
-        private float _finalAtkSpd;
+        public Vector2 MoveInput => moveInput;
+        public Vector2 LastMoveDir => lastMoveDir;
+        public Rigidbody2D Rigid2D => rigid2D;
 
-        public Vector2 MoveInput => _moveInput;
-        public Rigidbody2D Rigidbody2D => _rigidbody2D;
+        private float finalAtk;
+        private float finalAtkSpd;
 
-        private bool _dashTrigger;
-
+        private bool dashTrigger;
         public bool DashTrigger
         {
-            get => _dashTrigger;
-            set => _dashTrigger = value;
+            get => dashTrigger;
+            set => dashTrigger = value;
         }
 
-        private Vector2 _lastMoveDir = Vector2.right; // 기본은 오른쪽
-        public Vector2 LastMoveDir => _lastMoveDir;
+        private bool canAttack = true;
+        private bool attackQueued = false;
+        public bool AttackTrigger => attackQueued && canAttack;
 
+        public StatBase AttackStat { get; }
+        public IDamageable Target { get; private set; }
+        public bool IsDead { get; }
+        public Collider2D Collider { get; }
 
-        private bool _canAttack = true; // FSM이 공격을 받아들일 수 있는지
-        private bool _attackQueued = false; // 공격 입력이 들어왔는지
-
-        public bool AttackTrigger => _attackQueued && _canAttack;
-
-        public void ResetAttackTrigger() => _attackQueued = false;
-        public void EnableAttack() => _canAttack = true;
-        
         protected override void Awake()
         {
             base.Awake();
-            _inputController = GetComponent<InputController>();
-            _rigidbody2D = GetComponent<Rigidbody2D>();
-            _forceReceiver = GetComponent<ForceReceiver>();
-            _skillExecutor = GetComponent<SkillExecutor>();
-            _playerAnimationController = GetComponent<PlayerAnimationController>();
-            _animator = GetComponentInChildren<Animator>();
-            _spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            inputController = GetComponent<InputController>();
+            rigid2D = GetComponent<Rigidbody2D>();
+            forceReceiver = GetComponent<ForceReceiver>();
+            skillExecutor = GetComponent<SkillExecutor>();
+            animationController = GetComponent<PlayerAnimationController>();
+            animator = GetComponentInChildren<Animator>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
 
         protected override void Start()
         {
             base.Start();
 
-            var action = _inputController.PlayerActions;
+            var action = inputController.PlayerActions;
             action.Move.performed += context =>
             {
-                _moveInput = context.ReadValue<Vector2>();
-                if (_moveInput.sqrMagnitude > 0.01f)
-                {
-                    _lastMoveDir = _moveInput.normalized;
-                }
+                moveInput = context.ReadValue<Vector2>();
+                if (moveInput.sqrMagnitude > 0.01f)
+                    lastMoveDir = moveInput.normalized;
             };
-            action.Move.canceled += context => _moveInput = _rigidbody2D.velocity = Vector2.zero;
+            action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
+
             action.Attack0.performed += context =>
             {
-                if (_canAttack)
-                {
-                    _attackQueued = true;
-                }
+                if (canAttack)
+                    attackQueued = true;
             };
-            action.Dash.performed += context => _dashTrigger = true;
 
-          //  _finalAtk = _toolController.GetAttackPow();
-           // _finalAtkSpd = _toolController.GetAttackSpd();
+            action.Dash.performed += context => dashTrigger = true;
         }
 
         private void LateUpdate()
         {
-            Vector2 lookDir = UpdatePlayerDirByMouse();
-            ChangedAnimatorParams(lookDir);
-            SpriteFlipX(lookDir);
-            UpdateAttackPivotRotate();
+            Vector2 lookDir = UpdatePlayerDirectionByMouse();
+            UpdateAnimatorParameters(lookDir);
+            UpdateSpriteFlip(lookDir);
+            UpdateAttackPivotRotation();
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState state)
@@ -120,15 +108,9 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                {
-                    var skill = PlayerSkillMananger.Instance.GetSkill(isSpecial: false);
-                    return new Attack0State(skill);
-                }
+                    return new Attack0State(PlayerSkillMananger.Instance.GetSkill(false));
                 case PlayerState.Attack1:
-                {
-                    var skill = PlayerSkillMananger.Instance.GetSkill(isSpecial: true);
-                    return new Attack0State(skill);
-                }
+                    return new Attack0State(PlayerSkillMananger.Instance.GetSkill(true));
                 case PlayerState.Interact:
                     return new InteractState();
                 case PlayerState.Dead:
@@ -143,78 +125,65 @@ namespace PlayerStates
             throw new System.NotImplementedException();
         }
 
-        public IDamageable Target { get; private set; }
-
         public void Attack()
-        {            
-            _attackQueued = false;     // 트리거 초기화 (입력 소비)
-            _canAttack = false;    
+        {
+            attackQueued = false;
+            canAttack = false;
         }
 
-        //-------------------------------------------------------------------------
+        public void ResetAttackTrigger() => attackQueued = false;
+        public void EnableAttack() => canAttack = true;
 
         public override void Movement()
         {
             base.Movement();
 
-            float baseSpeed = 5f;
+            const float BASE_SPEED = 5f;
 
             Vector2 moveVelocity = Vector2.zero;
-            //이동이 감지되지 않았을 때 외부힘을 통한 넉백
-            if (_moveInput.magnitude < 0.01f)
+
+            if (moveInput.magnitude < 0.01f)
             {
-                moveVelocity = _forceReceiver.Force;
+                moveVelocity = forceReceiver.Force;
+            }
+            else
+            {
+                moveVelocity = moveInput.normalized * BASE_SPEED + forceReceiver.Force;
             }
 
-            //todo: 베이스 스피드에 더해질 스탯의 값 (지금은 하드코딩)
-
-            Vector2 move = _moveInput.normalized;
-
-            moveVelocity = move * baseSpeed + _forceReceiver.Force;
-
-            _rigidbody2D.velocity = moveVelocity;
+            rigid2D.velocity = moveVelocity;
         }
 
-        public Vector2 UpdatePlayerDirByMouse()
+        public Vector2 UpdatePlayerDirectionByMouse()
         {
-            Vector2 mouseScreenPos = _inputController.LookDirection;
-
-            Vector3 mouseScreenPos3D = new Vector3(mouseScreenPos.x, mouseScreenPos.y,
-                Mathf.Abs(Camera.main.transform.position.z));
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(mouseScreenPos3D);
+            Vector2 mouseScreenPos = inputController.LookDirection;
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z)));
             Vector3 playerPos = transform.position;
 
             return (mouseWorldPos - playerPos).normalized;
         }
 
-        private void SpriteFlipX(Vector2 _lookDir)
+        private void UpdateSpriteFlip(Vector2 lookDir)
         {
-            if (_lookDir.x != 0)
-                _spriteRenderer.flipX = _lookDir.x < 0;
+            if (lookDir.x != 0)
+                spriteRenderer.flipX = lookDir.x < 0;
         }
 
-        private void ChangedAnimatorParams(Vector2 _lookDir)
+        private void UpdateAnimatorParameters(Vector2 lookDir)
         {
-            _animator.SetFloat(MouseX, Mathf.Abs(_lookDir.x));
-            _animator.SetFloat(MouseY, _lookDir.y);
+            animator.SetFloat(MOUSE_X, Mathf.Abs(lookDir.x));
+            animator.SetFloat(MOUSE_Y, lookDir.y);
         }
 
-        private void UpdateAttackPivotRotate()
+        private void UpdateAttackPivotRotation()
         {
-            Vector2 mouseScreenPos = _inputController.LookDirection;
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
-                Mathf.Abs(Camera.main.transform.position.z)));
+            Vector2 mouseScreenPos = inputController.LookDirection;
+            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y, Mathf.Abs(Camera.main.transform.position.z)));
             Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
 
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
-
-        //-------------------------------------------------------------------------
-        
-        
-        public bool IsDead { get; }
-        public Collider2D Collider { get; }
         public void TakeDamage(IAttackable attacker)
         {
             throw new System.NotImplementedException();

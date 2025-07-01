@@ -65,6 +65,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     
     /************************ IAttackable ***********************/
+    public StatBase AttackStat { get; }
+
     public IDamageable Target => ChaseTarget != null ? 
         ChaseTarget.GetComponent<IDamageable>() : null;
 
