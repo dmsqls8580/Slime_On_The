@@ -34,7 +34,11 @@ public class PlayerStatus: MonoBehaviour
     }
 
     public void ConsumeSlimeGauge(float _amount)
-    {
+    {      
+        if(SlimeGaugeImage==null)
+        {
+            return;
+        }
         statManager.Consume(StatType.CurrentSlimeGauge,StatModifierType.Base, _amount);
         UpdateSlimeGaugeUI();
     }
@@ -43,9 +47,14 @@ public class PlayerStatus: MonoBehaviour
     {
         statManager.Recover(StatType.CurrentSlimeGauge, StatModifierType.Base, _amount);
         UpdateSlimeGaugeUI();
-    }    private void UpdateSlimeGaugeUI()
+    }    
     
-    {
+    private void UpdateSlimeGaugeUI()
+    {        
+        if(SlimeGaugeImage==null)
+        {
+            return;
+        }
         float cur = statManager.GetValue(StatType.CurrentSlimeGauge);
         float max = statManager.GetValue(StatType.MaxSlimeGauge);
         SlimeGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
