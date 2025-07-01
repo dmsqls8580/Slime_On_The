@@ -68,7 +68,7 @@ namespace PlayerStates
         {
             owner.Movement();
 
-            Vector2 lookDir = owner.UpdatePlayerDirByMouse();
+            Vector2 lookDir = owner.UpdatePlayerDirectionByMouse();
             owner.AnimationController.SetLook(lookDir);
         }
 
@@ -106,41 +106,41 @@ namespace PlayerStates
 
     public class DashState : IState<PlayerController, PlayerState>
     {
-        private float _dashDuration = 0.2f;
-        private float _dashSpeed = 15f;
-        private float _timer;
-        private Vector2 _dashDirection;
+        private float dashDuration = 0.2f;
+        private float dashSpeed = 15f;
+        private float timer;
+        private Vector2 dashDirection;
 
         public void OnEnter(PlayerController owner)
         {
-            _timer = 0f;
-            owner.Rigidbody2D.velocity = _dashDirection * _dashSpeed;
-            _dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
+            timer = 0f;
+            owner.Rigid2D.velocity = dashDirection * dashSpeed;
+            dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
         }
 
         public void OnUpdate(PlayerController owner)
         {
-            _timer += Time.deltaTime;
+            timer += Time.deltaTime;
 
-            if (_timer >= _dashDuration)
+            if (timer >= dashDuration)
             {
-                owner.Rigidbody2D.velocity = Vector2.zero;
+                owner.Rigid2D.velocity = Vector2.zero;
             }
         }
 
         public void OnFixedUpdate(PlayerController owner)
         {
-            owner.Rigidbody2D.velocity = _dashDirection * _dashSpeed;
+            owner.Rigid2D.velocity = dashDirection * dashSpeed;
         }
 
         public void OnExit(PlayerController entity)
         {
-            entity.Rigidbody2D.velocity = Vector2.zero;
+            entity.Rigid2D.velocity = Vector2.zero;
         }
 
         public PlayerState CheckTransition(PlayerController owner)
         {
-            if (_timer >= _dashDuration)
+            if (timer >= dashDuration)
             {
                 return owner.MoveInput.sqrMagnitude > 0.01f ? PlayerState.Move : PlayerState.Idle;
             }
@@ -151,20 +151,20 @@ namespace PlayerStates
 
     public class Attack0State : IState<PlayerController, PlayerState>
     {
-        private readonly PlayerSkillSO _skill;
+        private readonly PlayerSkillSO skill;
 
-        private float _timer;
+        private float timer;
         private bool _attackDone;
 
         public Attack0State(PlayerSkillSO skill)
         {
-            _skill = skill;
+            this.skill = skill;
         }
 
         public void OnEnter(PlayerController owner)
         {
             owner.Attack();
-            _timer = 0f;
+            timer = 0f;
             _attackDone = false;
             Vector2 mousePos = owner.GetComponent<InputController>().LookDirection;
             Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y,
@@ -172,15 +172,15 @@ namespace PlayerStates
             Vector2 attackDir = ((Vector2)(mouseWorld - owner.transform.position)).normalized;
             owner.AnimationController.TriggerAttack();
 
-            owner.SkillExecutor.Executor(_skill, owner.AttackPivot.gameObject, attackDir);
+            owner.SkillExecutor.Executor(skill, owner.AttackPivot.gameObject, attackDir);
         }
 
         public void OnUpdate(PlayerController owner)
         {
             owner.Movement();
 
-            _timer += Time.deltaTime;
-            if (_timer >= _skill.cooldown)
+            timer += Time.deltaTime;
+            if (timer >= skill.cooldown)
             {
                 _attackDone = true;
             }
@@ -207,7 +207,7 @@ namespace PlayerStates
 
         private IEnumerator ResetCoolDown(PlayerController owner)
         {
-            yield return new WaitForSeconds(_skill.cooldown);
+            yield return new WaitForSeconds(skill.cooldown);
             owner.EnableAttack();
         }
     }
