@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "PlayerSO", menuName = "Sparta/PlayerSO", order= 0)]
+[CreateAssetMenu(fileName = "PlayerSO", menuName = "PlayerSO", order= 0)]
 public class PlayerSO : ScriptableObject, IStatProvider
 {
     public int ID;
