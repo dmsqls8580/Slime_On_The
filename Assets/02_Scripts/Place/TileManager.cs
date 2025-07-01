@@ -13,10 +13,22 @@ public class TileManager : MonoBehaviour
         InitializeTiles();
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int gridPos = GetGridPosition(mouseWorld);
+
+            Tile tile = GetTileAt(gridPos);
+        }
+    }
+
     private void InitializeTiles()
     {
         BoundsInt bounds = groundTilemap.cellBounds;
 
+        int count = 0;
         foreach (Vector3Int pos in bounds.allPositionsWithin)
         {
             if (!groundTilemap.HasTile(pos)) continue;
@@ -30,7 +42,10 @@ public class TileManager : MonoBehaviour
             };
 
             tiles[pos] = tile;
+            count++;
         }
+
+        Debug.Log($"[TileManager] {count}개의 타일이 등록되었습니다.");
     }
 
     public Tile GetTileAt(Vector3Int gridPos)
