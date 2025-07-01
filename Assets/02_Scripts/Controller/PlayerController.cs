@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace PlayerStates
@@ -7,11 +8,14 @@ namespace PlayerStates
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(ForceReceiver))]
-    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
+    [RequireComponent(typeof(PlayerStatus))]
+    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable
     {
         private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
         private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
 
+        public PlayerStatus PlayerStatus{get; private set;}
+        
         private ToolController toolController;
         private PlayerAnimationController animationController;
         public PlayerAnimationController AnimationController => animationController;
@@ -35,6 +39,7 @@ namespace PlayerStates
         public Vector2 MoveInput => moveInput;
         public Vector2 LastMoveDir => lastMoveDir;
         public Rigidbody2D Rigid2D => rigid2D;
+        private List<IDamageable> targets = new List<IDamageable>();
 
         private float finalAtk;
         private float finalAtkSpd;
@@ -51,7 +56,9 @@ namespace PlayerStates
         public bool AttackTrigger => attackQueued && canAttack;
 
         public StatBase AttackStat { get; }
+        
         public IDamageable Target { get; private set; }
+        
         public bool IsDead { get; }
         public Collider2D Collider { get; }
 
@@ -60,17 +67,26 @@ namespace PlayerStates
             base.Awake();
             inputController = GetComponent<InputController>();
             rigid2D = GetComponent<Rigidbody2D>();
+            PlayerStatus = GetComponent<PlayerStatus>();
             forceReceiver = GetComponent<ForceReceiver>();
             skillExecutor = GetComponent<SkillExecutor>();
             animationController = GetComponent<PlayerAnimationController>();
             animator = GetComponentInChildren<Animator>();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
         }
 
         protected override void Start()
         {
             base.Start();
+            PlayerTable playerTable= TableManager.Instance.GetTable<PlayerTable>(); 
+            PlayerSO playerData = playerTable.GetDataByID(0); 
+           
+            PlayerStatus.Init(playerData);
+             
+            StatManager.Init(playerData);
 
+            
             var action = inputController.PlayerActions;
             action.Move.performed += context =>
             {
@@ -95,8 +111,14 @@ namespace PlayerStates
             UpdateAnimatorParameters(lookDir);
             UpdateSpriteFlip(lookDir);
             UpdateAttackPivotRotation();
-        }
 
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                PlayerStatus.RecoverSlimeGauge(5);
+                Debug.Log($"Recover! +SlimeGauge : 5");
+            }
+        }
+        
         protected override IState<PlayerController, PlayerState> GetState(PlayerState state)
         {
             switch (state)
@@ -138,7 +160,7 @@ namespace PlayerStates
         {
             base.Movement();
 
-            const float BASE_SPEED = 5f;
+            float speed = PlayerStatus.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
 
@@ -148,7 +170,7 @@ namespace PlayerStates
             }
             else
             {
-                moveVelocity = moveInput.normalized * BASE_SPEED + forceReceiver.Force;
+                moveVelocity = moveInput.normalized * speed + forceReceiver.Force;
             }
 
             rigid2D.velocity = moveVelocity;
@@ -184,14 +206,19 @@ namespace PlayerStates
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
-        public void TakeDamage(IAttackable attacker)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Dead()
         {
             throw new System.NotImplementedException();
+        }
+        
+        private void OnDisable()
+        {
+            Debug.LogWarning("[PlayerController] OnDisable called!");
+        }
+
+        private void OnEnable()
+        {
+            Debug.Log("[PlayerController] OnEnable called!");
         }
     }
 }

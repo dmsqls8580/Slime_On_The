@@ -59,9 +59,14 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
+        private float slimeTimer;
+        private const float consumeInterval = 1f;
+        private const float consumeAmount = 0.5f;
+            
         public void OnEnter(PlayerController owner)
         {
             owner.AnimationController.SetMove(true);
+            slimeTimer = 0f;
         }
 
         public void OnUpdate(PlayerController owner)
@@ -70,6 +75,14 @@ namespace PlayerStates
 
             Vector2 lookDir = owner.UpdatePlayerDirectionByMouse();
             owner.AnimationController.SetLook(lookDir);
+
+            slimeTimer += Time.deltaTime;
+
+            if (slimeTimer >= consumeInterval)
+            {
+                owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
+                slimeTimer = 0f;
+            }
         }
 
         public void OnFixedUpdate(PlayerController owner)
@@ -108,14 +121,18 @@ namespace PlayerStates
     {
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
+        private const float consumeAmount = 20f;
         private float timer;
         private Vector2 dashDirection;
 
         public void OnEnter(PlayerController owner)
         {
+            if(owner.PlayerStatus.CurrentSlimeGauge<=20) return;
+            
             timer = 0f;
             owner.Rigid2D.velocity = dashDirection * dashSpeed;
             dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
+            owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
         }
 
         public void OnUpdate(PlayerController owner)

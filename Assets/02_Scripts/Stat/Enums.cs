@@ -1,4 +1,3 @@
-
 public enum StatType
 {
     // Common
@@ -30,5 +29,4 @@ public enum StatModifierType
     Buff,
     BuffPercent,
     Equipment,
-    
 }
