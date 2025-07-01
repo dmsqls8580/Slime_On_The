@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,13 +27,13 @@ namespace  Enemyststes
             // 이전 State가 AttackState인 경우, AttackCooldown만큼 IdleState 유지
             if (owner.PreviousState == EnemyState.Attack)
             {
-                idleDuration = owner.AttackCooldown;
+                idleDuration = owner.EnemyStatus.AttackCooldown;
                 isAttackCooldown = true;
             }
             // 일반적인 경우, MinMoveDelay와 MaxMoveDelay 사이 랜덤한 시간만큼 IdleState 유지
             else
             {
-                idleDuration = Random.Range(owner.MinMoveDelay, owner.MaxMoveDelay);
+                idleDuration = Random.Range(owner.EnemyStatus.MinMoveDelay, owner.EnemyStatus.MaxMoveDelay);
                 isAttackCooldown = false;
             }
             idleTimer = 0f;
@@ -53,7 +50,7 @@ namespace  Enemyststes
             if (player != null)
             {
                 float distance = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (distance <= owner.AttackRange)
+                if (distance <= owner.EnemyStatus.AttackRange)
                 {
                     owner.ChaseTarget = player;
                 }
@@ -137,7 +134,7 @@ namespace  Enemyststes
             if (player != null)
             {
                 float dist = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (dist <= owner.AttackRange)
+                if (dist <= owner.EnemyStatus.AttackRange)
                 {
                     owner.ChaseTarget = player;
                 }
@@ -182,11 +179,11 @@ namespace  Enemyststes
         // wanderRadius 내 랜덤한 위치로 이동
         private void OnMoveRandom(EnemyController owner)
         {
-            Vector2 randomCircle = Random.insideUnitCircle * owner.WanderRadius;
+            Vector2 randomCircle = Random.insideUnitCircle * owner.EnemyStatus.WanderRadius;
             Vector3 randomPos =  owner.SpawnPos + new Vector3(randomCircle.x, 0, randomCircle.y);
 
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPos, out hit, owner.WanderRadius, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPos, out hit, owner.EnemyStatus.WanderRadius, NavMesh.AllAreas))
             {
                 owner.Agent.SetDestination(hit.position);
             }
