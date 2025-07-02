@@ -21,6 +21,8 @@ public class EnemyStatus : MonoBehaviour
     {
         statManager = GetComponent<StatManager>();
         statManager.Init(enemySO);
+        EnemyTable enemyTable = TableManager.Instance.GetTable<EnemyTable>();
+        enemySO = enemyTable.GetDataByID(1);
     }
 
     // Collider 초기화 함수
@@ -49,6 +51,7 @@ public class EnemyStatus : MonoBehaviour
     public void TakeDamage(float _damage, StatModifierType _modifierType)
     {
         statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
+        Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
     }
     
 

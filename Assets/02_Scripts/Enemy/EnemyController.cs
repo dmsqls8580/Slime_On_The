@@ -11,6 +11,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public EnemyStatus EnemyStatus;
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
+
+    public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Animator Animator     { get; private set; }     // 애니메이터
 
@@ -28,7 +30,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
-    // Enemy 공격 메서드
+    // Enemy 피격 메서드
     public void TakeDamage(IAttackable attacker)
     {
         if (IsDead) return;
@@ -57,16 +59,20 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     /************************ IAttackable ***********************/
     // Todo
     // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
-    public StatBase AttackStat { get; }
+    public StatBase AttackStat => StatManager.Stats[StatType.Attack];
 
-    public IDamageable Target => ChaseTarget != null ? 
-        ChaseTarget.GetComponent<IDamageable>() : null;
+    public IDamageable Target 
+        => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
 
     public void Attack()
     {
         if (Target != null && !Target.IsDead)
         {
             Target.TakeDamage(this);
+        }
+        else
+        {
+            Debug.Log($"{Target}");
         }
     }
     
@@ -122,8 +128,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         base.Update();
         
-        Debug.Log(CurrentState);
-        
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
         // 이동 중일 때만 각도/flipX 갱신
@@ -166,13 +170,5 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         IsPlayerInAttackRange = inRange;
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        
-        if (other.TryGetComponent(out IAttackable attackable ))
-        {
-            TakeDamage(attackable);
-        }
-    }
+    
 }
