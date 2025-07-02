@@ -12,13 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f1db26876b19f419a4c8cf25dbcc50, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  EnemyIDX: E1
-  Health: 100
-  AttackDamage: 10
-  AttackCooldown: 2
-  MoveSpeed: 3
-  MaxMoveDelay: 4
-  MinMoveDelay: 6
-  WanderRadius: 6
-  SenseRange: 6
-  AttackRange: 1
+  EnemyIDX: 1
+  EnemyStats:
+  - StatType: 0
+    ModifierType: 0
+    Value: 100
+  - StatType: 1
+    ModifierType: 0
+    Value: 100
+  - StatType: 2
+    ModifierType: 0
+    Value: 10
+  - StatType: 3
+    ModifierType: 0
+    Value: 10
+  - StatType: 4
+    ModifierType: 0
+    Value: 5
+  - StatType: 9
+    ModifierType: 0
+    Value: 2
+  - StatType: 10
+    ModifierType: 0
+    Value: 4
+  - StatType: 11
+    ModifierType: 0
+    Value: 3
+  - StatType: 12
+    ModifierType: 0
+    Value: 5
+  - StatType: 13
+    ModifierType: 0
+    Value: 7
+  - StatType: 14
+    ModifierType: 0
+    Value: 0.7
