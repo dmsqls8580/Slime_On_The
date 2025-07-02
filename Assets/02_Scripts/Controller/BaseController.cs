@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public abstract class BaseController<TController, TState> : MonoBehaviour where TController : BaseController<TController, TState>
     where TState : Enum
 {
+    public StatManager StatManager { get;private set; }
     private StateMachine<TController, TState> stateMachine;
     private IState<TController, TState>[] states;
     protected TState CurrentState;
@@ -14,6 +15,7 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
 
     protected virtual void Awake()
     {
+        StatManager = GetComponent<StatManager>();
         stateMachine = new StateMachine<TController, TState>();
         Controller = (TController)this;
     }
