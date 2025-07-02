@@ -15,6 +15,10 @@ public class PlaceMode : MonoBehaviour
     private void Awake()
     {
         mainCamera = Camera.main;
+    }
+
+    private void Start()
+    {
         gameObject.SetActive(false);
     }
 
@@ -30,22 +34,27 @@ public class PlaceMode : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && previewObject.IsPlaceable())
         {
             PlaceObject();
-            ExitPlacementMode();
+            ExitPlaceMode();
         }
 
-        // ESC�� ���
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            previewObject.SetRotation();
+        }
+
+        // ESC로 취소
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            ExitPlacementMode();
+            ExitPlaceMode();
         }
     }
 
-    public void StartPlacement(PlaceableObjectInfo info)
+    public void StartPlacement(PlaceableObjectInfo _info)
     {
-        currentInfo = info;
-        previewInstance = Instantiate(info.previewPrefab);
+        currentInfo = _info;
+        previewInstance = Instantiate(_info.previewPrefab);
         previewObject = previewInstance.GetComponent<PreviewObject>();
-        previewObject.Init(info, tileManager);
+        previewObject.Init(_info, tileManager);
 
         isPlacing = true;
         gameObject.SetActive(true);
@@ -53,22 +62,39 @@ public class PlaceMode : MonoBehaviour
 
     private void PlaceObject()
     {
-        Vector3Int basePos = previewObject.GetBasePosition();
         Vector3 previewPos = previewObject.GetPreviewPosition();
+        Quaternion previewRot = previewObject.GetPreviewRotation();
 
-        GameObject placed = Instantiate(currentInfo.installablePrefab, previewPos, Quaternion.identity);
+        GameObject installedPrefab = Instantiate(currentInfo.installablePrefab, previewPos, previewRot);
 
-        for (int x = 0; x < currentInfo.size.x; x++)
+        // 90도 또는 270도일 때는 회전된 상태로 판단.
+        bool isRotated = Mathf.RoundToInt(previewRot.eulerAngles.y) % 180 != 0;
+
+        if (isRotated)
         {
-            for (int y = 0; y < currentInfo.size.y; y++)
+            CheckCanPlace(currentInfo.size.y, currentInfo.size.x, installedPrefab);
+        }
+        else
+        {
+            CheckCanPlace(currentInfo.size.x, currentInfo.size.y, installedPrefab);
+        }
+    }
+
+    private void CheckCanPlace(int _x, int _y, GameObject _installedPrefab)
+    {
+        Vector3Int basePos = previewObject.GetBasePosition();
+
+        for (int x = 0; x < _x; x++)
+        {
+            for (int y = 0; y < _y; y++)
             {
                 Vector3Int tilePos = new Vector3Int(basePos.x + x, basePos.y + y, basePos.z);
-                tileManager.SetPlacedObject(tilePos, placed);
+                tileManager.SetPlacedObject(tilePos, _installedPrefab);
             }
         }
     }
 
-    private void ExitPlacementMode()
+    private void ExitPlaceMode()
     {
         if (previewInstance != null)
             Destroy(previewInstance);

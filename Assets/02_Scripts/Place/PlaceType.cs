@@ -4,5 +4,5 @@ public enum PlaceType
     None = 0,
     Building = 1 << 0,
     Seed = 1 << 1
-    // Ãß°¡ ¹æ¹ý: name = 1 << 2
+    // ì¶”ê°€ ë°©ë²•: name = 1 << 2.
 }

@@ -2,18 +2,18 @@ using UnityEngine;
 
 public class Tile
 {
-    // ±×¸®µå »ó ÁÂÇ¥.
+    // ê·¸ë¦¬ë“œ ìƒ ì¢Œí‘œ.
     public Vector3Int gridPosition;
-    // ¼³Ä¡ °¡´É ¿©ºÎ.
+    // ì„¤ì¹˜ ê°€ëŠ¥ ì—¬ë¶€.
     public bool isPlaceable;
-    // ¾î¶² Á¾·ùÀÇ ¿ÀºêÁ§Æ®°¡ ¼³Ä¡ °¡´ÉÇÑ°¡.
+    // ì–´ë–¤ ì¢…ë¥˜ì˜ ì˜¤ë¸Œì íŠ¸ê°€ ì„¤ì¹˜ ê°€ëŠ¥í•œê°€.
     public PlaceType placeType;
-    // ¼³Ä¡µÈ ¿ÀºêÁ§Æ®.
+    // ì„¤ì¹˜ëœ ì˜¤ë¸Œì íŠ¸.
     public GameObject placedObject;
 
-    // Æ¯Á¤ Å¸ÀÔÀÌ ¼³Ä¡ °¡´ÉÇÑÁö Ã¼Å©ÇÏ´Â ÇÔ¼ö.
-    public bool CanPlace(PlaceType type)
+    // íŠ¹ì • íƒ€ì…ì´ ì„¤ì¹˜ ê°€ëŠ¥í•œì§€ ì²´í¬í•˜ëŠ” í•¨ìˆ˜.
+    public bool CanPlace(PlaceType _type)
     {
-        return isPlaceable && placeType.HasFlag(type) && placedObject == null;
+        return isPlaceable && placeType.HasFlag(_type) && placedObject == null;
     }
 }
