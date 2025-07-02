@@ -211,14 +211,5 @@ namespace PlayerStates
             throw new System.NotImplementedException();
         }
         
-        private void OnDisable()
-        {
-            Debug.LogWarning("[PlayerController] OnDisable called!");
-        }
-
-        private void OnEnable()
-        {
-            Debug.Log("[PlayerController] OnEnable called!");
-        }
     }
 }
