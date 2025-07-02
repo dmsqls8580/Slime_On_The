@@ -9,7 +9,7 @@ namespace PlayerStates
     [RequireComponent(typeof(Collider2D))]
     [RequireComponent(typeof(ForceReceiver))]
     [RequireComponent(typeof(PlayerStatus))]
-    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable
+    public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
         private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
         private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
@@ -206,6 +206,12 @@ namespace PlayerStates
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
+
+        public void TakeDamage(IAttackable _attacker)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Dead()
         {
             throw new System.NotImplementedException();

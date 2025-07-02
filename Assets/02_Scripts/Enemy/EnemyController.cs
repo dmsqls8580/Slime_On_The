@@ -11,6 +11,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public EnemyStatus EnemyStatus;
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
+
+    public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Animator Animator     { get; private set; }     // 애니메이터
 
@@ -59,8 +61,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
     public StatBase AttackStat { get; }
 
-    public IDamageable Target => ChaseTarget != null ? 
-        ChaseTarget.GetComponent<IDamageable>() : null;
+    public IDamageable Target 
+        => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
 
     public void Attack()
     {
@@ -121,8 +123,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     protected override void Update()
     {
         base.Update();
-        
-        Debug.Log(CurrentState);
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
