@@ -2,78 +2,78 @@ using UnityEngine;
 
 public class PlaceMode : MonoBehaviour
 {
-    [SerializeField] private ObjectPreview previewPrefab;
-    [SerializeField] private Camera mainCamera;
     [SerializeField] private TileManager tileManager;
 
-    private ObjectPreview preview;
-    private GameObject objectToPlacePrefab;
-    private PlaceType currentPlaceType;
+    private PlaceableObjectInfo currentInfo;
+    private GameObject previewInstance;
+    private PreviewObject previewObject;
 
-    Vector3Int lastGridPos;
-    bool lastCanPlace;
+    private Camera mainCamera;
+
+    private bool isPlacing = false;
 
     private void Awake()
     {
-        preview = Instantiate(previewPrefab);
-        preview.Hide();
-    }
-
-    public void SetBuildInfo(GameObject prefab, PlaceType type)
-    {
-        objectToPlacePrefab = prefab;
-        currentPlaceType = type;
-    }
-
-    private void OnEnable()
-    {
-        preview.Show();
-    }
-
-    private void OnDisable()
-    {
-        preview.Hide();
+        mainCamera = Camera.main;
+        gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPos = tileManager.GetGridPosition(mouseWorldPos);
-        bool canPlace = tileManager.CanPlaceAt(gridPos, currentPlaceType);
+        if (!isPlacing) return;
 
-        // 상태가 바뀌었을 때만 업데이트
-        if (canPlace != lastCanPlace || gridPos != lastGridPos)
+        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorld.z = 0;
+
+        previewObject.UpdatePreview(mouseWorld);
+
+        if (Input.GetMouseButtonDown(0) && previewObject.IsPlaceable())
         {
-            if (canPlace)
-            {
-                preview.SetPosition(gridPos);
-                preview.Show();
-            }
-            else
-            {
-                preview.Hide();
-            }
-
-            lastGridPos = gridPos;
-            lastCanPlace = canPlace;
+            PlaceObject();
+            ExitPlacementMode();
         }
 
-        if (canPlace && Input.GetMouseButtonDown(0))
-        {
-            Place(gridPos);
-            gameObject.SetActive(false);
-        }
-
+        // ESC로 취소
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            gameObject.SetActive(false);
+            ExitPlacementMode();
         }
     }
 
-    private void Place(Vector3Int gridPos)
+    public void StartPlacement(PlaceableObjectInfo info)
     {
-        Vector3 worldPos = tileManager.GetWorldPosition(gridPos);
-        GameObject obj = Instantiate(objectToPlacePrefab, worldPos, Quaternion.identity);
-        tileManager.SetPlacedObject(gridPos, obj);
+        currentInfo = info;
+        previewInstance = Instantiate(info.previewPrefab);
+        previewObject = previewInstance.GetComponent<PreviewObject>();
+        previewObject.Init(info, tileManager);
+
+        isPlacing = true;
+        gameObject.SetActive(true);
+    }
+
+    private void PlaceObject()
+    {
+        Vector3Int basePos = previewObject.GetBasePosition();
+        Vector3 previewPos = previewObject.GetPreviewPosition();
+
+        GameObject placed = Instantiate(currentInfo.installablePrefab, previewPos, Quaternion.identity);
+
+        for (int x = 0; x < currentInfo.size.x; x++)
+        {
+            for (int y = 0; y < currentInfo.size.y; y++)
+            {
+                Vector3Int tilePos = new Vector3Int(basePos.x + x, basePos.y + y, basePos.z);
+                tileManager.SetPlacedObject(tilePos, placed);
+            }
+        }
+    }
+
+    private void ExitPlacementMode()
+    {
+        if (previewInstance != null)
+            Destroy(previewInstance);
+
+        isPlacing = false;
+        gameObject.SetActive(false);
     }
 }
