@@ -23,6 +23,8 @@ public class PlayerStatus : MonoBehaviour
     public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue;
     public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue;
 
+    public float CurrentAttackDamage => statManager.GetStat<ResourceStat>(StatType.Attack).MaxValue;
+
     public float CurrentSlimeGauge => statManager.GetStat<ResourceStat>(StatType.CurrentSlimeGauge).CurrentValue;
     public float MaxSlimeGauge => statManager.GetStat<CalculateStat>(StatType.MaxSlimeGauge).FinalValue;
 
@@ -55,7 +57,13 @@ public class PlayerStatus : MonoBehaviour
         
         UpdateSlimeGaugeUI();
     }
-
+    
+    public void TakeDamage(float _damage, StatModifierType _modifierType)
+    {
+        statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
+        Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
+    }
+    
     private void UpdateSlimeGaugeUI()
     {
         if (SlimeGaugeImage == null)

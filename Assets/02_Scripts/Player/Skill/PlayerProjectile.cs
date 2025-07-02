@@ -2,15 +2,17 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PlayerProjectile : MonoBehaviour
+public class PlayerProjectile : MonoBehaviour, IAttackable
 {
     private Rigidbody2D rigid;
     
     private float speed;
-    private float damage;
+    private StatBase damage;
     private Vector3 direction;
+    private StatManager statManager;
+    public StatBase AttackStat => damage;
+    public IDamageable Target => null;
     
-    private IAttackable attacker;
     private IObjectPool<PlayerProjectile> pool;
     
     private float lifeTime = 3f;
@@ -18,6 +20,7 @@ public class PlayerProjectile : MonoBehaviour
     
     private void Awake()
     {
+        statManager= GetComponentInParent<StatManager>();
         rigid= GetComponent<Rigidbody2D>();
     }
 
@@ -26,12 +29,11 @@ public class PlayerProjectile : MonoBehaviour
         this.pool = pool;
     }
 
-    public void Init(Vector2 dir, float speed,float damage, IAttackable attacker)
+    public void Init(Vector2 dir, float speed)
     {
         direction = dir.normalized;
         this.speed = speed;
-        this.attacker = attacker;
-        this.damage = damage;
+        damage = statManager.Stats[StatType.Attack];
         
         timer = 0f;
         gameObject.SetActive(true);
@@ -51,9 +53,9 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageable>(out var target) && target != attacker)
+        if (other.TryGetComponent<IDamageable>(out var target)&& !other.CompareTag("Player"))
         {
-            target.TakeDamage(attacker);
+            target.TakeDamage(this);
             pool?.Release(this);
         }
     }
@@ -74,5 +76,6 @@ public class PlayerProjectile : MonoBehaviour
     {
         CancelInvoke();
     }
-
+    
+    public void Attack() { }
 }
