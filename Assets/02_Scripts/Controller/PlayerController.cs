@@ -59,8 +59,8 @@ namespace PlayerStates
         
         public IDamageable Target { get; private set; }
         
-        public bool IsDead { get; }
-        public Collider2D Collider { get; }
+        public bool IsDead { get; }  
+        public Collider2D Collider => GetComponent<Collider2D>(); 
 
         protected override void Awake()
         {
@@ -115,7 +115,6 @@ namespace PlayerStates
             if (Input.GetKeyDown(KeyCode.K))
             {
                 PlayerStatus.RecoverSlimeGauge(5);
-                Debug.Log($"Recover! +SlimeGauge : 5");
             }
         }
         
@@ -207,14 +206,26 @@ namespace PlayerStates
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
 
-        public void TakeDamage(IAttackable _attacker)
+        public void TakeDamage(IAttackable attacker)
         {
-            throw new System.NotImplementedException();
+            if (IsDead) return;
+            if (attacker != null)
+            {
+                // 피격
+                PlayerStatus.TakeDamage(attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+                if (PlayerStatus.CurrentHp <= 0)
+                {
+                    Dead();
+                }
+            }
         }
-
         public void Dead()
         {
-            throw new System.NotImplementedException();
+            if (PlayerStatus.CurrentHp <= 0)
+            {
+                ChangeState(PlayerState.Dead);
+            }
+        
         }
         
     }

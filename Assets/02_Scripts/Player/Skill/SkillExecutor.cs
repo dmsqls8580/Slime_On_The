@@ -12,7 +12,7 @@ public class SkillExecutor : MonoBehaviour
                     ExecuteMelee(skill, origin);
                     break;
                case PlayerSkillType.Ranged:
-                    ExecuteProjectile(skill, origin, dir, player.GetComponent<IAttackable>());
+                    ExecuteProjectile(skill, origin, dir);
                     break;
           }
      }
@@ -22,11 +22,11 @@ public class SkillExecutor : MonoBehaviour
 
      }
 
-     public void ExecuteProjectile(PlayerSkillSO skill, Vector2 origin, Vector2 dir, IAttackable attacker)
+     public void ExecuteProjectile(PlayerSkillSO skill, Vector2 origin, Vector2 dir)
      {
           float speed = skill.speed;
           float damage = skill.power;
-          ProjectilePoolManager.Instance.Spawn(origin, dir, speed, damage, attacker);
+          ProjectilePoolManager.Instance.Spawn(origin, dir, speed);
      }
 
      

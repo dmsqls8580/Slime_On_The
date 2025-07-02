@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ID: 0
   PlayerStat:
+  - StatType: 0
+    ModifierType: 0
+    Value: 30
+  - StatType: 1
+    ModifierType: 0
+    Value: 30
   - StatType: 4
     ModifierType: 0
     Value: 5
@@ -23,3 +29,6 @@ MonoBehaviour:
   - StatType: 8
     ModifierType: 0
     Value: 100
+  - StatType: 2
+    ModifierType: 0
+    Value: 20

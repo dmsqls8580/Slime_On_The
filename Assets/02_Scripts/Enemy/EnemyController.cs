@@ -59,7 +59,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     /************************ IAttackable ***********************/
     // Todo
     // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
-    public StatBase AttackStat { get; }
+    public StatBase AttackStat => StatManager.Stats[StatType.Attack];
 
     public IDamageable Target 
         => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
@@ -69,6 +69,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (Target != null && !Target.IsDead)
         {
             Target.TakeDamage(this);
+        }
+        else
+        {
+            Debug.Log($"{Target}");
         }
     }
     
