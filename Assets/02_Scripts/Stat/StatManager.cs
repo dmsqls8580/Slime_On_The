@@ -16,15 +16,13 @@ public class StatManager : MonoBehaviour
         {
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
         }
-        foreach (var stat in _statProvider.Stats)
-        {
-            Debug.Log($"[Init] StatType: {stat.StatType}, Name: {stat.StatType.ToString()}, Value: {stat.Value}");
-        }
         
-        Debug.Log("[Init] 등록된 최종 Stat 목록:");
-        foreach (var pair in Stats)
+        if (Stats.TryGetValue(StatType.MaxSlimeGauge, out var maxSlimeStat) && maxSlimeStat is CalculateStat calc)
         {
-            Debug.Log($"Stat Registered: {pair.Key} = {pair.Value.GetCurrent()}");
+            if (Stats.TryGetValue(StatType.CurrentSlimeGauge, out var curSlimeStat) && curSlimeStat is ResourceStat cur)
+            {
+                cur.SetMaxValue(calc.FinalValue);
+            }
         }
         OnStatChange?.Invoke();
     }
@@ -129,6 +127,9 @@ public class StatManager : MonoBehaviour
                 break;
             case StatType.MaxHunger:
                 SyncCurrentWithMax(StatType.CurrentHunger, stat);
+                break;
+            case StatType.MaxSlimeGauge :
+                SyncCurrentWithMax(StatType.CurrentSlimeGauge, stat);
                 break;
         }
         OnStatChange?.Invoke();
