@@ -128,6 +128,8 @@ namespace PlayerStates
         public void OnEnter(PlayerController owner)
         {
             if(owner.PlayerStatus.CurrentSlimeGauge<=20) return;
+         
+            owner.AnimationController.TriggerDash();
             
             timer = 0f;
             owner.Rigid2D.velocity = dashDirection * dashSpeed;

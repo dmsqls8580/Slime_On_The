@@ -22,6 +22,11 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetTrigger(AnimationDataSo.IsAttackTriggerHash);
     }
 
+    public void TriggerDash()
+    {
+        Animator.SetTrigger(AnimationDataSo.DashTriggerHash);
+    }
+
     public void SetLook(Vector2 _lookDir)
     {
         Animator.SetFloat(AnimationDataSo.MouseXParameterHash,Mathf.Abs(_lookDir.x));
