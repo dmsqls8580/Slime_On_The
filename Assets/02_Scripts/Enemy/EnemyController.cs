@@ -28,7 +28,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
-    // Enemy 공격 메서드
+    // Enemy 피격 메서드
     public void TakeDamage(IAttackable attacker)
     {
         if (IsDead) return;
@@ -166,13 +166,5 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         IsPlayerInAttackRange = inRange;
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        
-        if (other.TryGetComponent(out IAttackable attackable ))
-        {
-            TakeDamage(attackable);
-        }
-    }
+    
 }
