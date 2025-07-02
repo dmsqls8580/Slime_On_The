@@ -2,6 +2,6 @@ using UnityEngine;
 
 public class ExampleIPlaceable : MonoBehaviour, IPlaceable
 {
-    [SerializeField] private PlaceableData placeableData;
-    public PlaceableData PlaceableData => placeableData;
+    [SerializeField] private PlaceableInfo placeableInfo;
+    public PlaceableInfo PlaceableInfo => placeableInfo;
 }

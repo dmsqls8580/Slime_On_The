@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class PlaceableData : ScriptableObject
+[CreateAssetMenu(menuName = "Placeable/Info")]
+public class PlaceableInfo : ScriptableObject
 {
     public GameObject normalPrefab;
     public GameObject previewPrefab;
