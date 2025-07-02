@@ -21,6 +21,8 @@ public class EnemyStatus : MonoBehaviour
     {
         statManager = GetComponent<StatManager>();
         statManager.Init(enemySO);
+        EnemyTable enemyTable = TableManager.Instance.GetTable<EnemyTable>();
+        enemySO = enemyTable.GetDataByID(1);
     }
 
     // Collider 초기화 함수
