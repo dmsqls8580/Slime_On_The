@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 
-
 namespace PlayerStates
 {
     public enum PlayerState
@@ -74,7 +73,7 @@ namespace PlayerStates
             owner.Movement();
 
             Vector2 lookDir = owner.UpdatePlayerDirectionByMouse();
-            owner.AnimationController.SetLook(lookDir);
+            owner.AnimationController.UpdateAnimatorParameters(lookDir);
 
             slimeTimer += Time.deltaTime;
 
@@ -192,6 +191,8 @@ namespace PlayerStates
             owner.AnimationController.TriggerAttack();
 
             owner.SkillExecutor.Executor(skill, owner.AttackPivot.gameObject, attackDir);
+
+            owner.SetAttackCoolDown(skill.cooldown);
         }
 
         public void OnUpdate(PlayerController owner)
@@ -199,7 +200,7 @@ namespace PlayerStates
             owner.Movement();
 
             timer += Time.deltaTime;
-            if (timer >= skill.cooldown)
+            if (timer >= skill.actionDuration)
             {
                 _attackDone = true;
             }
@@ -211,7 +212,7 @@ namespace PlayerStates
 
         public void OnExit(PlayerController entity)
         {
-            entity.StartCoroutine(ResetCoolDown(entity));
+            _attackDone = true;
         }
 
         public PlayerState CheckTransition(PlayerController owner)
@@ -223,12 +224,7 @@ namespace PlayerStates
 
             return PlayerState.Attack0;
         }
-
-        private IEnumerator ResetCoolDown(PlayerController owner)
-        {
-            yield return new WaitForSeconds(skill.cooldown);
-            owner.EnableAttack();
-        }
+        
     }
 
     public class Attack1State : IState<PlayerController, PlayerState>
