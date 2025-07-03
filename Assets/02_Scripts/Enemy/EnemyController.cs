@@ -59,8 +59,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     
     /************************ IAttackable ***********************/
-    // Todo
-    // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
     public StatBase AttackStat => StatManager.Stats[StatType.Attack];
 
     public IDamageable Target 
@@ -68,16 +66,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (Target != null && !Target.IsDead)
+        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
         {
-            Target.TakeDamage(this);
+            if (Target != null && !Target.IsDead)
+            {
+                Target.TakeDamage(this);
+            }
         }
+        else if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Ranged)
+        {
+            // 원거리: 투사체 발사
+            ShootProjectile();
+        }
+        
     }
     
     /************************ IPoolObject ***********************/
     public GameObject GameObject => this.gameObject;
     public string PoolID => EnemyStatus.enemySO != null
-        ? EnemyStatus.enemySO.EnemyIDX.ToString() : "Invalid";
+        ? EnemyStatus.enemySO.EnemyID.ToString() : "Invalid";
     public int PoolSize { get; } = 10;
     
     public void OnSpawnFromPool()
@@ -180,9 +187,22 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
-    public void SetPlayerInAttackRange(bool inRange)
+    public void SetPlayerInAttackRange(bool _inRange)
     {
-        IsPlayerInAttackRange = inRange;
+        IsPlayerInAttackRange = _inRange;
+    }
+
+    private void ShootProjectile()
+    {
+        string projectileID = EnemyStatus.enemySO.projectileID;
+        GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
+
+        if (projectileObject.TryGetComponent<EnemyProjectile>(out var projectile))
+        {
+            projectile.transform.position = transform.position;
+            projectile.Init(this, AttackTarget, AttackStat, 5f);
+            // Todo : Projectile 속도 스탯 추가하기
+        }
     }
     
 }
