@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Flags]
@@ -43,23 +44,26 @@ public enum EquipableType
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
 public class ItemSO : ScriptableObject
 {
-    [Header("±âº» Á¤º¸")]
+    [Header("ê¸°ë³¸ ì •ë³´")]
     public string idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;
 
-    [Header("°øÅë")]
-    public ItemType itemTypes; // ´ÙÁß Å¸ÀÔ °¡´É
+    [Header("ê³µí†µ")]
+    public ItemType itemTypes; // ë‹¤ì¤‘ íƒ€ì… ê°€ëŠ¥
     public bool stackable;
     public int maxStack;
 
-    [Header("Å¸ÀÔº° µ¥ÀÌÅÍ")]
+    [Header("íƒ€ì…ë³„ ë°ì´í„°")]
     public MaterialData materialData;
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
     public PlaceableData placeableData;
+
+    [Header("ë ˆì‹œí”¼")]
+    public List<RecipeIngredient> recipe;
 }
 
 [System.Serializable]
@@ -104,4 +108,11 @@ public class EatableData
 public class PlaceableData
 {
     public PlaceableType placeableType;
+}
+
+[System.Serializable]
+public class RecipeIngredient
+{
+    public ItemSO item;
+    public int amount;
 }
