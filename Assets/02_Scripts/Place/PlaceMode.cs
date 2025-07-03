@@ -22,10 +22,10 @@ public class PlaceMode : MonoBehaviour
 
     private void Place()
     {
-        Vector3 placePosition = previewPrefabInstance.transform.position;
-        Instantiate(normalPrefab, placePosition, Quaternion.identity);
+        Instantiate(normalPrefab, previewPrefabInstance.transform.position, Quaternion.identity);
     }
 
+    // 아이템 사용 시 호출 필요.
     // UIQuickSlot에 PlaceMode.cs 참조시키고 placeMode.SetActiveTruePlaceMode(아이템정보);.
     public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo)
     {
@@ -42,6 +42,7 @@ public class PlaceMode : MonoBehaviour
         objectPreview.Initialize(tilemap);
     }
 
+    // 아이템 사용 끝나면 호출 필요.
     public void SetActiveFalsePlaceMode()
     {
         if (previewPrefabInstance != null)

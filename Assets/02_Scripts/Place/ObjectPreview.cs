@@ -19,13 +19,13 @@ public class ObjectPreview : MonoBehaviour
 
     public void UpdatePreview()
     {
-        UpdatePosition();
+        PreviewPosition();
         CheckCanPlace();
-        UpdateColor();
+        PreviewColor();
     }
 
     // 프리뷰가 마우스 따라다니게 하기.
-    private void UpdatePosition()
+    private void PreviewPosition()
     {
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0f;
@@ -33,25 +33,25 @@ public class ObjectPreview : MonoBehaviour
         Vector3Int cellPosition = tilemap.WorldToCell(mouseWorldPos);
         Vector3 cellCenterWorld = tilemap.GetCellCenterWorld(cellPosition);
 
-        transform.position = new Vector3(cellCenterWorld.x, cellCenterWorld.y, 0f);
+        transform.position = new Vector3(cellCenterWorld.x, cellCenterWorld.y - 0.5f, 0f);
     }
 
     // 설치 가능한지 불가능한지 판단.
     private void CheckCanPlace()
     {
-        // 겹치는 다른 Collider가 있는지 확인
         ContactFilter2D filter = new ContactFilter2D();
-        filter.NoFilter();
+        filter.useTriggers = false;
+        filter.SetLayerMask(Physics2D.DefaultRaycastLayers);
 
         Collider2D[] results = new Collider2D[5];
         int count = previewCollider.OverlapCollider(filter, results);
 
-        // 자기 자신 외에 뭔가가 있으면 설치 불가
         canPlace = count == 0;
     }
 
+
     // 판단에 맞춰 색 바꾸기.
-    private void UpdateColor()
+    private void PreviewColor()
     {
         if (previewSpriteRenderer != null)
         {
