@@ -18,7 +18,7 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
     {
         poolObjectList.Clear();
         string[] guids =
-            UnityEditor.AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/3. Prefabs/Pool" });
+            UnityEditor.AssetDatabase.FindAssets("t:GameObject", new[] { "Assets/03_Prefabs/Pool" });
 
         foreach (string guid in guids)
         {
@@ -55,6 +55,11 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         {
             CreatePool(pool, pool.PoolSize);
         }
+    }
+
+    private void Start()
+    {
+        PrintPoolIDs();
     }
 
     /// <summary>
@@ -167,5 +172,30 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         parentCache.Remove(poolId);
         poolObjects.Remove(poolId);
         registeredObj.Remove(poolId);
+    }
+    
+    public bool HasPool(string poolId)
+    {
+        return poolObjects.ContainsKey(poolId);
+    }
+    
+    public void PrintPoolIDs()
+    {
+        foreach (var prefab in poolObjectList)
+        {
+            if (prefab == null)
+            {
+                Debug.LogWarning("poolObjectList에 null 프리팹이 있습니다.");
+                continue;
+            }
+            if (prefab.TryGetComponent<IPoolObject>(out var poolObject))
+            {
+                Debug.Log($"Prefab: {prefab.name}, PoolID: {poolObject.PoolID}");
+            }
+            else
+            {
+                Debug.LogWarning($"Prefab {prefab.name} does not implement IPoolObject");
+            }
+        }
     }
 }
