@@ -20,7 +20,7 @@ public class TableManager : Singleton<TableManager>
             {
                 table.AutoAssignDatas();
                 table.CreateTable();
-                Type keyType = tableObj.GetType(); // keyType = playerTable
+                Type keyType = tableObj.GetType(); 
                 tableDic[keyType] = table;
             }
         }
