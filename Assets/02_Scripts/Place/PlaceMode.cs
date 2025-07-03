@@ -1,79 +1,52 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlaceMode : MonoBehaviour
 {
-    [SerializeField] private TileManager tileManager;
+    [SerializeField] private Tilemap tilemap;
 
-    private PlaceableObjectInfo currentInfo;
-    private GameObject previewInstance;
-    private PreviewObject previewObject;
-
-    private Camera mainCamera;
-
-    private bool isPlacing = false;
-
-    private void Awake()
-    {
-        mainCamera = Camera.main;
-        gameObject.SetActive(false);
-    }
+    private GameObject normalPrefab;
+    private GameObject previewPrefab;
+    private GameObject previewPrefabInstance;
+    private ObjectPreview objectPreview;
 
     private void Update()
     {
-        if (!isPlacing) return;
+        objectPreview.UpdatePreview();
 
-        Vector3 mouseWorld = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorld.z = 0;
-
-        previewObject.UpdatePreview(mouseWorld);
-
-        if (Input.GetMouseButtonDown(0) && previewObject.IsPlaceable())
+        if (Input.GetKeyDown(KeyCode.B) && objectPreview.CanPlace)
         {
-            PlaceObject();
-            ExitPlacementMode();
-        }
-
-        // ESC�� ���
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ExitPlacementMode();
+            Place();
         }
     }
 
-    public void StartPlacement(PlaceableObjectInfo info)
+    private void Place()
     {
-        currentInfo = info;
-        previewInstance = Instantiate(info.previewPrefab);
-        previewObject = previewInstance.GetComponent<PreviewObject>();
-        previewObject.Init(info, tileManager);
+        Instantiate(normalPrefab, previewPrefabInstance.transform.position, Quaternion.identity);
+    }
 
-        isPlacing = true;
+    // 아이템 사용 시 호출 필요.
+    // UIQuickSlot에 PlaceMode.cs 참조시키고 placeMode.SetActiveTruePlaceMode(아이템정보);.
+    public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo)
+    {
+        Initialize(_placeableInfo);
         gameObject.SetActive(true);
     }
 
-    private void PlaceObject()
+    private void Initialize(PlaceableInfo _placeableInfo)
     {
-        Vector3Int basePos = previewObject.GetBasePosition();
-        Vector3 previewPos = previewObject.GetPreviewPosition();
-
-        GameObject placed = Instantiate(currentInfo.installablePrefab, previewPos, Quaternion.identity);
-
-        for (int x = 0; x < currentInfo.size.x; x++)
-        {
-            for (int y = 0; y < currentInfo.size.y; y++)
-            {
-                Vector3Int tilePos = new Vector3Int(basePos.x + x, basePos.y + y, basePos.z);
-                tileManager.SetPlacedObject(tilePos, placed);
-            }
-        }
+        normalPrefab = _placeableInfo.normalPrefab;
+        previewPrefab = _placeableInfo.previewPrefab;
+        previewPrefabInstance = Instantiate(previewPrefab);
+        objectPreview = previewPrefabInstance.GetComponent<ObjectPreview>();
+        objectPreview.Initialize(tilemap);
     }
 
-    private void ExitPlacementMode()
+    // 아이템 사용 끝나면 호출 필요.
+    public void SetActiveFalsePlaceMode()
     {
-        if (previewInstance != null)
-            Destroy(previewInstance);
-
-        isPlacing = false;
+        if (previewPrefabInstance != null)
+            Destroy(previewPrefabInstance);
         gameObject.SetActive(false);
     }
 }

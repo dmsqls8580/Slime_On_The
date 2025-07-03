@@ -11,9 +11,9 @@ public class InteractionSelector : MonoBehaviour
     //TODO.
     //private Item currentQuickSlotItem;
 
-    // F Å° Àü¿ë.
+    // F í‚¤ ì „ìš©.
     private Collider2D fInteractable;
-    // Space bar Å° Àü¿ë.
+    // Space bar í‚¤ ì „ìš©.
     private Collider2D spaceInteractable;
     public Collider2D FInteractable => fInteractable;
     public Collider2D SpaceInteractable => spaceInteractable;
@@ -46,8 +46,8 @@ public class InteractionSelector : MonoBehaviour
         }
 
         // TODO.
-        // ¹æ¹ı1: HashSet¸»°í List·Î ¾²±â(Á¤·Ä Áö¿ø ¾ÈÇÔ).
-        // ¹æ¹ı2: HashSetÀ» List·Î º¯È¯ ÈÄ Á¤·ÄÇÏ±â.
+        // ë°©ë²•1: HashSetë§ê³  Listë¡œ ì“°ê¸°(ì •ë ¬ ì§€ì› ì•ˆí•¨).
+        // ë°©ë²•2: HashSetì„ Listë¡œ ë³€í™˜ í›„ ì •ë ¬í•˜ê¸°.
         var sorted = interactables.OrderBy(collider =>
             Vector2.Distance(transform.position, collider.transform.position));
 
@@ -65,7 +65,7 @@ public class InteractionSelector : MonoBehaviour
                     newFInteractable = collider;
                     newSpaceInteractable = collider;
 
-                    // ºôµùÀº "F", "Space bar" µÑ ´Ù ÇÒ´ç.
+                    // ë¹Œë”©ì€ "F", "Space bar" ë‘˜ ë‹¤ í• ë‹¹.
                     break;
                 }
             }
@@ -76,7 +76,7 @@ public class InteractionSelector : MonoBehaviour
                     newFInteractable = collider;
                     if (newSpaceInteractable != null)
                     {
-                        // µÑ ´Ù Ã£¾ÒÀ¸¸é Á¾·á.
+                        // ë‘˜ ë‹¤ ì°¾ì•˜ìœ¼ë©´ ì¢…ë£Œ.
                         break;
                     }
                 }
@@ -88,22 +88,22 @@ public class InteractionSelector : MonoBehaviour
                     newSpaceInteractable = collider;
                     if (newFInteractable != null)
                     {
-                        // µÑ ´Ù Ã£¾ÒÀ¸¸é Á¾·á.
+                        // ë‘˜ ë‹¤ ì°¾ì•˜ìœ¼ë©´ ì¢…ë£Œ.
                         break;
                     }
                 }
             }
             else
             {
-                Debug.Log("ColliderÀÇ Layer ¿À·ù ÀÔ´Ï´Ù.");
+                Debug.Log("Colliderì˜ Layer ì˜¤ë¥˜ ì…ë‹ˆë‹¤.");
             }
         }
 
-        // º¯°æµÈ °æ¿ì¿¡¸¸ ÇÒ´ç.
+        // ë³€ê²½ëœ ê²½ìš°ì—ë§Œ í• ë‹¹.
         if (newFInteractable != fInteractable || newSpaceInteractable != spaceInteractable)
         {
             // TODO.
-            // UI °»½Å.
+            // UI ê°±ì‹ .
             fInteractable = newFInteractable;
             spaceInteractable = newSpaceInteractable;
         }

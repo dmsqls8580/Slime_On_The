@@ -1,4 +1,4 @@
 public interface IInteractable
 {
-    void Interact(InteractionCommandType type);
+    public void Interact(InteractionCommandType type);
 }
