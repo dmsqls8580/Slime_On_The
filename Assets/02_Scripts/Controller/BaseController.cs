@@ -8,8 +8,8 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
     where TState : Enum
 {
     public StatManager StatManager { get;private set; }
-    private StateMachine<TController, TState> stateMachine;
-    private IState<TController, TState>[] states;
+    protected StateMachine<TController, TState> stateMachine;
+    protected IState<TController, TState>[] states;
     protected TState CurrentState;
     public TController Controller { get; private set; }
 
@@ -35,7 +35,7 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
         stateMachine?.FixedUpdate();
     }
 
-    private void SetupState()
+    protected void SetupState()
     {
         Array values = Enum.GetValues(typeof(TState));
         states = new IState<TController, TState>[values.Length];

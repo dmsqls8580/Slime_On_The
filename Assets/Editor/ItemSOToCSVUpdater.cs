@@ -6,27 +6,32 @@ using System.Collections.Generic;
 
 public static class ItemSOToCSVUpdater
 {
-    static string csvPath = "Assets/11_Data/CSV/ItemData_fix.csv"; // °æ·Î ¼öÁ¤ °¡´É
+    static string itemCsvPath = "Assets/11_Data/CSV/ItemData_fix.csv";
+    static string recipeCsvPath = "Assets/11_Data/CSV/RecipeData.csv";
 
     public static void UpdateCSV(ItemSO item)
     {
-        if (!File.Exists(csvPath))
+        UpdateItemCSV(item);
+        UpdateRecipeCSV(item);
+        AssetDatabase.Refresh();
+    }
+
+    static void UpdateItemCSV(ItemSO item)
+    {
+        if (!File.Exists(itemCsvPath))
         {
-            Debug.LogError("[CSV] ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù: " + csvPath);
+            Debug.LogError("[ItemCSV] íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤: " + itemCsvPath);
             return;
         }
 
-        var lines = new List<string>(File.ReadAllLines(csvPath));
-
+        var lines = new List<string>(File.ReadAllLines(itemCsvPath));
         if (lines.Count < 1) return;
 
-        // Çì´õ¿¡¼­ ÄÃ·³ ÀÎµ¦½º ¸ÅÇÎ
         var header = lines[0].Split(',');
         Dictionary<string, int> colMap = new();
         for (int i = 0; i < header.Length; i++)
             colMap[header[i].Trim()] = i;
 
-        // ÇØ´ç item.idx¿¡ ÇØ´çÇÏ´Â Çà Ã£±â
         for (int i = 1; i < lines.Count; i++)
         {
             var cols = lines[i].Split(',');
@@ -34,21 +39,19 @@ public static class ItemSOToCSVUpdater
 
             if (cols[colMap["idx"]].Trim() == item.idx)
             {
-                // ±âÁ¸ µ¥ÀÌÅÍ¸¦ ¼öÁ¤
                 cols[colMap["itemName"]] = item.itemName;
                 cols[colMap["description"]] = item.description.Replace(",", " ");
                 cols[colMap["ItemTypes"]] = item.itemTypes.ToString().Replace(", ", "|");
                 cols[colMap["stackable"]] = item.stackable ? "y" : "n";
                 cols[colMap["maxStack"]] = item.maxStack.ToString();
 
-                // ÇÊ¿ä ½Ã ToolData, EquipableData µîµµ Ãß°¡ ¹İ¿µ
                 if (item.itemTypes.HasFlag(ItemType.Tool) && item.toolData != null)
                 {
                     if (colMap.TryGetValue("toolType", out int idx)) cols[idx] = item.toolData.toolType.ToString();
-                    if (colMap.TryGetValue("getAmount", out idx)) cols[idx] = item.toolData.getAmount.ToString();
+                    if (colMap.TryGetValue("power", out idx)) cols[idx] = item.toolData.power.ToString();
                     if (colMap.TryGetValue("luck", out idx)) cols[idx] = item.toolData.luck.ToString();
                     if (colMap.TryGetValue("durability", out idx)) cols[idx] = item.toolData.durability.ToString();
-                    if (colMap.TryGetValue("atkSpd", out idx)) cols[idx] = item.toolData.atkSpd.ToString();
+                    if (colMap.TryGetValue("actSpd", out idx)) cols[idx] = item.toolData.actSpd.ToString();
                 }
 
                 if (item.itemTypes.HasFlag(ItemType.Equipable) && item.equipableData != null)
@@ -70,16 +73,64 @@ public static class ItemSOToCSVUpdater
                     if (colMap.TryGetValue("eatableRottable", out idx)) cols[idx] = item.eatableData.rottenable ? "y" : "n";
                 }
 
-                // ¼öÁ¤ÇÑ lineÀ¸·Î ´Ù½Ã ÇÕÄ¡±â
                 lines[i] = string.Join(",", cols);
                 break;
             }
         }
 
-        // ´Ù½Ã ¾²±â
-        File.WriteAllLines(csvPath, lines);
-        AssetDatabase.Refresh();
-        Debug.Log($"[CSV] {item.itemName} ¼öÁ¤ ¹İ¿µ ¿Ï·á");
+        File.WriteAllLines(itemCsvPath, lines);
+        Debug.Log($"[ItemCSV] {item.itemName} ìˆ˜ì • ë°˜ì˜ ì™„ë£Œ");
+    }
+
+    static void UpdateRecipeCSV(ItemSO item)
+    {
+        if (item.recipe == null || item.recipe.Count == 0) return;
+
+        var lines = new List<string>();
+        if (File.Exists(recipeCsvPath))
+        {
+            lines.AddRange(File.ReadAllLines(recipeCsvPath));
+        }
+        else
+        {
+            lines.Add("resultIdx,ingredientIdx,amount");
+        }
+
+        string header = lines[0];
+        List<string> newLines = new() { header };
+
+        // ê¸°ì¡´ ì¤„ ì¤‘ í˜„ì¬ item.idxì— í•´ë‹¹í•˜ì§€ ì•ŠëŠ” ì¤„ë§Œ ìœ ì§€
+        // ë™ì‹œì— ê¸°ì¡´ item.idx ì¤„ì˜ ì²« ë“±ì¥ ìœ„ì¹˜ ì €ì¥
+        int insertIndex = lines.Count;
+        for (int i = 1; i < lines.Count; i++)
+        {
+            var line = lines[i];
+            var cols = line.Split(',');
+            if (cols.Length < 3) continue;
+
+            if (cols[0].Trim() == item.idx)
+            {
+                if (insertIndex == lines.Count)
+                    insertIndex = newLines.Count; // ì‚½ì… ìœ„ì¹˜ ê¸°ë¡ (ì²« ë“±ì¥ ìœ„ì¹˜)
+                continue; // í•´ë‹¹ ì¤„ ì œê±°
+            }
+
+            newLines.Add(line); // ìœ ì§€
+        }
+
+        // ìƒˆ ë ˆì‹œí”¼ ì¤„ ìƒì„±
+        List<string> recipeLines = new();
+        foreach (var ri in item.recipe)
+        {
+            if (ri.item == null) continue;
+            recipeLines.Add($"{item.idx},{ri.item.idx},{ri.amount}");
+        }
+
+        // ê¸°ì¡´ ìœ„ì¹˜ì— ì‚½ì…
+        newLines.InsertRange(insertIndex, recipeLines);
+
+        File.WriteAllLines(recipeCsvPath, newLines);
+        Debug.Log($"[RecipeCSV] {item.itemName} ë ˆì‹œí”¼ ìˆ˜ì • ë°˜ì˜ ì™„ë£Œ");
     }
 }
 #endif

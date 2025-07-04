@@ -443,7 +443,7 @@ Transform:
   m_GameObject: {fileID: 6373590842337004968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.18, y: 1.3, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -466,8 +466,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senseRangeCollider: {fileID: 6824061687856358438}
   attackRangeCollider: {fileID: 1078012481541658735}
-  EnemyStatus: {fileID: 0}
+  EnemyStatus: {fileID: 6926221800851955302}
   ChaseTarget: {fileID: 0}
+  AttackTarget: {fileID: 0}
 --- !u!114 &6926221800851955302
 MonoBehaviour:
   m_ObjectHideFlags: 0

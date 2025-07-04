@@ -41,8 +41,8 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
 
     private void FixedUpdate()
     {
-        rigid.velocity = direction * speed;
-
+         rigid.velocity = direction * speed;
+        
         timer += Time.deltaTime;
         if (timer >= lifeTime)
         {

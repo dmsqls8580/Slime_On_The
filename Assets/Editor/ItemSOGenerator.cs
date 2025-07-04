@@ -5,7 +5,11 @@ using System.Collections.Generic;
 
 public class ItemSOGenerator : EditorWindow
 {
-    TextAsset csvFile;
+    TextAsset itemCsvFile;
+    TextAsset recipeCsvFile;
+
+    // idxë¥¼ í‚¤ë¡œ, ì¬ë£Œë“¤ì˜ ë¦¬ìŠ¤íŠ¸ë¥¼ ê°’ìœ¼ë¡œ í•˜ëŠ” ë§µ
+    Dictionary<string, List<(string ingredientIdx, int amount)>> recipeMap;
 
     [MenuItem("Tools/Item SO Generator")]
     public static void ShowWindow()
@@ -16,23 +20,55 @@ public class ItemSOGenerator : EditorWindow
     void OnGUI()
     {
         GUILayout.Label("CSV to ScriptableObject Generator", EditorStyles.boldLabel);
-        csvFile = (TextAsset)EditorGUILayout.ObjectField("CSV File", csvFile, typeof(TextAsset), false);
+        itemCsvFile = (TextAsset)EditorGUILayout.ObjectField("Item CSV File", itemCsvFile, typeof(TextAsset), false);
+        recipeCsvFile = (TextAsset)EditorGUILayout.ObjectField("Recipe CSV File", recipeCsvFile, typeof(TextAsset), false);
 
-        if (GUILayout.Button("Generate SOs") && csvFile != null)
+        if (GUILayout.Button("Generate SOs") && itemCsvFile != null)
         {
+            LoadRecipeData();
             GenerateItemSOs();
+        }
+    }
+
+    void LoadRecipeData()
+    {
+        recipeMap = new();
+
+        if (recipeCsvFile == null)
+        {
+            Debug.LogWarning("Recipe CSV íŒŒì¼ì´ ì§€ì •ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+            return;
+        }
+
+        string[] lines = recipeCsvFile.text.Split('\n');
+        for (int i = 1; i < lines.Length; i++)
+        {
+            string line = lines[i].Trim();
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
+            string[] cols = line.Split(',');
+            if (cols.Length < 3) continue;
+
+            string resultIdx = cols[0].Trim();
+            string ingredientIdx = cols[1].Trim();
+            int.TryParse(cols[2].Trim(), out int amount);
+
+            if (!recipeMap.ContainsKey(resultIdx))
+                recipeMap[resultIdx] = new();
+
+            recipeMap[resultIdx].Add((ingredientIdx, amount));
         }
     }
 
     void GenerateItemSOs()
     {
-        string[] lines = csvFile.text.Split('\n');
+        string[] lines = itemCsvFile.text.Split('\n');
         if (lines.Length < 2) return;
 
         string outputPath = "Assets/08_ScriptableObjects/Items/";
         if (!Directory.Exists(outputPath)) Directory.CreateDirectory(outputPath);
 
-        // Çì´õ ÀĞ±â
+        // í—¤ë” ë§¤í•‘
         string[] headers = lines[0].Trim().Split(',');
         Dictionary<string, int> columnIndex = new();
         for (int h = 0; h < headers.Length; h++)
@@ -46,32 +82,29 @@ public class ItemSOGenerator : EditorWindow
             if (string.IsNullOrWhiteSpace(line)) continue;
 
             string[] cols = line.Split(',');
-
-            // ÃÖ¼Ò µ¥ÀÌÅÍ °ËÁõ
             if (cols.Length < 5 || string.IsNullOrWhiteSpace(cols[columnIndex["itemName"]])) continue;
 
             ItemSO asset = ScriptableObject.CreateInstance<ItemSO>();
 
-            // ±âº» Á¤º¸
-            asset.idx = cols[columnIndex["idx"]];
-            asset.itemName = cols[columnIndex["itemName"]];
-            asset.description = cols[columnIndex["description"]];
-            asset.itemTypes = ParseItemTypes(cols[columnIndex["ItemTypes"]]);
-            asset.stackable = cols[columnIndex["stackable"]].Trim().ToLower() == "y";
-            int.TryParse(cols[columnIndex["maxStack"]], out asset.maxStack);
+            asset.idx = GetSafe(cols, columnIndex, "idx");
+            asset.itemName = GetSafe(cols, columnIndex, "itemName");
+            asset.description = GetSafe(cols, columnIndex, "description");
+            asset.itemTypes = ParseItemTypes(GetSafe(cols, columnIndex, "ItemTypes"));
+            asset.stackable = GetSafe(cols, columnIndex, "stackable").ToLower() == "y";
+            int.TryParse(GetSafe(cols, columnIndex, "maxStack"), out asset.maxStack);
 
-            // === ToolData ===
+            // === Tool ===
             if (asset.itemTypes.HasFlag(ItemType.Tool))
             {
                 asset.toolData = new ToolData();
                 asset.toolData.toolType = ParseToolType(GetSafe(cols, columnIndex, "toolType"));
-                TryParseFloat(cols, columnIndex, "getAmount", out asset.toolData.getAmount);
+                TryParseFloat(cols, columnIndex, "power", out asset.toolData.power);
                 TryParseFloat(cols, columnIndex, "luck", out asset.toolData.luck);
                 TryParseFloat(cols, columnIndex, "durability", out asset.toolData.durability);
-                TryParseFloat(cols, columnIndex, "atkSpd", out asset.toolData.atkSpd);
+                TryParseFloat(cols, columnIndex, "actSpd", out asset.toolData.actSpd);
             }
 
-            // === EquipableData ===
+            // === Equipable ===
             if (asset.itemTypes.HasFlag(ItemType.Equipable))
             {
                 asset.equipableData = new EquipableData();
@@ -83,7 +116,7 @@ public class ItemSOGenerator : EditorWindow
                 TryParseFloat(cols, columnIndex, "crt", out asset.equipableData.crt);
             }
 
-            // === EatableData ===
+            // === Eatable ===
             if (asset.itemTypes.HasFlag(ItemType.Eatable))
             {
                 asset.eatableData = new EatableData();
@@ -95,63 +128,79 @@ public class ItemSOGenerator : EditorWindow
                 asset.eatableData.rottenable = GetSafe(cols, columnIndex, "eatableRottable").ToLower() == "y";
             }
 
+            // === Recipe ì—°ê²° ===
+            if (recipeMap.TryGetValue(asset.idx, out var recipes))
+            {
+                asset.recipe = new List<RecipeIngredient>();
+
+                foreach (var (ingredientIdx, amount) in recipes)
+                {
+                    string[] guids = AssetDatabase.FindAssets("t:ItemSO", new[] { "Assets/08_ScriptableObjects/Items" });
+                    bool found = false;
+
+                    foreach (string guid in guids)
+                    {
+                        string path = AssetDatabase.GUIDToAssetPath(guid);
+                        ItemSO so = AssetDatabase.LoadAssetAtPath<ItemSO>(path);
+                        if (so != null && so.idx == ingredientIdx)
+                        {
+                            asset.recipe.Add(new RecipeIngredient { item = so, amount = amount });
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (!found)
+                    {
+                        Debug.LogWarning($"[Recipe] ì¬ë£Œ idx={ingredientIdx} ë¥¼ ê°€ì§„ ItemSOë¥¼ ì°¾ì§€ ëª»í–ˆìŠµë‹ˆë‹¤.");
+                    }
+                }
+            }
+
+            // === ì €ì¥ ===
             string assetPath = $"{outputPath}{asset.itemName}.asset";
             AssetDatabase.CreateAsset(asset, assetPath);
         }
 
         AssetDatabase.SaveAssets();
         AssetDatabase.Refresh();
-        Debug.Log("¾ÆÀÌÅÛ SO ÀÚµ¿ »ı¼º ¿Ï·á!");
+        Debug.Log("ì•„ì´í…œ SO ìë™ ìƒì„± ì™„ë£Œ!");
     }
 
-    // Helper: Enum ÆÄ½Ì (º¹¼ö Å¸ÀÔ Áö¿ø)
+    // enum ë‹¤ì¤‘ íŒŒì‹± (Material|Eatable ë“±)
     ItemType ParseItemTypes(string input)
     {
         ItemType result = ItemType.None;
         if (string.IsNullOrWhiteSpace(input)) return result;
-
         string[] tokens = input.Split('|');
         foreach (string token in tokens)
         {
             if (System.Enum.TryParse<ItemType>(token.Trim(), true, out var parsed))
-            {
                 result |= parsed;
-            }
             else
-            {
-                Debug.LogWarning($"[ItemType ÆÄ½Ì ½ÇÆĞ] '{token}'");
-            }
+                Debug.LogWarning($"[ItemType íŒŒì‹± ì‹¤íŒ¨] '{token}'");
         }
         return result;
     }
 
-    // Helper: ¾ÈÀüÇÏ°Ô ÄÃ·³ °¡Á®¿À±â
+    ToolType ParseToolType(string input)
+    {
+        return System.Enum.TryParse(input, true, out ToolType result) ? result : ToolType.None;
+    }
+
+    EquipableType ParseEquipableType(string input)
+    {
+        return System.Enum.TryParse(input, true, out EquipableType result) ? result : EquipableType.Armor;
+    }
+
     string GetSafe(string[] cols, Dictionary<string, int> map, string key)
     {
         return map.ContainsKey(key) && map[key] < cols.Length ? cols[map[key]].Trim() : "";
     }
 
-    // Helper: float ÆÄ½Ì
     bool TryParseFloat(string[] cols, Dictionary<string, int> map, string key, out float value)
     {
         value = 0f;
-        if (!map.ContainsKey(key) || map[key] >= cols.Length) return false;
-        return float.TryParse(cols[map[key]], out value);
-    }
-
-    ToolType ParseToolType(string input)
-    {
-        if (System.Enum.TryParse(input, true, out ToolType type))
-            return type;
-        Debug.LogWarning($"[ToolType ÆÄ½Ì ½ÇÆĞ] '{input}'");
-        return ToolType.None;
-    }
-
-    EquipableType ParseEquipableType(string input)
-    {
-        if (System.Enum.TryParse(input, true, out EquipableType type))
-            return type;
-        Debug.LogWarning($"[EquipableType ÆÄ½Ì ½ÇÆĞ] '{input}'");
-        return EquipableType.Armor;
+        return map.ContainsKey(key) && map[key] < cols.Length && float.TryParse(cols[map[key]], out value);
     }
 }

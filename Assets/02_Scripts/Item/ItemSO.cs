@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Flags]
@@ -10,14 +11,6 @@ public enum ItemType
     Eatable = 1 << 3,
     Placeable = 1 << 4,
     BuffItem = 1 << 5
-}
-
-public enum PlaceableType
-{
-    None,
-    Building,
-    Seed,
-    Furniture
 }
 
 public enum ToolType 
@@ -43,23 +36,25 @@ public enum EquipableType
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
 public class ItemSO : ScriptableObject
 {
-    [Header("±âº» Á¤º¸")]
+    [Header("ê¸°ë³¸ ì •ë³´")]
     public string idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;
 
-    [Header("°øÅë")]
-    public ItemType itemTypes; // ´ÙÁß Å¸ÀÔ °¡´É
+    [Header("ê³µí†µ")]
+    public ItemType itemTypes; // ë‹¤ì¤‘ íƒ€ìž… ê°€ëŠ¥
     public bool stackable;
     public int maxStack;
 
-    [Header("Å¸ÀÔº° µ¥ÀÌÅÍ")]
+    [Header("íƒ€ìž…ë³„ ë°ì´í„°")]
     public MaterialData materialData;
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
-    public PlaceableData placeableData;
+
+    [Header("ë ˆì‹œí”¼")]
+    public List<RecipeIngredient> recipe;
 }
 
 [System.Serializable]
@@ -72,10 +67,10 @@ public class MaterialData
 public class ToolData
 {
     public ToolType toolType;
-    public float getAmount;
+    public float power;
     public float luck;
     public float durability;
-    public float atkSpd;
+    public float actSpd;
 }
 
 [System.Serializable]
@@ -101,7 +96,8 @@ public class EatableData
 }
 
 [System.Serializable]
-public class PlaceableData
+public class RecipeIngredient
 {
-    public PlaceableType placeableType;
+    public ItemSO item;
+    public int amount;
 }

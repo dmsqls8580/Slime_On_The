@@ -11,7 +11,7 @@ public class PlayerSkillSO : ScriptableObject
 {
     public string skillName;
     public float cooldown;
-    public float power;
+    public float actionDuration;
     public float speed;
     public float range;
     

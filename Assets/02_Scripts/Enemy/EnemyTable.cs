@@ -7,6 +7,7 @@ public class EnemyTable : BaseTable<int, EnemySO>
     public override void CreateTable()
     {
         Type = GetType();
+        DataDic.Clear();
         foreach (EnemySO SO in dataList)
         {
             DataDic[SO.EnemyIDX] = SO;
