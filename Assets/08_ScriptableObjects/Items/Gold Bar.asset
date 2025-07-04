@@ -23,10 +23,10 @@ MonoBehaviour:
     rottenable: 0
   toolData:
     toolType: 0
-    getAmount: 0
+    power: 0
     luck: 0
     durability: 0
-    atkSpd: 0
+    actSpd: 0
   equipableData:
     equipableType: 0
     maxHealth: 0
@@ -41,8 +41,6 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
-  placeableData:
-    placeableType: 0
   recipe:
   - item: {fileID: 11400000, guid: 179403ae04e12374ba62f94d2d4919e0, type: 2}
     amount: 1
