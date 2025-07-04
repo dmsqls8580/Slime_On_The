@@ -46,12 +46,6 @@ public class ItemSOEditor : Editor
             DrawSafeField("eatableData", true);
         }
 
-        if (item.itemTypes.HasFlag(ItemType.Placeable))
-        {
-            if (item.placeableData == null) item.placeableData = new PlaceableData();
-            DrawSafeField("placeableData", true);
-        }
-
         serializedObject.ApplyModifiedProperties();
     }
 

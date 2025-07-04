@@ -13,14 +13,6 @@ public enum ItemType
     BuffItem = 1 << 5
 }
 
-public enum PlaceableType
-{
-    None,
-    Building,
-    Seed,
-    Furniture
-}
-
 public enum ToolType 
 { 
     None, 
@@ -60,7 +52,6 @@ public class ItemSO : ScriptableObject
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
-    public PlaceableData placeableData;
 
     [Header("레시피")]
     public List<RecipeIngredient> recipe;
@@ -76,10 +67,10 @@ public class MaterialData
 public class ToolData
 {
     public ToolType toolType;
-    public float getAmount;
+    public float power;
     public float luck;
     public float durability;
-    public float atkSpd;
+    public float actSpd;
 }
 
 [System.Serializable]
@@ -102,12 +93,6 @@ public class EatableData
     public float duration;
     public bool rottenable;
     public bool permanent;
-}
-
-[System.Serializable]
-public class PlaceableData
-{
-    public PlaceableType placeableType;
 }
 
 [System.Serializable]

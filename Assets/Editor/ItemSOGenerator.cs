@@ -98,10 +98,10 @@ public class ItemSOGenerator : EditorWindow
             {
                 asset.toolData = new ToolData();
                 asset.toolData.toolType = ParseToolType(GetSafe(cols, columnIndex, "toolType"));
-                TryParseFloat(cols, columnIndex, "getAmount", out asset.toolData.getAmount);
+                TryParseFloat(cols, columnIndex, "power", out asset.toolData.power);
                 TryParseFloat(cols, columnIndex, "luck", out asset.toolData.luck);
                 TryParseFloat(cols, columnIndex, "durability", out asset.toolData.durability);
-                TryParseFloat(cols, columnIndex, "atkSpd", out asset.toolData.atkSpd);
+                TryParseFloat(cols, columnIndex, "actSpd", out asset.toolData.actSpd);
             }
 
             // === Equipable ===

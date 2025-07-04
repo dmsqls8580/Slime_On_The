@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class ObjectPreview : MonoBehaviour
 {
+    private bool isEvenWidth;
     private bool canPlace = false;
     public bool CanPlace => canPlace;
 
@@ -10,6 +11,8 @@ public class ObjectPreview : MonoBehaviour
     private SpriteRenderer previewSpriteRenderer;
 
     private Tilemap tilemap;
+    private PreviewClampArea previewClampArea;
+
 
     private void Awake()
     {
@@ -30,10 +33,22 @@ public class ObjectPreview : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0f;
 
-        Vector3Int cellPosition = tilemap.WorldToCell(mouseWorldPos);
-        Vector3 cellCenterWorld = tilemap.GetCellCenterWorld(cellPosition);
+        // Clamp된 셀 위치 가져오기
+        Vector3Int clampedCell = previewClampArea.GetClampedCell(mouseWorldPos);
+        Vector3 cellCenterWorld = tilemap.GetCellCenterWorld(clampedCell);
 
-        transform.position = new Vector3(cellCenterWorld.x, cellCenterWorld.y - 0.5f, 0f);
+        // 짝수 너비일 경우 좌/우 결정
+        if (isEvenWidth)
+        {
+            float tileSizeX = tilemap.cellSize.x;
+            float offsetX = mouseWorldPos.x < cellCenterWorld.x ? -tileSizeX / 2f : tileSizeX / 2f;
+            transform.position = new Vector3(cellCenterWorld.x + offsetX, cellCenterWorld.y - 0.5f, 0f);
+        }
+        else
+        {
+            // 홀수일 경우 정중앙
+            transform.position = new Vector3(cellCenterWorld.x, cellCenterWorld.y - 0.5f, 0f);
+        }
     }
 
     // 설치 가능한지 불가능한지 판단.
@@ -49,7 +64,6 @@ public class ObjectPreview : MonoBehaviour
         canPlace = count == 0;
     }
 
-
     // 판단에 맞춰 색 바꾸기.
     private void PreviewColor()
     {
@@ -60,8 +74,10 @@ public class ObjectPreview : MonoBehaviour
         }
     }
 
-    public void Initialize(Tilemap _tilemap)
+    public void Initialize(Tilemap _tilemap, PreviewClampArea _previewClampArea, bool _isEvenWidth)
     {
         tilemap = _tilemap;
+        previewClampArea = _previewClampArea;
+        isEvenWidth = _isEvenWidth;
     }
 }

@@ -48,10 +48,10 @@ public static class ItemSOToCSVUpdater
                 if (item.itemTypes.HasFlag(ItemType.Tool) && item.toolData != null)
                 {
                     if (colMap.TryGetValue("toolType", out int idx)) cols[idx] = item.toolData.toolType.ToString();
-                    if (colMap.TryGetValue("getAmount", out idx)) cols[idx] = item.toolData.getAmount.ToString();
+                    if (colMap.TryGetValue("power", out idx)) cols[idx] = item.toolData.power.ToString();
                     if (colMap.TryGetValue("luck", out idx)) cols[idx] = item.toolData.luck.ToString();
                     if (colMap.TryGetValue("durability", out idx)) cols[idx] = item.toolData.durability.ToString();
-                    if (colMap.TryGetValue("atkSpd", out idx)) cols[idx] = item.toolData.atkSpd.ToString();
+                    if (colMap.TryGetValue("actSpd", out idx)) cols[idx] = item.toolData.actSpd.ToString();
                 }
 
                 if (item.itemTypes.HasFlag(ItemType.Equipable) && item.equipableData != null)
