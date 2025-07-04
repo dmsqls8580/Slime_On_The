@@ -5,5 +5,6 @@ public class PlaceableInfo : ScriptableObject
 {
     public GameObject normalPrefab;
     public GameObject previewPrefab;
-    //public Vector2Int size;
+    // 오브젝트의 가로가 짝수인지.
+    public bool isEvenWidth;
 }
