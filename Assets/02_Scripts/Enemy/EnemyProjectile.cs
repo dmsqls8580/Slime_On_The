@@ -7,7 +7,6 @@ public class EnemyProjectile : MonoBehaviour, IAttackable, IPoolObject
 {
     private Rigidbody2D rigid;
     private EnemyController enemyController;
-    
     private GameObject target;
     private StatBase damage;
     private float speed;
@@ -47,16 +46,17 @@ public class EnemyProjectile : MonoBehaviour, IAttackable, IPoolObject
         rigid = GetComponent<Rigidbody2D>();
     }
     
-    public void Init(EnemyController _enemy, GameObject _target, StatBase _damage, float _speed)
+    public void Init(Vector2 dir, GameObject _target, StatBase _damage, float _speed)
     {
-        enemyController = _enemy;
         target = _target;
         damage = _damage;
         speed = _speed;
         
-        // 발사 방향 계산
-        Vector2 dir = (target.transform.position - transform.position).normalized;
+        // 발사 방향 조절
         rigid.velocity = dir * speed;
+        
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle);
         
         // lifeTime 후 자동 반환
         ObjectPoolManager.Instance.ReturnObject(this.gameObject, lifeTime);
@@ -65,7 +65,7 @@ public class EnemyProjectile : MonoBehaviour, IAttackable, IPoolObject
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageable>(out var target)&& !other.CompareTag("Player"))
+        if (other.TryGetComponent<IDamageable>(out var target)&& other.CompareTag("Player"))
         {
             target.TakeDamage(this);
 
