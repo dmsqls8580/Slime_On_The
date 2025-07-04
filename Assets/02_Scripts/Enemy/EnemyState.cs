@@ -262,8 +262,7 @@ namespace  Enemyststes
         {
             owner.Animator.SetTrigger(isAttackHash);
             
-            // Todo 공격
-            // owner.Attack();
+            owner.Attack();
         }
 
         public void OnUpdate(EnemyController owner)

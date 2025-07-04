@@ -55,7 +55,7 @@ public class EnemySpawner : MonoBehaviour
             return;
         }
         
-        string poolID = enemySO.EnemyIDX.ToString();
+        string poolID = enemySO.EnemyID.ToString();
 
         for (int i = 0; i < SpawnCount; i++)
         {
@@ -81,7 +81,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {enemySO.EnemyIDX.ToString()}");
+                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {enemySO.EnemyID.ToString()}");
             }
             
             spawnedEnemies.Add(enemy); // 생성된 적 리스트에 추가

@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26f1db26876b19f419a4c8cf25dbcc50, type: 3}
   m_Name: Test
   m_EditorClassIdentifier: 
-  EnemyIDX: 1
+  EnemyID: 1
+  AttackType: 0
+  projectileID: 
+  ProjectileSpawn: {fileID: 0}
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -22,7 +25,7 @@ MonoBehaviour:
     Value: 40
   - StatType: 2
     ModifierType: 0
-    Value: 10
+    Value: 0
   - StatType: 3
     ModifierType: 0
     Value: 10
