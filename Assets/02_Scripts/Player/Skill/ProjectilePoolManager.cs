@@ -5,15 +5,16 @@ public class ProjectilePoolManager : MonoBehaviour
 {
     public static ProjectilePoolManager Instance{get; private set;}
     
+    
     [SerializeField] private PlayerProjectile projectilePrefab;
     
-    private IObjectPool<PlayerProjectile> _pool;
+    private IObjectPool<PlayerProjectile> pool;
 
     private void Awake()
     {
         Instance = this;
 
-        _pool = new ObjectPool<PlayerProjectile>(
+        pool = new ObjectPool<PlayerProjectile>(
             CreateFunc,
             OnGet,
             OnRelease,
@@ -25,8 +26,8 @@ public class ProjectilePoolManager : MonoBehaviour
 
     private PlayerProjectile CreateFunc()
     {
-        var proj=  Instantiate(projectilePrefab);
-        proj.SetPool(_pool);
+        var proj=  Instantiate(projectilePrefab, this.transform);
+        proj.SetPool(pool);
         return proj;
     }
 
@@ -45,10 +46,10 @@ public class ProjectilePoolManager : MonoBehaviour
         Destroy(pobj.gameObject);
     }
 
-    public void Spawn(Vector2 origin, Vector2 direction, float speed, float damage, IAttackable attacker)
+    public void Spawn(Vector2 origin, Vector2 direction, float speed)
     {
-        var projectile = _pool.Get();
+        var projectile = pool.Get();
         projectile.transform.position = origin;
-        projectile.Init(direction, speed, damage, attacker);
+        projectile.Init(direction, speed);
     }
 }

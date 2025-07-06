@@ -1,79 +1,59 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class PlaceMode : MonoBehaviour
 {
-    [SerializeField] private ObjectPreview previewPrefab;
-    [SerializeField] private Camera mainCamera;
-    [SerializeField] private TileManager tileManager;
+    [SerializeField] private Tilemap tilemap;
+    [SerializeField] private PreviewClampArea previewClampArea;
+    [SerializeField] private Transform playerTransform;
 
-    private ObjectPreview preview;
-    private GameObject objectToPlacePrefab;
-    private PlaceType currentPlaceType;
+    private GameObject normalPrefab;
+    private GameObject previewPrefab;
+    private GameObject previewPrefabInstance;
 
-    Vector3Int lastGridPos;
-    bool lastCanPlace;
+    private ObjectPreview objectPreview;
 
-    private void Awake()
-    {
-        preview = Instantiate(previewPrefab);
-        preview.Hide();
-    }
-
-    public void SetBuildInfo(GameObject prefab, PlaceType type)
-    {
-        objectToPlacePrefab = prefab;
-        currentPlaceType = type;
-    }
-
-    private void OnEnable()
-    {
-        preview.Show();
-    }
-
-    private void OnDisable()
-    {
-        preview.Hide();
-    }
+    private bool isEvenWidth;
 
     private void Update()
     {
-        Vector3 mouseWorldPos = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int gridPos = tileManager.GetGridPosition(mouseWorldPos);
-        bool canPlace = tileManager.CanPlaceAt(gridPos, currentPlaceType);
-
-        // ªÛ≈¬∞° πŸ≤Óæ˙¿ª ∂ß∏∏ æ˜µ•¿Ã∆Æ
-        if (canPlace != lastCanPlace || gridPos != lastGridPos)
+        previewClampArea.UpdateCenter(playerTransform.position);
+        objectPreview.UpdatePreview();
+        if (Input.GetKeyDown(KeyCode.B) && objectPreview.CanPlace)
         {
-            if (canPlace)
-            {
-                preview.SetPosition(gridPos);
-                preview.Show();
-            }
-            else
-            {
-                preview.Hide();
-            }
-
-            lastGridPos = gridPos;
-            lastCanPlace = canPlace;
-        }
-
-        if (canPlace && Input.GetMouseButtonDown(0))
-        {
-            Place(gridPos);
-            gameObject.SetActive(false);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            gameObject.SetActive(false);
+            Place();
         }
     }
 
-    private void Place(Vector3Int gridPos)
+    private void Place()
     {
-        Vector3 worldPos = tileManager.GetWorldPosition(gridPos);
-        GameObject obj = Instantiate(objectToPlacePrefab, worldPos, Quaternion.identity);
-        tileManager.SetPlacedObject(gridPos, obj);
+        Instantiate(normalPrefab, previewPrefabInstance.transform.position, Quaternion.identity);
+    }
+
+    // ÏïÑÏù¥ÌÖú ÏÇ¨Ïö© Ïãú Ìò∏Ï∂ú.
+    // UIQuickSlotÏóê PlaceMode.cs Ï∞∏Ï°∞ÏãúÌÇ§Í≥† placeMode.SetActiveTruePlaceMode(ÏïÑÏù¥ÌÖúÏ†ïÎ≥¥);.
+    public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo)
+    {
+        Initialize(_placeableInfo);
+        gameObject.SetActive(true);
+    }
+
+    private void Initialize(PlaceableInfo _placeableInfo)
+    {
+        normalPrefab = _placeableInfo.normalPrefab;
+        previewPrefab = _placeableInfo.previewPrefab;
+        previewPrefabInstance = Instantiate(previewPrefab);
+        objectPreview = previewPrefabInstance.GetComponent<ObjectPreview>();
+        isEvenWidth = _placeableInfo.isEvenWidth;
+        objectPreview.Initialize(tilemap, previewClampArea, isEvenWidth);
+        previewClampArea.Initialize(tilemap);
+    }
+
+    // ÏïÑÏù¥ÌÖú ÏÇ¨Ïö© ÎÅùÎÇòÎ©¥ Ìò∏Ï∂ú ÌïÑÏöî.
+    public void SetActiveFalsePlaceMode()
+    {
+        if (previewPrefabInstance != null)
+            Destroy(previewPrefabInstance);
+        gameObject.SetActive(false);
     }
 }

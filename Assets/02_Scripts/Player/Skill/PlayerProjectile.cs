@@ -2,47 +2,49 @@ using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class PlayerProjectile : MonoBehaviour
+public class PlayerProjectile : MonoBehaviour, IAttackable
 {
-    private Rigidbody2D _rb;
+    private Rigidbody2D rigid;
     
-    private float _speed;
-    private float _damage;
-    private Vector3 _direction;
+    private float speed;
+    private StatBase damage;
+    private Vector3 direction;
+    private StatManager statManager;
+    public StatBase AttackStat => damage;
+    public IDamageable Target => null;
     
-    private IAttackable _attacker;
-    private IObjectPool<PlayerProjectile> _pool;
+    private IObjectPool<PlayerProjectile> pool;
     
-    private float _lifeTime = 3f;
-    private float _timer;
+    private float lifeTime = 3f;
+    private float timer;
     
     private void Awake()
     {
-        _rb= GetComponent<Rigidbody2D>();
+        statManager= GetComponentInParent<StatManager>();
+        rigid= GetComponent<Rigidbody2D>();
     }
 
     public void SetPool(IObjectPool<PlayerProjectile> pool)
     {
-        _pool = pool;
+        this.pool = pool;
     }
 
-    public void Init(Vector2 dir, float speed,float damage, IAttackable attacker)
+    public void Init(Vector2 dir, float speed)
     {
-        _direction = dir.normalized;
-        _speed = speed;
-        _attacker = attacker;
-        _damage = damage;
+        direction = dir.normalized;
+        this.speed = speed;
+        damage = statManager.Stats[StatType.Attack];
         
-        _timer = 0f;
+        timer = 0f;
         gameObject.SetActive(true);
     }
 
     private void FixedUpdate()
     {
-        _rb.velocity = _direction * _speed;
-
-        _timer += Time.deltaTime;
-        if (_timer >= _lifeTime)
+         rigid.velocity = direction * speed;
+        
+        timer += Time.deltaTime;
+        if (timer >= lifeTime)
         {
             ReturnToPool(); // 일정 시간 지나면 반환
         }
@@ -51,18 +53,18 @@ public class PlayerProjectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageable>(out var target) && target != _attacker)
+        if (other.TryGetComponent<IDamageable>(out var target)&& !other.CompareTag("Player"))
         {
-            target.TakeDamage(_attacker);
-            _pool?.Release(this);
+            target.TakeDamage(this);
+            pool?.Release(this);
         }
     }
     
     private void ReturnToPool()
     {
-        if (_pool != null)
+        if (pool != null)
         {
-            _pool.Release(this); // 풀로 되돌림
+            pool.Release(this); // 풀로 되돌림
         }
         else
         {
@@ -74,5 +76,6 @@ public class PlayerProjectile : MonoBehaviour
     {
         CancelInvoke();
     }
-
+    
+    public void Attack() { }
 }

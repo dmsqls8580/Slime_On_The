@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class InteractionZone : MonoBehaviour
 {
-    // NPC, Building, ÀÚ¿øµé(Mineral, Tree, Flower, Crop) || ÅëÇÕÀ¸·Î Resource.
+    // NPC, Building, ìì›ë“¤(Mineral, Tree, Flower, Crop) || í†µí•©ìœ¼ë¡œ Resource.
     [SerializeField] private LayerMask interactableMask;
 
     private HashSet<Collider2D> interactables = new HashSet<Collider2D>();
