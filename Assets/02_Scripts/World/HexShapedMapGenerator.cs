@@ -1,41 +1,38 @@
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class HexVisualShapedMap : MonoBehaviour
+public class HexShapedMapGenerator : MonoBehaviour
 {
     public Tilemap tilemap;
     public TileBase tile;
-    public int radius = 85; // 맵 반경 (너비, 높이 조절용)
+
+    public int minWidth = 100;
+    public int maxWidth = 200;
+    public int height = 170; // 전체 줄 수
 
     void Start()
     {
-        GenerateHexVisualMap();
+        GenerateFlatTopHexMap();
     }
 
-    void GenerateHexVisualMap()
+    void GenerateFlatTopHexMap()
     {
         tilemap.ClearAllTiles();
 
-        for (int q = -radius; q <= radius; q++)
-        {
-            int r1 = Mathf.Max(-radius, -q - radius);
-            int r2 = Mathf.Min(radius, -q + radius);
+        int halfHeight = height / 2;
 
-            for (int r = r1; r <= r2; r++)
+        for (int y = -halfHeight; y <= halfHeight; y++)
+        {
+            int dy = Mathf.Abs(y); // 중앙으로부터 떨어진 정도
+            int width = Mathf.RoundToInt(Mathf.Lerp(maxWidth, minWidth, (float)dy / halfHeight));
+
+            int startX = -width / 2;
+
+            for (int x = 0; x < width; x++)
             {
-                Vector2Int offset = HexToOffset(q, r);
-                Vector3Int pos = new Vector3Int(offset.x, offset.y, 0);
+                Vector3Int pos = new Vector3Int(startX + x, y, 0);
                 tilemap.SetTile(pos, tile);
             }
         }
     }
-
-    // q: 열, r: 행
-    Vector2Int HexToOffset(int q, int r)
-    {
-        int col = q;
-        int row = r + (q - (q & 1)) / 2; // Even-Q 오프셋
-        return new Vector2Int(col, row);
-    }
-
 }
