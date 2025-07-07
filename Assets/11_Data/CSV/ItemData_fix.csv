@@ -1,23 +1,24 @@
 idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,power,luck,durability,equipableType,actSpd,maxHealth,atk,def,spd,crt,recoverHP,fullness,slimeGauge,duration,eatableRottable,freshness,placeType
 0,Wood,A basic piece of wood from trees.,,Material,y,99,N,,,,,,,,,,,,,,,,,,
-2,Plank,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
-101,copper ore,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
+2,Plank,판자,,Material,y,99,N,,,,,,,,,,,,,,,,,,
+101,Copper Ore,광석,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 102,Iron Ore,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 103,Gold Ore,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
-201,Copper Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
+201,Copper Bar,?,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 202,Iron Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 203,Gold Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 301,Workbench,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
 302,Anvil,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
-303,cooking Pot,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
+303,Cooking Pot,냄비,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
 401,Wood Axe,,,Tool,n,1,,Axe,1.5,0.1,70,,1,,,,,,,,,,,,
 402,Wood Pickaxe,,,Tool,n,1,,Pickaxe,1.5,0.1,70,,1,,,,,,,,,,,,
 403,Wood Shovel,,,Tool,n,1,,Shovel,1.5,0.1,70,,1,,,,,,,,,,,,
 404,Wood Hoe,,,Tool,n,1,,Hoe,1.5,0.1,70,,1,,,,,,,,,,,,
-411,Copper Axe,,,Tool,n,1,,Axe,1.5,0.1,0,,1.2,,,,,,,,,,,,
+411,Copper Axe,도끼
+,,Tool,n,1,,Axe,1.5,0.1,0,,1.2,,,,,,,,,,,,
 412,Copper Pickaxe,A pickaxe made of copper. Useful for mining.,,Tool,n,1,,Pickaxe,1.5,0.1,100,,1.2,,,,,,,,,,,,
-413,Copper Shovel,,,Tool,n,1,,Shovel,1.5,0.1,100,,1.2,,,,,,,,,,,,
-414,Copper Hoe,,,Tool,n,1,,Hoe,1.5,0.1,100,,1.2,,,,,,,,,,,,
+413,Copper Shovel,삽,,Tool,n,1,,Shovel,1.5,0.1,100,,1.2,,,,,,,,,,,,
+414,Copper Hoe,괭이,,Tool,n,1,,Hoe,1.5,0.1,100,,1.2,,,,,,,,,,,,
 416,Cpper breastplate,,,Equipable,n,1,,,,,100,Armor,,5,0,0,0,0,,,,,,,
 421,Iron Axe,,,Tool,n,1,,Axe,1.5,0.1,180,,1.5,,,,,,,,,,,,
 422,Iron Pickaxe,,,Tool,n,1,,Pickaxe,1.5,0.1,180,,1.5,,,,,,,,,,,,
@@ -33,8 +34,8 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 436,Gold breastplate,,,Equipable,n,1,,,,,300,Armor,,20,0,0,0,0,,,,,,,
 501,Stone Ring,Accessory,,Equipable,n,1,,,,,,Ring,   ,0,0,20,0,5,,,,,,,
 502,Glow Tulip Necklace],Accessory,,Equipable,n,1,,,,,,Necklace,,0,20,0,10,0,,,,,,,
-601,wood fence,Fence,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
-602,wood fence gate,,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
+601,Wood Fence,Fence,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
+602,Wood Fence Gate,,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
 701,Berry,,,Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
 801,Cooked Meat,Restores health and fills you up.,cooked_meat,Eatable,y,40,,,,,,,,,,,,,20,15,5,0,y,100,
 802,Winter Dinner,Food,,Eatable,y,40,,,,,,,,,,,,,100,50,20,0,y,100,
