@@ -194,9 +194,11 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         int equipIndex = (int)type;
 
         var prevEquip = inventoryManager.GetEquipItem(equipIndex);
-
+        
         inventoryManager.SetItem(_inventorySlotIndex, prevEquip);
-        inventoryManager.SetEquipItem(equipIndex, _item);
+
+        var equipSlots = inventoryUI.GetEquipSlots();
+        equipSlots[equipIndex].SetItem(_item);
     }
 
     private void TryUnequipFromEquipSlot(ItemInstanceData _item)
@@ -204,7 +206,9 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         if (!inventoryManager.TryAddItemGlobally(_item.ItemData, _item.Quantity))
         {
             // DropItem(_item);
-        }
-        inventoryManager.ClearEquipItem((int)_item.ItemData.equipableData.equipableType);
+        }   
+        var equipSlots = inventoryUI.GetEquipSlots();
+        int equipIndex = (int)_item.ItemData.equipableData.equipableType;
+        equipSlots[equipIndex].SetItem(null); 
     }
 }
