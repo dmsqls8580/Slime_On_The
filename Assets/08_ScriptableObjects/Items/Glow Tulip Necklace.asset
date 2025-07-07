@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Cpper breastplate
+  m_Name: Glow Tulip Necklace
   m_EditorClassIdentifier: 
-  idx: 416
-  itemName: Cpper breastplate
-  description: 
+  idx: 502
+  itemName: Glow Tulip Necklace]
+  description: Accessory
   icon: {fileID: 0}
   itemTypes: 4
   stackable: 0
@@ -28,11 +28,11 @@ MonoBehaviour:
     durability: 0
     actSpd: 0
   equipableData:
-    equipableType: 0
-    maxHealth: 5
-    atk: 0
+    equipableType: 3
+    maxHealth: 0
+    atk: 20
     def: 0
-    spd: 0
+    spd: 10
     crt: 0
   eatableData:
     recoverHP: 0
@@ -42,5 +42,5 @@ MonoBehaviour:
     rottenable: 0
     permanent: 0
   recipe:
-  - item: {fileID: 11400000, guid: 3a798d8c50949ed49b92c3ea1e0e4644, type: 2}
+  - item: {fileID: 11400000, guid: 5e937ce59142fb5448e291e44e0d7a30, type: 2}
     amount: 10
