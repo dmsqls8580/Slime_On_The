@@ -40,6 +40,7 @@ public class StatManager : MonoBehaviour
             StatType.CurrentHp => new ResourceStat(_statType, _value),
             StatType.CurrentHunger => new ResourceStat(_statType, _value),
             StatType.CurrentSlimeGauge=> new ResourceStat(_statType, _value),
+            StatType.Defense=> new ResourceStat(_statType, _value),
             //////////////////////////////////////////////////////////////////
             _ => new CalculateStat(_statType, _value),
         };
@@ -49,12 +50,12 @@ public class StatManager : MonoBehaviour
     {
         return Stats[_statType] as T;
     }
-
+    
     public float GetValue(StatType _statType)
     {
         return Stats[_statType].GetCurrent();
     }
-
+    
     public void Recover(StatType _statType, StatModifierType _modifierType, float _value)
     {
         if (Stats[_statType] is ResourceStat res)
@@ -70,7 +71,6 @@ public class StatManager : MonoBehaviour
                         res.RecoverPercent(_value);
                         break;
                 }
-                Debug.Log($"Recover : {_statType} : {_value} RemainValue: {res.CurrentValue}");
             }
         }
     }
@@ -103,9 +103,9 @@ public class StatManager : MonoBehaviour
     /// <summary>
     /// 증가되는 스탯에 따라 해당 스탯을 증감시켜주는 메서드
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="valueType"></param>
-    /// <param name="value"></param>
+    /// <param name="_statType"></param>
+    /// <param name="_modifierType"></param>
+    /// <param name="_value"></param>
     public void ApplyStat(StatType _statType, StatModifierType _modifierType, float _value)
     {
         if (Stats[_statType] is not CalculateStat stat) return;
@@ -134,7 +134,7 @@ public class StatManager : MonoBehaviour
         }
         OnStatChange?.Invoke();
         
-        Debug.Log($"Stat : {_statType} Modify Value {_value}, FinalValue : {stat.Value}");
+        Logger.Log($"Stat : {_statType} Modify Value {_value}, FinalValue : {stat.Value}");
     }
 
     private void SyncCurrentWithMax(StatType _statType, CalculateStat _stat)

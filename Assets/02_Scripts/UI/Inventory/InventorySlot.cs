@@ -3,12 +3,12 @@ using UnityEngine.EventSystems;
 
 public class InventorySlot : SlotBase
 {
-    public override void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData _eventData)
     {
-        if (eventData == null) return;
+        if (_eventData == null) return;
 
-        bool isLeft = eventData.button == PointerEventData.InputButton.Left;
-        bool isRight = eventData.button == PointerEventData.InputButton.Right;
+        bool isLeft = _eventData.button == PointerEventData.InputButton.Left;
+        bool isRight = _eventData.button == PointerEventData.InputButton.Right;
 
         bool isShift = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         bool isCtrl = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
@@ -23,9 +23,9 @@ public class InventorySlot : SlotBase
         }
     }
 
-    public override void Clear(int amount)
+    public override void Clear(int _amount)
     {
-        InventoryManager.Instance.RemoveItem(SlotIndex, amount);
+        InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
         Refresh();
     }
 }

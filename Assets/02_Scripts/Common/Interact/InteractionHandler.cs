@@ -1,14 +1,15 @@
+using PlayerStates;
 using UnityEngine;
 
 public class InteractionHandler : MonoBehaviour
 {
-    public void HandleInteraction(Collider2D target, InteractionCommandType type)
+    public void HandleInteraction(Collider2D _target, InteractionCommandType _type, PlayerController _playerController=null)
     {
-        if (target == null) return;
+        if (_target == null) return;
 
-        if (target.TryGetComponent<IInteractable>(out var interactable))
+        if (_target.TryGetComponent<IInteractable>(out var interactable))
         {
-            interactable.Interact(type);
+            interactable.Interact(_type,  _playerController);
         }
     }
 }

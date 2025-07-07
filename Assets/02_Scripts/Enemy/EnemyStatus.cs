@@ -16,6 +16,7 @@ public class EnemyStatus : MonoBehaviour
     public float WanderRadius => statManager.GetValue(StatType.WanderRadius);
     public float SenseRange => statManager.GetValue(StatType.SenseRange);
     public float AttackRange  => statManager.GetValue(StatType.AttackRange);
+    public float FleeDistance => statManager.GetValue(StatType.FleeDistance);
     // Enemy 사망 판정
     public bool IsDead => CurrentHealth <= 0;
 

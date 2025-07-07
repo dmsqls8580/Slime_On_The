@@ -13,13 +13,17 @@ public enum StatType
     MaxSlimeGauge,
     CurrentSlimeGauge,
     
+    //Interact
+    ActSpeed,
+    
     // Enenmy
     AttackCooldown,
     MaxMoveDelay,
     MinMoveDelay,
     WanderRadius,
     SenseRange,
-    AttackRange
+    AttackRange,
+    FleeDistance
 }
 
 public enum StatModifierType
