@@ -10,6 +10,10 @@ public class UICrafting : UIBase
     private Vector2 originPosition;
     private Vector2 targetPosition;
     
+    
+    
+    
+    
     private void Awake()
     {
         // 현재 위치, 목표 위치 저장
@@ -18,6 +22,12 @@ public class UICrafting : UIBase
         
         Contents.gameObject.SetActive(false);
     }
+    
+    
+    
+    
+    
+    
 
     public override void Open()
     {

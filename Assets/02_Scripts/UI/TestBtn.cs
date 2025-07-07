@@ -13,4 +13,9 @@ public class TestBtn : MonoBehaviour
     {
         UIManager.Instance.Toggle<UICrafting>();
     }
+    
+    public void OnTogglePauseMenu()
+    {
+        UIManager.Instance.Toggle<UIPauseMenu>();
+    }
 }

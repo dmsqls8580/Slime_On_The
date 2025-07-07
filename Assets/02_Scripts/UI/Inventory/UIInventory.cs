@@ -16,6 +16,8 @@ public class UIInventory : UIBase
     private HoldManager holdManager;
     private InventoryManager inventoryManager;
     
+    // TODO: 추가 인벤토리(배낭 등) 기능?
+    
     private void Awake()
     {
         holdManager = HoldManager.Instance;
