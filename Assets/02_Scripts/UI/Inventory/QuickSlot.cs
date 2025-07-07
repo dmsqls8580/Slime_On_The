@@ -1,16 +1,35 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class QuickSlot : SlotBase
 {
-    [SerializeField] private GameObject outlineObj; // Outline 오브젝트
+    private UIQuickSlot owner;
+    private int quickSlotIndex;
 
-    public void SetSelected(bool isSelected)
+    public void Initialize(int index, UIQuickSlot ownerUI)
     {
-        outlineObj.SetActive(isSelected);
+        quickSlotIndex = index;
+        owner = ownerUI;
+        base.Initialize(index);
     }
-
+    
     public override void OnSlotSelectedChanged(bool isSelected)
     {
-        SetSelected(isSelected);
+        backgroundImage.color = isSelected ? Color.yellow : Color.white;
+    }
+
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            owner?.SelectSlot(quickSlotIndex);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            var data = GetData();
+            if (data == null || !data.IsValid) return;
+
+            InventoryInteractionHandler.Instance.TryUse(data, this);
+        }
     }
 }
