@@ -10,7 +10,7 @@ public class BossTable : BaseTable<int, BossSO>
         DataDic.Clear();
         foreach (BossSO SO in dataList)
         {
-            dataList[SO.BossID] = SO;
+            DataDic[SO.BossID] = SO;
         }
     }
 }
