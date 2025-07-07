@@ -49,12 +49,12 @@ public class StatManager : MonoBehaviour
     {
         return Stats[_statType] as T;
     }
-
+    
     public float GetValue(StatType _statType)
     {
         return Stats[_statType].GetCurrent();
     }
-
+    
     public void Recover(StatType _statType, StatModifierType _modifierType, float _value)
     {
         if (Stats[_statType] is ResourceStat res)
