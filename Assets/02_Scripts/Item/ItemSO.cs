@@ -53,6 +53,7 @@ public class ItemSO : ScriptableObject
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
+    public PlaceableData placeableData;
 
     [Header("레시피")]
     public List<RecipeIngredient> recipe;
@@ -94,6 +95,12 @@ public class EatableData
     public float duration;
     public bool rottenable;
     public bool permanent;
+}
+
+[System.Serializable]
+public class PlaceableData
+{
+    public PlaceableInfo placeableInfo;
 }
 
 [System.Serializable]
