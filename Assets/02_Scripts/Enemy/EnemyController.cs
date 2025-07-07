@@ -1,5 +1,5 @@
 using System;
-using Enemyststes;
+using Enemystates;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -103,8 +103,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         ChangeState(EnemyState.Idle);
         
-        
-        
         transform.position = SpawnPos; // 혹은 원하는 위치
         if (Agent.isOnNavMesh)
         {
@@ -120,6 +118,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         gameObject.SetActive(false);
     }
     
+    /************************ EnemyController ***********************/
     
     
     protected override void Awake()
@@ -202,7 +201,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     private void ShootProjectile()
     {
-        string projectileID = EnemyStatus.enemySO.projectileID;
+        string projectileID = EnemyStatus.enemySO.ProjectileID.ToString();
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
         projectileObject.transform.position = transform.position;
         

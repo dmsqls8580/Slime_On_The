@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace  Enemyststes
+namespace  Enemystates
 {
     public enum EnemyState
     {
@@ -126,19 +126,7 @@ namespace  Enemyststes
 
         public void OnUpdate(EnemyController owner)
         {
-            GameObject player = owner.ChaseTarget;
-            if (player == null)
-            {
-                player = GameObject.FindWithTag("Player");
-            }
-            if (player != null)
-            {
-                float dist = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (dist <= owner.EnemyStatus.AttackRange)
-                {
-                    owner.ChaseTarget = player;
-                }
-            }
+            
         }
 
         public void OnFixedUpdate(EnemyController owner)
