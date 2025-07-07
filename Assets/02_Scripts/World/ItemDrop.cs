@@ -13,7 +13,7 @@ public class ItemDrop : MonoBehaviour
     private int amount;
 
     private bool canItemToPlayer = false;
-    public float attractSpeed = 0.2f;
+    public float attractSpeed = 1f;
     public float attractDistance = 2f;
 
     public void Init(ItemSO _itemSo, int _amount, Transform _player)
@@ -71,5 +71,23 @@ public class ItemDrop : MonoBehaviour
 
         yield return new WaitForSeconds(3f);
         canItemToPlayer = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (playerTransform != null && other.transform == playerTransform)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void AddToInventory()
+    {
+        if(itemSo.IsUnityNull()||amount <= 0) return;
+
+        if (!itemSo.IsUnityNull())
+        {
+            //InventoryManager.Instance.TryAddItemGlobally(itemSo, amount);
+        }
     }
 }
