@@ -4,99 +4,75 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class SlotBase : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler,
-    IPointerClickHandler
+public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] protected Image iconImage;
-    [SerializeField] protected TextMeshProUGUI itemNameTxt;
-    [SerializeField] protected TextMeshProUGUI quantityTxt;
+    [SerializeField] protected Image backgroundImage;
+    [SerializeField] protected TextMeshProUGUI quantityText;
 
-    public int SlotIndex { get; private set; }
+    public int SlotIndex { get; protected set; }
 
-    public UnityAction<int> onSlotClicked;
-
-    public void Initialize(int index)
+    // 슬롯 초기화
+    public virtual void Initialize(int index)
     {
         SlotIndex = index;
         InventoryManager.Instance.OnSlotChanged += OnSlotChanged;
         OnSlotChanged(index);
     }
-
-    public ItemInstanceData GetData()
+    
+    private void OnDestroy()
+    {
+        if (InventoryManager.HasInstance)
+            InventoryManager.Instance.OnSlotChanged -= OnSlotChanged;
+    }
+    
+    // 아이템 데이터 반환
+    public virtual ItemInstanceData GetData()
     {
         return InventoryManager.Instance.GetItem(SlotIndex);
     }
-
+    
+    // 아이템 존재여부 확인
     public bool HasItem()
     {
         var data = GetData();
         return data != null && data.IsValid;
     }
-
+    
+    public virtual void Refresh()
+    {
+        OnSlotChanged(SlotIndex);
+    }
+    
+    public virtual void Clear(int amount)
+    {
+        InventoryManager.Instance.RemoveItem(SlotIndex, amount);
+        Refresh();
+    }
+    
     public virtual void OnSlotSelectedChanged(bool isSelected)
     {
-
+        
     }
-
-    private void OnDestroy()
+    
+    public virtual void OnSlotChanged(int index)
     {
-        if (InventoryManager.HasInstance)
-        {
-            InventoryManager.Instance.OnSlotChanged -= OnSlotChanged;
-        }
-    }
+        if (index != SlotIndex) return;
 
-    private void OnSlotChanged(int changedIdx)
-    {
-        if (changedIdx != SlotIndex) return;
-
-        var data = InventoryManager.Instance.GetItem(SlotIndex);
-        if (data == null || !data.IsValid)
+        var data = GetData();
+        if (data != null && data.IsValid)
         {
-            iconImage.enabled = false;
-            iconImage.sprite = null;
-            quantityTxt.text = "";
-            if (itemNameTxt != null) itemNameTxt.text = "";
+            iconImage.sprite = data.ItemData.icon;
+            iconImage.enabled = true;
+            quantityText.text = data.Quantity > 1 ? data.Quantity.ToString() : "";
         }
         else
         {
-            iconImage.enabled = true;
-            iconImage.sprite = data.Icon;
-            quantityTxt.text = data.Quantity > 1 ? $"x{data.Quantity}" : "";
-            if (itemNameTxt != null) itemNameTxt.text = data.Name;
+            iconImage.sprite = null;
+            iconImage.enabled = false;
+            quantityText.text = "";
         }
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
-    {
-        if (InventoryManager.Instance.GetItem(SlotIndex)?.IsValid == true)
-            DragManager.Instance.StartDrag(this);
-    }
-
-    public void OnDrag(PointerEventData eventData)
-    {
-        if (DragManager.Instance.IsDragging)
-            DragManager.Instance.UpdateDrag(eventData.position);
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        DragManager.Instance.EndDrag();
-    }
-
-    public void OnDrop(PointerEventData eventData)
-    {
-        if (!DragManager.Instance.IsDragging || DragManager.Instance.DraggedSlot == this)
-            return;
-
-        InventoryManager.Instance.TrySwapOrMerge(DragManager.Instance.DraggedSlot.SlotIndex, this.SlotIndex);
-    }
-
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            onSlotClicked?.Invoke(SlotIndex);
-        }
-    }
+    public abstract void OnPointerClick(PointerEventData eventData);
 }
