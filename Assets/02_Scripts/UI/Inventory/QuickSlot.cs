@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +17,17 @@ public class QuickSlot : SlotBase
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
         backgroundImage.color = _isSelected ? Color.yellow : Color.white;
+
+        var handIcon = FindObjectOfType<ItemHandler>();
+        if (!handIcon.IsUnityNull())
+        {
+            if (_isSelected)
+            {
+                var data = GetData();
+                Logger.Log($"[QuickSlot] 선택 아이템: {data?.ItemData?.itemName}");
+                handIcon.ShowItemIcon(data != null ? data.ItemData : null);
+            }
+        }
     }
 
     public override void OnPointerClick(PointerEventData _eventData)
