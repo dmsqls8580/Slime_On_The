@@ -8,18 +8,20 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
     
-    public EnemyStatus EnemyStatus;
+    public Transform projectileTransform;                  // 발사체 생성 Transform
+    
+    public EnemyStatus EnemyStatus;                        // EnemyStatus
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
 
     public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
     public EnemyState PreviousState      { get; set; }     // 이전 State
+    public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
-
-    public Vector3 SpawnPos      { get; private set; }     // 스폰 위치
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
+    private StatManager statManager;
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
@@ -51,14 +53,14 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (EnemyStatus.CurrentHealth <= 0)
         {
             ChangeState(EnemyState.Dead);
-            // TODO: 오브젝트 풀 반환
+            // 오브젝트 풀 반환
+            // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
+            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
         }
         
     }
     
     /************************ IAttackable ***********************/
-    // Todo
-    // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
     public StatBase AttackStat => StatManager.Stats[StatType.Attack];
 
     public IDamageable Target 
@@ -66,29 +68,49 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (Target != null && !Target.IsDead)
+        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
         {
-            Target.TakeDamage(this);
+            if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
+            {
+                Target.TakeDamage(this);
+            }
         }
-        else
+        else if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Ranged)
         {
-            Debug.Log($"{Target}");
+            // 원거리: 투사체 발사
+            ShootProjectile();
         }
+        
     }
     
     /************************ IPoolObject ***********************/
     public GameObject GameObject => this.gameObject;
-    public string PoolID { get; }
-    public int PoolSize { get; }
+    public string PoolID => EnemyStatus.enemySO != null
+        ? EnemyStatus.enemySO.EnemyID.ToString() : "Invalid";
+    public int PoolSize { get; } = 10;
     
     public void OnSpawnFromPool()
     {
         // Todo
         // 몬스터 스폰 시 Enemy 상태, 위치, NavMeshAgent, FSM 등 모든 초기화
         
-        transform.position = SpawnPos; // 혹은 원하는 위치
-        if (Agent.isOnNavMesh) Agent.Warp(transform.position);
+        statManager.Init(EnemyStatus.enemySO);
+        
+        // 상태머신이 초기화되지 않았다면 초기화
+        if (stateMachine == null || states == null)
+        {
+            SetupState();
+        }
         ChangeState(EnemyState.Idle);
+        
+        
+        
+        transform.position = SpawnPos; // 혹은 원하는 위치
+        if (Agent.isOnNavMesh)
+        {
+            Agent.Warp(transform.position);
+        }
+        
     }
 
     public void OnReturnToPool()
@@ -109,6 +131,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         Animator = GetComponent<Animator>();
         spriteRenderer =  GetComponent<SpriteRenderer>();
         EnemyStatus = GetComponent<EnemyStatus>();
+        statManager = GetComponent<StatManager>();
     }
 
     protected override void Start()
@@ -137,8 +160,14 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             lastFlipX = Agent.velocity.x < 0;
         }
         // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
-        
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
+        
+        // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
+        if (AttackTarget != null)
+        {
+            Vector2 targetDir = ChaseTarget.transform.position - transform.position;
+            lastFlipX = targetDir.x < 0;
+        }
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
         spriteRenderer.flipX = lastFlipX; 
@@ -166,9 +195,24 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
-    public void SetPlayerInAttackRange(bool inRange)
+    public void SetPlayerInAttackRange(bool _inRange)
     {
-        IsPlayerInAttackRange = inRange;
+        IsPlayerInAttackRange = _inRange;
+    }
+
+    private void ShootProjectile()
+    {
+        string projectileID = EnemyStatus.enemySO.projectileID;
+        GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
+        projectileObject.transform.position = transform.position;
+        
+        if (projectileObject.TryGetComponent<EnemyProjectile>(out var projectile))
+        {
+            Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
+            Vector2 direction = shootdir.normalized;
+            projectile.Init(direction, AttackTarget, AttackStat, 10f);
+            // Todo : Projectile 속도 스탯 추가하기
+        }
     }
     
 }

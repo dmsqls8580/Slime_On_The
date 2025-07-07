@@ -1,4 +1,6 @@
+using PlayerStates;
+
 public interface IInteractable
 {
-    void Interact(InteractionCommandType type);
+    public void Interact(InteractionCommandType _type, PlayerController _playerController);
 }

@@ -3,10 +3,10 @@ using UnityEngine;
 public class EnemyStatus : MonoBehaviour
 {
     private StatManager statManager;
-    [SerializeField]private EnemySO enemySO;
+    public EnemySO enemySO;
     
     public float MaxHealth => statManager.GetValue(StatType.MaxHp);
-    public float CurrentHealth => statManager.GetValue(StatType.MaxHp);
+    public float CurrentHealth => statManager.GetValue(StatType.CurrentHp);
     public float AttackDamage => statManager.GetValue(StatType.Attack);
     public float Defense => statManager.GetValue(StatType.Defense);
     public float MoveSpeed => statManager.GetValue(StatType.MoveSpeed);
@@ -16,14 +16,14 @@ public class EnemyStatus : MonoBehaviour
     public float WanderRadius => statManager.GetValue(StatType.WanderRadius);
     public float SenseRange => statManager.GetValue(StatType.SenseRange);
     public float AttackRange  => statManager.GetValue(StatType.AttackRange);
+    // Enemy 사망 판정
+    public bool IsDead => CurrentHealth <= 0;
 
-    private void Start()
+    private void Awake()
     {
         statManager = GetComponent<StatManager>();
-        statManager.Init(enemySO);
-        EnemyTable enemyTable = TableManager.Instance.GetTable<EnemyTable>();
-        enemySO = enemyTable.GetDataByID(1);
     }
+
 
     // Collider 초기화 함수
     public void InitCollider(Collider2D _senseCollider, Collider2D _attackCollider)
@@ -62,8 +62,7 @@ public class EnemyStatus : MonoBehaviour
     }
     
     
-    // Enemy 사망 판정
-    public bool IsDead => CurrentHealth <= 0;
+    
     
     
     

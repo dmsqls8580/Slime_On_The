@@ -19,8 +19,9 @@ public class ItemSOEditor : Editor
         DrawSafeField("itemTypes");
         DrawSafeField("stackable");
         DrawSafeField("maxStack");
+        DrawSafeField("recipe", true);
 
-        // Å¸ÀÔº° µ¥ÀÌÅÍ Ç¥½Ã (ÃÊ±âÈ­ + null Ã¼Å© Æ÷ÇÔ)
+        // íƒ€ì…ë³„ ë°ì´í„° í‘œì‹œ (ì´ˆê¸°í™” + null ì²´í¬ í¬í•¨)
         if (item.itemTypes.HasFlag(ItemType.Material))
         {
             if (item.materialData == null) item.materialData = new MaterialData();
@@ -45,12 +46,6 @@ public class ItemSOEditor : Editor
             DrawSafeField("eatableData", true);
         }
 
-        if (item.itemTypes.HasFlag(ItemType.Placeable))
-        {
-            if (item.placeableData == null) item.placeableData = new PlaceableData();
-            DrawSafeField("placeableData", true);
-        }
-
         serializedObject.ApplyModifiedProperties();
     }
 
@@ -63,7 +58,7 @@ public class ItemSOEditor : Editor
         }
         else
         {
-            EditorGUILayout.HelpBox($"[ÇÊµå ¾øÀ½] {propertyName}", MessageType.Warning);
+            EditorGUILayout.HelpBox($"[í•„ë“œ ì—†ìŒ] {propertyName}", MessageType.Warning);
         }
     }
 }
