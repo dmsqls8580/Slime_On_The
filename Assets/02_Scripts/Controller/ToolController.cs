@@ -26,11 +26,11 @@ public class ToolController : MonoBehaviour
 
     public float GetAttackPow()
     {
-        return _equippedTool != null ? _equippedTool.AttackPow : 0;
+        return _equippedTool != null ? _equippedTool.AttackPow : 1f;
     }
 
     public float GetAttackSpd()
     {
-        return _equippedTool != null ? _equippedTool.AttackSpd : 0;
+        return _equippedTool != null ? _equippedTool.AttackSpd : 1f;
     }
 }

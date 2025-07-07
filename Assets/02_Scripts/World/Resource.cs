@@ -1,0 +1,93 @@
+using PlayerStates;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+
+[System.Serializable]
+public class DropItemData
+{
+    public ItemSO itemSo; //드랍될 아이템 데이터
+    public int amount = 1;// 드랍 개수
+    [Range(0f, 100f)] 
+    public float dropChance = 100f; //아이템 드랍확률 100%
+}
+
+public class Resource : MonoBehaviour, IInteractable
+{
+    [Header("Drop Item Data Info(SO, 개수, 확률)")]
+    [SerializeField] private List<DropItemData> dropItems;
+    [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
+    
+    [Header("Drop Animation")]
+    [SerializeField] private float dropUpForce = 5f;
+    [SerializeField] private float dropSideForce = 2f;
+    [SerializeField] private float dropAngleRange = 60f;
+    
+    [Header("Drop Item Health")]
+    [SerializeField]private float maxHealth;
+    
+    private float currentHealth;
+    private Rigidbody2D rigid;
+
+    private void Awake()
+    {
+        currentHealth= maxHealth;
+    }
+
+    private void DropItems(Transform _player)
+    {
+        float randomChance = Random.value;
+        
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            if (randomChance * 100f > item.dropChance)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < item.amount; i++)
+            {
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo,1, _player);
+                    
+                }
+                
+                rigid= dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce); 
+            } 
+        }
+    }
+
+    public void Interact(InteractionCommandType _type, PlayerController _playerController)
+    {
+        var toolController = _playerController.GetComponent<ToolController>();
+        float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
+        TakeInteraction(toolPower);
+        
+        if(currentHealth <= 0) 
+        {
+            DropItems(_playerController.transform);
+            Destroy(gameObject);
+        }
+    }
+
+    public void TakeInteraction(float _damage)
+    {
+        currentHealth -= _damage;
+        Logger.Log($"{currentHealth}");
+        currentHealth = Mathf.Max(currentHealth, 0);
+    }
+
+}
