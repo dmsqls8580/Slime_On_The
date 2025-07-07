@@ -13,6 +13,9 @@ public enum StatType
     MaxSlimeGauge,
     CurrentSlimeGauge,
     
+    //Interact
+    ActSpeed,
+    
     // Enenmy
     AttackCooldown,
     MaxMoveDelay,

@@ -44,8 +44,7 @@ namespace PlayerStates
         public Vector2 LastMoveDir => lastMoveDir;
         public Rigidbody2D Rigid2D => rigid2D;
 
-        private float finalAtk;
-        private float finalAtkSpd;
+        private float actCoolDown = 0f;
 
         private bool dashTrigger;
 
@@ -56,7 +55,6 @@ namespace PlayerStates
         }
 
         private bool attackQueued = false;
-
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
@@ -77,6 +75,7 @@ namespace PlayerStates
             forceReceiver = GetComponent<ForceReceiver>();
             animationController =  GetComponent<PlayerAnimationController>();
             skillExecutor = GetComponent<SkillExecutor>();
+            toolController= GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
             
@@ -85,18 +84,12 @@ namespace PlayerStates
 
         protected override void Start()
         {
-            if (interactionSelector==null)
-            {
-                Debug.Log("not");
-            }
             base.Start();
             PlayerTable playerTable = TableManager.Instance.GetTable<PlayerTable>();
             PlayerSO playerData = playerTable.GetDataByID(0);
 
             PlayerStatus.Init(playerData);
-
             StatManager.Init(playerData);
-
 
             var action = inputController.PlayerActions;
             action.Move.performed += context =>
@@ -107,7 +100,6 @@ namespace PlayerStates
             };
             
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
-
             
             action.Attack0.performed += context =>
             {
@@ -122,7 +114,6 @@ namespace PlayerStates
             };
         }
 
-
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
@@ -132,15 +123,20 @@ namespace PlayerStates
                 attackCooldown -= Time.deltaTime;
             }
 
-            if (Input.GetKeyDown(KeyCode.K))
+            if (actCoolDown > 0f)
             {
-                PlayerStatus.RecoverSlimeGauge(5);
+                actCoolDown -= Time.deltaTime;
+            }
+
+            if (Input.GetKey(KeyCode.K))
+            {
+                PlayerStatus.RecoverSlimeGauge(30);
             }
         }
 
-        protected override IState<PlayerController, PlayerState> GetState(PlayerState state)
+        protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
         {
-            switch (state)
+            switch (_state)
             {
                 case PlayerState.Idle:
                     return new IdleState();
@@ -151,9 +147,7 @@ namespace PlayerStates
                 case PlayerState.Attack0:
                     return new Attack0State(PlayerSkillMananger.Instance.GetSkill(false));
                 case PlayerState.Attack1:
-                    return new Attack0State(PlayerSkillMananger.Instance.GetSkill(true));
-                case PlayerState.Interact:
-                    return new InteractState();
+                    //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
                 case PlayerState.Dead:
                     return new DeadState();
                 default:
@@ -203,18 +197,21 @@ namespace PlayerStates
 
         public void TryInteract()
         {
+            if (actCoolDown > 0) return;
             var target = interactionSelector.FInteractable;
 
             if (target == null)
             {
-                Debug.Log("Target is null");
+                Logger.Log("Target is null");
                 return;
             }
+            
+            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
 
-            interactionHandler.HandleInteraction(target, InteractionCommandType.F);
+            float toolActSpd = toolController.GetAttackSpd();
+            actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
         }
         
-
         public Vector2 UpdatePlayerDirectionByMouse()
         {
             Vector2 mouseScreenPos = inputController.LookDirection;
@@ -236,13 +233,13 @@ namespace PlayerStates
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
 
-        public void TakeDamage(IAttackable attacker)
+        public void TakeDamage(IAttackable _attacker)
         {
             if (IsDead) return;
-            if (attacker != null)
+            if (_attacker != null)
             {
                 // 피격
-                PlayerStatus.TakeDamage(attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
                 if (PlayerStatus.CurrentHp <= 0)
                 {
                     Dead();

@@ -10,7 +10,6 @@ namespace PlayerStates
         Dash,
         Attack0,
         Attack1,
-        Interact,
         Dead,
     }
 
@@ -228,34 +227,6 @@ namespace PlayerStates
     }
 
     public class Attack1State : IState<PlayerController, PlayerState>
-    {
-        public void OnEnter(PlayerController owner)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnUpdate(PlayerController owner)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnFixedUpdate(PlayerController owner)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public void OnExit(PlayerController entity)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public PlayerState CheckTransition(PlayerController owner)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
-    public class InteractState : IState<PlayerController, PlayerState>
     {
         public void OnEnter(PlayerController owner)
         {
