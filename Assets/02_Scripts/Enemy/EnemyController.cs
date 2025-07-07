@@ -1,5 +1,5 @@
 using System;
-using Enemyststes;
+using Enemystates;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -103,8 +103,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         ChangeState(EnemyState.Idle);
         
-        
-        
         transform.position = SpawnPos; // 혹은 원하는 위치
         if (Agent.isOnNavMesh)
         {
@@ -120,6 +118,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         gameObject.SetActive(false);
     }
     
+    /************************ EnemyController ***********************/
     
     
     protected override void Awake()
@@ -153,20 +152,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
+        
         // 이동 중일 때만 각도/flipX 갱신
         if (velocityMagnitude > 0.01f)
         {
             lastAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
             lastFlipX = Agent.velocity.x < 0;
         }
+        
         // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
         // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
         if (AttackTarget != null)
         {
-            Vector2 targetDir = ChaseTarget.transform.position - transform.position;
-            lastFlipX = targetDir.x < 0;
+            if (ChaseTarget != null)
+            {
+                Vector2 targetDir = ChaseTarget.transform.position - transform.position;
+                lastFlipX = targetDir.x < 0;
+            }
         }
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
@@ -202,7 +206,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     private void ShootProjectile()
     {
-        string projectileID = EnemyStatus.enemySO.projectileID;
+        string projectileID = EnemyStatus.enemySO.ProjectileID.ToString();
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
         projectileObject.transform.position = transform.position;
         

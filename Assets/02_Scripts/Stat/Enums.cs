@@ -22,7 +22,8 @@ public enum StatType
     MinMoveDelay,
     WanderRadius,
     SenseRange,
-    AttackRange
+    AttackRange,
+    FleeDistance
 }
 
 public enum StatModifierType

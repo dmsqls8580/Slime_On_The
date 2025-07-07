@@ -13,11 +13,11 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
     public int SlotIndex { get; protected set; }
 
     // 슬롯 초기화
-    public virtual void Initialize(int index)
+    public virtual void Initialize(int _index)
     {
-        SlotIndex = index;
+        SlotIndex = _index;
         InventoryManager.Instance.OnSlotChanged += OnSlotChanged;
-        OnSlotChanged(index);
+        OnSlotChanged(_index);
     }
     
     private void OnDestroy()
@@ -44,20 +44,20 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
         OnSlotChanged(SlotIndex);
     }
     
-    public virtual void Clear(int amount)
+    public virtual void Clear(int _amount)
     {
-        InventoryManager.Instance.RemoveItem(SlotIndex, amount);
+        InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
         Refresh();
     }
     
-    public virtual void OnSlotSelectedChanged(bool isSelected)
+    public virtual void OnSlotSelectedChanged(bool _isSelected)
     {
         
     }
     
-    public virtual void OnSlotChanged(int index)
+    public virtual void OnSlotChanged(int _index)
     {
-        if (index != SlotIndex) return;
+        if (_index != SlotIndex) return;
 
         var data = GetData();
         if (data != null && data.IsValid)
@@ -74,5 +74,5 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
         }
     }
 
-    public abstract void OnPointerClick(PointerEventData eventData);
+    public abstract void OnPointerClick(PointerEventData _eventData);
 }
