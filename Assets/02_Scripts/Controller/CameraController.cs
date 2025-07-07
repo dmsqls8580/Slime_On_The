@@ -1,7 +1,5 @@
 using Cinemachine;
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -20,14 +18,12 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-        float scroll= Input.GetAxis("Mouse ScrollWheel");
-        if (scroll < 0f)
+        
+        if (Input.GetKeyDown(KeyCode.Minus)|| Input.GetKeyDown(KeyCode.KeypadMinus))
         {
             CameraZoomOut();
         }
-        else if (scroll > 0f)
+        else if (Input.GetKeyDown(KeyCode.Equals)||Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             CameraZoomIn();
         }
