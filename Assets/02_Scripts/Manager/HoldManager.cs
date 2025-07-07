@@ -24,39 +24,35 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
         holdSlot.SetPosition(localPoint);
     }
     
-
     // 홀드슬롯에 아이템 추가
-    public int TryAddItem(TempItemSO itemData, int amount)
+    public int TryAddItem(ItemSO _itemData, int _amount)
     {
-        if (itemData == null || amount <= 0)
+        if (_itemData == null || _amount <= 0)
             return 0;
 
-        // 아무것도 안 들고 있으면 새로 추가
         if (!IsHolding)
         {
-            int addAmount = Mathf.Clamp(amount, 1, itemData.maxStack);
-            HeldItem = new ItemInstanceData(itemData, addAmount);
+            int addAmount = Mathf.Clamp(_amount, 1, _itemData.maxStack);
+            HeldItem = new ItemInstanceData(_itemData, addAmount);
             Refresh();
             return addAmount;
         }
 
-        // 다른 아이템을 들고있다면 추가 불가
-        if (HeldItem.ItemData != itemData) return 0;
+        if (HeldItem.ItemData != _itemData) return 0;
 
-        // 같은 아이템을 들고있다면 병합
-        int space = itemData.maxStack - HeldItem.Quantity;
-        int added = Mathf.Min(space, amount);
+        int space = _itemData.maxStack - HeldItem.Quantity;
+        int added = Mathf.Min(space, _amount);
         HeldItem.Quantity += added;
         Refresh();
         return added;
     }
 
     // 홀드슬롯에서 아이템 제거
-    public void RemoveItem(int amount)
+    public void RemoveItem(int _amount)
     {
         if (!IsHolding) return;
 
-        HeldItem.Quantity -= amount;
+        HeldItem.Quantity -= _amount;
         if (HeldItem.Quantity <= 0)
         {
             Clear();
@@ -68,10 +64,10 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     }
     
     // 홀드슬롯 초기화
-    public void SetItem(ItemInstanceData data, SlotBase origin)
+    public void SetItem(ItemInstanceData _data, SlotBase _origin)
     {
-        HeldItem = data;
-        OriginSlot = origin;
+        HeldItem = _data;
+        OriginSlot = _origin;
         Refresh();
     }
     
@@ -83,8 +79,6 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
         Refresh();
     }
 
-    
-    
     // 홀드 취소
     public void ReturnToOrigin()
     {
@@ -95,17 +89,15 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
         Clear();
     }
     
-    
     // 장비타입 확인
     public bool IsHeldItemEquip()
     {
-        return IsHolding && HeldItem.ItemData.useType == UseType.Equip;
+        return IsHolding && HeldItem.ItemData.itemTypes == ItemType.Equipable;
     }
     public EquipType? GetHeldEquipType()
     {
-        return IsHeldItemEquip() ? (EquipType?)HeldItem.ItemData.equipType : null;
+        return IsHeldItemEquip() ? (EquipType?)HeldItem.ItemData.equipableData.equipableType : null;
     }
-    
     
     // 아이템 갱신
     public void Refresh()
