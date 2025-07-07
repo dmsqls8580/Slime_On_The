@@ -27,19 +27,16 @@ public class ItemHandler : MonoBehaviour
 
     public void ShowItemIcon(ItemSO _itemSo)
     {
-        Logger.Log($"ShowItemIcon 호출: {_itemSo?.name}, sprite: {_itemSo?.icon}, icon.enabled: {icon.enabled}");
         if (!_itemSo.IsUnityNull() && _itemSo != null)
         {
             icon.sprite = _itemSo.icon;
             icon.enabled = true;
             isActive = true;
-            Logger.Log($"아이콘 활성화! sprite={icon.sprite}, enabled={icon.enabled}");
         }
         else
         {
             icon.enabled = false;
             isActive = false;
-            Logger.Log("아이콘 비활성화");
         }
         isActive = (_itemSo != null && _itemSo.icon != null);
     }

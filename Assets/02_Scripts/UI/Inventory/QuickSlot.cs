@@ -24,7 +24,6 @@ public class QuickSlot : SlotBase
             if (_isSelected)
             {
                 var data = GetData();
-                Logger.Log($"[QuickSlot] 선택 아이템: {data?.ItemData?.itemName}");
                 handIcon.ShowItemIcon(data != null ? data.ItemData : null);
             }
         }

@@ -1,7 +1,5 @@
 using Cinemachine;
-using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class CameraController : MonoBehaviour
         {
             CameraZoomOut();
         }
-        else if (Input.GetKeyDown(KeyCode.Plus)||Input.GetKeyDown(KeyCode.KeypadPlus))
+        else if (Input.GetKeyDown(KeyCode.Equals)||Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             CameraZoomIn();
         }
