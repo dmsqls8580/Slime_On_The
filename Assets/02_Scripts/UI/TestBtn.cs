@@ -8,4 +8,9 @@ public class TestBtn : MonoBehaviour
     {
         UIManager.Instance.Toggle<UIInventory>();
     }
+    
+    public void OnToggleCrafting()
+    {
+        UIManager.Instance.Toggle<UICrafting>();
+    }
 }
