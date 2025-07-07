@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &4947771559810032941
+--- !u!1 &3027746625766542306
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,43 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8016559811749314588}
-  - component: {fileID: 5720474514323196175}
+  - component: {fileID: 5993078826654496825}
+  - component: {fileID: 2490766163572738506}
   m_Layer: 0
-  m_Name: InventoryTestInitializer
+  m_Name: InventoryTestSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8016559811749314588
+--- !u!4 &5993078826654496825
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4947771559810032941}
+  m_GameObject: {fileID: 3027746625766542306}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 766.0705, y: 115.66519, z: 31.795424}
+  m_LocalPosition: {x: 0, y: 0.0001373291, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5720474514323196175
+--- !u!114 &2490766163572738506
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4947771559810032941}
+  m_GameObject: {fileID: 3027746625766542306}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d63edb7c1585c748a88d694e5c2389b, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e03de069641cd54e89cb57fd93943ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   testItems:
-  - {fileID: 11400000, guid: bc73465337937414b9b42da4c20735c8, type: 2}
+  - {fileID: 11400000, guid: e3f2f70a2f49cd94c9dcd0332a56b802, type: 2}
+  - {fileID: 11400000, guid: daf362518a2c40a42b9a42b18836308d, type: 2}
   - {fileID: 11400000, guid: fa471c9979a67d24193d736677852dea, type: 2}
   - {fileID: 11400000, guid: 3a841aae6ca656846a726a2517ca7c77, type: 2}
+  quantities: 14000000140000000400000004000000
