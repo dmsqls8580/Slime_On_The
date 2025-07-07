@@ -8,7 +8,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
     
-    public EnemyStatus EnemyStatus;
+    public Transform projectileTransform;                  // 발사체 생성 Transform
+    
+    public EnemyStatus EnemyStatus;                        // EnemyStatus
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
 
@@ -59,8 +61,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     
     /************************ IAttackable ***********************/
-    // Todo
-    // AttackStat, Target 수정해서 데미지 실제로 적용되도록 하기
     public StatBase AttackStat => StatManager.Stats[StatType.Attack];
 
     public IDamageable Target 
@@ -68,16 +68,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (Target != null && !Target.IsDead)
+        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
         {
-            Target.TakeDamage(this);
+            if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
+            {
+                Target.TakeDamage(this);
+            }
         }
+        else if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Ranged)
+        {
+            // 원거리: 투사체 발사
+            ShootProjectile();
+        }
+        
     }
     
     /************************ IPoolObject ***********************/
     public GameObject GameObject => this.gameObject;
     public string PoolID => EnemyStatus.enemySO != null
-        ? EnemyStatus.enemySO.EnemyIDX.ToString() : "Invalid";
+        ? EnemyStatus.enemySO.EnemyID.ToString() : "Invalid";
     public int PoolSize { get; } = 10;
     
     public void OnSpawnFromPool()
@@ -151,8 +160,14 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             lastFlipX = Agent.velocity.x < 0;
         }
         // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
-        
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
+        
+        // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
+        if (AttackTarget != null)
+        {
+            Vector2 targetDir = ChaseTarget.transform.position - transform.position;
+            lastFlipX = targetDir.x < 0;
+        }
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
         spriteRenderer.flipX = lastFlipX; 
@@ -180,9 +195,24 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
-    public void SetPlayerInAttackRange(bool inRange)
+    public void SetPlayerInAttackRange(bool _inRange)
     {
-        IsPlayerInAttackRange = inRange;
+        IsPlayerInAttackRange = _inRange;
+    }
+
+    private void ShootProjectile()
+    {
+        string projectileID = EnemyStatus.enemySO.projectileID;
+        GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
+        projectileObject.transform.position = transform.position;
+        
+        if (projectileObject.TryGetComponent<EnemyProjectile>(out var projectile))
+        {
+            Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
+            Vector2 direction = shootdir.normalized;
+            projectile.Init(direction, AttackTarget, AttackStat, 10f);
+            // Todo : Projectile 속도 스탯 추가하기
+        }
     }
     
 }

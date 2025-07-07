@@ -6,64 +6,62 @@ public class UIQuickSlot : MonoBehaviour
     [SerializeField] private QuickSlot[] slots;
     private int selectedIndex = 0;
 
+    public int SelectedIndex => selectedIndex;
+
     private void Start()
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].Initialize(i);
-            slots[i].onSlotClicked = SelectSlot;
+            slots[i].Initialize(i, this);
         }
-        
+
         UpdateSelectedVisual();
     }
-    
+
     private void Update()
     {
-        
         HandleNumberInput();
         HandleScrollInput();
     }
-    
+
     public void SelectSlot(int index)
     {
+        if (index < 0 || index >= slots.Length)
+            return;
+
         selectedIndex = index;
         UpdateSelectedVisual();
     }
 
     private void HandleNumberInput()
     {
-        if (Keyboard.current.digit1Key.wasPressedThisFrame) { selectedIndex = 0; }
-        else if (Keyboard.current.digit2Key.wasPressedThisFrame) { selectedIndex = 1; }
-        else if (Keyboard.current.digit3Key.wasPressedThisFrame) { selectedIndex = 2; }
-        else if (Keyboard.current.digit4Key.wasPressedThisFrame) { selectedIndex = 3; }
-        else if (Keyboard.current.digit5Key.wasPressedThisFrame) { selectedIndex = 4; }
-        else if (Keyboard.current.digit6Key.wasPressedThisFrame) { selectedIndex = 5; }
-        else if (Keyboard.current.digit7Key.wasPressedThisFrame) { selectedIndex = 6; }
-        else if (Keyboard.current.digit8Key.wasPressedThisFrame) { selectedIndex = 7; }
-        else if (Keyboard.current.digit9Key.wasPressedThisFrame) { selectedIndex = 8; }
-        else if (Keyboard.current.digit0Key.wasPressedThisFrame) { selectedIndex = 9; }
-    
-        UpdateSelectedVisual();
+        if (Keyboard.current.digit1Key.wasPressedThisFrame) SelectSlot(0);
+        else if (Keyboard.current.digit2Key.wasPressedThisFrame) SelectSlot(1);
+        else if (Keyboard.current.digit3Key.wasPressedThisFrame) SelectSlot(2);
+        else if (Keyboard.current.digit4Key.wasPressedThisFrame) SelectSlot(3);
+        else if (Keyboard.current.digit5Key.wasPressedThisFrame) SelectSlot(4);
+        else if (Keyboard.current.digit6Key.wasPressedThisFrame) SelectSlot(5);
+        else if (Keyboard.current.digit7Key.wasPressedThisFrame) SelectSlot(6);
+        else if (Keyboard.current.digit8Key.wasPressedThisFrame) SelectSlot(7);
+        else if (Keyboard.current.digit9Key.wasPressedThisFrame) SelectSlot(8);
+        else if (Keyboard.current.digit0Key.wasPressedThisFrame) SelectSlot(9);
     }
-    
+
     private void HandleScrollInput()
     {
         float scroll = Mouse.current.scroll.ReadValue().y;
 
         if (scroll > 0f)
-            selectedIndex = (selectedIndex - 1 + slots.Length) % slots.Length;
+            SelectSlot((selectedIndex - 1 + slots.Length) % slots.Length);
         else if (scroll < 0f)
-            selectedIndex = (selectedIndex + 1) % slots.Length;
-
-        if (scroll != 0)
-            UpdateSelectedVisual();
+            SelectSlot((selectedIndex + 1) % slots.Length);
     }
 
     private void UpdateSelectedVisual()
     {
         for (int i = 0; i < slots.Length; i++)
         {
-            slots[i].SetSelected(i == selectedIndex);
+            slots[i].OnSlotSelectedChanged(i == selectedIndex);
         }
     }
 }

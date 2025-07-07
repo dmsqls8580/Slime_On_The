@@ -10,7 +10,7 @@ public class EnemyTable : BaseTable<int, EnemySO>
         DataDic.Clear();
         foreach (EnemySO SO in dataList)
         {
-            DataDic[SO.EnemyIDX] = SO;
+            DataDic[SO.EnemyID] = SO;
         }
     }
 }

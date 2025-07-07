@@ -4,16 +4,21 @@ using UnityEngine.Tilemaps;
 public class PlaceMode : MonoBehaviour
 {
     [SerializeField] private Tilemap tilemap;
+    [SerializeField] private PreviewClampArea previewClampArea;
+    [SerializeField] private Transform playerTransform;
 
     private GameObject normalPrefab;
     private GameObject previewPrefab;
     private GameObject previewPrefabInstance;
+
     private ObjectPreview objectPreview;
+
+    private bool isEvenWidth;
 
     private void Update()
     {
+        previewClampArea.UpdateCenter(playerTransform.position);
         objectPreview.UpdatePreview();
-
         if (Input.GetKeyDown(KeyCode.B) && objectPreview.CanPlace)
         {
             Place();
@@ -25,7 +30,7 @@ public class PlaceMode : MonoBehaviour
         Instantiate(normalPrefab, previewPrefabInstance.transform.position, Quaternion.identity);
     }
 
-    // 아이템 사용 시 호출 필요.
+    // 아이템 사용 시 호출.
     // UIQuickSlot에 PlaceMode.cs 참조시키고 placeMode.SetActiveTruePlaceMode(아이템정보);.
     public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo)
     {
@@ -39,7 +44,9 @@ public class PlaceMode : MonoBehaviour
         previewPrefab = _placeableInfo.previewPrefab;
         previewPrefabInstance = Instantiate(previewPrefab);
         objectPreview = previewPrefabInstance.GetComponent<ObjectPreview>();
-        objectPreview.Initialize(tilemap);
+        isEvenWidth = _placeableInfo.isEvenWidth;
+        objectPreview.Initialize(tilemap, previewClampArea, isEvenWidth);
+        previewClampArea.Initialize(tilemap);
     }
 
     // 아이템 사용 끝나면 호출 필요.
