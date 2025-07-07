@@ -141,11 +141,12 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         IsPlayerInAttackRange = _inRange;
     }
     
-    public void EnterRandomPattern()
+    public BossState EnterRandomPattern()
     {
         // Pattern1, Pattern2, Pattern3 중 랜덤 선택
         BossState[] patterns = { BossState.Pattern1, BossState.Pattern2, BossState.Pattern3 };
         BossState nextPattern = patterns[Random.Range(0, patterns.Length)];
         ChangeState(nextPattern);
+        return nextPattern;
     }
 }

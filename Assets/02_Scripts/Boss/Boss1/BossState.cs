@@ -209,15 +209,13 @@ namespace BossStates
             {
                 return BossState.Idle;
             }
-            // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
+            // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
             if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
             {
-                return BossState.Pattern1;
+                return owner.EnterRandomPattern();
             }
             return BossState.Chase;
         }
-        
-        
     }
     
     // Pattern 1은 Cast1 -> Chase -> Stomp -> Chase
