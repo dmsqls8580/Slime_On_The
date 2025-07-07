@@ -49,6 +49,11 @@ public class UIInventory : UIBase
         foreach (var slot in equipSlots)
             slot.Refresh();
     }
+
+    public EquipSlot[] GetEquipSlots()
+    {
+        return equipSlots.ToArray();
+    }
     
     
     public override void Open()

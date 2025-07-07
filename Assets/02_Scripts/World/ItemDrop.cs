@@ -77,6 +77,7 @@ public class ItemDrop : MonoBehaviour
     {
         if (playerTransform != null && other.transform == playerTransform)
         {
+            AddToInventory();
             Destroy(gameObject);
         }
     }
@@ -87,7 +88,7 @@ public class ItemDrop : MonoBehaviour
 
         if (!itemSo.IsUnityNull())
         {
-            //InventoryManager.Instance.TryAddItemGlobally(itemSo, amount);
+            InventoryManager.Instance.TryAddItemGlobally(itemSo, amount);
         }
     }
 }

@@ -24,13 +24,14 @@ public enum ToolType
     WateringCan 
 }
 
-public enum EquipableType 
-{ 
-    Armor, 
-    Pants, 
-    Shoes, 
-    Necklace, 
-    Ring 
+public enum EquipType
+{
+    Chest = 0,
+    Leg = 1,
+    Boots = 2,
+    Amulet = 3,
+    Ring = 4,
+    Core = 5,
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
@@ -76,7 +77,7 @@ public class ToolData
 [System.Serializable]
 public class EquipableData
 {
-    public EquipableType equipableType;
+    public EquipType equipableType;
     public float maxHealth;
     public float atk;
     public float def;
