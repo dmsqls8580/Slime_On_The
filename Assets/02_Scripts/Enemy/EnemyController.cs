@@ -206,7 +206,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
         projectileObject.transform.position = transform.position;
         
-        if (projectileObject.TryGetComponent<EnemyProjectile>(out var projectile))
+        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile))
         {
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
