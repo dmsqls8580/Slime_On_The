@@ -12,10 +12,10 @@ public enum StatType
     CurrentHunger,
     MaxSlimeGauge,
     CurrentSlimeGauge,
-
+    
     //Interact
     ActSpeed = 40,
-
+    
     // Enemy
     AttackCooldown = 60,
     MaxMoveDelay,
