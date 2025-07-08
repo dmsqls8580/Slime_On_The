@@ -31,12 +31,12 @@ public class BossSpawner : MonoBehaviour
 
     private BossTable bossTable;
     private List<GameObject> spawnedboss = new List<GameObject>();
-    private CircleCollider2D collider2D;
+    private CircleCollider2D circleCollider2D;
 
     private void Awake()
     {
         bossTable = TableManager.Instance.GetTable<BossTable>();
-        collider2D = GetComponent<CircleCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
     }
     
     private void Start()
@@ -99,9 +99,9 @@ public class BossSpawner : MonoBehaviour
     // Collider 반경 설정
     private void InitCollider()
     {
-        if(collider2D != null)
+        if(circleCollider2D != null)
         {
-            collider2D.radius = SpawnRadius;
+            circleCollider2D.radius = SpawnRadius;
         }
     }
 

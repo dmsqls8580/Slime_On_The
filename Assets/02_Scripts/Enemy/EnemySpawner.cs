@@ -33,12 +33,12 @@ public class EnemySpawner : MonoBehaviour
 
     private EnemyTable enemyTable;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
-    private CircleCollider2D collider2D;
+    private CircleCollider2D circleCollider2D;
 
     private void Awake()
     {
         enemyTable = TableManager.Instance.GetTable<EnemyTable>();
-        collider2D = GetComponent<CircleCollider2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     private void Start()
@@ -118,19 +118,19 @@ public class EnemySpawner : MonoBehaviour
     // Collider 반경 설정
     private void InitCollider()
     {
-        if(collider2D != null)
+        if(circleCollider2D != null)
         {
-            collider2D.radius = SpawnRadius;
+            circleCollider2D.radius = SpawnRadius;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        SpawnEnemies();
+        // SpawnEnemies();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        ClearEnemies();
+        // ClearEnemies();
     }
 }

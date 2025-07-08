@@ -11,13 +11,16 @@ public enum EnemyAttackType
 public enum ProjectileName
 {
     //Enemy
-    None,
+    None = 0,
     Bolt,
     
     // Boss
-    Spell1,
-    Spell2,
-    Spell3,
+    TurtleSpell1 = 20, 
+    TurtleSpell2,
+    TurtleSpell3,
+    TurtleSpell4,
+    TurtleSpell5,
+    TurtleSpell6,
     
 }
 
