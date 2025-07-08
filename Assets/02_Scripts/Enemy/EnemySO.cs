@@ -10,8 +10,15 @@ public enum EnemyAttackType
 
 public enum ProjectileName
 {
+    //Enemy
     None,
-    Bolt
+    Bolt,
+    
+    // Boss
+    Spell1,
+    Spell2,
+    Spell3,
+    
 }
 
 [CreateAssetMenu(fileName = "EnemySO", menuName = "ScriptableObjects/EnemySO", order = 1)]

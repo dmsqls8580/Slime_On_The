@@ -150,7 +150,9 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         }
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
-        spriteRenderer.flipX = lastFlipX; 
+        spriteRenderer.flipX = lastFlipX;
+
+        Logger.Log($"CurrentState = {CurrentState}");
     }
     
     protected override IState<BossController, BossState> GetState(BossState state)
@@ -185,5 +187,10 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         BossState nextPattern = patterns[Random.Range(0, patterns.Length)];
         ChangeState(nextPattern);
         return nextPattern;
+    }
+
+    public void Cast1Projectile()
+    {
+        
     }
 }

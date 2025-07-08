@@ -232,6 +232,10 @@ namespace BossStates
         
         public void OnEnter(BossController owner)
         {
+            // 이동 정지
+            owner.Agent.isStopped = true;
+            owner.Agent.ResetPath();
+            
             // Cast1 애니메이션 재생
             owner.Animator.SetBool(isChasingHash, false);
             owner.Animator.SetBool(isCastingHash_1, true);
@@ -258,6 +262,10 @@ namespace BossStates
                 case 1:
                     if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
                     {
+                        // 이동 정지
+                        owner.Agent.isStopped = true;
+                        owner.Agent.ResetPath();
+                        
                         //  Chase -> Stomp
                         owner.Animator.SetBool(isChasingHash, false);
                         owner.Animator.SetBool(isStompingHash, true);
@@ -306,7 +314,10 @@ namespace BossStates
             {
                 return BossState.Dead;
             }
-
+            if (owner.ChaseTarget == null)
+            {
+                return BossState.Idle;
+            }
             if (patternPhase == 3)
             {
                 return BossState.Idle;
@@ -328,6 +339,10 @@ namespace BossStates
         private int patternPhase;
         public void OnEnter(BossController owner)
         {
+            // 이동 정지
+            owner.Agent.isStopped = true;
+            owner.Agent.ResetPath();
+            
             timer = 0f;
             patternPhase = 0;
             owner.Animator.SetBool(isCastingHash_2, true);
@@ -350,6 +365,10 @@ namespace BossStates
                 case 1: // Chase
                     if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
                     {
+                        // 이동 정지
+                        owner.Agent.isStopped = true;
+                        owner.Agent.ResetPath();
+                        
                         owner.Animator.SetBool(isChasingHash, false);
                         owner.Animator.SetBool(isStompingHash, true);
                         timer = 0f;
@@ -395,6 +414,10 @@ namespace BossStates
             {
                 return BossState.Dead;
             }
+            if (owner.ChaseTarget == null)
+            {
+                return BossState.Idle;
+            }
             if (patternPhase == 3)
             {
                 return owner.EnterRandomPattern();
@@ -417,6 +440,11 @@ namespace BossStates
         
         public void OnEnter(BossController owner)
         {
+            // Cast1
+            // 이동 정지
+            owner.Agent.isStopped = true;
+            owner.Agent.ResetPath();
+            
             timer = 0f;
             patternPhase = 0;
             owner.Animator.SetBool(isCastingHash_1, true);
@@ -427,7 +455,7 @@ namespace BossStates
             timer += Time.deltaTime;
             switch (patternPhase)
             {
-                case 0: // Cast1
+                case 0: // Chase
                     if (timer >= owner.Cast1Duration)
                     {
                         owner.Animator.SetBool(isCastingHash_1, false);
@@ -435,11 +463,14 @@ namespace BossStates
                         timer = 0f;
                         patternPhase = 1;
                     }
-
                     break;
-                case 1: // Chase
-                    if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+                case 1: // Cast2
+                    if (owner.ChaseTarget != null)
                     {
+                        // 이동 정지
+                        owner.Agent.isStopped = true;
+                        owner.Agent.ResetPath();
+                        
                         owner.Animator.SetBool(isChasingHash, false);
                         owner.Animator.SetBool(isCastingHash_2, true);
                         timer = 0f;
@@ -449,9 +480,8 @@ namespace BossStates
                     {
                         owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
                     }
-
                     break;
-                case 2: // Cast2
+                case 2: // Chase
                     if (timer >= owner.Cast2Duration)
                     {
                         owner.Animator.SetBool(isCastingHash_2, false);
@@ -485,7 +515,11 @@ namespace BossStates
             {
                 return BossState.Dead;
             }
-            if (patternPhase == 4)
+            if (owner.ChaseTarget == null)
+            {
+                return BossState.Idle;
+            }
+            if (patternPhase == 3)
             {
                 return owner.EnterRandomPattern();
             }
