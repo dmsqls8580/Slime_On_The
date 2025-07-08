@@ -29,38 +29,75 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     
     
     /************************ IDamageable ***********************/
-    public bool IsDead { get; }
-    public Collider2D Collider { get; }
+    public bool IsDead => BossStatus.IsDead;
+    public Collider2D Collider  => GetComponent<Collider2D>();
     public void TakeDamage(IAttackable _attacker)
     {
-        
+        if (IsDead) return;
+        if (_attacker != null)
+        {
+            // 피격
+            BossStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            if (BossStatus.CurrentHealth <= 0)
+            {
+                Dead();
+            }
+        }
     }
 
     public void Dead()
     {
-        
+        if (BossStatus.CurrentHealth <= 0)
+        {
+            ChangeState(BossState.Dead);
+            // 오브젝트 풀 반환
+            // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
+            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
+        }
     }
 
     /************************ IAttackable ***********************/
-    public StatBase AttackStat { get; }
-    public IDamageable Target { get; }
+    public StatBase AttackStat => StatManager.Stats[StatType.Attack];
+    
+    public IDamageable Target 
+        => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
     public void Attack()
     {
-        
+        if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
+        {
+            Target.TakeDamage(this);
+        }
     }
 
     /************************ IPoolObject ***********************/
-    public GameObject GameObject { get; }
-    public string PoolID { get; }
-    public int PoolSize { get; }
+    public GameObject GameObject => this.gameObject;
+    public string PoolID => BossStatus.BossSO != null
+        ? BossStatus.BossSO.BossID.ToString() :  "Invalid";
+
+    public int PoolSize { get; } = 1;
     public void OnSpawnFromPool()
     {
+        statManager.Init(BossStatus.BossSO);
         
+        // 상태머신이 초기화되지 않았다면 초기화
+        if (stateMachine == null || states == null)
+        {
+            SetupState();
+        }
+        ChangeState(BossState.Idle);
+        
+        transform.position = SpawnPos; // 혹은 원하는 위치
+        if (Agent.isOnNavMesh)
+        {
+            Agent.Warp(transform.position);
+        }
     }
 
     public void OnReturnToPool()
     {
-        
+        // 상태 정리, Agent.ResetPath() 등
+        Agent.ResetPath();
+        gameObject.SetActive(false);
     }
     
     /************************ BossController ***********************/

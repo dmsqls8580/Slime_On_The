@@ -253,19 +253,6 @@ namespace BossStates
                         owner.Animator.SetBool(isChasingHash, true);
                         timer = 0f;
                         patternPhase = 1;
-                        
-                        // Target의 위치를 추적해 이동.
-                        if (owner.ChaseTarget != null)
-                        {
-                            if (owner.IsPlayerInAttackRange)
-                            {
-                                owner.Agent.ResetPath();
-                            }
-                            else
-                            {
-                                owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
-                            }
-                        }
                     }
                     break;
                 case 1:
@@ -279,26 +266,19 @@ namespace BossStates
                         
                         // Todo : Stomp 시 주변에 데미지
                     }
+                    else if (owner.ChaseTarget != null)
+                    {
+                        // Chase
+                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    }
                     break;
                 case 2:
                     if (timer >= owner.StompDuration)
                     {
                         // Stomp -> Chases
                         owner.Animator.SetBool(isStompingHash, false);
-                        owner.Animator.SetBool(isChasingHash, true);
-                        
-                        // Target의 위치를 추적해 이동.
-                        if (owner.ChaseTarget != null)
-                        {
-                            if (owner.IsPlayerInAttackRange)
-                            {
-                                owner.Agent.ResetPath();
-                            }
-                            else
-                            {
-                                owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
-                            }
-                        }
+
+                        patternPhase = 3;
                     }
                     break;
                 default:
@@ -326,6 +306,11 @@ namespace BossStates
             {
                 return BossState.Dead;
             }
+
+            if (patternPhase == 3)
+            {
+                return BossState.Idle;
+            }
             return BossState.Pattern1;
         }
     }
@@ -339,29 +324,82 @@ namespace BossStates
         private readonly int isCastingHash_2 = Animator.StringToHash("IsCasting_2");
         private readonly int isStompingHash = Animator.StringToHash("IsStomping");
         
+        private float timer;
+        private int patternPhase;
         public void OnEnter(BossController owner)
         {
-            throw new System.NotImplementedException();
+            timer = 0f;
+            patternPhase = 0;
+            owner.Animator.SetBool(isCastingHash_2, true);
         }
 
         public void OnUpdate(BossController owner)
         {
-            throw new System.NotImplementedException();
+            timer += Time.deltaTime;
+            switch (patternPhase)
+            {
+                case 0: // Cast2
+                    if (timer >= owner.Cast2Duration)
+                    {
+                        owner.Animator.SetBool(isCastingHash_2, false);
+                        owner.Animator.SetBool(isChasingHash, true);
+                        timer = 0f;
+                        patternPhase = 1;
+                    }
+                    break;
+                case 1: // Chase
+                    if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+                    {
+                        owner.Animator.SetBool(isChasingHash, false);
+                        owner.Animator.SetBool(isStompingHash, true);
+                        timer = 0f;
+                        patternPhase = 2;
+                    }
+                    else if (owner.ChaseTarget != null)
+                    {
+                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    }
+                    break;
+                case 2:
+                    if (timer >= owner.StompDuration)
+                    {
+                        owner.Animator.SetBool(isStompingHash, false);
+                        owner.Animator.SetBool(isChasingHash, true);
+                        timer = 0f;
+                        patternPhase = 3;
+                    }
+                    break;
+                default:
+                    break;
+                
+            }
         }
 
         public void OnFixedUpdate(BossController owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnExit(BossController entity)
+        public void OnExit(BossController owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isWanderingHash, false);
+            owner.Animator.SetBool(isChasingHash, false);
+            owner.Animator.SetBool(isStompingHash, false);
+            owner.Animator.SetBool(isCastingHash_1, false);
+            owner.Animator.SetBool(isCastingHash_2, false);
         }
 
         public BossState CheckTransition(BossController owner)
         {
-            throw new System.NotImplementedException();
+            if (owner.IsDead)
+            {
+                return BossState.Dead;
+            }
+            if (patternPhase == 3)
+            {
+                return owner.EnterRandomPattern();
+            }
+            return BossState.Pattern2;
         }
     }
     
@@ -374,29 +412,84 @@ namespace BossStates
         private readonly int isCastingHash_2 = Animator.StringToHash("IsCasting_2");
         private readonly int isStompingHash = Animator.StringToHash("IsStomping");
         
+        private float timer;
+        private int patternPhase; // 0: Cast1, 1: Chase, 2: Cast2, 3: Chase, 4: Done
+        
         public void OnEnter(BossController owner)
         {
-            throw new System.NotImplementedException();
+            timer = 0f;
+            patternPhase = 0;
+            owner.Animator.SetBool(isCastingHash_1, true);
         }
 
         public void OnUpdate(BossController owner)
         {
-            throw new System.NotImplementedException();
+            timer += Time.deltaTime;
+            switch (patternPhase)
+            {
+                case 0: // Cast1
+                    if (timer >= owner.Cast1Duration)
+                    {
+                        owner.Animator.SetBool(isCastingHash_1, false);
+                        owner.Animator.SetBool(isChasingHash, true);
+                        timer = 0f;
+                        patternPhase = 1;
+                    }
+
+                    break;
+                case 1: // Chase
+                    if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+                    {
+                        owner.Animator.SetBool(isChasingHash, false);
+                        owner.Animator.SetBool(isCastingHash_2, true);
+                        timer = 0f;
+                        patternPhase = 2;
+                    }
+                    else if (owner.ChaseTarget != null)
+                    {
+                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    }
+
+                    break;
+                case 2: // Cast2
+                    if (timer >= owner.Cast2Duration)
+                    {
+                        owner.Animator.SetBool(isCastingHash_2, false);
+                        owner.Animator.SetBool(isChasingHash, true);
+                        timer = 0f;
+                        patternPhase = 3;
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void OnFixedUpdate(BossController owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
-        public void OnExit(BossController entity)
+        public void OnExit(BossController owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isWanderingHash, false);
+            owner.Animator.SetBool(isChasingHash, false);
+            owner.Animator.SetBool(isStompingHash, false);
+            owner.Animator.SetBool(isCastingHash_1, false);
+            owner.Animator.SetBool(isCastingHash_2, false);
         }
 
         public BossState CheckTransition(BossController owner)
         {
-            throw new System.NotImplementedException();
+            if (owner.IsDead) 
+            {
+                return BossState.Dead;
+            }
+            if (patternPhase == 4)
+            {
+                return owner.EnterRandomPattern();
+            }
+            return BossState.Pattern3;
         }
     }
     
