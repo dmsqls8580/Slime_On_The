@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
+    // 테스트용.
+    public PlaceMode placeMode;
+
     public const int MaxSlotCount = 40;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 20;

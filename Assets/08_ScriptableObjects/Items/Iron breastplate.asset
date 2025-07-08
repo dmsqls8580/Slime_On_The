@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 426
   itemName: Iron breastplate
   description: 
-  icon: {fileID: 1063364288, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  icon: {fileID: 0}
   itemTypes: 4
   stackable: 0
   maxStack: 1
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 5e937ce59142fb5448e291e44e0d7a30, type: 2}
     amount: 8
