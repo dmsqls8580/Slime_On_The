@@ -108,7 +108,7 @@ namespace PlayerStates
             };
 
             action.Dash.performed += context => dashTrigger = true;
-            action.Interaction.performed+= context =>
+            action.Gathering.performed+= context =>
             {
                TryInteract();
             };
