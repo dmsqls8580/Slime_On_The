@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 701
   itemName: Berry
   description: 
-  icon: {fileID: 175241168, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  icon: {fileID: 0}
   itemTypes: 8
   stackable: 1
   maxStack: 99
@@ -41,4 +41,6 @@ MonoBehaviour:
     duration: 0
     rottenable: 1
     permanent: 1
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe: []

@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 412
   itemName: Copper Pickaxe
   description: A pickaxe made of copper. Useful for mining.
-  icon: {fileID: 566748374, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  icon: {fileID: 0}
   itemTypes: 2
   stackable: 0
   maxStack: 1
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
     amount: 4
