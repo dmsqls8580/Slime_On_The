@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -15,6 +16,13 @@ public class InventorySlot : SlotBase
 
         if (isLeft)
         {
+            var handIcon = FindObjectOfType<ItemHandler>();
+            if (!handIcon.IsUnityNull())
+            {
+                var data = GetData();
+                handIcon.ShowItemIcon(data?.ItemData);
+            }
+
             InventoryInteractionHandler.Instance.HandleLeftClick(this, isShift, isCtrl);
         }
         else if (isRight)

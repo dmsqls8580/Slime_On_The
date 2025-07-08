@@ -30,6 +30,7 @@ public class UIQuickSlot : MonoBehaviour
             return;
 
         selectedIndex = index;
+        
         UpdateSelectedVisual();
     }
 
