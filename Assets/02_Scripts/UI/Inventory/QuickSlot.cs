@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,25 +7,35 @@ public class QuickSlot : SlotBase
     private UIQuickSlot owner;
     private int quickSlotIndex;
 
-    public void Initialize(int index, UIQuickSlot ownerUI)
+    public void Initialize(int _index, UIQuickSlot _ownerUI)
     {
-        quickSlotIndex = index;
-        owner = ownerUI;
-        base.Initialize(index);
+        quickSlotIndex = _index;
+        owner = _ownerUI;
+        base.Initialize(_index);
     }
     
-    public override void OnSlotSelectedChanged(bool isSelected)
+    public override void OnSlotSelectedChanged(bool _isSelected)
     {
-        backgroundImage.color = isSelected ? Color.yellow : Color.white;
+        backgroundImage.color = _isSelected ? Color.yellow : Color.white;
+
+        var handIcon = FindObjectOfType<ItemHandler>();
+        if (!handIcon.IsUnityNull())
+        {
+            if (_isSelected)
+            {
+                var data = GetData();
+                handIcon.ShowItemIcon(data != null ? data.ItemData : null);
+            }
+        }
     }
 
-    public override void OnPointerClick(PointerEventData eventData)
+    public override void OnPointerClick(PointerEventData _eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
+        if (_eventData.button == PointerEventData.InputButton.Left)
         {
             owner?.SelectSlot(quickSlotIndex);
         }
-        else if (eventData.button == PointerEventData.InputButton.Right)
+        else if (_eventData.button == PointerEventData.InputButton.Right)
         {
             var data = GetData();
             if (data == null || !data.IsValid) return;

@@ -24,13 +24,14 @@ public enum ToolType
     WateringCan 
 }
 
-public enum EquipableType 
-{ 
-    Armor, 
-    Pants, 
-    Shoes, 
-    Necklace, 
-    Ring 
+public enum EquipType
+{
+    Chest = 0,
+    Leg = 1,
+    Boots = 2,
+    Amulet = 3,
+    Ring = 4,
+    Core = 5,
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
@@ -52,6 +53,7 @@ public class ItemSO : ScriptableObject
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
+    public PlaceableData placeableData;
 
     [Header("레시피")]
     public List<RecipeIngredient> recipe;
@@ -76,7 +78,7 @@ public class ToolData
 [System.Serializable]
 public class EquipableData
 {
-    public EquipableType equipableType;
+    public EquipType equipableType;
     public float maxHealth;
     public float atk;
     public float def;
@@ -93,6 +95,12 @@ public class EatableData
     public float duration;
     public bool rottenable;
     public bool permanent;
+}
+
+[System.Serializable]
+public class PlaceableData
+{
+    public PlaceableInfo placeableInfo;
 }
 
 [System.Serializable]

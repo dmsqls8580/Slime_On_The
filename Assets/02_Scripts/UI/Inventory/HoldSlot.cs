@@ -8,16 +8,16 @@ public class HoldSlot : SlotBase
     public bool IsEmpty => currentItem == null || !currentItem.IsValid;
 
     // 초기화
-    public void SetItem(ItemInstanceData item)
+    public void SetItem(ItemInstanceData _item)
     {
-        currentItem = item;
+        currentItem = _item;
         Refresh();
     }
     
     // 위치설정
-    public void SetPosition(Vector2 localPos)
+    public void SetPosition(Vector2 _localPos)
     {
-        (transform as RectTransform).localPosition = localPos;
+        (transform as RectTransform).localPosition = _localPos;
     }
 
     public void Clear()

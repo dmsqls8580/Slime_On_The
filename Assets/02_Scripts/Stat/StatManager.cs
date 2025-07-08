@@ -40,6 +40,7 @@ public class StatManager : MonoBehaviour
             StatType.CurrentHp => new ResourceStat(_statType, _value),
             StatType.CurrentHunger => new ResourceStat(_statType, _value),
             StatType.CurrentSlimeGauge=> new ResourceStat(_statType, _value),
+            StatType.Defense=> new ResourceStat(_statType, _value),
             //////////////////////////////////////////////////////////////////
             _ => new CalculateStat(_statType, _value),
         };

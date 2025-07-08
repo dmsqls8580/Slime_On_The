@@ -8,13 +8,15 @@ public class UIInventory : UIBase
     [SerializeField] private AnimationCurve openCloseCurve;
     
     [SerializeField] private List<InventorySlot> inventorySlots;
-    [SerializeField] private List<EquipSlot> equipSlots;
+    [SerializeField] private List<EquipSlot> equipSlots;    
 
     private Vector2 originPosition;
     private Vector2 targetPosition;
     
     private HoldManager holdManager;
     private InventoryManager inventoryManager;
+    
+    // TODO: 추가 인벤토리(배낭 등) 기능?
     
     private void Awake()
     {
@@ -48,6 +50,11 @@ public class UIInventory : UIBase
 
         foreach (var slot in equipSlots)
             slot.Refresh();
+    }
+
+    public EquipSlot[] GetEquipSlots()
+    {
+        return equipSlots.ToArray();
     }
     
     
