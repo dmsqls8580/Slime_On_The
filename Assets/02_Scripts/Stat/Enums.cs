@@ -1,23 +1,23 @@
 public enum StatType
 {
     // Common
-    MaxHp,
+    MaxHp = 0,
     CurrentHp,
     Attack,
     Defense,
     MoveSpeed,
 
     // Player
-    MaxHunger,
+    MaxHunger =20,
     CurrentHunger,
     MaxSlimeGauge,
     CurrentSlimeGauge,
-    
+
     //Interact
-    ActSpeed,
-    
-    // Enenmy
-    AttackCooldown,
+    ActSpeed = 40,
+
+    // Enemy
+    AttackCooldown = 60,
     MaxMoveDelay,
     MinMoveDelay,
     WanderRadius,
