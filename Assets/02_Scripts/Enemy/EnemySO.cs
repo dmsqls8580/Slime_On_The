@@ -15,12 +15,12 @@ public enum ProjectileName
     Bolt,
     
     // Boss
-    TurtleSpell1 = 20, 
+    TurtleSpell0 = 20,
+    TurtleSpell1,
     TurtleSpell2,
     TurtleSpell3,
     TurtleSpell4,
     TurtleSpell5,
-    TurtleSpell6,
     
 }
 

@@ -42,6 +42,7 @@ public class BossSpawner : MonoBehaviour
     private void Start()
     {
         InitCollider();
+        SpawnBoss();
     }
 
     public void SpawnBoss()
@@ -90,7 +91,7 @@ public class BossSpawner : MonoBehaviour
         {
             if (enemy != null)
             {
-                ObjectPoolManager.Instance.ReturnObject(enemy);
+                ObjectPoolManager.Instance.ReturnFixedObject(enemy);
             }
         }
         spawnedboss.Clear();

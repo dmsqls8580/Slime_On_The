@@ -210,8 +210,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
-            projectile.Init(direction, AttackTarget, AttackStat, 10f);
-            // Todo : Projectile 속도 스탯 추가하기
+            projectile.Init(direction, AttackStat);
         }
     }
     

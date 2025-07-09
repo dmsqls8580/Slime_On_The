@@ -98,7 +98,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 5
+  m_Radius: 10
 --- !u!114 &2875520558613190826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,13 +128,13 @@ GameObject:
   - component: {fileID: 3334169519284072419}
   - component: {fileID: 9192360809057369436}
   - component: {fileID: 6601131895317389659}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: BabyTurtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7146008617771029887
 Transform:
   m_ObjectHideFlags: 0
@@ -276,9 +276,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 1.35}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1.5
 --- !u!212 &9192360809057369436
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -417,9 +417,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 3
 --- !u!114 &6096693623767152609
 MonoBehaviour:
   m_ObjectHideFlags: 0
