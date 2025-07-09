@@ -19,16 +19,10 @@ public class TurtleSpell1 : ProjectileBase
     {
         // 애니메이션의 현 상태
         var state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("TurtleSpell1") && state.normalizedTime >= 1.0f)
+        if (state.IsName("TurtleSpell0") && state.normalizedTime >= 1.0f)
         {
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }
-    }
-    
-    // 오직 한 프레임만 데미지를 줄 수 있도록 LateUpdate를 사용
-    private void LateUpdate()
-    {
-        canDealDamage =  false;
     }
     
     // 애니메이션 이벤트로 호출
@@ -41,7 +35,7 @@ public class TurtleSpell1 : ProjectileBase
     {
         damage = _damage;
     }
-
+    
     // 애니메이션 정지 메서드
     public void AnimationStop()
     {
@@ -60,6 +54,7 @@ public class TurtleSpell1 : ProjectileBase
             && other.CompareTag("Player") && canDealDamage)
         {
             target.TakeDamage(this);
+            canDealDamage =  false;
         }
     }
 }

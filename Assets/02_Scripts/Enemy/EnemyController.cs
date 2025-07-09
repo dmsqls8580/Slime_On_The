@@ -26,7 +26,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     
-    
     /************************ IDamageable ***********************/
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
@@ -79,7 +78,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             // 원거리: 투사체 발사
             ShootProjectile();
         }
-        
     }
     
     /************************ IPoolObject ***********************/
@@ -192,7 +190,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         
     }
-    
     
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool _inRange)

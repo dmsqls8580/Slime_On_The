@@ -246,7 +246,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
             TryPlaySpikeAnimation(spike);
         }
     }
-
+    
     private void TryPlaySpikeAnimation(GameObject spike)
     {
         if (spike.TryGetComponent<TurtleSpell4>(out TurtleSpell4 spell4))
@@ -313,16 +313,15 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         // Tentacle 방향 벡터
         Vector2 dirTarget = (playerPos - spawnPos).normalized;
         
-        // 텐타클 소환 및 초기화
+        // Tentacle 소환 및 초기화
         GameObject tentacle = ObjectPoolManager.Instance.GetObject(objectName);
         tentacle.transform.position = spawnPos;
-        tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽이면
+        tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽 공격
 
         if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
         {
             projectile.Init(dirTarget, AttackStat);
         }
-        
     }
     
     // Stomp 상태에서 호출할 공격 패턴
