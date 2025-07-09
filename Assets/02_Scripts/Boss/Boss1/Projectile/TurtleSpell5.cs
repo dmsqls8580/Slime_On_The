@@ -8,6 +8,7 @@ public class TurtleSpell5 : ProjectileBase
     
     private Animator animator;
     private CircleCollider2D circleCollider;
+    private bool canDealDamage = false;
     
     public override void Awake()
     {
@@ -20,7 +21,7 @@ public class TurtleSpell5 : ProjectileBase
         var state = animator.GetCurrentAnimatorStateInfo(0);
         if (state.IsName("TurtleSpell5") && state.normalizedTime >= 1.0f)
         {
-            Logger.Log("TurtleSpell5");
+            ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }
     }
 
@@ -35,6 +36,12 @@ public class TurtleSpell5 : ProjectileBase
         animator.speed = 0f;
     }
 
+    // 애니메이션 이벤트에서 호출
+    public void CanDealDamage()
+    {
+        canDealDamage = true;
+    }
+    
     public void AnimationPlay()
     {
         animator.speed = 1f;
@@ -47,9 +54,11 @@ public class TurtleSpell5 : ProjectileBase
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageable>(out var target)&& other.CompareTag("Player"))
+        if (other.TryGetComponent<IDamageable>(out var target)
+            && other.CompareTag("Player") && canDealDamage)
         {
             target.TakeDamage(this);
+            canDealDamage = false;
         }
     }
     

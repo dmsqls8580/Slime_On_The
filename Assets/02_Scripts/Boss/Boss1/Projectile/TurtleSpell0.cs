@@ -15,10 +15,14 @@ public class TurtleSpell0 : ProjectileBase
         animator = GetComponent<Animator>();
     }
     
-    // 오직 한 프레임만 데미지를 줄 수 있도록 LateUpdate를 사용
-    private void LateUpdate()
+    private void Update()
     {
-        canDealDamage =  false;
+        // 애니메이션의 현 상태
+        var state = animator.GetCurrentAnimatorStateInfo(0);
+        if (state.IsName("TurtleSpell0") && state.normalizedTime >= 1.0f)
+        {
+            ObjectPoolManager.Instance.ReturnObject(this.gameObject);
+        }
     }
     
     // 애니메이션 이벤트로 호출
@@ -31,6 +35,12 @@ public class TurtleSpell0 : ProjectileBase
     {
         damage = _damage;
     }
+    
+    // 애니메이션 정지 메서드
+    public void AnimationStop()
+    {
+        animator.speed = 0;
+    }
 
     // 애니메이션 재생 메서드
     public void AnimationPlay()
@@ -41,15 +51,11 @@ public class TurtleSpell0 : ProjectileBase
     protected override void OnTriggerStay2D(Collider2D other)
     {
         if (other.TryGetComponent<IDamageable>(out var target) 
-            && other.CompareTag("Player"))
+            && other.CompareTag("Player") && canDealDamage)
         {
             target.TakeDamage(this);
+            canDealDamage =  false;
         }
     }
 
-    public override void OnSpawnFromPool()
-    {
-        base.OnSpawnFromPool();
-        animator.speed = 0;
-    }
 }
