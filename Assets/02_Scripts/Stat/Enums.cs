@@ -6,12 +6,15 @@ public enum StatType
     Attack,
     Defense,
     MoveSpeed,
+    FinalAtk,
 
     // Player
     MaxHunger =20,
     CurrentHunger,
     MaxSlimeGauge,
     CurrentSlimeGauge,
+    CriticalChance,
+    CriticalMultiplier,
     
     //Interact
     ActSpeed = 40,

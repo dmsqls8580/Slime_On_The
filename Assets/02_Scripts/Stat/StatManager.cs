@@ -136,6 +136,7 @@ public class StatManager : MonoBehaviour
         
         Logger.Log($"Stat : {_statType} Modify Value {_value}, FinalValue : {stat.Value}");
     }
+    
 
     private void SyncCurrentWithMax(StatType _statType, CalculateStat _stat)
     {

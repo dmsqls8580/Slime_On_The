@@ -119,19 +119,22 @@ namespace PlayerStates
     {
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
-        private const float consumeAmount = 20f;
+        private const float consumeAmount = 5f;
         private float timer;
         private Vector2 dashDirection;
-
+        private Vector2 lookDir;
         public void OnEnter(PlayerController owner)
         {
             if(owner.PlayerStatus.CurrentSlimeGauge<=20) return;
-         
+
+            lookDir = owner.UpdatePlayerDirectionByMouse();
+            dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
+
             owner.AnimationController.TriggerDash();
+            owner.AnimationController.SetLookDir(lookDir);
             
             timer = 0f;
             owner.Rigid2D.velocity = dashDirection * dashSpeed;
-            dashDirection = owner.LastMoveDir.sqrMagnitude > 0.01f ? owner.LastMoveDir : Vector2.right;
             owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
         }
 
@@ -153,6 +156,7 @@ namespace PlayerStates
         public void OnExit(PlayerController entity)
         {
             entity.Rigid2D.velocity = Vector2.zero;
+            entity.AnimationController.ReleaseLookDir();
         }
 
         public PlayerState CheckTransition(PlayerController owner)
