@@ -408,13 +408,13 @@ public class BossController : BaseController<BossController, BossState>, IDamage
             leafSpells[i].transform.position = originalPositions[i];
         }
         
-        
         // 모든 오브젝트 애니메이션 실행
         foreach (var leaf in leafSpells)
         {
             TryPlayAnimation(leaf);
         }
     }
+    
     private void TryPlayAnimation(GameObject spike)
     {
         if (spike.TryGetComponent<TurtleSpell0>(out TurtleSpell0 spell0))
