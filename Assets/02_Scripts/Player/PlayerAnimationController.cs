@@ -4,14 +4,17 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationDataSO animationDataSo;
-    
+
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
-    
+
     private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
     private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
-    
+
     private InputController inputController;
     private SpriteRenderer spriteRenderer;
+
+    private bool isLook = false;
+    private Vector2 lastLookDir = Vector2.right;
 
     public Animator Animator { get; private set; }
 
@@ -24,8 +27,16 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        Vector2 lookDir = UpdatePlayerDirectionByMouse();
+        Vector2 lookDir;
+        if (isLook)
+        {
+            lookDir = lastLookDir;
+        }
+        else
+        {
+            lookDir = UpdatePlayerDirectionByMouse();
+        }
+
         UpdateAnimatorParameters(lookDir);
         UpdateSpriteFlip(lookDir);
     }
@@ -45,17 +56,23 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetTrigger(AnimationDataSo.DashTriggerHash);
     }
 
-    public void SetLook(Vector2 _lookDir)
+    public void SetLookDir(Vector2 _lookDir)
     {
-        Animator.SetFloat(AnimationDataSo.MouseXParameterHash,Mathf.Abs(_lookDir.x));
-        Animator.SetFloat(AnimationDataSo.MouseYParameterHash,_lookDir.y);
-    }      
+        isLook = true;
+        lastLookDir = _lookDir;
+    }
+
+    public void ReleaseLookDir()
+    {
+        isLook = false;
+    }
+
     private void UpdateSpriteFlip(Vector2 lookDir)
     {
         if (lookDir.x != 0)
             spriteRenderer.flipX = lookDir.x < 0;
-    }   
-    
+    }
+
     public Vector2 UpdatePlayerDirectionByMouse()
     {
         Vector2 mouseScreenPos = inputController.LookDirection;
@@ -65,9 +82,9 @@ public class PlayerAnimationController : MonoBehaviour
         return (mouseWorldPos - playerPos).normalized;
     }
 
-    public void UpdateAnimatorParameters(Vector2 lookDir)
+    public void UpdateAnimatorParameters(Vector2 _lookDir)
     {
-        Animator.SetFloat(MOUSE_X, Mathf.Abs(lookDir.x));
-        Animator.SetFloat(MOUSE_Y, lookDir.y);
+        Animator.SetFloat(MOUSE_X, Mathf.Abs(_lookDir.x));
+        Animator.SetFloat(MOUSE_Y, _lookDir.y);
     }
 }
