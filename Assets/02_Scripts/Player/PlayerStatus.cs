@@ -21,8 +21,9 @@ public class PlayerStatus : MonoBehaviour
 
     public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue;
     public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue;
-
-    public float CurrentAttackDamage => statManager.GetStat<ResourceStat>(StatType.Attack).MaxValue;
+    
+    
+    public float FinalAttackDamage => statManager.GetValue(StatType.FinalAtk);
 
     public float CurrentSlimeGauge => statManager.GetStat<ResourceStat>(StatType.CurrentSlimeGauge).CurrentValue;
     public float MaxSlimeGauge => statManager.GetStat<CalculateStat>(StatType.MaxSlimeGauge).FinalValue;
@@ -84,4 +85,14 @@ public class PlayerStatus : MonoBehaviour
     {
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
     }
+    public void ConsumeHunger(float _amount)
+    {
+        statManager.Consume(StatType.CurrentHunger, StatModifierType.Base, _amount);
+    }
+
+    public void RecoverHunger(float _amount)
+    {
+        statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
+    }
+    
 }

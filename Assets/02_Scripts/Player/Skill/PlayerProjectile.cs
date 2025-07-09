@@ -7,6 +7,9 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
     private Rigidbody2D rigid;
     
     private float speed;
+    private float lifeTime = 3f;
+    private float timer;
+    
     private StatBase damage;
     private Vector3 direction;
     private StatManager statManager;
@@ -15,8 +18,8 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
     
     private IObjectPool<PlayerProjectile> pool;
     
-    private float lifeTime = 3f;
-    private float timer;
+    private bool isCritical;
+    
     
     private void Awake()
     {
@@ -29,11 +32,19 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
         this.pool = pool;
     }
 
-    public void Init(Vector2 dir, float speed)
+    public void Init(Vector2 _dir, float _speed)
     {
-        direction = dir.normalized;
-        this.speed = speed;
-        damage = statManager.Stats[StatType.Attack];
+        direction = _dir.normalized;
+        this.speed = _speed;
+        
+        float baseAtk = statManager.GetValue(StatType.Attack);
+        float critChance = statManager.GetValue(StatType.CriticalChance); // 0~100
+        float critMultiplier = statManager.GetValue(StatType.CriticalMultiplier);
+
+        isCritical = UnityEngine.Random.Range(0, 100) < critChance;
+        float calcDamage = isCritical ? baseAtk * critMultiplier : baseAtk;
+
+        damage = new CalculateStat(StatType.Attack, calcDamage); 
         
         timer = 0f;
         gameObject.SetActive(true);
@@ -55,6 +66,10 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
     {
         if (other.TryGetComponent<IDamageable>(out var target)&& !other.CompareTag("Player"))
         {
+            if (isCritical)
+            {
+                Logger.Log("Critical Hit");
+            }
             target.TakeDamage(this);
             pool?.Release(this);
         }
