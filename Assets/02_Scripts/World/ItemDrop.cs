@@ -13,7 +13,7 @@ public class ItemDrop : MonoBehaviour
     private int amount;
 
     private bool canItemToPlayer = false;
-    public float attractSpeed = 1f;
+    public float attractSpeed = 5f;
     public float attractDistance = 2f;
 
     public void Init(ItemSO _itemSo, int _amount, Transform _player)
@@ -33,10 +33,14 @@ public class ItemDrop : MonoBehaviour
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
         
-        float itemMoveSpeed= Mathf.Lerp(1f, attractSpeed, distance/attractDistance);
         if (distance < attractDistance)
         {
-            transform.position = Vector3.MoveTowards(transform.position, playerTransform.position,
+            float t= 1f-(distance/attractDistance);
+            float itemMoveSpeed= Mathf.Lerp(1f,attractSpeed,t);
+            
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                playerTransform.position,
                 itemMoveSpeed * Time.deltaTime);
         }
     }
@@ -69,13 +73,15 @@ public class ItemDrop : MonoBehaviour
             _rigid.isKinematic = true;
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
         canItemToPlayer = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter2D(Collider2D _other)
     {
-        if (playerTransform != null && other.transform == playerTransform)
+        if(!canItemToPlayer) return;
+        
+        if (playerTransform != null && _other.transform == playerTransform)
         {
             AddToInventory();
             Destroy(gameObject);
