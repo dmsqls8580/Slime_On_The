@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BabyTurtle
   m_EditorClassIdentifier: 
   BossID: 101
-  ProjectileID: 0
+  ProjectileID: 
   IdleDuration: 2
   Cast1Duration: 2
   Cast2Duration: 2
@@ -34,21 +34,21 @@ MonoBehaviour:
   - StatType: 4
     ModifierType: 0
     Value: 2
-  - StatType: 10
+  - StatType: 60
     ModifierType: 0
     Value: 2
-  - StatType: 11
+  - StatType: 61
     ModifierType: 0
     Value: 5
-  - StatType: 12
+  - StatType: 62
     ModifierType: 0
     Value: 2
-  - StatType: 13
+  - StatType: 63
     ModifierType: 0
     Value: 5
-  - StatType: 14
+  - StatType: 64
     ModifierType: 0
-    Value: 7
-  - StatType: 15
+    Value: 10
+  - StatType: 65
     ModifierType: 0
-    Value: 2
+    Value: 3

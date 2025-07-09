@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 [CreateAssetMenu(fileName = "EnemySO", menuName = "ScriptableObjects/BossSO", order = 2)]
 public class BossSO : ScriptableObject, IStatProvider
 {
     public int BossID;
-    public ProjectileName ProjectileID;
+    public List<ProjectileName> ProjectileID;
     public float IdleDuration;
     public float Cast1Duration;
     public float Cast2Duration;
