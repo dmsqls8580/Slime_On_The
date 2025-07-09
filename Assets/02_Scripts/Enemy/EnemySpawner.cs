@@ -102,7 +102,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (enemy != null)
             {
-                ObjectPoolManager.Instance.ReturnObject(enemy);
+                ObjectPoolManager.Instance.ReturnFixedObject(enemy);
             }
         }
         spawnedEnemies.Clear();

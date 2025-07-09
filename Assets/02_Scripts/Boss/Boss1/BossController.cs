@@ -1,6 +1,7 @@
 using BossStates;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,6 +18,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
+    public bool IsBerserked => BossStatus.CurrentHealth <= BossStatus.MaxHealth * 0.5f;
     public float IdleDuration => BossStatus.BossSO.IdleDuration;
     public float Cast1Duration => BossStatus.BossSO.Cast1Duration;
     public float Cast2Duration  => BossStatus.BossSO.Cast2Duration;
@@ -26,7 +28,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
-    
+    private string lastLogMessage = ""; // Todo : 나중에 삭제 
     
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
@@ -152,7 +154,13 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
         spriteRenderer.flipX = lastFlipX;
 
-        Logger.Log($"CurrentState = {CurrentState}");
+        
+        string currentMessage = $"CurrentState = {CurrentState}";
+        if (currentMessage != lastLogMessage)
+        {
+            Logger.Log(currentMessage);
+            lastLogMessage = currentMessage;
+        }
     }
     
     protected override IState<BossController, BossState> GetState(BossState state)
@@ -189,7 +197,85 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         return nextPattern;
     }
 
-    public void Cast1Projectile()
+    // Cast1 상태에서 호출할 공격 패턴
+    public void Cast1()
+    {
+        StartCoroutine(Spikedelay(0.5f));
+        
+    }
+    
+    List<GameObject> Spikes = new List<GameObject>();
+    
+    // 바닥에서 가시가 순차적으로 소환되는 패턴
+    // 가시가 솟아오르고, 멈췄다가 한번에 애니메이션 재생
+    private IEnumerator Spikedelay(float _delay)
+    {
+        yield return new WaitForSeconds(_delay);
+        SpawnSpike(this.transform.position, 9, 24);
+        yield return new WaitForSeconds(_delay);
+        SpawnSpike(this.transform.position, 7, 21);
+        yield return new WaitForSeconds(_delay);
+        SpawnSpike(this.transform.position, 5, 18);
+        yield return new WaitForSeconds(_delay);
+        
+        
+        foreach (var spike in Spikes)
+        {
+            if (spike.TryGetComponent<TurtleSpell4>(out TurtleSpell4 spell4))
+            {
+                spell4.AnimationPlay();
+            }
+            if (spike.TryGetComponent<TurtleSpell5>(out TurtleSpell5 spell5))
+            {
+                spell5.AnimationPlay();
+            }
+            
+        }
+    }
+    
+    // BabyTurtle이 바닥에서 가시를 소환하는 메서드 ( 보스 위치, 소환 반경, 소환 갯수)
+    private void SpawnSpike(Vector2 _bossPos, float _radius, int _count)
+    {
+        // 보스가 광폭화되었을 경우, 디버프를 주는 효과 추가
+        string objectName = !IsBerserked? BossStatus.BossSO.ProjectileID[4].ToString() 
+            : BossStatus.BossSO.ProjectileID[5].ToString();
+        
+        for (int i = 0; i < _count; i++)
+        {
+            // 원의 둘레 2π를 count로 나눠 i에 대항하는 각도에 스폰 위치를 할당
+            float angle = (2 * Mathf.PI / _count) * i;
+            Vector2 spawnPos = _bossPos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * _radius;
+            
+            GameObject spike = ObjectPoolManager.Instance.GetObject(objectName);
+            spike.transform.position = spawnPos;
+            spike.transform.rotation = Quaternion.identity;
+
+            if (spike.TryGetComponent<ProjectileBase>(out var projectile))
+            {
+                projectile.Init(Vector2.zero, AttackStat);
+            }
+            Spikes.Add(spike);
+
+        }
+    }
+    
+    // Cast2 상태에서 호출할 공격 패턴
+    public void Cast2()
+    {
+        
+    }
+
+    private List<GameObject> LeafSpells = new List<GameObject>();
+    private void SpawnLeafSpell(Vector2 _bossPos, float _radius, int _count)
+    {
+        string objectName = !IsBerserked? BossStatus.BossSO.ProjectileID[0].ToString() 
+            : BossStatus.BossSO.ProjectileID[1].ToString();
+        
+        
+    }
+    
+    // Stomp 상태에서 호출할 공격 패턴
+    public void Stomp()
     {
         
     }

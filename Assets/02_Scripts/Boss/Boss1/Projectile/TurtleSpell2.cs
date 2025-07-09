@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class TurtleSpell2 : ProjectileBase
 {
-    public override void Init(Vector2 dir, GameObject _target, StatBase _damage, float _speed)
+    public override void Init(Vector2 dir, StatBase _damage)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        throw new System.NotImplementedException();
+        
     }
 }

@@ -90,7 +90,7 @@ public class BossSpawner : MonoBehaviour
         {
             if (enemy != null)
             {
-                ObjectPoolManager.Instance.ReturnObject(enemy);
+                ObjectPoolManager.Instance.ReturnFixedObject(enemy);
             }
         }
         spawnedboss.Clear();

@@ -239,6 +239,7 @@ namespace BossStates
             // Cast1 애니메이션 재생
             owner.Animator.SetBool(isChasingHash, false);
             owner.Animator.SetBool(isCastingHash_1, true);
+            owner.Cast1();
             timer = 0f;
             patternPhase = 0;
         }
@@ -444,6 +445,7 @@ namespace BossStates
             // 이동 정지
             owner.Agent.isStopped = true;
             owner.Agent.ResetPath();
+            owner.Cast1();
             
             timer = 0f;
             patternPhase = 0;
