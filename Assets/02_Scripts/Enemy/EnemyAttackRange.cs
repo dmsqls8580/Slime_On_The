@@ -22,13 +22,18 @@ public class EnemyAttackRange : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player")
             && other.TryGetComponent(out IDamageable iDamageable))
         {
             enemyController.SetPlayerInAttackRange(true);
             enemyController.AttackTarget = other.gameObject;
+            if (enemyController.CanDealDamage)
+            {
+                enemyController.Attack();
+                enemyController.CanDealDamage = false;
+            }
         }
     }
 

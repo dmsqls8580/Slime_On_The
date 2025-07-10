@@ -24,6 +24,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
+    public bool CanDealDamage = false;
+    
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
@@ -83,6 +85,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
+        if (!CanDealDamage)
+        {
+            return;
+        }
         if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
         {
             if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
@@ -213,6 +219,13 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         IsPlayerInAttackRange = _inRange;
     }
+    
+    // 애니메이션 이벤트로 호출
+    private void OnDamageFrame()
+    {
+        CanDealDamage = true;
+    }
+    
 
     private void ShootProjectile()
     {
