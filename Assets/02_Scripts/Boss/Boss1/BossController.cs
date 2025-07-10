@@ -2,6 +2,7 @@ using BossStates;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -27,9 +28,19 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     private StatManager statManager;
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
+    private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private List<GameObject> leafSpells = new List<GameObject>();
     private string lastLogMessage = ""; // Todo : 나중에 삭제 
+    
+    /************************ Item Drop ***********************/
+    [Header("Drop Item Prefab")]
+    [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
+    private List<DropItemData> dropItems => BossStatus.BossSO.DropItems;
+    
+    private float dropUpForce = 3f;
+    private float dropSideForce = 2f;
+    private float dropAngleRange = 60f;
     
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
@@ -53,9 +64,12 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         if (BossStatus.CurrentHealth <= 0)
         {
             ChangeState(BossState.Dead);
+
             // 오브젝트 풀 반환
             // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
             ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
+            
+            DropItems(this.gameObject.transform);
         }
     }
 
@@ -423,6 +437,39 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         if (spike.TryGetComponent<TurtleSpell1>(out TurtleSpell1 spell1))
         {
             spell1.AnimationPlay();
+        }
+    }
+    
+    
+    private void DropItems(Transform transform)
+    {
+        float randomChance = Random.value;
+        
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            if (randomChance * 100f > item.dropChance)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < item.amount; i++)
+            {
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo,1, transform);
+                    
+                }
+                
+                dropItemRigidbody= dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce); 
+            } 
         }
     }
 }
