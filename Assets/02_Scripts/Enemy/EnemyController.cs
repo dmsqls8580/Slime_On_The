@@ -35,7 +35,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
     private List<DropItemData> dropItems => EnemyStatus.enemySO.DropItems;
     
-    private float dropUpForce = 5f;
+    private float dropUpForce = 3f;
     private float dropSideForce = 2f;
     private float dropAngleRange = 60f;
     
