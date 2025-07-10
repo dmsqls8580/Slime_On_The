@@ -15,4 +15,5 @@ public class BossSO : ScriptableObject, IStatProvider
     
     public List<StatData> BossStats;
     public List<StatData> Stats => BossStats;
+    public List<DropItemData> DropItems;
 }

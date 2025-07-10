@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 0
   AttackType: 0
-  ProjectileID: 0
+  ProjectileID: 20
   EnemyStats:
   - StatType: 0
     ModifierType: 0
     Value: 100
   - StatType: 1
     ModifierType: 0
-    Value: 100
+    Value: 1
   - StatType: 2
     ModifierType: 0
     Value: 10
@@ -52,3 +52,10 @@ MonoBehaviour:
   - StatType: 66
     ModifierType: 0
     Value: 5
+  DropItems:
+  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
+    amount: 2
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
+    amount: 1
+    dropChance: 50
