@@ -19,7 +19,7 @@ public class TurtleSpell1 : ProjectileBase
     {
         // 애니메이션의 현 상태
         var state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("TurtleSpell0") && state.normalizedTime >= 1.0f)
+        if (state.IsName("TurtleSpell1") && state.normalizedTime >= 1.0f)
         {
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }

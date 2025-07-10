@@ -11,11 +11,11 @@ public enum EnemyAttackType
 public enum ProjectileName
 {
     //Enemy
-    None = 0,
+    None = 20,
     Bolt,
     
     // Boss
-    TurtleSpell0 = 20,
+    TurtleSpell0 = 40,
     TurtleSpell1,
     TurtleSpell2,
     TurtleSpell3,
@@ -33,4 +33,5 @@ public class EnemySO : ScriptableObject, IStatProvider
     
     public List<StatData> EnemyStats;
     public List<StatData> Stats => EnemyStats;
+    public List<DropItemData> DropItems;
 }

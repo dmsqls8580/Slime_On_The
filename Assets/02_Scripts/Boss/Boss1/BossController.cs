@@ -357,7 +357,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
             directions.Add(new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)));
         }
         
-        List<int> randomIdx = Enumerable.Range(0, 12).OrderBy(x => Random.value).Take(6).ToList();
+        List<int> randomIdx = Enumerable.Range(0, 12).OrderBy(x => Random.value).Take(8).ToList();
         leafSpells.Clear();
         
         foreach (int idx in randomIdx)
