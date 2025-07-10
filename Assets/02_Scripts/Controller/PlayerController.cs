@@ -36,16 +36,18 @@ namespace PlayerStates
         private ForceReceiver forceReceiver;
         
         private Rigidbody2D rigid2D;
+        public Rigidbody2D Rigid2D => rigid2D;
 
         private Vector2 moveInput;
         private Vector2 lastMoveDir = Vector2.right;
 
         public Vector2 MoveInput => moveInput;
         public Vector2 LastMoveDir => lastMoveDir;
-        public Rigidbody2D Rigid2D => rigid2D;
 
         private float actCoolDown = 0f;
-
+        private float damageDelay = 0.5f;
+        private float damageDelayTimer = 0f;
+        
         private bool dashTrigger;
 
         public bool DashTrigger
@@ -92,6 +94,7 @@ namespace PlayerStates
             StatManager.Init(playerData);
 
             var action = inputController.PlayerActions;
+            // Move
             action.Move.performed += context =>
             {
                 moveInput = context.ReadValue<Vector2>();
@@ -101,14 +104,17 @@ namespace PlayerStates
             
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
             
+            //Attack
             action.Attack0.performed += context =>
             {
                 if (CanAttack)
                     attackQueued = true;
             };
-
+            //Dash
             action.Dash.performed += context => dashTrigger = true;
-            action.Interaction.performed+= context =>
+            
+            //Gathering
+            action.Gathering.performed+= context =>
             {
                TryInteract();
             };
@@ -126,6 +132,11 @@ namespace PlayerStates
             if (actCoolDown > 0f)
             {
                 actCoolDown -= Time.deltaTime;
+            }
+
+            if (damageDelayTimer > 0f)
+            {
+                damageDelayTimer -= Time.deltaTime;
             }
 
             if (Input.GetKey(KeyCode.K))
@@ -235,11 +246,12 @@ namespace PlayerStates
 
         public void TakeDamage(IAttackable _attacker)
         {
-            if (IsDead) return;
+            if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
             {
                 // 피격
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                damageDelayTimer = damageDelay;
                 if (PlayerStatus.CurrentHp <= 0)
                 {
                     Dead();
@@ -254,7 +266,6 @@ namespace PlayerStates
                 ChangeState(PlayerState.Dead);
             }
         }
-        
         
     }
 }

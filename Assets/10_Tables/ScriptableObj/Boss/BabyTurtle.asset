@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e044fdeec8c70674aabe57a20bf12771, type: 3}
   m_Name: BabyTurtle
   m_EditorClassIdentifier: 
-  BossID: 0
-  ProjectileID: 0
+  BossID: 101
+  ProjectileID: 140000001500000016000000170000001800000019000000
   IdleDuration: 2
   Cast1Duration: 2
   Cast2Duration: 2
@@ -34,21 +34,21 @@ MonoBehaviour:
   - StatType: 4
     ModifierType: 0
     Value: 2
-  - StatType: 9
+  - StatType: 60
     ModifierType: 0
     Value: 2
-  - StatType: 10
+  - StatType: 61
     ModifierType: 0
     Value: 5
-  - StatType: 11
+  - StatType: 62
     ModifierType: 0
     Value: 2
-  - StatType: 12
+  - StatType: 63
     ModifierType: 0
     Value: 5
-  - StatType: 13
+  - StatType: 64
     ModifierType: 0
-    Value: 7
-  - StatType: 14
+    Value: 10
+  - StatType: 65
     ModifierType: 0
-    Value: 2
+    Value: 3

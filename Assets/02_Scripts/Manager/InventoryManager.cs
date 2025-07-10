@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
+    // 테스트용.
+    public PlaceMode placeMode;
+
     public const int MaxSlotCount = 40;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 20;
@@ -122,7 +125,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     }
 
     // 아이템 소거시도
-    public bool TryRemoveItemGlobally(TempItemSO _itemData, int _amount)
+    public bool TryRemoveItemGlobally(ItemSO _itemData, int _amount)
     {
         if (!CanRemoveItem(_itemData, _amount)) return false;
 
@@ -147,7 +150,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     }
     
     // 해당 아이템이 인벤토리에 amount 이상 존재하는지 확인
-    public bool CanRemoveItem(TempItemSO _itemData, int _amount)
+    public bool CanRemoveItem(ItemSO _itemData, int _amount)
     {
         if (_itemData == null || _amount <= 0) return false;
 

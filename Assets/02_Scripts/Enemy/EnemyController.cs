@@ -29,17 +29,16 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     /************************ IDamageable ***********************/
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
-
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
     // Enemy 피격 메서드
-    public void TakeDamage(IAttackable attacker)
+    public void TakeDamage(IAttackable _attacker)
     {
         if (IsDead) return;
-        if (attacker != null)
+        if (_attacker != null)
         {
             // 피격
-            EnemyStatus.TakeDamage(attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
             if (EnemyStatus.CurrentHealth <= 0)
             {
                 Dead();
@@ -91,9 +90,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     public void OnSpawnFromPool()
     {
-        // Todo
-        // 몬스터 스폰 시 Enemy 상태, 위치, NavMeshAgent, FSM 등 모든 초기화
-        
         statManager.Init(EnemyStatus.enemySO);
         
         // 상태머신이 초기화되지 않았다면 초기화
@@ -210,12 +206,11 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
         projectileObject.transform.position = transform.position;
         
-        if (projectileObject.TryGetComponent<EnemyProjectile>(out var projectile))
+        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile))
         {
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
-            projectile.Init(direction, AttackTarget, AttackStat, 10f);
-            // Todo : Projectile 속도 스탯 추가하기
+            projectile.Init(direction, AttackStat);
         }
     }
     

@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 201
   itemName: Copper Bar
   description: '?'
-  icon: {fileID: -1075835343, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  icon: {fileID: 0}
   itemTypes: 1
   stackable: 1
   maxStack: 99
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 8e59a460124420545967ed5037cc03c9, type: 2}
     amount: 1
