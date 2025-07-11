@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 896186846600509278}
   - component: {fileID: 8512740308541648307}
   - component: {fileID: 4067603267618368777}
-  - component: {fileID: 104161632688734299}
+  - component: {fileID: 192012185939955812}
   - component: {fileID: 158143631524943885}
   - component: {fileID: 6590237168683521607}
   m_Layer: 0
@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &896186846600509278
 Transform:
   m_ObjectHideFlags: 0
@@ -109,7 +109,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &104161632688734299
+--- !u!114 &192012185939955812
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -118,10 +118,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 686078226252417005}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b0a7e79fbbe0f064d8154d1841ff8964, type: 3}
+  m_Script: {fileID: 11500000, guid: 78551674bce3b6249bd1908d4b3c337a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
+  lifeTime: 0
 --- !u!58 &158143631524943885
 CircleCollider2D:
   m_ObjectHideFlags: 0
