@@ -86,7 +86,7 @@ public class ItemSOGenerator : EditorWindow
 
             ItemSO asset = ScriptableObject.CreateInstance<ItemSO>();
 
-            asset.idx = GetSafe(cols, columnIndex, "idx");
+            int.TryParse(GetSafe(cols, columnIndex, "idx"), out asset.idx);
             asset.itemName = GetSafe(cols, columnIndex, "itemName");
             asset.description = GetSafe(cols, columnIndex, "description");
             asset.itemTypes = ParseItemTypes(GetSafe(cols, columnIndex, "ItemTypes"));
@@ -129,7 +129,7 @@ public class ItemSOGenerator : EditorWindow
             }
 
             // === Recipe 연결 ===
-            if (recipeMap.TryGetValue(asset.idx, out var recipes))
+            if (recipeMap.TryGetValue(asset.idx.ToString(), out var recipes))
             {
                 asset.recipe = new List<RecipeIngredient>();
 
@@ -142,7 +142,7 @@ public class ItemSOGenerator : EditorWindow
                     {
                         string path = AssetDatabase.GUIDToAssetPath(guid);
                         ItemSO so = AssetDatabase.LoadAssetAtPath<ItemSO>(path);
-                        if (so != null && so.idx == ingredientIdx)
+                        if (so != null && so.idx.ToString() == ingredientIdx)
                         {
                             asset.recipe.Add(new RecipeIngredient { item = so, amount = amount });
                             found = true;
