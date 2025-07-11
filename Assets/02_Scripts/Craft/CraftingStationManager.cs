@@ -13,7 +13,6 @@ public class CraftingStationManager : MonoBehaviour
     [SerializeField] private CraftingSlotManager craftingSlotManager;
 
     private CraftingStation currentCraftingStation = CraftingStation.Normal;
-    //public CraftingStation CurrentCraftingStation => currentCraftingStation;
 
     public void UpdateCurrentCraftingStation(CraftingStation _craftingStation)
     {

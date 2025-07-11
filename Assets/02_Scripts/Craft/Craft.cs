@@ -1,15 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftButton : MonoBehaviour
+public class Craft : MonoBehaviour
 {
+    private CraftingSlot craftingSlot;
     private ItemSO itemSO;
     private bool canCraft = false;
 
     private Button button;
+    
     private InventoryManager inventoryManager;
-
-    private int amount;
+    private CraftingSlotManager craftingSlotManager;
 
     private void Awake()
     {
@@ -22,15 +23,23 @@ public class CraftButton : MonoBehaviour
         button.onClick.AddListener(() => OnClickCraftButton());
     }
 
-    public void Initialize(ItemSO _itemSO)
+    public void Initialize(CraftingSlot _craftingSlot, CraftingSlotManager _craftingSlotManager)
     {
-        itemSO = _itemSO;
+        craftingSlot = _craftingSlot;
+        itemSO = _craftingSlot.ItemSO;
         canCraft = CanCraft();
+        craftingSlotManager = _craftingSlotManager;
     }
 
     // 제작 가능한지 판별.
     private bool CanCraft()
     {
+        if (craftingSlot.IsLocked == true)
+        {
+            // TODO: 버튼 비활성화.
+            Debug.Log("슬롯이 잠김.");
+            return false;
+        }
         foreach (RecipeIngredient _recipe in itemSO.recipe)
         {
             if (!inventoryManager.CanRemoveItem(_recipe.item, _recipe.amount))
@@ -54,6 +63,8 @@ public class CraftButton : MonoBehaviour
             inventoryManager.TryRemoveItemGlobally(_recipe.item, _recipe.amount);
         // 아이템 제작.
         inventoryManager.TryAddItemGlobally(itemSO, 1);
+        // TODO: 1대신 itemSO.idx
+        craftingSlotManager.RemoveCraftingSlot(1, craftingSlot);
         // 다시 판별.
         canCraft = CanCraft();
     }

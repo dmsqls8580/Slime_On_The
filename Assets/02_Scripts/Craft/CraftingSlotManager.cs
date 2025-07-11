@@ -6,7 +6,7 @@ public class CraftingSlotManager : MonoBehaviour
     [Header("스크립트 참조")]
     [SerializeField] private CraftingStationDatabase craftingStationDatabase;
 
-    private Dictionary<CraftingStation, List<CraftingSlot>> craftingSlots;
+    private Dictionary<CraftingStation, HashSet<CraftingSlot>> craftingSlots;
 
     public void AddCraftingSlot(int _idx, CraftingSlot _craftingSlot)
     {
@@ -14,11 +14,21 @@ public class CraftingSlotManager : MonoBehaviour
         if (craftingStation != CraftingStation.Normal)
         {
             craftingSlots[craftingStation].Add(_craftingSlot);
-            // 무조건 _craftingSlot에 대해 Lcoked
+            _craftingSlot.SetLocked(true);
         }
     }
 
-    // RemoveCraftingSlot(); 왜냐 제작됐을떄 삭제해야하기때문 그리고 삭제할땐 잠금해제도
+    public void RemoveCraftingSlot(int _idx, CraftingSlot _craftingSlot)
+    {
+        CraftingStation craftingStation = craftingStationDatabase.GetCraftingStation(_idx);
+        if (craftingStation != CraftingStation.Normal &&
+            craftingSlots[craftingStation].Contains(_craftingSlot))
+        {
+            // 관리대상 해제.
+            craftingSlots[craftingStation].Remove(_craftingSlot);
+            craftingStationDatabase.UpdateCraftingStation(_idx);
+        }
+    }
 
     public void UpdateCraftingSlot(CraftingStation _currentCraftingStation, CraftingStation _previousCraftingStation)
     {
@@ -32,11 +42,9 @@ public class CraftingSlotManager : MonoBehaviour
         }
     }
 
-    private void asdf(CraftingStation _craftingStation, bool _locked)
+    private void asdf(CraftingStation _craftingStation, bool _isLocked)
     {
         foreach (CraftingSlot _craftingSlot in craftingSlots[_craftingStation])
-        {
-            //_craftingSlot.SetLocked(_locked);
-        }
+            _craftingSlot.SetLocked(_isLocked);
     }
 }
