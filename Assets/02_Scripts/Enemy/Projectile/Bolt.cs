@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Bolt : ProjectileBase
 {
-    public override void Init(Vector2 dir, StatBase _damage)
+    public override void Init(Vector2 dir, StatBase _damage, float _radius)
     {
         damage = _damage;
         

@@ -47,7 +47,7 @@ public class TurtleSpell4 : ProjectileBase
         animator.speed = 1f;
     }
     
-    public override void Init(Vector2 dir, StatBase _damage)
+    public override void Init(Vector2 dir, StatBase _damage, float _radius)
     {
         damage = _damage;
     }

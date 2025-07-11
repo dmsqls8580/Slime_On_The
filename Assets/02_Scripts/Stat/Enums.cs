@@ -26,6 +26,7 @@ public enum StatType
     WanderRadius,
     SenseRange,
     AttackRange,
+    AttackRadius,
     FleeDistance
 }
 
