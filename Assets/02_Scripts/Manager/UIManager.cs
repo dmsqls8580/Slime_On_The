@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : Singleton<UIManager>
 {
@@ -14,6 +15,7 @@ public class UIManager : Singleton<UIManager>
             return;
 
         DontDestroyOnLoad(gameObject);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     private void Start()
@@ -21,6 +23,16 @@ public class UIManager : Singleton<UIManager>
         InitializeUIRoot();
     }
     
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeUIRoot();
+    }
+
     private void InitializeUIRoot()
     {
         UIDict.Clear();

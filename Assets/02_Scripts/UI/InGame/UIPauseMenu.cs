@@ -24,7 +24,7 @@ public class UIPauseMenu : UIBase
             
             // 타이틀 씬으로 돌아가기
             Time.timeScale = 1f;
-            SceneManager.LoadScene("TitleScene");
+            SceneManager.LoadScene("TempTitleScene");
         });
     }
     

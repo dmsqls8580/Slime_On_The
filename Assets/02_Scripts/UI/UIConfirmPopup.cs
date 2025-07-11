@@ -2,12 +2,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class UIConfirmPopup : UIBase
 {
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;
+    [SerializeField] private AnimationCurve JellyAnimationCurve;
     
     private UnityAction onConfirm;
 
@@ -34,5 +36,17 @@ public class UIConfirmPopup : UIBase
         var popup = UIManager.Instance.GetUIComponent<UIConfirmPopup>();
         if (popup != null)
             popup.Setup(message, onConfirmAction);
+    }
+    
+    public override void Open()
+    {
+        base.Open();
+        Contents.localScale = Vector3.zero;
+        Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
+    }
+
+    public override void Close()
+    {
+        base.Close();
     }
 }
