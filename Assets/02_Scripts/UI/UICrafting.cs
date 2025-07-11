@@ -17,7 +17,7 @@ public class UICrafting : UIBase
     {
         // 현재 위치, 목표 위치 저장
         originPosition = Contents.anchoredPosition;
-        targetPosition = new Vector2(0, 0);
+        targetPosition = new Vector2(Contents.rect.width, 0);
 
         Contents.gameObject.SetActive(false);
     }
