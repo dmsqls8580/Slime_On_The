@@ -1,7 +1,10 @@
 using System;
 using Enemystates;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyController : BaseController<EnemyController, EnemyState>, IDamageable, IAttackable, IPoolObject
 {
@@ -22,10 +25,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
     private StatManager statManager;
+    private Rigidbody2D dropItemRigidbody;
+    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
-    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
+
+    /************************ Item Drop ***********************/
+    [Header("Drop Item Prefab")]
+    [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
+    private List<DropItemData> dropItems => EnemyStatus.enemySO.DropItems;
     
+    private float dropUpForce = 3f;
+    private float dropSideForce = 2f;
+    private float dropAngleRange = 60f;
     
     /************************ IDamageable ***********************/
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
@@ -52,6 +64,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (EnemyStatus.CurrentHealth <= 0)
         {
             ChangeState(EnemyState.Dead);
+            
+            // 현재 위치에서 아이템 드롭
+            DropItems(this.gameObject.transform);
+                
             // 오브젝트 풀 반환
             // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
             ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
@@ -79,7 +95,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             // 원거리: 투사체 발사
             ShootProjectile();
         }
-        
     }
     
     /************************ IPoolObject ***********************/
@@ -193,7 +208,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
     }
     
-    
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool _inRange)
     {
@@ -211,6 +225,38 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat);
+        }
+    }
+
+    private void DropItems(Transform transform)
+    {
+        float randomChance = Random.value;
+        
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            if (randomChance * 100f > item.dropChance)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < item.amount; i++)
+            {
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo,1, transform);
+                    
+                }
+                
+                dropItemRigidbody= dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce); 
+            } 
         }
     }
     

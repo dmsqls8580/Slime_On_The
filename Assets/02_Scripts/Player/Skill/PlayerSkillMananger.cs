@@ -1,22 +1,22 @@
 using UnityEngine;
 
 [System.Serializable]
-public class PlayerSkillMananger : Singleton<PlayerSkillMananger>
+public class PlayerSkillMananger : MonoBehaviour
 {
     [Header("각 공격, 스킬 데이터")]
     public PlayerSkillSO normalAttack;
     public PlayerSkillSO specialAttack;
 
-    public PlayerSkillSO GetSkill(bool isSpecial)
+    public PlayerSkillSO GetSkill(bool _isSpecial)
     {
-        return isSpecial ? specialAttack : normalAttack;
+        return _isSpecial ? specialAttack : normalAttack;
     }
 
-    public void SetSkill(PlayerSkillSO newSkill, bool isSpecial)
+    public void SetSkill(PlayerSkillSO _newSkill, bool _isSpecial)
     {
-        if (isSpecial) 
-            specialAttack = newSkill;
+        if (_isSpecial) 
+            specialAttack = _newSkill;
         else
-            normalAttack = newSkill;
+            normalAttack = _newSkill;
     }
 }

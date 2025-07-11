@@ -25,12 +25,6 @@ public class TurtleSpell1 : ProjectileBase
         }
     }
     
-    // 오직 한 프레임만 데미지를 줄 수 있도록 LateUpdate를 사용
-    private void LateUpdate()
-    {
-        canDealDamage =  false;
-    }
-    
     // 애니메이션 이벤트로 호출
     private void OnDamageFrame()
     {
@@ -41,7 +35,7 @@ public class TurtleSpell1 : ProjectileBase
     {
         damage = _damage;
     }
-
+    
     // 애니메이션 정지 메서드
     public void AnimationStop()
     {
@@ -60,6 +54,7 @@ public class TurtleSpell1 : ProjectileBase
             && other.CompareTag("Player") && canDealDamage)
         {
             target.TakeDamage(this);
+            canDealDamage =  false;
         }
     }
 }

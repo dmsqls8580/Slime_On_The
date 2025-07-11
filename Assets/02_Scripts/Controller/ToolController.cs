@@ -4,33 +4,38 @@ using UnityEngine;
 
 public class ToolController : MonoBehaviour
 {
-    private IWeapon _equippedTool;
-    private GameObject _equippedToolModel;
+    private IWeapon equippedTool;
+    private GameObject equippedToolModel;
+    private IWeapon EquippedTool => equippedTool;
 
-    private IWeapon EquippedTool => _equippedTool;
-
-    public void EquipTool(IWeapon tool)
+    public void EquipTool(IWeapon _tool)
     {
-        _equippedTool = tool;
-
-        if (_equippedToolModel != null)
+        equippedTool = _tool;
+        
+        Logger.Log($"{EquippedTool.ToolType}");
+        if (equippedToolModel != null)
         {
-            Destroy(_equippedToolModel);
+            Destroy(equippedToolModel);
         }
         
-        if (tool.ToolPrefab != null)
+        if (_tool.ToolPrefab != null)
         {
-            _equippedToolModel = GameObject.Instantiate(tool.ToolPrefab, transform);
+            equippedToolModel = GameObject.Instantiate(_tool.ToolPrefab, transform);
         }
     }
 
     public float GetAttackPow()
     {
-        return _equippedTool != null ? _equippedTool.AttackPow : 1f;
+        return equippedTool != null ? equippedTool.AttackPow : 1f;
     }
 
     public float GetAttackSpd()
     {
-        return _equippedTool != null ? _equippedTool.AttackSpd : 1f;
+        return equippedTool != null ? equippedTool.AttackSpd : 1f;
+    }
+
+    public ToolType GetEquippedToolType()
+    {
+        return equippedTool != null ? equippedTool.ToolType : ToolType.None;
     }
 }

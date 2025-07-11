@@ -56,6 +56,16 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetTrigger(AnimationDataSo.DashTriggerHash);
     }
 
+    public void TriggerGather()
+    {
+        Animator.SetTrigger(AnimationDataSo.GatherTriggerHash);
+    }
+
+    public void SetToolType(ToolType _toolIndex)
+    {
+        Animator.SetFloat(AnimationDataSo.ToolTypeParameterHash,(float)_toolIndex);
+    }
+
     public void SetLookDir(Vector2 _lookDir)
     {
         isLook = true;
@@ -67,10 +77,10 @@ public class PlayerAnimationController : MonoBehaviour
         isLook = false;
     }
 
-    private void UpdateSpriteFlip(Vector2 lookDir)
+    private void UpdateSpriteFlip(Vector2 _lookDir)
     {
-        if (lookDir.x != 0)
-            spriteRenderer.flipX = lookDir.x < 0;
+        if (_lookDir.x != 0)
+            spriteRenderer.flipX = _lookDir.x < 0;
     }
 
     public Vector2 UpdatePlayerDirectionByMouse()
