@@ -36,8 +36,7 @@ public class CraftingManager : MonoBehaviour
         if (_slot.gameObject.TryGetComponent(out CraftingSlot _craftingSlot))
         {
             _craftingSlot.Initialize(_itemSO, craftingItemInfoPanel, craftingSlotManager);
-            craftingSlotManager.AddCraftingSlot(1, _craftingSlot);
-            // TODO: _itemSO.idx
+            craftingSlotManager.AddCraftingSlot(_itemSO.idx, _craftingSlot);
         }
     }
 

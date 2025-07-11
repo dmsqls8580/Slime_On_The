@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CraftingStationDatabase : MonoBehaviour
 {
-    private Dictionary<int, CraftingStation> database;
+    private Dictionary<int, CraftingStation> database = new Dictionary<int, CraftingStation>();
 
     // 기본 제작 가능한 아이템 idx.
     private int[] normal = new int[]
@@ -27,11 +27,11 @@ public class CraftingStationDatabase : MonoBehaviour
     private void Awake()
     {
         foreach (int _idx in normal)
-            database[_idx] = CraftingStation.Normal;
+            database.Add(_idx, CraftingStation.Normal);
         foreach (int _idx in workbench)
-            database[_idx] = CraftingStation.Workbench;
+            database.Add(_idx, CraftingStation.Workbench);
         foreach (int _idx in anvil)
-            database[_idx] = CraftingStation.Anvil;
+            database.Add(_idx, CraftingStation.Anvil);
     }
 
     public CraftingStation GetCraftingStation(int _idx)

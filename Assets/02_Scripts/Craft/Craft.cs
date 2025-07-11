@@ -63,8 +63,7 @@ public class Craft : MonoBehaviour
             inventoryManager.TryRemoveItemGlobally(_recipe.item, _recipe.amount);
         // 아이템 제작.
         inventoryManager.TryAddItemGlobally(itemSO, 1);
-        // TODO: 1대신 itemSO.idx
-        craftingSlotManager.RemoveCraftingSlot(1, craftingSlot);
+        craftingSlotManager.RemoveCraftingSlot(itemSO.idx, craftingSlot);
         // 다시 판별.
         canCraft = CanCraft();
     }
