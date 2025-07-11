@@ -9,6 +9,7 @@ public class CraftingSlot : MonoBehaviour
     private Button button;
     private CraftingItemInfoPanel craftingItemInfoPanel;
 
+    private InventoryManager inventoryManager;
     private CraftingSlotManager craftingSlotManager;
 
     private ItemSO itemSO;
@@ -20,6 +21,7 @@ public class CraftingSlot : MonoBehaviour
     {
         image = GetComponent<Image>();
         button = GetComponent<Button>();
+        inventoryManager = InventoryManager.Instance;
     }
 
     private void Start()
@@ -40,8 +42,25 @@ public class CraftingSlot : MonoBehaviour
     {
         craftingItemInfoPanel.image.sprite = image.sprite;
         craftingItemInfoPanel.name.text = itemSO.itemName.ToString();
-        craftingItemInfoPanel.description.text = itemSO.description.ToString();
+        UpdateRequiredIngredientPanel();
         craftingItemInfoPanel.craft.Initialize(this, craftingSlotManager);
+    }
+
+    private void UpdateRequiredIngredientPanel()
+    {
+        foreach (Transform _slot in craftingItemInfoPanel.requiredIngredient)
+            Destroy(_slot.gameObject);
+
+        foreach (RecipeIngredient _recipe in itemSO.recipe)
+        {
+            GameObject slot = Instantiate(craftingItemInfoPanel.requiredIngredientItemSlotPrefab, craftingItemInfoPanel.requiredIngredient);
+            if (slot.TryGetComponent(out IngredientSlot _ingredientSlot))
+            {
+                int havingItemCount = inventoryManager.CountItem(itemSO);
+                int requiredItemCount = _recipe.amount;
+                _ingredientSlot.UpdateIngredientSlot(havingItemCount, requiredItemCount);
+            }
+        }
     }
 
     public void SetLocked(bool _isLocked)

@@ -167,6 +167,19 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         return total >= _amount;
     }
 
+    // 해당 아이템이 몇 개 인지 반환.
+    public int CountItem(ItemSO _itemData)
+    {
+        int count = 0;
+        for (int i = 0; i < unlockedSlotCount; i++)
+        {
+            var slot = inventorySlots[i];
+            if (slot != null && slot.ItemData == _itemData)
+                count += slot.Quantity;
+        }
+        return count;
+    }
+
     public ItemInstanceData GetEquipItem(int _index)
     {
         if (_index < 0 || _index >= EquipSlotCount) return null;
