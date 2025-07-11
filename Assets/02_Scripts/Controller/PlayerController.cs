@@ -21,10 +21,11 @@ namespace PlayerStates
         public PlayerStatus PlayerStatus { get; private set; }
 
         private ToolController toolController;
+        public ToolController ToolController => toolController;
 
         private InputController inputController;
         private PlayerAnimationController animationController;
-        
+        private PlayerSkillMananger  playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
         
         private InteractionHandler interactionHandler;
@@ -74,6 +75,7 @@ namespace PlayerStates
             base.Awake();
             inputController = GetComponent<InputController>();
             PlayerStatus = GetComponent<PlayerStatus>();
+            playerSkillMananger= GetComponent<PlayerSkillMananger>();
             forceReceiver = GetComponent<ForceReceiver>();
             animationController =  GetComponent<PlayerAnimationController>();
             skillExecutor = GetComponent<SkillExecutor>();
@@ -114,6 +116,7 @@ namespace PlayerStates
             action.Dash.performed += context => dashTrigger = true;
             
             //Gathering
+            
             action.Gathering.performed+= context =>
             {
                TryInteract();
@@ -156,11 +159,13 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                    return new Attack0State(PlayerSkillMananger.Instance.GetSkill(false));
+                    return new Attack0State(playerSkillMananger.GetSkill(false));
                 case PlayerState.Attack1:
                     //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
                 case PlayerState.Dead:
                     return new DeadState();
+                case PlayerState.Gathering:
+                    return new GatherState();
                 default:
                     return null;
             }
@@ -209,8 +214,9 @@ namespace PlayerStates
         public void TryInteract()
         {
             if (actCoolDown > 0) return;
+            
             var target = interactionSelector.FInteractable;
-
+            
             if (target == null)
             {
                 Logger.Log("Target is null");
@@ -221,6 +227,8 @@ namespace PlayerStates
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
+            
+            ChangeState(PlayerState.Gathering);
         }
         
         public Vector2 UpdatePlayerDirectionByMouse()
