@@ -15,13 +15,13 @@ public enum ItemType
 
 public enum ToolType 
 { 
-    None, 
-    Axe, 
-    Pickaxe,
-    Shovel,
-    FishingRod,
-    Hoe, 
-    WateringCan 
+    None = 0,
+    Axe = 1, 
+    Pickaxe = 2,
+    Shovel = 3,
+    FishingRod = 4,
+    Hoe = 5, 
+    WateringCan = 6, 
 }
 
 public enum EquipType
