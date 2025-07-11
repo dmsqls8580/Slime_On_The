@@ -311,8 +311,6 @@ namespace  Enemystates
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetTrigger(isAttackHash);
-            
-            owner.Attack();
         }
 
         public void OnUpdate(EnemyController owner)

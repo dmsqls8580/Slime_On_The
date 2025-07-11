@@ -29,6 +29,7 @@ public class EnemyAttackRange : MonoBehaviour
         {
             enemyController.SetPlayerInAttackRange(true);
             enemyController.AttackTarget = other.gameObject;
+            enemyController.SensedAttackTarget = other.gameObject;
         }
     }
 
