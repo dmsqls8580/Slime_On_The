@@ -37,7 +37,7 @@ public static class ItemSOToCSVUpdater
             var cols = lines[i].Split(',');
             if (cols.Length < 1) continue;
 
-            if (cols[colMap["idx"]].Trim() == item.idx)
+            if (int.TryParse(cols[colMap["idx"]], out int rowIdx) && rowIdx == item.idx)
             {
                 cols[colMap["itemName"]] = item.itemName;
                 cols[colMap["description"]] = item.description.Replace(",", " ");
@@ -84,7 +84,7 @@ public static class ItemSOToCSVUpdater
 
     static void UpdateRecipeCSV(ItemSO item)
     {
-        if (item.recipe == null || item.recipe.Count == 0) return;
+        if (item.recipe == null) return;
 
         var lines = new List<string>();
         if (File.Exists(recipeCsvPath))
@@ -100,7 +100,7 @@ public static class ItemSOToCSVUpdater
         List<string> newLines = new() { header };
 
         // 기존 줄 중 현재 item.idx에 해당하지 않는 줄만 유지
-        // 동시에 기존 item.idx 줄의 첫 등장 위치 저장
+        // 삽입 위치 저장
         int insertIndex = lines.Count;
         for (int i = 1; i < lines.Count; i++)
         {
@@ -108,11 +108,11 @@ public static class ItemSOToCSVUpdater
             var cols = line.Split(',');
             if (cols.Length < 3) continue;
 
-            if (cols[0].Trim() == item.idx)
+            if (int.TryParse(cols[0].Trim(), out int rowIdx) && rowIdx == item.idx)
             {
                 if (insertIndex == lines.Count)
-                    insertIndex = newLines.Count; // 삽입 위치 기록 (첫 등장 위치)
-                continue; // 해당 줄 제거
+                    insertIndex = newLines.Count;
+                continue; // 제거
             }
 
             newLines.Add(line); // 유지
