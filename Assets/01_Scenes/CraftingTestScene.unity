@@ -6310,6 +6310,71 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1855764294144918267, guid: 888c2ae9b76ce034daa726a62d9bc678, type: 3}
   m_PrefabInstance: {fileID: 765840197}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &771612353
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 771612354}
+  - component: {fileID: 771612355}
+  m_Layer: 0
+  m_Name: CraftingManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &771612354
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771612353}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618060290052378508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &771612355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771612353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfb97bafb11432a4199611d981042f54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tabButtons:
+  - {fileID: 1532992174}
+  - {fileID: 1409982313}
+  - {fileID: 1325036546}
+  - {fileID: 1171613854}
+  tabList:
+  - {fileID: 1532992177}
+  - {fileID: 1409982316}
+  - {fileID: 1325036549}
+  - {fileID: 1171613857}
+  craftingIconsPanels:
+  - {fileID: 9207326788486767264}
+  - {fileID: 471278612}
+  - {fileID: 1746469687}
+  - {fileID: 1083016059}
+  craftingItemInfoPanel: {fileID: 6506521243564063207}
+  craftingSlotManager: {fileID: 1318328230}
 --- !u!1001 &776287689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7912,6 +7977,54 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1855764294144918267, guid: 888c2ae9b76ce034daa726a62d9bc678, type: 3}
   m_PrefabInstance: {fileID: 1046858243}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1060443378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1060443379}
+  - component: {fileID: 1060443380}
+  m_Layer: 0
+  m_Name: CraftingStationDatabase
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1060443379
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060443378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618060290052378508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1060443380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060443378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed66b8585e3b59a499ff5a49dd5c2de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1065179624
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9910,6 +10023,55 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1855764294144918267, guid: 888c2ae9b76ce034daa726a62d9bc678, type: 3}
   m_PrefabInstance: {fileID: 1318262682}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1318328228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1318328229}
+  - component: {fileID: 1318328230}
+  m_Layer: 0
+  m_Name: CraftingSlotManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1318328229
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318328228}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618060290052378508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1318328230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318328228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41b2e51458814b8488b22ea6473018ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craftingStationDatabase: {fileID: 1060443380}
 --- !u!1001 &1324477625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14184,6 +14346,55 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1855764294144918267, guid: 888c2ae9b76ce034daa726a62d9bc678, type: 3}
   m_PrefabInstance: {fileID: 1915649248}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1917821167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1917821168}
+  - component: {fileID: 1917821169}
+  m_Layer: 0
+  m_Name: CraftingStationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1917821168
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917821167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1618060290052378508}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1917821169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1917821167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81c89a957f0519e4cb4db3ad15ed6b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  craftingSlotManager: {fileID: 1318328230}
 --- !u!1001 &1931276705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15642,6 +15853,10 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1138289873085316175}
+  - {fileID: 771612354}
+  - {fileID: 1318328229}
+  - {fileID: 1060443379}
+  - {fileID: 1917821168}
   m_Father: {fileID: 166472729}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -15661,7 +15876,6 @@ GameObject:
   - component: {fileID: 2745653657417764153}
   - component: {fileID: 6366079413387570618}
   - component: {fileID: 6958746735439278311}
-  - component: {fileID: 8261015938278570183}
   m_Layer: 0
   m_Name: Tab
   m_TagString: Untagged
@@ -17558,34 +17772,6 @@ RectTransform:
   m_AnchoredPosition: {x: 10, y: -10}
   m_SizeDelta: {x: 355, y: 60}
   m_Pivot: {x: 0, y: 1}
---- !u!114 &8261015938278570183
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1664980268983792220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfb97bafb11432a4199611d981042f54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tabButtons:
-  - {fileID: 1532992174}
-  - {fileID: 1409982313}
-  - {fileID: 1325036546}
-  - {fileID: 1171613854}
-  tabList:
-  - {fileID: 1532992177}
-  - {fileID: 1409982316}
-  - {fileID: 1325036549}
-  - {fileID: 1171613857}
-  craftingIconsPanels:
-  - {fileID: 9207326788486767264}
-  - {fileID: 471278612}
-  - {fileID: 1746469687}
-  - {fileID: 1083016059}
-  craftingItemInfoPanel: {fileID: 6506521243564063207}
 --- !u!114 &8287154543060545313
 MonoBehaviour:
   m_ObjectHideFlags: 0
