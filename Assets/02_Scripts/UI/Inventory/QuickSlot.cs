@@ -1,11 +1,14 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class QuickSlot : SlotBase
 {
+    [SerializeField] private Image outLineImage;
     private UIQuickSlot owner;
     private int quickSlotIndex;
+    
 
     public void Initialize(int _index, UIQuickSlot _ownerUI)
     {
@@ -16,7 +19,8 @@ public class QuickSlot : SlotBase
     
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
-        backgroundImage.color = _isSelected ? Color.yellow : Color.white;
+        outLineImage.gameObject.SetActive(_isSelected);
+        outLineImage.color = _isSelected ? Color.yellow : Color.white;
 
         var handIcon = FindObjectOfType<ItemHandler>();
         if (!handIcon.IsUnityNull())
