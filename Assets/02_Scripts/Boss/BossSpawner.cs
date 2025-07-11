@@ -42,7 +42,6 @@ public class BossSpawner : MonoBehaviour
     private void Start()
     {
         InitCollider();
-        SpawnBoss();
     }
 
     public void SpawnBoss()

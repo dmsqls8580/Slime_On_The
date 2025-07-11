@@ -18,6 +18,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
 
     public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
+    public GameObject SensedAttackTarget;                 // 공격 시점에 공격 대상으로 인식된 오브젝트
+    
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
@@ -83,17 +85,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
+        if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
-            if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
-            {
-                Target.TakeDamage(this);
-            }
-        }
-        else if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Ranged)
-        {
-            // 원거리: 투사체 발사
-            ShootProjectile();
+            Target.TakeDamage(this);
         }
     }
     
@@ -213,19 +207,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         IsPlayerInAttackRange = _inRange;
     }
-
-    private void ShootProjectile()
+    
+    // 애니메이션 이벤트로 호출
+    public void ShootProjectile()
     {
         string projectileID = EnemyStatus.enemySO.ProjectileID.ToString();
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
-        projectileObject.transform.position = transform.position;
+        projectileObject.transform.position = projectileTransform.position;
         
-        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile))
+        // 애니메이션 실행 시점과 애니메이션 이벤트 호출 타이밍 사이
+        // 플레이어가 AttackTarget에서 벗어나는 문제로 인해 새로운 게임 오브젝트 SensedAttackTarget 추가
+        // SensedAttackTarget을 이용해 초기화
+        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile)
+            && !SensedAttackTarget.IsUnityNull())
         {
-            Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
+            Vector2 shootdir = SensedAttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
-            projectile.Init(direction, AttackStat);
+            projectile.Init(direction, AttackStat, EnemyStatus.AttackRadius);
         }
+        
     }
 
     private void DropItems(Transform transform)

@@ -3,11 +3,10 @@ using UnityEngine;
 public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
 {
     [SerializeField] protected float speed;
+    [SerializeField] protected float lifeTime;
     
     protected Rigidbody2D rigid;
     protected StatBase damage;
-    protected float lifeTime = 3f;  // Todo : 나중에 애니메이션 이벤트나 const 상수로 제어
-    
     
     /************************ IAttackable ***********************/
     public virtual StatBase AttackStat => damage;
@@ -39,7 +38,7 @@ public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public abstract void Init(Vector2 dir, StatBase _damage);
+    public abstract void Init(Vector2 dir, StatBase _damage, float _radius = 0f);
 
     protected virtual void OnTriggerEnter2D(Collider2D other) {}
     protected virtual void OnTriggerStay2D(Collider2D other) {}
