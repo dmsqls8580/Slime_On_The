@@ -2,13 +2,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftingTabManager : MonoBehaviour
+public class CraftingManager : MonoBehaviour
 {
     [SerializeField] private List<Button> tabButtons;
     [SerializeField] private List<TabItemList> tabList;
     [SerializeField] private List<Transform> craftingIconsPanels;
 
     [SerializeField] private CraftingItemInfoPanel craftingItemInfoPanel;
+
+    [Header("스크립트 참조")]
+    [SerializeField] private CraftingSlotManager craftingSlotManager;
 
     private int currentTabIndex = 0;
 
@@ -20,19 +23,20 @@ public class CraftingTabManager : MonoBehaviour
             tabButtons[i].onClick.AddListener(() => OnClickTab(index));
             for (int j = 0; j < tabList[i].Items.Count; j++)
             {
-                SetSlot(craftingIconsPanels[i].GetChild(j), tabList[i].Items[j]);
+                SetCraftingSlot(craftingIconsPanels[i].GetChild(j), tabList[i].Items[j]);
             }
             craftingIconsPanels[i].gameObject.SetActive(false);
         }
         craftingIconsPanels[currentTabIndex].gameObject.SetActive(true);
     }
 
-    private void SetSlot(Transform _slot, ItemSO _itemSO)
+    private void SetCraftingSlot(Transform _slot, ItemSO _itemSO)
     {
         _slot.gameObject.SetActive(true);
         if (_slot.gameObject.TryGetComponent(out CraftingSlot _craftingSlot))
         {
-            _craftingSlot.Initialize(_itemSO, craftingItemInfoPanel);
+            _craftingSlot.Initialize(_itemSO, craftingItemInfoPanel, craftingSlotManager);
+            craftingSlotManager.AddCraftingSlot(_itemSO.idx, _craftingSlot);
         }
     }
 

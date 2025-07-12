@@ -1,15 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CraftButton : MonoBehaviour
+public class Craft : MonoBehaviour
 {
+    private CraftingSlot craftingSlot;
+    public CraftingSlot CraftingSlot => craftingSlot;
     private ItemSO itemSO;
     private bool canCraft = false;
 
     private Button button;
+    
     private InventoryManager inventoryManager;
-
-    private int amount;
+    private CraftingSlotManager craftingSlotManager;
 
     private void Awake()
     {
@@ -22,27 +24,37 @@ public class CraftButton : MonoBehaviour
         button.onClick.AddListener(() => OnClickCraftButton());
     }
 
-    public void Initialize(ItemSO _itemSO)
+    public void Initialize(CraftingSlot _craftingSlot, CraftingSlotManager _craftingSlotManager)
     {
-        itemSO = _itemSO;
-        canCraft = CanCraft();
+        craftingSlot = _craftingSlot;
+        itemSO = _craftingSlot.ItemSO;
+        CanCraft();
+        craftingSlotManager = _craftingSlotManager;
     }
 
     // 제작 가능한지 판별.
-    private bool CanCraft()
+    public void CanCraft()
     {
+        if (craftingSlot.IsLocked == true)
+        {
+            // TODO: 버튼 비활성화.
+            Debug.Log("슬롯이 잠김.");
+            canCraft = false;
+            return;
+        }
         foreach (RecipeIngredient _recipe in itemSO.recipe)
         {
             if (!inventoryManager.CanRemoveItem(_recipe.item, _recipe.amount))
             {
                 // TODO: 버튼 비활성화.
                 Debug.Log("재료가 부족합니다. 버튼 비활성화");
-                return false;
+                canCraft = false;
+                return;
             }
         }
         // TODO: 버튼 활성화.
         Debug.Log("재료가 충분합니다. 버튼 활성화");
-        return true;
+        canCraft = true;
     }
 
     // 버튼 클릭 했을 때 제작하기.
@@ -54,7 +66,7 @@ public class CraftButton : MonoBehaviour
             inventoryManager.TryRemoveItemGlobally(_recipe.item, _recipe.amount);
         // 아이템 제작.
         inventoryManager.TryAddItemGlobally(itemSO, 1);
-        // 다시 판별.
-        canCraft = CanCraft();
+        // 잠금관리 등록 해제.
+        craftingSlotManager.RemoveCraftingSlot(itemSO.idx, craftingSlot);
     }
 }

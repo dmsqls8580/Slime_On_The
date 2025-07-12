@@ -6,6 +6,7 @@ public class CraftingItemInfoPanel : MonoBehaviour
 {
     public Image image;
     public new TextMeshProUGUI name;
-    public TextMeshProUGUI description;
-    public CraftButton craftButton;
+    public Transform requiredIngredient;
+    public GameObject requiredIngredientItemSlotPrefab;
+    public Craft craft;
 }
