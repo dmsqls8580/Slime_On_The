@@ -38,7 +38,7 @@ public class CraftingSlot : MonoBehaviour
         craftingSlotManager = _craftingSlotManager;
     }
 
-    public void OnClickSlot()
+    private void OnClickSlot()
     {
         craftingItemInfoPanel.image.sprite = image.sprite;
         craftingItemInfoPanel.name.text = itemSO.itemName.ToString();
@@ -46,7 +46,7 @@ public class CraftingSlot : MonoBehaviour
         craftingItemInfoPanel.craft.Initialize(this, craftingSlotManager);
     }
 
-    private void UpdateRequiredIngredientPanel()
+    public void UpdateRequiredIngredientPanel()
     {
         foreach (Transform _slot in craftingItemInfoPanel.requiredIngredient)
             Destroy(_slot.gameObject);
