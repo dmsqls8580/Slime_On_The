@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 6737676818348998515}
   - component: {fileID: 347788387398860020}
   - component: {fileID: 4788466247419169652}
-  m_Layer: 0
+  - component: {fileID: 7418462684272615884}
+  m_Layer: 31
   m_Name: coal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.025415607, y: -0.041300464}
-  m_Size: {x: 0.5933651, y: 0.47265163}
+  m_Offset: {x: -0.020716984, y: 0.12064859}
+  m_Size: {x: 0.58233553, y: 0.48484293}
   m_Direction: 1
+--- !u!114 &7418462684272615884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236685174018697565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0

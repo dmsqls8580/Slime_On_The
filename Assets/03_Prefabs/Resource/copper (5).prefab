@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1653782229667996536}
   - component: {fileID: 7312694999842563917}
   - component: {fileID: 2723440170835542149}
-  m_Layer: 0
+  - component: {fileID: 3890803034367831853}
+  m_Layer: 31
   m_Name: copper (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.028592471, y: 0.00000042064104}
-  m_Size: {x: 0.83268774, y: 0.63149107}
+  m_Offset: {x: -0.028592449, y: 0.18889496}
+  m_Size: {x: 0.8326882, y: 0.6778025}
   m_Direction: 1
+--- !u!114 &3890803034367831853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668376214210042025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0

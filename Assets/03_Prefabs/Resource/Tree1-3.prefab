@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3806942523146983451}
   - component: {fileID: 2255929850573764776}
   - component: {fileID: 6109090058312498874}
+  - component: {fileID: 9108284021773459560}
   m_Layer: 31
   m_Name: Tree1-3
   m_TagString: Untagged
@@ -147,6 +148,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0018005371, y: 0.28970337}
-  m_Size: {x: 0.39093018, y: 0.5054321}
+  m_Offset: {x: -0.0055236816, y: 0.04727173}
+  m_Size: {x: 0.33880615, y: 0.3685913}
   m_Direction: 0
+--- !u!114 &9108284021773459560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8782553167263224905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0

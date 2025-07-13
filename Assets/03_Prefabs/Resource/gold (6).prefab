@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3022168663840428267}
   - component: {fileID: 2630032782019390710}
   - component: {fileID: 6451652309440400773}
-  m_Layer: 0
+  - component: {fileID: 2316425713474451300}
+  m_Layer: 31
   m_Name: gold (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.030710787, y: 0.030711122}
-  m_Size: {x: 0.8157447, y: 0.6886766}
+  m_Offset: {x: -0.030710764, y: 0.2183874}
+  m_Size: {x: 0.81574494, y: 0.7423007}
   m_Direction: 1
+--- !u!114 &2316425713474451300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8947642334322244073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0

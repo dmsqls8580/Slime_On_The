@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2610875120964359010}
   - component: {fileID: 2202286330865656487}
   - component: {fileID: 1529127304856648616}
-  m_Layer: 0
+  - component: {fileID: 7140547097959116}
+  m_Layer: 31
   m_Name: Stone (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0052950354, y: 0.02965105}
-  m_Size: {x: 0.7649151, y: 0.69502866}
+  m_Offset: {x: -0.005295016, y: 0.19173482}
+  m_Size: {x: 0.76491535, y: 0.6877186}
   m_Direction: 1
+--- !u!114 &7140547097959116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416957596702590572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0

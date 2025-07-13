@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2272538760996627962}
   - component: {fileID: 3291367291489690366}
   - component: {fileID: 2927839242328087516}
-  m_Layer: 0
+  - component: {fileID: -4113774925528758689}
+  m_Layer: 31
   m_Name: iron (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,6 +118,24 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.03282899, y: 0.0010609071}
-  m_Size: {x: 0.8326905, y: 0.629375}
+  m_Offset: {x: -0.032828968, y: 0.19726756}
+  m_Size: {x: 0.8326907, y: 0.6903114}
   m_Direction: 1
+--- !u!114 &-4113774925528758689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3975899490575262022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItems: []
+  dropItemPrefab: {fileID: 0}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
+  maxHealth: 0
