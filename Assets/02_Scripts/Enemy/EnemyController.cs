@@ -1,7 +1,10 @@
 using System;
 using Enemystates;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class EnemyController : BaseController<EnemyController, EnemyState>, IDamageable, IAttackable, IPoolObject
 {
@@ -15,6 +18,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
 
     public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
+    public GameObject SensedAttackTarget;                 // 공격 시점에 공격 대상으로 인식된 오브젝트
+    
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
@@ -22,10 +27,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
     private StatManager statManager;
+    private Rigidbody2D dropItemRigidbody;
+    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
-    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
+
+    /************************ Item Drop ***********************/
+    [Header("Drop Item Prefab")]
+    [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
+    private List<DropItemData> dropItems => EnemyStatus.enemySO.DropItems;
     
+    private float dropUpForce = 3f;
+    private float dropSideForce = 2f;
+    private float dropAngleRange = 60f;
     
     /************************ IDamageable ***********************/
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
@@ -52,6 +66,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (EnemyStatus.CurrentHealth <= 0)
         {
             ChangeState(EnemyState.Dead);
+            
+            // 현재 위치에서 아이템 드롭
+            DropItems(this.gameObject.transform);
+                
             // 오브젝트 풀 반환
             // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
             ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
@@ -67,19 +85,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Melee)
+        if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
-            if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
-            {
-                Target.TakeDamage(this);
-            }
+            Target.TakeDamage(this);
         }
-        else if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Ranged)
-        {
-            // 원거리: 투사체 발사
-            ShootProjectile();
-        }
-        
     }
     
     /************************ IPoolObject ***********************/
@@ -193,25 +202,61 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
     }
     
-    
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
     public void SetPlayerInAttackRange(bool _inRange)
     {
         IsPlayerInAttackRange = _inRange;
     }
-
-    private void ShootProjectile()
+    
+    // 애니메이션 이벤트로 호출
+    public void ShootProjectile()
     {
         string projectileID = EnemyStatus.enemySO.ProjectileID.ToString();
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
-        projectileObject.transform.position = transform.position;
+        projectileObject.transform.position = projectileTransform.position;
         
-        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile))
+        // 애니메이션 실행 시점과 애니메이션 이벤트 호출 타이밍 사이
+        // 플레이어가 AttackTarget에서 벗어나는 문제로 인해 새로운 게임 오브젝트 SensedAttackTarget 추가
+        // SensedAttackTarget을 이용해 초기화
+        if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile)
+            && !SensedAttackTarget.IsUnityNull())
         {
-            Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
+            Vector2 shootdir = SensedAttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
-            projectile.Init(direction, AttackTarget, AttackStat, 10f);
-            // Todo : Projectile 속도 스탯 추가하기
+            projectile.Init(direction, AttackStat, EnemyStatus.AttackRadius);
+        }
+        
+    }
+
+    private void DropItems(Transform transform)
+    {
+        float randomChance = Random.value;
+        
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            if (randomChance * 100f > item.dropChance)
+            {
+                continue;
+            }
+
+            for (int i = 0; i < item.amount; i++)
+            {
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo,1, transform);
+                    
+                }
+                
+                dropItemRigidbody= dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce); 
+            } 
         }
     }
     

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BabyTurtle
   m_EditorClassIdentifier: 
   BossID: 101
-  ProjectileID: 
+  ProjectileID: 28000000290000002a0000002b0000002c0000002d000000
   IdleDuration: 2
   Cast1Duration: 2
   Cast2Duration: 2
@@ -24,7 +24,7 @@ MonoBehaviour:
     Value: 100
   - StatType: 1
     ModifierType: 0
-    Value: 100
+    Value: 1
   - StatType: 2
     ModifierType: 0
     Value: 10
@@ -52,3 +52,10 @@ MonoBehaviour:
   - StatType: 65
     ModifierType: 0
     Value: 3
+  DropItems:
+  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
+    amount: 2
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
+    amount: 1
+    dropChance: 50

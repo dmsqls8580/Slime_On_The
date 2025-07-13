@@ -170,9 +170,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1.5
 --- !u!114 &3238602601942075337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -471,6 +471,7 @@ MonoBehaviour:
   EnemyStatus: {fileID: 6926221800851955302}
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &6926221800851955302
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,15 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bolt : ProjectileBase
 {
-    public override void Init(Vector2 dir, GameObject _target, StatBase _damage, float _speed)
+    public override void Init(Vector2 dir, StatBase _damage, float _radius)
     {
-        target = _target;
         damage = _damage;
-        speed = _speed;
         
         // 발사 방향 조절
         rigid.velocity = dir * speed;
@@ -24,11 +19,19 @@ public class Bolt : ProjectileBase
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageable>(out var target)&& other.CompareTag("Player"))
+        if (other.TryGetComponent<IDamageable>(out var target)
+            && other.CompareTag("Player"))
         {
             target.TakeDamage(this);
 
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }
+    }
+    
+    public override void OnReturnToPool()
+    {
+        base.OnReturnToPool();
+        rigid.velocity = Vector2.zero;
+        damage = null;
     }
 }

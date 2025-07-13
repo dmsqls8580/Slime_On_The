@@ -339,6 +339,7 @@ namespace BossStates
         private int patternPhase;
         public void OnEnter(BossController owner)
         {
+            // Cast2
             // 이동 정지
             owner.Agent.isStopped = true;
             owner.Agent.ResetPath();
@@ -353,7 +354,7 @@ namespace BossStates
             timer += Time.deltaTime;
             switch (patternPhase)
             {
-                case 0: // Cast2
+                case 0: // Chase
                     if (timer >= owner.Cast2Duration)
                     {
                         owner.Animator.SetBool(isCastingHash_2, false);
@@ -362,7 +363,7 @@ namespace BossStates
                         patternPhase = 1;
                     }
                     break;
-                case 1: // Chase
+                case 1: // Stomp
                     if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
                     {
                         // 이동 정지
@@ -379,7 +380,7 @@ namespace BossStates
                         owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
                     }
                     break;
-                case 2:
+                case 2: // Chase
                     if (timer >= owner.StompDuration)
                     {
                         owner.Animator.SetBool(isStompingHash, false);

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Glow Tulip Necklace
   m_EditorClassIdentifier: 
   idx: 502
-  itemName: Glow Tulip Necklace]
+  itemName: Glow Tulip Necklace
   description: Accessory
   icon: {fileID: 0}
   itemTypes: 4
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 5e937ce59142fb5448e291e44e0d7a30, type: 2}
     amount: 10

@@ -3,19 +3,20 @@ using UnityEngine;
 
 public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
-    // 테스트용.
+    [SerializeField] private Craft craft;
     public PlaceMode placeMode;
+
 
     public const int MaxSlotCount = 40;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 20;
-    
+
     public event Action<int> OnSlotChanged;
     public event Action<int> OnEquipSlotChanged;
 
     private ItemInstanceData[] inventorySlots = new ItemInstanceData[MaxSlotCount];
     private ItemInstanceData[] equipSlots = new ItemInstanceData[EquipSlotCount];
-    
+
     private bool IsValidIndex(int _index) => _index >= 0 && _index < unlockedSlotCount;
     private bool IsEquipIndex(int _index) => _index >= 0 && _index < EquipSlotCount;
     private bool IsSlotUnlocked(int _index) => _index < unlockedSlotCount;
@@ -41,7 +42,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         inventorySlots[_index] = null;
         OnSlotChanged?.Invoke(_index);
     }
-    
+
     // 한 슬롯에 아이템 추가시도(추가한 양 반환)
     public int TryAddItem(int _index, ItemSO _itemData, int _amount)
     {
@@ -102,7 +103,17 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 _amount -= placed;
                 OnSlotChanged?.Invoke(i);
 
-                if (_amount <= 0) return true;
+                if (_amount <= 0)
+                {
+                    if (craft.CraftingSlot != null)
+                    {
+                        // 설명 패널 업데이트.
+                        craft.CraftingSlot.UpdateRequiredIngredientPanel();
+                        // 제작 버튼 업데이트.
+                        craft.CanCraft();
+                    }
+                    return true;
+                }
             }
         }
         // 빈 칸에 새로 넣기
@@ -115,17 +126,27 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 _amount -= placed;
                 OnSlotChanged?.Invoke(i);
 
-                if (_amount <= 0) return true;
+                if (_amount <= 0)
+                {
+                    if (craft.CraftingSlot != null)
+                    {
+                        // 설명 패널 업데이트.
+                        craft.CraftingSlot.UpdateRequiredIngredientPanel();
+                        // 제작 버튼 업데이트.
+                        craft.CanCraft();
+                    }
+                    return true;
+                }
             }
         }
-        
+
         // TODO: 인벤토리에 활성화된 빈 칸 없으면 버리기 기능 추가
 
         return false;
     }
 
     // 아이템 소거시도
-    public bool TryRemoveItemGlobally(TempItemSO _itemData, int _amount)
+    public bool TryRemoveItemGlobally(ItemSO _itemData, int _amount)
     {
         if (!CanRemoveItem(_itemData, _amount)) return false;
 
@@ -148,9 +169,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 
         return true;
     }
-    
+
     // 해당 아이템이 인벤토리에 amount 이상 존재하는지 확인
-    public bool CanRemoveItem(TempItemSO _itemData, int _amount)
+    public bool CanRemoveItem(ItemSO _itemData, int _amount)
     {
         if (_itemData == null || _amount <= 0) return false;
 
@@ -165,6 +186,19 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         }
 
         return total >= _amount;
+    }
+
+    // 해당 아이템이 몇 개 인지 반환.
+    public int CountItem(ItemSO _itemData)
+    {
+        int count = 0;
+        for (int i = 0; i < unlockedSlotCount; i++)
+        {
+            var slot = inventorySlots[i];
+            if (slot != null && slot.ItemData == _itemData)
+                count += slot.Quantity;
+        }
+        return count;
     }
 
     public ItemInstanceData GetEquipItem(int _index)
@@ -197,7 +231,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     {
         unlockedSlotCount = Mathf.Clamp(_count, 0, MaxSlotCount);
     }
-    
+
     // 슬롯 잠김 여부 확인
     public bool IsSlotLocked(int _index)
     {

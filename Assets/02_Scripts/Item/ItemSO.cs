@@ -15,13 +15,13 @@ public enum ItemType
 
 public enum ToolType 
 { 
-    None, 
-    Axe, 
-    Pickaxe,
-    Shovel,
-    FishingRod,
-    Hoe, 
-    WateringCan 
+    None = 0,
+    Axe = 1, 
+    Pickaxe = 2,
+    Shovel = 3,
+    FishingRod = 4,
+    Hoe = 5, 
+    WateringCan = 6, 
 }
 
 public enum EquipType
@@ -38,7 +38,7 @@ public enum EquipType
 public class ItemSO : ScriptableObject
 {
     [Header("기본 정보")]
-    public string idx;
+    public int idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;

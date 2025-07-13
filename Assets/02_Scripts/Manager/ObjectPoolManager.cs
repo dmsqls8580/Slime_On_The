@@ -170,12 +170,46 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
             Debug.LogWarning($"등록된 풀이 없습니다. : {iPoolObject.PoolID}");
             CreatePool(iPoolObject, 1);
         }
-
+        
         if (returnTime > 0)
             yield return new WaitForSeconds(returnTime);
         iPoolObject.OnReturnToPool();
         obj.SetActive(false);
         obj.transform.position = Vector3.zero;
+        action?.Invoke();
+        poolObjects[iPoolObject.PoolID].Enqueue(iPoolObject);
+        obj.transform.SetParent(parentCache[iPoolObject.PoolID]);
+    }
+    
+    /// <summary>
+    /// 위치를 변경하지 않는 오브젝트를 풀로 반환하는 메서드
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="returnTime"></param>
+    /// <param name="action"></param>
+    public void ReturnFixedObject(GameObject obj, float returnTime = 0, UnityAction action = null)
+    {
+        StartCoroutine(DelayedReturnFixedObject(obj, action, returnTime));
+    }
+
+    private IEnumerator DelayedReturnFixedObject(GameObject obj, UnityAction action, float returnTime)
+    {
+        if (!obj.TryGetComponent<IPoolObject>(out IPoolObject iPoolObject))
+        {
+            Debug.LogError("풀링 오브젝트가 아닙니다.");
+            yield break;
+        }
+
+        if (!poolObjects.ContainsKey(iPoolObject.PoolID))
+        {
+            Debug.LogWarning($"등록된 풀이 없습니다. : {iPoolObject.PoolID}");
+            CreatePool(iPoolObject, 1);
+        }
+
+        if (returnTime > 0)
+            yield return new WaitForSeconds(returnTime);
+        iPoolObject.OnReturnToPool();
+        obj.SetActive(false);
         action?.Invoke();
         poolObjects[iPoolObject.PoolID].Enqueue(iPoolObject);
         obj.transform.SetParent(parentCache[iPoolObject.PoolID]);

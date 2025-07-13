@@ -136,6 +136,7 @@ MonoBehaviour:
   EnemyStatus: {fileID: 434384408529830673}
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &434384408529830673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,9 +243,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.4}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.4
 --- !u!212 &2291572383324374654
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -286,15 +287,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: -798614854, guid: f8dc2b92408892c4a8ceea51490c99d6, type: 3}
+  m_Sprite: {fileID: -664418736, guid: e1d89a3b0d5cf064e9ed059344995add, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.3125, y: 0.9375}
+  m_Size: {x: 2, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 1
 --- !u!95 &6053396489938016275
@@ -824,9 +825,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
 --- !u!114 &8620512490112441250
 MonoBehaviour:
   m_ObjectHideFlags: 0
