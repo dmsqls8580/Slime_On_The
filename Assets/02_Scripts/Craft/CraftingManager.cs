@@ -1,3 +1,4 @@
+using _02_Scripts.Craft;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

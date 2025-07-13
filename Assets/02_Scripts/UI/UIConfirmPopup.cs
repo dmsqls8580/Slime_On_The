@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
