@@ -268,10 +268,10 @@ namespace PlayerStates
                     Dead();
                 }
 
-                Vector2 knockbackDir = (transform.position - _attackerObj.transform.position).normalized;
-                float knockbackPower = 7f; // 원하는 넉백 세기
-                forceReceiver.AddForce(knockbackDir * knockbackPower);
-                knockbackTimer = 0.1f;
+                // Vector2 knockbackDir = (transform.position - _attackerObj.transform.position).normalized;
+                // float knockbackPower = 7f; // 원하는 넉백 세기
+                // forceReceiver.AddForce(knockbackDir * knockbackPower);
+                // knockbackTimer = 0.1f;
             }
         }
 
