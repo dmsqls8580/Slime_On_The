@@ -12,9 +12,11 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerStatus))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
-
+        
         public Transform attackPivotRotate;
         public Transform attackPivot;
+        [SerializeField] private GameObject damageTextPrefab;
+        [SerializeField] private Canvas damageTextCanvas;
         
         public Transform AttackPivot => attackPivot;
         
@@ -26,13 +28,11 @@ namespace PlayerStates
         private InputController inputController;
         private PlayerAnimationController animationController;
         private PlayerSkillMananger  playerSkillMananger;
+        public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
         
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
-        
-        private SkillExecutor skillExecutor;
-        public SkillExecutor SkillExecutor => skillExecutor;
 
         private ForceReceiver forceReceiver;
         
@@ -78,7 +78,6 @@ namespace PlayerStates
             playerSkillMananger= GetComponent<PlayerSkillMananger>();
             forceReceiver = GetComponent<ForceReceiver>();
             animationController =  GetComponent<PlayerAnimationController>();
-            skillExecutor = GetComponent<SkillExecutor>();
             toolController= GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
@@ -159,9 +158,12 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                    return new Attack0State(playerSkillMananger.GetSkill(false));
+                    return new Attack0State(0);
+                
                 case PlayerState.Attack1:
-                    //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
+                    
+                //todo: 스킬 구조 바꿔서 적용
+                
                 case PlayerState.Dead:
                     return new DeadState();
                 case PlayerState.Gathering:
@@ -267,6 +269,17 @@ namespace PlayerStates
             }
         }
 
+        public void ShowDamageText(float _damage, Vector3 _worldPos, Color _color)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldPos);
+
+            var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
+            textObj.transform.position= screenPos;
+
+            var damageText = textObj.GetComponent<DamageTextUI>();
+            damageText.Init(_damage, _color);
+        }
+
         public void Dead()
         {
             if (PlayerStatus.CurrentHp <= 0)
@@ -276,4 +289,4 @@ namespace PlayerStates
         }
         
     }
-}
+} 
