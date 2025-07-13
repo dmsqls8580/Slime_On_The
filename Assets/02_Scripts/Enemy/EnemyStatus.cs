@@ -44,7 +44,7 @@ public class EnemyStatus : MonoBehaviour
     }
     
     // Enemy 현재 체력 초기화 메서드
-    public void InitCurrenthealth()
+    public void InitCurrentHealth()
     {
         // 현재 체력 최대 체력으로 회복
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, MaxHealth);

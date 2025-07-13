@@ -16,7 +16,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public EnemyStatus EnemyStatus;                        // EnemyStatus
     
     public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
-
+    
     public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
     public GameObject SensedAttackTarget;                 // 공격 시점에 공격 대상으로 인식된 오브젝트
     
@@ -25,6 +25,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
+    
+    public bool IsAttacked { get; private set; } = false;  // 중립 몬스터가 공격받았는지 여부
     
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
@@ -48,11 +50,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // Enemy 피격 메서드
     public void TakeDamage(IAttackable _attacker)
     {
-        if (IsDead) return;
+        if (IsDead)
+        {
+            return;
+        }
         if (_attacker != null)
         {
             // 피격
             EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+
+            if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
+            {
+                IsAttacked = true;
+            }
             if (EnemyStatus.CurrentHealth <= 0)
             {
                 Dead();
@@ -179,7 +189,15 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
-        spriteRenderer.flipX = lastFlipX; 
+        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+        {
+            spriteRenderer.flipX = !lastFlipX; 
+        }
+        else
+        {
+            spriteRenderer.flipX = lastFlipX; 
+        }
+        
     }
     
     

@@ -92,6 +92,19 @@ namespace  Enemystates
                 return EnemyState.Idle;
             }
             
+            // AttackType이 Neutral인 경우, Idle, Wander State만 순환
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral
+                && !owner.IsAttacked)
+            {
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return EnemyState.Wander;
+                }
+                // 배회모드로 전환되지 않았을 시 idle모드.
+                return EnemyState.Idle;
+            }
+            
             // AttackCooldown 동안은 Idle 상태를 계속 유지
             if (isAttackCooldown)
             {
@@ -171,6 +184,18 @@ namespace  Enemystates
                 {
                     return EnemyState.Chase;
                 }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return EnemyState.Idle;
+                }
+                return EnemyState.Wander;
+            }
+            
+            // AttackType이 Neutral인 경우, Idle, Wander State만 순환
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral
+                && !owner.IsAttacked)
+            {
                 // 목적지로 이동이 끝나면 idle 모드로 전환.
                 if (ReachedDesination(owner))
                 {
