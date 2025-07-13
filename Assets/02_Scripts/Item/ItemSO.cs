@@ -38,7 +38,7 @@ public enum EquipType
 public class ItemSO : ScriptableObject
 {
     [Header("기본 정보")]
-    public string idx;
+    public int idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;
