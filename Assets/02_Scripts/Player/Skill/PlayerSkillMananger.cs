@@ -1,22 +1,41 @@
+using PlayerStates;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
-[System.Serializable]
 public class PlayerSkillMananger : MonoBehaviour
 {
-    [Header("각 공격, 스킬 데이터")]
-    public PlayerSkillSO normalAttack;
-    public PlayerSkillSO specialAttack;
+    [SerializeField] private List<PlayerSkillSO> _skills;
+    private Dictionary<int, float> _skillCooldowns = new();
 
-    public PlayerSkillSO GetSkill(bool _isSpecial)
+    // 인덱스로 SO 반환
+    public PlayerSkillSO GetSkillIndex(int _index)
     {
-        return _isSpecial ? specialAttack : normalAttack;
+        return _skills.FirstOrDefault(_skill => _skill.skillIndex == _index);
     }
 
-    public void SetSkill(PlayerSkillSO _newSkill, bool _isSpecial)
+    // 스킬 사용 요청
+    public void UseSkill(int _index, PlayerController _owner)
     {
-        if (_isSpecial) 
-            specialAttack = _newSkill;
-        else
-            normalAttack = _newSkill;
+        var _skill = GetSkillIndex(_index);
+        if (_skill == null) return;
+        if (!CanUseSkill(_index)) return;
+
+        _skill.Execute(_owner);
+        _skillCooldowns[_index] = _skill.cooldown;
+    }
+
+    public bool CanUseSkill(int _index)
+    {
+        return !_skillCooldowns.ContainsKey(_index) || _skillCooldowns[_index] <= 0;
+    }
+
+    private void Update()
+    {
+        var _keys = _skillCooldowns.Keys.ToList();
+        foreach (var _idx in _keys)
+        {
+            _skillCooldowns[_idx] -= Time.deltaTime;
+        }
     }
 }
