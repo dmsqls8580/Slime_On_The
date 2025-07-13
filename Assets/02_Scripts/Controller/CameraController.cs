@@ -30,13 +30,13 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            CameraShake();
+            CameraShake(1,1,1);
         }
     }
     
-    public void CameraShake()
+    public void CameraShake(float _duration, float _amplitude, float _frequency)
     {
-        cameraShake.Shake(1,1,1);
+        cameraShake.Shake(_duration, _amplitude, _frequency);
     }    
     public void StopCameraShake()
     {
