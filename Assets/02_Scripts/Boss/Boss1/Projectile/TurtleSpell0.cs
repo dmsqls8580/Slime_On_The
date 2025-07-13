@@ -53,7 +53,7 @@ public class TurtleSpell0 : ProjectileBase
         if (other.TryGetComponent<IDamageable>(out var target) 
             && other.CompareTag("Player") && canDealDamage)
         {
-            target.TakeDamage(this);
+            target.TakeDamage(this, gameObject);
             canDealDamage =  false;
         }
     }

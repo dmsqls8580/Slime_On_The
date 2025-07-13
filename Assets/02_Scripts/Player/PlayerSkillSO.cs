@@ -1,20 +1,16 @@
+using PlayerStates;
 using UnityEngine;
 
-public enum PlayerSkillType
-{
-    Melee,
-    Ranged,
-}
-
-[CreateAssetMenu(menuName = "PlayerSkill/SkillData")]
-public class PlayerSkillSO : ScriptableObject
+public abstract class PlayerSkillSO : ScriptableObject
 {
     public string skillName;
-    public float cooldown;
-    public float actionDuration;
+    public int skillIndex;
+    public float damage;
     public float speed;
     public float range;
-    
-    public PlayerSkillType skillType;
-     
+    public float cooldown;
+    public float actionDuration;
+
+    // 스킬 실제 동작 추상 메서드
+    public abstract void Execute(PlayerController _owner);
 }

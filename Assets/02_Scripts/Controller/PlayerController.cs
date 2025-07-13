@@ -12,9 +12,11 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerStatus))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
-
+        
         public Transform attackPivotRotate;
         public Transform attackPivot;
+        [SerializeField] private GameObject damageTextPrefab;
+        [SerializeField] private Canvas damageTextCanvas;
         
         public Transform AttackPivot => attackPivot;
         
@@ -26,13 +28,11 @@ namespace PlayerStates
         private InputController inputController;
         private PlayerAnimationController animationController;
         private PlayerSkillMananger  playerSkillMananger;
+        public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
         
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
-        
-        private SkillExecutor skillExecutor;
-        public SkillExecutor SkillExecutor => skillExecutor;
 
         private ForceReceiver forceReceiver;
         
@@ -48,6 +48,7 @@ namespace PlayerStates
         private float actCoolDown = 0f;
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
+        private float knockbackTimer = 0f;
         
         private bool dashTrigger;
 
@@ -61,8 +62,7 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-
-
+        
         public StatBase AttackStat { get; }
 
         public IDamageable Target { get; private set; }
@@ -78,7 +78,6 @@ namespace PlayerStates
             playerSkillMananger= GetComponent<PlayerSkillMananger>();
             forceReceiver = GetComponent<ForceReceiver>();
             animationController =  GetComponent<PlayerAnimationController>();
-            skillExecutor = GetComponent<SkillExecutor>();
             toolController= GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
@@ -159,9 +158,12 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                    return new Attack0State(playerSkillMananger.GetSkill(false));
+                    return new Attack0State(0);
+                
                 case PlayerState.Attack1:
-                    //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
+                    
+                //todo: 스킬 구조 바꿔서 적용
+                
                 case PlayerState.Dead:
                     return new DeadState();
                 case PlayerState.Gathering:
@@ -197,17 +199,18 @@ namespace PlayerStates
 
             float speed = PlayerStatus.MoveSpeed;
 
-            Vector2 moveVelocity = Vector2.zero;
-
-            if (moveInput.magnitude < 0.01f)
+            Vector2 moveVelocity;
+            
+            if (knockbackTimer > 0f)
             {
-                moveVelocity = forceReceiver.Force;
+                moveVelocity= forceReceiver.Force;
+                knockbackTimer -= Time.deltaTime;
             }
             else
             {
                 moveVelocity = moveInput.normalized * speed + forceReceiver.Force;
             }
-
+            
             rigid2D.velocity = moveVelocity;
         }
 
@@ -252,7 +255,7 @@ namespace PlayerStates
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
 
-        public void TakeDamage(IAttackable _attacker)
+        public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
         {
             if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
@@ -264,7 +267,23 @@ namespace PlayerStates
                 {
                     Dead();
                 }
+
+                Vector2 knockbackDir = (transform.position - _attackerObj.transform.position).normalized;
+                float knockbackPower = 7f; // 원하는 넉백 세기
+                forceReceiver.AddForce(knockbackDir * knockbackPower);
+                knockbackTimer = 0.1f;
             }
+        }
+
+        public void ShowDamageText(float _damage, Vector3 _worldPos, Color _color)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldPos);
+
+            var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
+            textObj.transform.position= screenPos;
+
+            var damageText = textObj.GetComponent<DamageTextUI>();
+            damageText.Init(_damage, _color);
         }
 
         public void Dead()
@@ -276,4 +295,4 @@ namespace PlayerStates
         }
         
     }
-}
+} 
