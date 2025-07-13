@@ -75,7 +75,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
                 other.transform.position,
                 isCritical ? Color.yellow : Color.red);
 
-            target.TakeDamage(this);
+            target.TakeDamage(this, gameObject);
             pool?.Release(this);
         }
     }

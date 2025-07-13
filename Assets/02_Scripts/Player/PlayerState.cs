@@ -300,7 +300,7 @@ namespace PlayerStates
     {
         public void OnEnter(PlayerController _owner)
         {
-            Logger.Log("Player Dead");
+            _owner.AnimationController.DeadAnimation();
         }
 
         public void OnUpdate(PlayerController _owner) { }

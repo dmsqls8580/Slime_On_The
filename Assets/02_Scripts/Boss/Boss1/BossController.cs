@@ -45,7 +45,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
     public Collider2D Collider  => GetComponent<Collider2D>();
-    public void TakeDamage(IAttackable _attacker)
+    public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
     {
         if (IsDead) return;
         if (_attacker != null)
@@ -82,7 +82,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     {
         if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
-            Target.TakeDamage(this);
+            Target.TakeDamage(this, this.gameObject);
         }
     }
 

@@ -48,6 +48,7 @@ namespace PlayerStates
         private float actCoolDown = 0f;
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
+        private float knockbackTimer = 0f;
         
         private bool dashTrigger;
 
@@ -61,8 +62,7 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-
-
+        
         public StatBase AttackStat { get; }
 
         public IDamageable Target { get; private set; }
@@ -199,17 +199,18 @@ namespace PlayerStates
 
             float speed = PlayerStatus.MoveSpeed;
 
-            Vector2 moveVelocity = Vector2.zero;
-
-            if (moveInput.magnitude < 0.01f)
+            Vector2 moveVelocity;
+            
+            if (knockbackTimer > 0f)
             {
-                moveVelocity = forceReceiver.Force;
+                moveVelocity= forceReceiver.Force;
+                knockbackTimer -= Time.deltaTime;
             }
             else
             {
                 moveVelocity = moveInput.normalized * speed + forceReceiver.Force;
             }
-
+            
             rigid2D.velocity = moveVelocity;
         }
 
@@ -254,7 +255,7 @@ namespace PlayerStates
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
 
-        public void TakeDamage(IAttackable _attacker)
+        public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
         {
             if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
@@ -266,6 +267,11 @@ namespace PlayerStates
                 {
                     Dead();
                 }
+
+                Vector2 knockbackDir = (transform.position - _attackerObj.transform.position).normalized;
+                float knockbackPower = 7f; // 원하는 넉백 세기
+                forceReceiver.AddForce(knockbackDir * knockbackPower);
+                knockbackTimer = 0.1f;
             }
         }
 

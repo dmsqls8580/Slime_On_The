@@ -48,7 +48,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
     // Enemy 피격 메서드
-    public void TakeDamage(IAttackable _attacker)
+    public void TakeDamage(IAttackable _attacker,  GameObject _attackerObj)
     {
         if (IsDead)
         {
@@ -97,7 +97,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
-            Target.TakeDamage(this);
+            Target.TakeDamage(this, this.gameObject);
         }
     }
     
