@@ -4,6 +4,8 @@ using DG.Tweening;
 
 public class UIInventory : UIBase
 {
+    [SerializeField] private RectTransform HUD;
+    
     [SerializeField] private float tweenDuration = 0.3f;
     [SerializeField] private AnimationCurve openCloseCurve;
     
@@ -60,6 +62,7 @@ public class UIInventory : UIBase
     
     public override void Open()
     {
+        HUD.gameObject.SetActive(false);
         base.Open();
         Contents.DOAnchorPos(targetPosition, tweenDuration)
             .SetEase(openCloseCurve);
@@ -69,6 +72,9 @@ public class UIInventory : UIBase
     {
         Contents.DOAnchorPos(originPosition, tweenDuration)
             .SetEase(openCloseCurve)
-            .OnComplete(() => base.Close());
+            .OnComplete(() => {
+                base.Close();
+                HUD.gameObject.SetActive(true);
+            });
     }
 }
