@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteractionHandler>
@@ -18,213 +19,199 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
             inventoryUI = FindObjectOfType<UIInventory>();
         }
     }
-    
-    
-    
+
     // 좌클릭 입력
-    public void HandleLeftClick(SlotBase targetSlot, bool isShift, bool isCtrl)
+    public void HandleLeftClick(SlotBase _targetSlot, bool _isShift, bool _isCtrl)
     {
-        // 좌클릭 (홀딩 O)
         if (holdManager.IsHolding)
-            HandleLeftClick_WhenHolding(targetSlot, isShift, isCtrl);
-        // 좌클릭 (홀딩 X)
+            HandleLeftClick_WhenHolding(_targetSlot, _isShift, _isCtrl);
         else
-            HandleLeftClick_WhenNotHolding(targetSlot, isShift, isCtrl);
+            HandleLeftClick_WhenNotHolding(_targetSlot, _isShift, _isCtrl);
     }
 
     // 우클릭 입력
-    public void HandleRightClick(SlotBase targetSlot, bool isShift, bool isCtrl)
+    public void HandleRightClick(SlotBase _targetSlot, bool _isShift, bool _isCtrl)
     {
-        // 우클릭 (홀딩 O)
         if (holdManager.IsHolding)
-            HandleRightClick_WhenHolding(targetSlot, isShift, isCtrl);
-        // 우클릭 (홀딩 X)
+            HandleRightClick_WhenHolding(_targetSlot, _isShift, _isCtrl);
         else
-            HandleRightClick_WhenNotHolding(targetSlot, isShift, isCtrl);
+            HandleRightClick_WhenNotHolding(_targetSlot, _isShift, _isCtrl);
     }
 
-    
     // 좌클릭 (홀딩 O)
-    private void HandleLeftClick_WhenHolding(SlotBase slot, bool isShift, bool isCtrl)
+    private void HandleLeftClick_WhenHolding(SlotBase _slot, bool _isShift, bool _isCtrl)
     {
-        if (isShift || isCtrl)
+        if (_isShift || _isCtrl)
         {
-            var data = slot.GetData();
+            var data = _slot.GetData();
             if (data == null || !data.IsValid) return;
 
-            int amount = isShift ? Mathf.CeilToInt(data.Quantity / 2f) : 1;
-            TryPickUp(slot, amount);
+            int amount = _isShift ? Mathf.CeilToInt(data.Quantity / 2f) : 1;
+            TryPickUp(_slot, amount);
         }
         else
         {
-            TrySwap(slot);
+            TrySwap(_slot);
         }
     }
-    
+
     // 좌클릭 (홀딩 X)
-    private void HandleLeftClick_WhenNotHolding(SlotBase slot, bool isShift, bool isCtrl)
+    private void HandleLeftClick_WhenNotHolding(SlotBase _slot, bool _isShift, bool _isCtrl)
     {
-        
-        var data = slot.GetData();
+        var data = _slot.GetData();
         if (data == null || !data.IsValid) return;
 
-        int amount = isShift ? Mathf.CeilToInt(data.Quantity / 2f)
-            : isCtrl ? 1
+        int amount = _isShift ? Mathf.CeilToInt(data.Quantity / 2f)
+            : _isCtrl ? 1
             : data.Quantity;
 
-        TryPickUp(slot, amount);
+        TryPickUp(_slot, amount);
     }
 
-    
     // 우클릭 (홀딩 O)
-    private void HandleRightClick_WhenHolding(SlotBase slot, bool isShift, bool isCtrl)
+    private void HandleRightClick_WhenHolding(SlotBase _slot, bool _isShift, bool _isCtrl)
     {
-        if (isShift || isCtrl)
+        if (_isShift || _isCtrl)
         {
-            int amount = isShift ? Mathf.CeilToInt(holdManager.HeldItem.Quantity / 2f) : 1;
-            TryPlace(slot, amount);
+            int amount = _isShift ? Mathf.CeilToInt(holdManager.HeldItem.Quantity / 2f) : 1;
+            TryPlace(_slot, amount);
         }
         else
         {
-            TryUse(slot.GetData(), slot);
+            TryUse(_slot.GetData(), _slot);
         }
     }
-    
+
     // 우클릭 (홀딩 X)
-    private void HandleRightClick_WhenNotHolding(SlotBase slot, bool isShift, bool isCtrl)
+    private void HandleRightClick_WhenNotHolding(SlotBase _slot, bool _isShift, bool _isCtrl)
     {
-        TryUse(slot.GetData(), slot);
+        TryUse(_slot.GetData(), _slot);
     }
 
-    
     // 줍기 시도
-    private void TryPickUp(SlotBase slot, int amount)
+    private void TryPickUp(SlotBase _slot, int _amount)
     {
-        var data = slot.GetData();
+        var data = _slot.GetData();
         if (data == null || !data.IsValid) return;
 
-        // 이미 아이템 들고 있는 경우 → 다른 종류면 픽업 불가
         if (holdManager.IsHolding && holdManager.HeldItem.ItemData != data.ItemData) return;
 
-        int taken = holdManager.TryAddItem(data.ItemData, amount);
-        slot.Clear(taken);
+        int taken = holdManager.TryAddItem(data.ItemData, _amount);
+        _slot.Clear(taken);
         holdManager.Refresh();
     }
 
     // 놓기 시도
-    private void TryPlace(SlotBase slot, int amount)
+    private void TryPlace(SlotBase _slot, int _amount)
     {
         var held = holdManager.HeldItem;
         if (held == null || !held.IsValid) return;
 
-        var slotData = slot.GetData();
+        var slotData = _slot.GetData();
 
-        // 대상 슬롯이 비었거나 같은 아이템일 때만 가능
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
         
-        // 장착 아이템을 들고있을 때 해당 슬롯이 장착 슬롯이면
-        if (held.ItemData.useType == UseType.Equip && slot is EquipSlot equipSlot)
+        if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
         {
-            if (!equipSlot.IsCorrectEquipType(held.ItemData.equipType))
+            if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
                 return;
         }
 
-        int placed = inventoryManager.TryAddItem(slot.SlotIndex, held.ItemData, amount);
+        int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held.ItemData, _amount);
         holdManager.RemoveItem(placed);
 
-        slot.Refresh();
+        _slot.Refresh();
         holdManager.Refresh();
     }
-    
+
     // 교체 시도
-    private void TrySwap(SlotBase slot)
+    private void TrySwap(SlotBase _slot)
     {
-        var targetData = slot.GetData();
+        var targetData = _slot.GetData();
         var heldData = holdManager.HeldItem;
         if (heldData == null || !heldData.IsValid) return;
 
-        // 놓기 시도
         if (targetData == null || !targetData.IsValid)
         {
-            TryPlace(slot, heldData.Quantity);
+            TryPlace(_slot, heldData.Quantity);
             return;
         }
 
-        // 병합 시도
         if (heldData.ItemData == targetData.ItemData)
         {
-            TryPlace(slot, heldData.Quantity);
+            TryPlace(_slot, heldData.Quantity);
             return;
         }
 
-        // 장착 아이템일 경우 필터링
-        if (slot is EquipSlot equipSlot && heldData.ItemData.useType == UseType.Equip)
+        if (_slot is EquipSlot equipSlot && heldData.ItemData.itemTypes== ItemType.Equipable)
         {
-            if (!equipSlot.IsCorrectEquipType(heldData.ItemData.equipType))
+            if (!equipSlot.IsCorrectEquipType(heldData.ItemData.equipableData.equipableType))
                 return;
         }
         
-        // 홀드슬롯, 타겟슬롯 아이템 교체
-        holdManager.SetItem(targetData, slot);
-        InventoryManager.Instance.SetItem(slot.SlotIndex, heldData);
+        holdManager.SetItem(targetData, _slot);
+        InventoryManager.Instance.SetItem(_slot.SlotIndex, heldData);
 
-        slot.Refresh();
+        _slot.Refresh();
         holdManager.Refresh();
     }
 
     // 사용하기
-    public void TryUse(ItemInstanceData item, SlotBase originSlot)
+    public void TryUse(ItemInstanceData _item, SlotBase _originSlot)
     {
-        if (item == null || !item.IsValid) return;
+        if (_item == null || !_item.IsValid) return;
 
-        switch (item.ItemData.useType)
+        switch (_item.ItemData.itemTypes)
         {
-            case UseType.Equip:
-                TryEquip(item, originSlot);
+            case ItemType.Equipable:
+                TryEquip(_item, _originSlot);
                 break;
 
-            case UseType.Consume:
-                item.Quantity--;
-                //TryConsume(item);
+            case ItemType.Eatable:
+                _item.Quantity--;
+                //TryConsume(_item);
                 break;
-
+            case ItemType.Placeable:
+                inventoryManager.placeMode.SetActiveTruePlaceMode(_item.ItemData.placeableData.placeableInfo);
+                break;
             default:
                 break;
         }
     }
-    
-    public void TryEquip(ItemInstanceData item, SlotBase originSlot)
+
+    public void TryEquip(ItemInstanceData _item, SlotBase _originSlot)
     {
-        if (originSlot is EquipSlot)
+        if (_originSlot is EquipSlot)
         {
-            TryUnequipFromEquipSlot(item);
+            TryUnequipFromEquipSlot(_item);
         }
-        else if (originSlot is InventorySlot)
+        else if (_originSlot is InventorySlot)
         {
-            TryEquipFromInventory(item, originSlot.SlotIndex);
+            TryEquipFromInventory(_item, _originSlot.SlotIndex);
         }
     }
 
-    private void TryEquipFromInventory(ItemInstanceData item, int inventorySlotIndex)
+    private void TryEquipFromInventory(ItemInstanceData _item, int _inventorySlotIndex)
     {
-        EquipType type = item.ItemData.equipType;
+        EquipType type = _item.ItemData.equipableData.equipableType;
         int equipIndex = (int)type;
 
-        // 기존 장착 아이템 가져오기
         var prevEquip = inventoryManager.GetEquipItem(equipIndex);
+        
+        inventoryManager.SetItem(_inventorySlotIndex, prevEquip);
 
-        // 인벤토리 <-> 장비 간 직접 교체
-        inventoryManager.SetItem(inventorySlotIndex, prevEquip);
-        inventoryManager.SetEquipItem(equipIndex, item);
+        var equipSlots = inventoryUI.GetEquipSlots();
+        equipSlots[equipIndex].SetItem(_item);
     }
 
-    private void TryUnequipFromEquipSlot(ItemInstanceData item)
+    private void TryUnequipFromEquipSlot(ItemInstanceData _item)
     {
-        if (!inventoryManager.TryAddItemGlobally(item.ItemData, item.Quantity))
+        if (!inventoryManager.TryAddItemGlobally(_item.ItemData, _item.Quantity))
         {
-            // DropItem(item); // 드랍 로직 별도로 호출
-        }
-    
-        inventoryManager.ClearEquipItem((int)item.ItemData.equipType);
+            // DropItem(_item);
+        }   
+        var equipSlots = inventoryUI.GetEquipSlots();
+        int equipIndex = (int)_item.ItemData.equipableData.equipableType;
+        equipSlots[equipIndex].SetItem(null); 
     }
 }

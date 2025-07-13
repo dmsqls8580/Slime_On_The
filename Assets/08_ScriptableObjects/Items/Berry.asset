@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Berry
   description: 
   icon: {fileID: 0}
-  itemTypes: 8
+  itemTypes: 9
   stackable: 1
   maxStack: 99
   materialData:
@@ -41,4 +41,6 @@ MonoBehaviour:
     duration: 0
     rottenable: 1
     permanent: 1
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe: []

@@ -123,7 +123,7 @@ ScriptedImporter:
   animatedSpriteImportData:
   - name: axe_Frame_13
     originalName: 
-    pivot: {x: 0.4666667, y: -1.5238096}
+    pivot: {x: 0.4666667, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -143,7 +143,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 30}
   - name: axe_Frame_14
     originalName: 
-    pivot: {x: 0.50000006, y: -1.6842107}
+    pivot: {x: 0.50000006, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -163,7 +163,7 @@ ScriptedImporter:
     uvTransform: {x: 50, y: 30}
   - name: axe_Frame_15
     originalName: 
-    pivot: {x: 0.53846157, y: -1.7777779}
+    pivot: {x: 0.53846157, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -183,7 +183,7 @@ ScriptedImporter:
     uvTransform: {x: 25, y: 59}
   - name: axe_Frame_16
     originalName: 
-    pivot: {x: 0.53846157, y: -1.7777779}
+    pivot: {x: 0.53846157, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -203,7 +203,7 @@ ScriptedImporter:
     uvTransform: {x: 46, y: 59}
   - name: axe_Frame_17
     originalName: 
-    pivot: {x: 0.53846157, y: -2}
+    pivot: {x: 0.53846157, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -223,7 +223,7 @@ ScriptedImporter:
     uvTransform: {x: 23, y: 86}
   - name: axe_Frame_0
     originalName: 
-    pivot: {x: 0.6363637, y: -1.5714285}
+    pivot: {x: 0.6363637, y: -0.04761905}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -243,12 +243,12 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 86}
   - name: axe_Frame_1
     originalName: 
-    pivot: {x: 0.8235295, y: -1.8333334}
+    pivot: {x: 0.8235295, y: -0.055555556}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 39
+      x: 68
       y: 4
       width: 17
       height: 18
@@ -260,10 +260,10 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 39, y: 4}
+    uvTransform: {x: 68, y: 4}
   - name: axe_Frame_2
     originalName: 
-    pivot: {x: 0.48148146, y: -1.8333334}
+    pivot: {x: 0.48148146, y: -0.055555556}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -283,14 +283,14 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: axe_Frame_3
     originalName: 
-    pivot: {x: 0.25, y: -2.1333334}
+    pivot: {x: 0.23809522, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 64
+      x: 39
       y: 4
-      width: 20
+      width: 21
       height: 15
     spriteID: 29883d925e4ffe74eb056a6e4b0170f4
     spriteBone: []
@@ -300,10 +300,10 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 64, y: 4}
+    uvTransform: {x: 39, y: 4}
   - name: axe_Frame_4
     originalName: 
-    pivot: {x: 0.2631579, y: -2.5384614}
+    pivot: {x: 0.26315784, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -311,7 +311,7 @@ ScriptedImporter:
       x: 72
       y: 30
       width: 19
-      height: 13
+      height: 14
     spriteID: e39014e6c6460d549aa8c4c3073f07b7
     spriteBone: []
     spriteOutline: []
@@ -323,7 +323,7 @@ ScriptedImporter:
     uvTransform: {x: 72, y: 30}
   - name: axe_Frame_5
     originalName: 
-    pivot: {x: 0.31578943, y: -2.5384614}
+    pivot: {x: 0.31578946, y: -0.07692308}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -343,7 +343,7 @@ ScriptedImporter:
     uvTransform: {x: 99, y: 30}
   - name: axe_Frame_6
     originalName: 
-    pivot: {x: 0.57142854, y: -2.0625}
+    pivot: {x: 0.57142854, y: -0.0625}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -363,7 +363,7 @@ ScriptedImporter:
     uvTransform: {x: 109, y: 59}
   - name: axe_Frame_7
     originalName: 
-    pivot: {x: 0.6000001, y: -1.8333334}
+    pivot: {x: 0.6, y: -0.055555556}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -383,7 +383,7 @@ ScriptedImporter:
     uvTransform: {x: 27, y: 30}
   - name: axe_Frame_8
     originalName: 
-    pivot: {x: 0.53846157, y: -1.8333334}
+    pivot: {x: 0.53846157, y: -0.055555556}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -403,7 +403,7 @@ ScriptedImporter:
     uvTransform: {x: 67, y: 59}
   - name: axe_Frame_9
     originalName: 
-    pivot: {x: 0.53846157, y: -1.4210527}
+    pivot: {x: 0.53846157, y: 0.2631579}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -423,7 +423,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 59}
   - name: axe_Frame_10
     originalName: 
-    pivot: {x: 0.53846157, y: -1.5555556}
+    pivot: {x: 0.53846157, y: 0.22222222}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -443,7 +443,7 @@ ScriptedImporter:
     uvTransform: {x: 88, y: 59}
   - name: axe_Frame_11
     originalName: 
-    pivot: {x: 0.53846157, y: -2.357143}
+    pivot: {x: 0.53846157, y: -0.071428575}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
@@ -463,12 +463,12 @@ ScriptedImporter:
     uvTransform: {x: 44, y: 86}
   - name: axe_Frame_12
     originalName: 
-    pivot: {x: 0.43750003, y: -1.7777779}
+    pivot: {x: 0.43750003, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 92
+      x: 93
       y: 4
       width: 16
       height: 18
@@ -480,7 +480,7 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    uvTransform: {x: 92, y: 4}
+    uvTransform: {x: 93, y: 4}
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
@@ -493,144 +493,144 @@ ScriptedImporter:
     - name: axe_Frame_13
       frameIndex: 13
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 15
         height: 21
       spriteId: f33debe8df4d22140a675df5145aca92
     - name: axe_Frame_14
       frameIndex: 14
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 14
         height: 19
       spriteId: c2be7149a2c6dc6438c8ee0edf8ae98f
     - name: axe_Frame_15
       frameIndex: 15
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 13
         height: 18
       spriteId: 633359e9443190b46a5e2804807dfc78
     - name: axe_Frame_16
       frameIndex: 16
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 13
         height: 18
       spriteId: 68c90fcd83dd4bc45b029878c7096c7b
     - name: axe_Frame_17
       frameIndex: 17
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 13
         height: 16
       spriteId: d5cf99b1167e25949b1bdaf795e7dddc
     - name: axe_Frame_0
       frameIndex: 0
       cellRect:
-        x: 33
-        y: 33
+        x: 17
+        y: 1
         width: 11
         height: 21
       spriteId: 7bc7040d6623cfc41b36c500c6731a1e
     - name: axe_Frame_1
       frameIndex: 1
       cellRect:
-        x: 26
-        y: 33
+        x: 10
+        y: 1
         width: 17
         height: 18
       spriteId: 412060f2d21fee04b94ce92fd0c6fdf8
     - name: axe_Frame_2
       frameIndex: 2
       cellRect:
-        x: 27
-        y: 33
+        x: 11
+        y: 1
         width: 27
         height: 18
       spriteId: 6f6a620fe62283e4dba18048b246cdd8
     - name: axe_Frame_3
       frameIndex: 3
       cellRect:
-        x: 35
-        y: 32
-        width: 20
+        x: 19
+        y: 0
+        width: 21
         height: 15
       spriteId: 29883d925e4ffe74eb056a6e4b0170f4
     - name: axe_Frame_4
       frameIndex: 4
       cellRect:
-        x: 35
-        y: 33
+        x: 19
+        y: 0
         width: 19
-        height: 13
+        height: 14
       spriteId: e39014e6c6460d549aa8c4c3073f07b7
     - name: axe_Frame_5
       frameIndex: 5
       cellRect:
-        x: 34
-        y: 33
+        x: 18
+        y: 1
         width: 19
         height: 13
       spriteId: dd70ba0ea7c962548a44690c1fe8083b
     - name: axe_Frame_6
       frameIndex: 6
       cellRect:
-        x: 32
-        y: 33
+        x: 16
+        y: 1
         width: 14
         height: 16
       spriteId: c5de3ef2ce2a40e458540fd11c00b3cf
     - name: axe_Frame_7
       frameIndex: 7
       cellRect:
-        x: 31
-        y: 33
+        x: 15
+        y: 1
         width: 15
         height: 18
       spriteId: 4bfc0f96f76c0354f887bace15ddc1d7
     - name: axe_Frame_8
       frameIndex: 8
       cellRect:
-        x: 33
-        y: 33
+        x: 17
+        y: 1
         width: 13
         height: 18
       spriteId: 31807443924df9f4ca6a950c69bbbd08
     - name: axe_Frame_9
       frameIndex: 9
       cellRect:
-        x: 33
-        y: 27
+        x: 17
+        y: -5
         width: 13
         height: 19
       spriteId: 4095c791bf9c9b24a8943682ed10be20
     - name: axe_Frame_10
       frameIndex: 10
       cellRect:
-        x: 33
-        y: 28
+        x: 17
+        y: -4
         width: 13
         height: 18
       spriteId: 7558ca1ab39d0084bae0cd554403b9a0
     - name: axe_Frame_11
       frameIndex: 11
       cellRect:
-        x: 33
-        y: 33
+        x: 17
+        y: 1
         width: 13
         height: 14
       spriteId: e65d58990e0cd124e97553e86f1ec1cd
     - name: axe_Frame_12
       frameIndex: 12
       cellRect:
-        x: 33
-        y: 32
+        x: 17
+        y: 0
         width: 16
         height: 18
       spriteId: e3b42dd0d68bd0a478e76b21881f1fa9
@@ -640,4 +640,4 @@ ScriptedImporter:
   generatePhysicsShape: 0
   secondarySpriteTextures: []
   spritePackingTag: 
-  canvasSize: {x: 80, y: 80}
+  canvasSize: {x: 48, y: 32}

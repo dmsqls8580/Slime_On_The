@@ -40,6 +40,7 @@ public class StatManager : MonoBehaviour
             StatType.CurrentHp => new ResourceStat(_statType, _value),
             StatType.CurrentHunger => new ResourceStat(_statType, _value),
             StatType.CurrentSlimeGauge=> new ResourceStat(_statType, _value),
+            StatType.Defense=> new ResourceStat(_statType, _value),
             //////////////////////////////////////////////////////////////////
             _ => new CalculateStat(_statType, _value),
         };
@@ -49,12 +50,23 @@ public class StatManager : MonoBehaviour
     {
         return Stats[_statType] as T;
     }
-
+    
     public float GetValue(StatType _statType)
     {
         return Stats[_statType].GetCurrent();
     }
-
+    
+    public bool TryGetValue(StatType type, out float value)
+    {
+        if (Stats.TryGetValue(type, out var stat))
+        {
+            value = stat.Value;
+            return true;
+        }
+        value = 0f;
+        return false;
+    }
+    
     public void Recover(StatType _statType, StatModifierType _modifierType, float _value)
     {
         if (Stats[_statType] is ResourceStat res)
@@ -135,6 +147,7 @@ public class StatManager : MonoBehaviour
         
         Logger.Log($"Stat : {_statType} Modify Value {_value}, FinalValue : {stat.Value}");
     }
+    
 
     private void SyncCurrentWithMax(StatType _statType, CalculateStat _stat)
     {

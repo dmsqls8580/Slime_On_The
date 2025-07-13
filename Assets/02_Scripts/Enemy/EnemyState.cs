@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace  Enemyststes
+namespace  Enemystates
 {
     public enum EnemyState
     {
@@ -75,6 +75,23 @@ namespace  Enemyststes
             {
                 return EnemyState.Dead;
             }
+            // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            {
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
+                if (owner.ChaseTarget != null) 
+                {
+                    return EnemyState.Chase;
+                }
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return EnemyState.Wander;
+                }
+                // 배회모드로 전환되지 않았을 시 idle모드.
+                return EnemyState.Idle;
+            }
+            
             // AttackCooldown 동안은 Idle 상태를 계속 유지
             if (isAttackCooldown)
             {
@@ -126,19 +143,7 @@ namespace  Enemyststes
 
         public void OnUpdate(EnemyController owner)
         {
-            GameObject player = owner.ChaseTarget;
-            if (player == null)
-            {
-                player = GameObject.FindWithTag("Player");
-            }
-            if (player != null)
-            {
-                float dist = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (dist <= owner.EnemyStatus.AttackRange)
-                {
-                    owner.ChaseTarget = player;
-                }
-            }
+            
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -158,6 +163,22 @@ namespace  Enemyststes
             {
                 return EnemyState.Dead;
             }
+            // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            {
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
+                if (owner.ChaseTarget != null)
+                {
+                    return EnemyState.Chase;
+                }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return EnemyState.Idle;
+                }
+                return EnemyState.Wander;
+            }
+            
             // 공격 범위 내에 있을 시 Attack 모드로 전환
             if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
             {
@@ -209,6 +230,24 @@ namespace  Enemyststes
 
         public void OnUpdate(EnemyController owner)
         {
+            // AttackType이 None일 경우 Chase State에서 플레이어에게서 도망
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            {
+                if (owner.ChaseTarget != null)
+                {
+                    Vector3 dir = (owner.transform.position - owner.ChaseTarget.transform.position).normalized;
+                    float distance = owner.EnemyStatus.FleeDistance;
+                    Vector3 fleeDir = owner.transform.position + dir * distance;
+                    
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(fleeDir, out hit, distance, NavMesh.AllAreas))
+                    {
+                        owner.Agent.SetDestination(hit.position);
+                    }
+                }
+                
+                return;
+            }
             // Target의 위치를 추적해 이동.
             if (owner.ChaseTarget != null)
             {
@@ -240,6 +279,17 @@ namespace  Enemyststes
             {
                 return EnemyState.Dead;
             }
+            // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
+            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            {
+                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+                if (owner.ChaseTarget == null)
+                {
+                    return EnemyState.Idle;
+                }
+                return EnemyState.Chase;
+            }
+            
             // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
             if (owner.ChaseTarget == null)
             {
@@ -261,8 +311,6 @@ namespace  Enemyststes
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetTrigger(isAttackHash);
-            
-            owner.Attack();
         }
 
         public void OnUpdate(EnemyController owner)

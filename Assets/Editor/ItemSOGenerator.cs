@@ -86,7 +86,7 @@ public class ItemSOGenerator : EditorWindow
 
             ItemSO asset = ScriptableObject.CreateInstance<ItemSO>();
 
-            asset.idx = GetSafe(cols, columnIndex, "idx");
+            int.TryParse(GetSafe(cols, columnIndex, "idx"), out asset.idx);
             asset.itemName = GetSafe(cols, columnIndex, "itemName");
             asset.description = GetSafe(cols, columnIndex, "description");
             asset.itemTypes = ParseItemTypes(GetSafe(cols, columnIndex, "ItemTypes"));
@@ -129,7 +129,7 @@ public class ItemSOGenerator : EditorWindow
             }
 
             // === Recipe 연결 ===
-            if (recipeMap.TryGetValue(asset.idx, out var recipes))
+            if (recipeMap.TryGetValue(asset.idx.ToString(), out var recipes))
             {
                 asset.recipe = new List<RecipeIngredient>();
 
@@ -142,7 +142,7 @@ public class ItemSOGenerator : EditorWindow
                     {
                         string path = AssetDatabase.GUIDToAssetPath(guid);
                         ItemSO so = AssetDatabase.LoadAssetAtPath<ItemSO>(path);
-                        if (so != null && so.idx == ingredientIdx)
+                        if (so != null && so.idx.ToString() == ingredientIdx)
                         {
                             asset.recipe.Add(new RecipeIngredient { item = so, amount = amount });
                             found = true;
@@ -168,11 +168,11 @@ public class ItemSOGenerator : EditorWindow
     }
 
     // enum 다중 파싱 (Material|Eatable 등)
-    ItemType ParseItemTypes(string input)
+    ItemType ParseItemTypes(string _input)
     {
         ItemType result = ItemType.None;
-        if (string.IsNullOrWhiteSpace(input)) return result;
-        string[] tokens = input.Split('|');
+        if (string.IsNullOrWhiteSpace(_input)) return result;
+        string[] tokens = _input.Split('|');
         foreach (string token in tokens)
         {
             if (System.Enum.TryParse<ItemType>(token.Trim(), true, out var parsed))
@@ -183,14 +183,14 @@ public class ItemSOGenerator : EditorWindow
         return result;
     }
 
-    ToolType ParseToolType(string input)
+    ToolType ParseToolType(string _input)
     {
-        return System.Enum.TryParse(input, true, out ToolType result) ? result : ToolType.None;
+        return System.Enum.TryParse(_input, true, out ToolType result) ? result : ToolType.None;
     }
 
-    EquipableType ParseEquipableType(string input)
+    EquipType ParseEquipableType(string _input)
     {
-        return System.Enum.TryParse(input, true, out EquipableType result) ? result : EquipableType.Armor;
+        return System.Enum.TryParse(_input, true, out EquipType result) ? result : EquipType.Amulet;
     }
 
     string GetSafe(string[] cols, Dictionary<string, int> map, string key)

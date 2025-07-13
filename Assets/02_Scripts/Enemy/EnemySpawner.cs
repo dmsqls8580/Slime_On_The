@@ -1,7 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 [CustomEditor(typeof(EnemySpawner))]
 public class EnemySpawnerEditor : Editor
@@ -16,7 +16,7 @@ public class EnemySpawnerEditor : Editor
         {
             spawner.SpawnEnemies();
         }
-
+        
         if (GUILayout.Button("몬스터 제거"))
         {
             spawner.ClearEnemies();
@@ -33,11 +33,17 @@ public class EnemySpawner : MonoBehaviour
 
     private EnemyTable enemyTable;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private CircleCollider2D circleCollider2D;
+
+    private void Awake()
+    {
+        enemyTable = TableManager.Instance.GetTable<EnemyTable>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
+    }
 
     private void Start()
     {
-        enemyTable = TableManager.Instance.GetTable<EnemyTable>();
-        SpawnEnemies();
+        InitCollider();
     }
 
     public void SpawnEnemies()
@@ -96,7 +102,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (enemy != null)
             {
-                ObjectPoolManager.Instance.ReturnObject(enemy);
+                ObjectPoolManager.Instance.ReturnFixedObject(enemy);
             }
         }
         spawnedEnemies.Clear();
@@ -107,5 +113,24 @@ public class EnemySpawner : MonoBehaviour
     {
         Vector2 randomPos = Random.insideUnitCircle * radius;
         return new Vector3(center.x + randomPos.x, center.y + randomPos.y, center.z);
+    }
+    
+    // Collider 반경 설정
+    private void InitCollider()
+    {
+        if(circleCollider2D != null)
+        {
+            circleCollider2D.radius = SpawnRadius;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // SpawnEnemies();
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        // ClearEnemies();
     }
 }

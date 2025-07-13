@@ -21,10 +21,11 @@ namespace PlayerStates
         public PlayerStatus PlayerStatus { get; private set; }
 
         private ToolController toolController;
+        public ToolController ToolController => toolController;
 
         private InputController inputController;
         private PlayerAnimationController animationController;
-        
+        private PlayerSkillMananger  playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
         
         private InteractionHandler interactionHandler;
@@ -36,16 +37,18 @@ namespace PlayerStates
         private ForceReceiver forceReceiver;
         
         private Rigidbody2D rigid2D;
+        public Rigidbody2D Rigid2D => rigid2D;
 
         private Vector2 moveInput;
         private Vector2 lastMoveDir = Vector2.right;
 
         public Vector2 MoveInput => moveInput;
         public Vector2 LastMoveDir => lastMoveDir;
-        public Rigidbody2D Rigid2D => rigid2D;
 
         private float actCoolDown = 0f;
-
+        private float damageDelay = 0.5f;
+        private float damageDelayTimer = 0f;
+        
         private bool dashTrigger;
 
         public bool DashTrigger
@@ -72,6 +75,7 @@ namespace PlayerStates
             base.Awake();
             inputController = GetComponent<InputController>();
             PlayerStatus = GetComponent<PlayerStatus>();
+            playerSkillMananger= GetComponent<PlayerSkillMananger>();
             forceReceiver = GetComponent<ForceReceiver>();
             animationController =  GetComponent<PlayerAnimationController>();
             skillExecutor = GetComponent<SkillExecutor>();
@@ -92,6 +96,7 @@ namespace PlayerStates
             StatManager.Init(playerData);
 
             var action = inputController.PlayerActions;
+            // Move
             action.Move.performed += context =>
             {
                 moveInput = context.ReadValue<Vector2>();
@@ -101,14 +106,18 @@ namespace PlayerStates
             
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
             
+            //Attack
             action.Attack0.performed += context =>
             {
                 if (CanAttack)
                     attackQueued = true;
             };
-
+            //Dash
             action.Dash.performed += context => dashTrigger = true;
-            action.Interaction.performed+= context =>
+            
+            //Gathering
+            
+            action.Gathering.performed+= context =>
             {
                TryInteract();
             };
@@ -128,6 +137,11 @@ namespace PlayerStates
                 actCoolDown -= Time.deltaTime;
             }
 
+            if (damageDelayTimer > 0f)
+            {
+                damageDelayTimer -= Time.deltaTime;
+            }
+
             if (Input.GetKey(KeyCode.K))
             {
                 PlayerStatus.RecoverSlimeGauge(30);
@@ -145,11 +159,13 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                    return new Attack0State(PlayerSkillMananger.Instance.GetSkill(false));
+                    return new Attack0State(playerSkillMananger.GetSkill(false));
                 case PlayerState.Attack1:
                     //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
                 case PlayerState.Dead:
                     return new DeadState();
+                case PlayerState.Gathering:
+                    return new GatherState();
                 default:
                     return null;
             }
@@ -198,8 +214,9 @@ namespace PlayerStates
         public void TryInteract()
         {
             if (actCoolDown > 0) return;
+            
             var target = interactionSelector.FInteractable;
-
+            
             if (target == null)
             {
                 Logger.Log("Target is null");
@@ -210,6 +227,8 @@ namespace PlayerStates
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
+            
+            ChangeState(PlayerState.Gathering);
         }
         
         public Vector2 UpdatePlayerDirectionByMouse()
@@ -235,11 +254,12 @@ namespace PlayerStates
 
         public void TakeDamage(IAttackable _attacker)
         {
-            if (IsDead) return;
+            if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
             {
                 // 피격
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                damageDelayTimer = damageDelay;
                 if (PlayerStatus.CurrentHp <= 0)
                 {
                     Dead();
@@ -254,7 +274,6 @@ namespace PlayerStates
                 ChangeState(PlayerState.Dead);
             }
         }
-        
         
     }
 }

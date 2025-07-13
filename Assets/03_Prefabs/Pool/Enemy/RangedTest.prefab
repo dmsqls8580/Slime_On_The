@@ -220,9 +220,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 5
 --- !u!114 &9199974393251219603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -613,7 +613,7 @@ GameObject:
   - component: {fileID: 7112992452115944940}
   - component: {fileID: 2903862772237964450}
   - component: {fileID: 484615639795883733}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RangedTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,6 +657,7 @@ MonoBehaviour:
   EnemyStatus: {fileID: 3498737508750851171}
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &3498737508750851171
 MonoBehaviour:
   m_ObjectHideFlags: 0

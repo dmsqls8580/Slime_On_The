@@ -54,13 +54,3 @@ public enum UseType
     Place,
     Special
 }
-
-public enum EquipType
-{
-    Chest = 0,
-    Leg = 1,
-    Boots = 2,
-    Amulet = 3,
-    Ring = 4,
-    Core = 5,
-}

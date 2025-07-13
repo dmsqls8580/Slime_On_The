@@ -15,29 +15,30 @@ public enum ItemType
 
 public enum ToolType 
 { 
-    None, 
-    Axe, 
-    Pickaxe,
-    Shovel,
-    FishingRod,
-    Hoe, 
-    WateringCan 
+    None = 0,
+    Axe = 1, 
+    Pickaxe = 2,
+    Shovel = 3,
+    FishingRod = 4,
+    Hoe = 5, 
+    WateringCan = 6, 
 }
 
-public enum EquipableType 
-{ 
-    Armor, 
-    Pants, 
-    Shoes, 
-    Necklace, 
-    Ring 
+public enum EquipType
+{
+    Chest = 0,
+    Leg = 1,
+    Boots = 2,
+    Amulet = 3,
+    Ring = 4,
+    Core = 5,
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
 public class ItemSO : ScriptableObject
 {
     [Header("기본 정보")]
-    public string idx;
+    public int idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;
@@ -52,6 +53,7 @@ public class ItemSO : ScriptableObject
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
+    public PlaceableData placeableData;
 
     [Header("레시피")]
     public List<RecipeIngredient> recipe;
@@ -76,7 +78,7 @@ public class ToolData
 [System.Serializable]
 public class EquipableData
 {
-    public EquipableType equipableType;
+    public EquipType equipableType;
     public float maxHealth;
     public float atk;
     public float def;
@@ -93,6 +95,12 @@ public class EatableData
     public float duration;
     public bool rottenable;
     public bool permanent;
+}
+
+[System.Serializable]
+public class PlaceableData
+{
+    public PlaceableInfo placeableInfo;
 }
 
 [System.Serializable]

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: wood fence gate
+  m_Name: Wood Fence Gate
   m_EditorClassIdentifier: 
   idx: 602
-  itemName: wood fence gate
+  itemName: Wood Fence Gate
   description: 
   icon: {fileID: 0}
   itemTypes: 16
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 11400000, guid: dfe854297bf0c934abc698c19e8aca9b, type: 2}
   recipe:
   - item: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
     amount: 2

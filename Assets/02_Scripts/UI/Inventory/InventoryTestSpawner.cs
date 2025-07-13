@@ -3,7 +3,7 @@ using UnityEngine;
 public class InventoryTestSpawner : MonoBehaviour
 {
     [Header("테스트용 아이템")]
-    public TempItemSO[] testItems;
+    public ItemSO[] testItems;
     public int[] quantities;
 
     private void Update()

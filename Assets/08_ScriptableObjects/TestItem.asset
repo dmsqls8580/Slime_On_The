@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
   m_Name: TestItem
   m_EditorClassIdentifier: 
-  idx: 
+  idx: 1001
   itemName: "\uC0AC\uACFC"
   description: 2123
   icon: {fileID: 21300000, guid: f3a6ee97e919f264bb8f30c84416cb35, type: 3}
   itemTypes: 8
-  stackable: 0
-  maxStack: 0
+  stackable: 1
+  maxStack: 20
   materialData:
     rottenable: 0
   toolData:

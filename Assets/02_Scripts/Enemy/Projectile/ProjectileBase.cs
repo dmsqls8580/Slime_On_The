@@ -1,0 +1,47 @@
+using UnityEngine;
+
+public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
+{
+    [SerializeField] protected float speed;
+    [SerializeField] protected float lifeTime;
+    
+    protected Rigidbody2D rigid;
+    protected StatBase damage;
+    
+    /************************ IAttackable ***********************/
+    public virtual StatBase AttackStat => damage;
+    public virtual IDamageable Target => null; // OntriggerEnter2D에서 처리하기 때문에 불필요
+    public virtual void Attack() { }
+    
+
+    /************************ IPoolObject ***********************/
+    public virtual GameObject GameObject  => this.gameObject;
+    public virtual string PoolID => gameObject.name;
+    public virtual int PoolSize => 5;
+    
+    public virtual void OnSpawnFromPool()
+    {
+        
+    }
+
+    public virtual void OnReturnToPool()
+    {
+        rigid.velocity = Vector2.zero;
+        damage = null;
+    }
+    
+    
+    /************************ ProjectileBase ***********************/
+    
+    public virtual void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+    }
+
+    public abstract void Init(Vector2 dir, StatBase _damage, float _radius = 0f);
+
+    protected virtual void OnTriggerEnter2D(Collider2D other) {}
+    protected virtual void OnTriggerStay2D(Collider2D other) {}
+    protected virtual void OnTriggerExit2D(Collider2D other) {}
+    
+}

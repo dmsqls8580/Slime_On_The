@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Iron breastplate
+  m_Name: Iron Breastplate
   m_EditorClassIdentifier: 
   idx: 426
-  itemName: Iron breastplate
+  itemName: Iron Breastplate
   description: 
   icon: {fileID: 0}
   itemTypes: 4
@@ -41,6 +41,8 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 5e937ce59142fb5448e291e44e0d7a30, type: 2}
     amount: 8

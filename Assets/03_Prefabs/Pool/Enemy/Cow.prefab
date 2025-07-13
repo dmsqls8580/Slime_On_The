@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1127050376331262425}
   - component: {fileID: 4707395201834553043}
   - component: {fileID: 7567127688918209858}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,9 +56,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senseRangeCollider: {fileID: 3750377607397033946}
   attackRangeCollider: {fileID: 2184833547782532290}
+  projectileTransform: {fileID: 0}
   EnemyStatus: {fileID: 6591884905984836916}
   ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &6591884905984836916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,7 +213,7 @@ SpriteRenderer:
   m_SortingOrder: 100
   m_Sprite: {fileID: 2127497997, guid: 52064e96917ac0e43802a2b42f8f84a4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1.3125, y: 0.9375}
@@ -306,9 +308,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.5, y: 0}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 1
 --- !u!114 &7525573409646874094
 MonoBehaviour:
   m_ObjectHideFlags: 0
