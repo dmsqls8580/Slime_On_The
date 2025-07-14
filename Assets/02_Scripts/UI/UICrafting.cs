@@ -1,15 +1,16 @@
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class UICrafting : UIBase
 {
+    [SerializeField] private RectTransform HUD;
+    
     [SerializeField] private float tweenDuration = 0.3f;
     [SerializeField] private AnimationCurve openCloseCurve;
 
     private Vector2 originPosition;
     private Vector2 targetPosition;
-
-
 
 
 
@@ -19,17 +20,18 @@ public class UICrafting : UIBase
         originPosition = Contents.anchoredPosition;
         targetPosition = new Vector2(Contents.rect.width, 0);
 
+        //Contents.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
         Contents.gameObject.SetActive(false);
     }
 
 
-
-
-
-
-
     public override void Open()
     {
+        HUD.gameObject.SetActive(false);
         base.Open();
         Contents.DOAnchorPos(targetPosition, tweenDuration)
             .SetEase(openCloseCurve);
@@ -39,6 +41,9 @@ public class UICrafting : UIBase
     {
         Contents.DOAnchorPos(originPosition, tweenDuration)
             .SetEase(openCloseCurve)
-            .OnComplete(() => base.Close());
+            .OnComplete(() => {
+                base.Close();
+                HUD.gameObject.SetActive(true);
+            });
     }
 }

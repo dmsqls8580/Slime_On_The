@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

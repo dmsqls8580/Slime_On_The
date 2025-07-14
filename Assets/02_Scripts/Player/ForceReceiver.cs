@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class ForceReceiver : MonoBehaviour
 {
-    public Vector2 _force;
-    private float _drag = 2f;
+    public Vector2 force;
+    private float drag = 2f;
 
-    public Vector2 Force => _force;
+    public Vector2 Force => force;
     
     void Update()
     {
-        _force= Vector2.Lerp(_force, Vector3.zero, _drag*Time.deltaTime);
+        force = Vector2.Lerp(force, Vector3.zero, drag * Time.deltaTime);
+    }
+
+    public void AddForce(Vector2 _force)
+    {
+        force += _force;
     }
 }
