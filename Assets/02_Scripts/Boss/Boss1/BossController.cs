@@ -360,26 +360,33 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     // Stomp 상태에서 호출할 공격 패턴
     public void Stomp()
     {
-        cameraController.CameraShake(2, 1, 1);
+        if (!cameraController.IsUnityNull())
+        {
+            cameraController.CameraShake(2, 1, 1);
+        }
         
         if (!IsBerserked)
         {
+            /*
             var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
             Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
             float knockbackPower = 10f;
             playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
             playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            */
             
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_NOTBERSERKED));
         }
         else
         {
+            /*
             var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
             Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
             float knockbackPower = 10f;
             playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
             playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            */
             
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_BERSERKED));
