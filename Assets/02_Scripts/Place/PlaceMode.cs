@@ -37,7 +37,7 @@ public class PlaceMode : MonoBehaviour
             bottomLeftCell -= new Vector3Int(Mathf.FloorToInt(tilemap.cellSize.x), 0, 0);
 
         float previewOffsetX = (size.x - 1) * tilemap.cellSize.x / 2f;
-        Vector3 previewWorldPos = tilemap.GetCellCenterWorld(bottomLeftCell) + new Vector3(previewOffsetX, -0.5f, 0);
+        Vector3 previewWorldPos = tilemap.GetCellCenterWorld(bottomLeftCell) + new Vector3(previewOffsetX, 0f, 0f);
         previewInstance.transform.position = previewWorldPos;
 
         canPlace = true;

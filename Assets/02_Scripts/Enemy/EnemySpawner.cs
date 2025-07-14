@@ -38,12 +38,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
-        enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     private void Start()
     {
+        enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         InitCollider();
     }
 
