@@ -56,9 +56,10 @@ public class CraftingSlot : MonoBehaviour
             GameObject slot = Instantiate(craftingItemInfoPanel.requiredIngredientItemSlotPrefab, craftingItemInfoPanel.requiredIngredient);
             if (slot.TryGetComponent(out IngredientSlot _ingredientSlot))
             {
+                Sprite icon = _recipe.item.icon;
                 int havingItemCount = inventoryManager.CountItem(_recipe.item);
                 int requiredItemCount = _recipe.amount;
-                _ingredientSlot.UpdateIngredientSlot(havingItemCount, requiredItemCount);
+                _ingredientSlot.UpdateIngredientSlot(icon, havingItemCount, requiredItemCount);
             }
         }
     }
