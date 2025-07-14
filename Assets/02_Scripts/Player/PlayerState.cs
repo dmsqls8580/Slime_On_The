@@ -31,15 +31,18 @@ namespace PlayerStates
                 _owner.Attack();
                 return PlayerState.Attack0;
             }
+
             if (_owner.DashTrigger)
             {
                 _owner.DashTrigger = false;
                 return PlayerState.Dash;
             }
+
             if (_owner.MoveInput.sqrMagnitude > 0.01f)
             {
                 return PlayerState.Move;
             }
+
             return PlayerState.Idle;
         }
     }
@@ -85,15 +88,18 @@ namespace PlayerStates
                 _owner.Attack();
                 return PlayerState.Attack0;
             }
+
             if (_owner.DashTrigger)
             {
                 _owner.DashTrigger = false;
                 return PlayerState.Dash;
             }
+
             if (_owner.MoveInput.sqrMagnitude < 0.01f)
             {
                 return PlayerState.Idle;
             }
+
             return PlayerState.Move;
         }
     }
@@ -148,6 +154,7 @@ namespace PlayerStates
             {
                 return _owner.MoveInput.sqrMagnitude > 0.01f ? PlayerState.Move : PlayerState.Idle;
             }
+
             return PlayerState.Dash;
         }
     }
@@ -207,6 +214,7 @@ namespace PlayerStates
             {
                 return _owner.MoveInput.sqrMagnitude < 0.01f ? PlayerState.Idle : PlayerState.Move;
             }
+
             return PlayerState.Attack0;
         }
     }
@@ -266,6 +274,7 @@ namespace PlayerStates
             {
                 return _owner.MoveInput.sqrMagnitude < 0.01f ? PlayerState.Idle : PlayerState.Move;
             }
+
             return PlayerState.Attack1;
         }
     }
@@ -298,19 +307,26 @@ namespace PlayerStates
 
     public class DeadState : IState<PlayerController, PlayerState>
     {
+        
         public void OnEnter(PlayerController _owner)
         {
-            _owner.AnimationController.DeadAnimation();
         }
 
-        public void OnUpdate(PlayerController _owner) { }
+        public void OnUpdate(PlayerController _owner)
+        {
+        }
 
         public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _owner) { }
+        public void OnExit(PlayerController _owner)
+        {
+            _owner.CanRespawn = true;
+        }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
+            if (_owner.CanRespawn)
+                return PlayerState.Idle;
             return PlayerState.Dead;
         }
     }
