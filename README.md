@@ -92,7 +92,7 @@
 
 ```bash
 git clone https://github.com/dmsqls8580/slime-on-the.git
-
+```
 3. Unity Hub에서 프로젝트 열기
 4. 01_Scenes/MainMenu.unity 실행
 
