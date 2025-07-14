@@ -24,7 +24,7 @@ MonoBehaviour:
     Value: 3000
   - StatType: 1
     ModifierType: 0
-    Value: 3000
+    Value: 1
   - StatType: 2
     ModifierType: 0
     Value: 30
@@ -53,9 +53,6 @@ MonoBehaviour:
     ModifierType: 0
     Value: 3
   DropItems:
-  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
-    amount: 2
+  - itemSo: {fileID: 11400000, guid: d9f31350f4b94724289a6cd5fbe10d33, type: 2}
+    amount: 5
     dropChance: 100
-  - itemSo: {fileID: 11400000, guid: d11eb397ab266f142b83541e38253976, type: 2}
-    amount: 1
-    dropChance: 50
