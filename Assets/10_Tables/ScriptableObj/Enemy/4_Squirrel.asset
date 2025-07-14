@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 4
   AttackType: 1
-  ProjectileID: 20
+  ProjectileID: 22
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -48,8 +48,5 @@ MonoBehaviour:
     Value: 5
   - StatType: 65
     ModifierType: 0
-    Value: 0.5
-  - StatType: 66
-    ModifierType: 0
-    Value: 0.5
+    Value: 3
   DropItems: []

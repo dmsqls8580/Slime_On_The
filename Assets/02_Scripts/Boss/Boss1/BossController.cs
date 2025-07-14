@@ -1,10 +1,13 @@
 using BossStates;
+using PlayerStates;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using DeadState = BossStates.DeadState;
+using IdleState = BossStates.IdleState;
 
 public class BossController : BaseController<BossController, BossState>, IDamageable, IAttackable, IPoolObject
 {
@@ -361,11 +364,23 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         
         if (!IsBerserked)
         {
+            var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
+            Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
+            float knockbackPower = 10f;
+            playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
+            playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_NOTBERSERKED));
         }
         else
         {
+            var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
+            Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
+            float knockbackPower = 10f;
+            playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
+            playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_BERSERKED));
         }
