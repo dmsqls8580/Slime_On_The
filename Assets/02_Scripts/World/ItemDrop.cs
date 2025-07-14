@@ -77,7 +77,7 @@ public class ItemDrop : MonoBehaviour
         canItemToPlayer = true;
     }
 
-    private void OnTriggerEnter2D(Collider2D _other)
+    private void OnTriggerStay2D(Collider2D _other)
     {
         if(!canItemToPlayer) return;
         
@@ -87,7 +87,16 @@ public class ItemDrop : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    private void OnTriggerEnter2D(Collider2D _other)
+    {
+        if(!canItemToPlayer) return;
 
+        if (playerTransform != null && _other.transform == playerTransform)
+        {
+            AddToInventory();
+            Destroy(gameObject);
+        }
+    }
     private void AddToInventory()
     {
         if(itemSo.IsUnityNull()||amount <= 0) return;
