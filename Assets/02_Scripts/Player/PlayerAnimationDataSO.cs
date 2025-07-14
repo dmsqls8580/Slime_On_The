@@ -12,7 +12,7 @@ public class PlayerAnimationDataSO : ScriptableObject
     private int mouseX = Animator.StringToHash("mouseX");
     private int mouseY = Animator.StringToHash("mouseY");
     private int toolTypeIndex = Animator.StringToHash("toolTypeIndex");
-    private int isDead= Animator.StringToHash("isDead");
+    private int isDead= Animator.StringToHash("Dead");
 
     public int MouseXParameterHash => mouseX;
     public int MouseYParameterHash => mouseY;

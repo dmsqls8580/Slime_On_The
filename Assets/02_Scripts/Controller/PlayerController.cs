@@ -1,3 +1,5 @@
+using _02_Scripts.Manager;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -16,6 +18,9 @@ namespace PlayerStates
         public Transform attackPivot;
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
+
+        [SerializeField] private UIDead uiDead;
+        public UIDead UiDead => uiDead;
         
         public Transform AttackPivot => attackPivot;
         
@@ -64,7 +69,8 @@ namespace PlayerStates
 
         public IDamageable Target { get; private set; }
 
-        public bool IsDead { get; }
+        public bool IsDead { get; private set; }
+        public bool CanRespawn{get; set;}
         public Collider2D Collider => GetComponent<Collider2D>();
 
         protected override void Awake()
@@ -107,17 +113,29 @@ namespace PlayerStates
                 if (CanAttack)
                     attackQueued = true;
             };
+            
             //Dash
             action.Dash.performed += context => dashTrigger = true;
             
             //Gathering
-            
             action.Gathering.performed+= context =>
             {
                TryInteract();
             };
+            
+            // Inventory
+            action.Inventory.performed += context =>
+            {
+                UIManager.Instance.Toggle<UIInventory>();
+            };
+            
+            // Crafting
+            action.Crafting.performed += context =>
+            {
+                UIManager.Instance.Toggle<UICrafting>();
+            };
         }
-
+        
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
@@ -273,8 +291,26 @@ namespace PlayerStates
         {
             if (PlayerStatus.CurrentHp <= 0)
             {
+                IsDead = true;
+                animationController.TriggerDead();
+                StartCoroutine(DelayDeathUi(3f, "테스트당함."));
                 ChangeState(PlayerState.Dead);
             }
+        }
+
+// 죽음 연출 후 UI 딜레이 호출
+        private IEnumerator DelayDeathUi(float _delay, string _reason)
+        {
+            yield return new WaitForSeconds(_delay);
+            UiDead.TriggerDeath(1, _reason);
+        }
+
+        public void Respawn(Vector3 _spawnPos)
+        {
+            //PlayerStatus.CurrentHp = PlayerStatus.MaxHp;
+            IsDead = false;
+            transform.position = _spawnPos;
+            ChangeState(PlayerState.Idle);
         }
         
     }

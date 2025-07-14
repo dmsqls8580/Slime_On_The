@@ -46,9 +46,9 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetBool(AnimationDataSo.isMoveParameter, _isMoving);
     }
 
-    public void DeadAnimation()
+    public void TriggerDead()
     {
-        Animator.SetBool(AnimationDataSo.IsDeadParameterHash, true);
+        Animator.SetTrigger(AnimationDataSo.IsDeadParameterHash);
     }
 
     public void TriggerAttack()

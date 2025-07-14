@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Cooked Meat
+  m_Name: Raw Meat
   m_EditorClassIdentifier: 
-  idx: 801
-  itemName: Cooked Meat
-  description: Restores health and fills you up.
-  icon: {fileID: -1286624799, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  idx: 702
+  itemName: Raw Meat
+  description: 
+  icon: {fileID: -83556950, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
   itemTypes: 8
   stackable: 1
   maxStack: 40
@@ -35,9 +35,9 @@ MonoBehaviour:
     spd: 0
     crt: 0
   eatableData:
-    recoverHP: 20
-    fullness: 15
-    slimeGauge: 5
+    recoverHP: -10
+    fullness: 20
+    slimeGauge: 0
     duration: 0
     rottenable: 1
     permanent: 1

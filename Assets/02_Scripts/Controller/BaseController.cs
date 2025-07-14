@@ -50,7 +50,7 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
     }
 
 
-    protected void ChangeState(TState newState)
+    public void ChangeState(TState newState)
     {
         stateMachine.ChangeState(states[Convert.ToInt32(newState)]);
         CurrentState = newState;
