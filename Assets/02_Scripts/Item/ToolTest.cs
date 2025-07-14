@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ToolTest : MonoBehaviour
@@ -6,6 +7,7 @@ public class ToolTest : MonoBehaviour
     [SerializeField] private ItemSO testToolItemSo;
     void Start()
     {
+        if (testToolItemSo.IsUnityNull()) return;
         var testWeapon = new TestWeapon(testToolItemSo);
 
         toolController.EquipTool(testWeapon);
