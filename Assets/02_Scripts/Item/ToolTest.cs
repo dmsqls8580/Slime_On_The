@@ -8,7 +8,6 @@ public class ToolTest : MonoBehaviour
     void Start()
     {
         if (testToolItemSo.IsUnityNull()) return;
-        
         var testWeapon = new TestWeapon(testToolItemSo);
 
         toolController.EquipTool(testWeapon);

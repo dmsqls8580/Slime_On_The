@@ -15,14 +15,9 @@ public class TurtleSpell0 : ProjectileBase
         animator = GetComponent<Animator>();
     }
     
-    private void Update()
+    private void ReturnToPool()
     {
-        // 애니메이션의 현 상태
-        var state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("TurtleSpell0") && state.normalizedTime >= 1.0f)
-        {
-            ObjectPoolManager.Instance.ReturnObject(this.gameObject);
-        }
+        ObjectPoolManager.Instance.ReturnObject(this.gameObject);
     }
     
     // 애니메이션 이벤트로 호출
