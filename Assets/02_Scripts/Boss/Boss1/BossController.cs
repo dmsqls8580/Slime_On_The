@@ -117,8 +117,6 @@ public class BossController : BaseController<BossController, BossState>, IDamage
 
     public void OnReturnToPool()
     {
-        // 상태 정리, Agent.ResetPath() 등
-        Agent.ResetPath();
         gameObject.SetActive(false);
     }
     
@@ -484,6 +482,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
+        Transform itemTarget = ChaseTarget.transform;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -503,7 +502,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, transform);
+                    itemDrop.Init(item.itemSo,1, itemTarget);
                     
                 }
                 
