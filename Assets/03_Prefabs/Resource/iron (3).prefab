@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5425218362384900425}
   - component: {fileID: 6933933261179834837}
   - component: {fileID: -1853254895292800970}
+  - component: {fileID: -7788560354131984918}
   m_Layer: 31
   m_Name: iron (3)
   m_TagString: Untagged
@@ -146,8 +147,24 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
     amount: 1
     dropChance: 80
-  dropItemPrefab: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
+--- !u!114 &-7788560354131984918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7220838572610500763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
