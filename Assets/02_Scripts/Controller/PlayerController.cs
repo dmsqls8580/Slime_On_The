@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
 
@@ -16,6 +17,9 @@ namespace PlayerStates
         public Transform attackPivot;
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
+
+        [SerializeField] private UIDead uiDead;
+        public UIDead UiDead => uiDead;
         
         public Transform AttackPivot => attackPivot;
         
@@ -274,8 +278,18 @@ namespace PlayerStates
         {
             if (PlayerStatus.CurrentHp <= 0)
             {
+                IsDead = true;
+                animationController.TriggerDead();
+                StartCoroutine(DelayDeathUi(3f, "테스트당함."));
                 ChangeState(PlayerState.Dead);
             }
+        }
+
+// 죽음 연출 후 UI 딜레이 호출
+        private IEnumerator DelayDeathUi(float _delay, string _reason)
+        {
+            yield return new WaitForSeconds(_delay);
+            UiDead.TriggerDeath(1, _reason);
         }
 
         public void Respawn(Vector3 _spawnPos)

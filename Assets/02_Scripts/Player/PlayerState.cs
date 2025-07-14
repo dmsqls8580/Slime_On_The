@@ -308,29 +308,18 @@ namespace PlayerStates
     public class DeadState : IState<PlayerController, PlayerState>
     {
         
-        private bool isDeadAnimationPlayed;
         public void OnEnter(PlayerController _owner)
         {
-            _owner.AnimationController.DeadAnimation(true);
-            isDeadAnimationPlayed = true;
-            
-            
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            if (isDeadAnimationPlayed && _owner.CanRespawn)
-            {
-                _owner.ChangeState(PlayerState.Idle);
-            }
         }
 
         public void OnFixedUpdate(PlayerController _owner) { }
 
         public void OnExit(PlayerController _owner)
         {
-            _owner.AnimationController.DeadAnimation(false);
-            isDeadAnimationPlayed = false;
             _owner.CanRespawn = true;
         }
 
