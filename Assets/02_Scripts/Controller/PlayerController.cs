@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine; 
@@ -112,17 +113,29 @@ namespace PlayerStates
                 if (CanAttack)
                     attackQueued = true;
             };
+            
             //Dash
             action.Dash.performed += context => dashTrigger = true;
             
             //Gathering
-            
             action.Gathering.performed+= context =>
             {
                TryInteract();
             };
+            
+            // Inventory
+            action.Inventory.performed += context =>
+            {
+                UIManager.Instance.Toggle<UIInventory>();
+            };
+            
+            // Crafting
+            action.Crafting.performed += context =>
+            {
+                UIManager.Instance.Toggle<UICrafting>();
+            };
         }
-
+        
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
