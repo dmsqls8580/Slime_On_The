@@ -13,6 +13,7 @@ public enum ProjectileName
     //Enemy
     None = 20,
     Bolt,
+    Spark,
     
     // Boss
     TurtleSpell0 = 40,
