@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -48,10 +49,9 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemies()
     {
-        if (enemyTable == null)
+        if (enemyTable.IsUnityNull())
         {
-            Debug.LogError("EnemyTable == null");
-            return;
+            enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         }
         
         EnemySO enemySO = enemyTable.GetDataByID(EnemyTableIDX);
@@ -126,11 +126,11 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // SpawnEnemies();
+        SpawnEnemies();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // ClearEnemies();
+        ClearEnemies();
     }
 }
