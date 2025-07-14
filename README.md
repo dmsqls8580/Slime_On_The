@@ -20,7 +20,7 @@
 
 ---
 ### 🎥 시연 영상
-!(https://github.com/user-attachments/assets/3298a707-6b8d-4b17-b348-9f3ea7adae59)
+!https://github.com/user-attachments/assets/3298a707-6b8d-4b17-b348-9f3ea7adae59
 
 ---
 ## 🧩 주요 기능
