@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -22,14 +21,13 @@ public class QuickSlot : SlotBase
         outLineImage.gameObject.SetActive(_isSelected);
         outLineImage.color = _isSelected ? Color.yellow : Color.white;
 
-        var handIcon = FindObjectOfType<ItemHandler>();
-        if (!handIcon.IsUnityNull())
+        if (_isSelected)
         {
-            if (_isSelected)
-            {
-                var data = GetData();
-                handIcon.ShowItemIcon(data != null ? data.ItemData : null);
-            }
+            var data = GetData();
+            if (data.ItemData.itemTypes == ItemType.Placeable)
+                InventoryManager.Instance.placeMode.SetActiveTruePlaceMode(data.ItemData.placeableData.placeableInfo);
+            else
+                InventoryManager.Instance.placeMode.SetActiveFalsePlaceMode();
         }
     }
 
