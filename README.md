@@ -20,7 +20,7 @@
 
 ---
 ### 🎥 시연 영상
-!https://github.com/user-attachments/assets/3298a707-6b8d-4b17-b348-9f3ea7adae59
+![제목 없는 동영상 - Clipchamp로 제작](https://github.com/user-attachments/assets/d910b2ea-2e27-4433-84f5-2a3c38236215)
 
 ---
 ## 🧩 주요 기능
