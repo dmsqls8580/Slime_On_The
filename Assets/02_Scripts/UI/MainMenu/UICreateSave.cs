@@ -15,7 +15,7 @@ public class UICreateSave : UIBase
     public void OnClickApply()
     {
         // 맵생성단계로 넘어가야함
-        SceneManager.LoadScene("TestPlayerWorldScene");
+        SceneManager.LoadScene("MVP_Play_Test_Scene");
     }
     
     public void OnClickCancel()
