@@ -64,7 +64,8 @@ namespace PlayerStates
 
         public IDamageable Target { get; private set; }
 
-        public bool IsDead { get; }
+        public bool IsDead { get; private set; }
+        public bool CanRespawn{get; set;}
         public Collider2D Collider => GetComponent<Collider2D>();
 
         protected override void Awake()
@@ -275,6 +276,14 @@ namespace PlayerStates
             {
                 ChangeState(PlayerState.Dead);
             }
+        }
+
+        public void Respawn(Vector3 _spawnPos)
+        {
+            //PlayerStatus.CurrentHp = PlayerStatus.MaxHp;
+            IsDead = false;
+            transform.position = _spawnPos;
+            ChangeState(PlayerState.Idle);
         }
         
     }
