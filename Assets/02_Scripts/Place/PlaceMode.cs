@@ -12,6 +12,8 @@ public class PlaceMode : MonoBehaviour
 
     private GameObject normalPrefab;
     private GameObject previewInstance;
+    private ItemSO itemSO;
+    
     private Vector2Int size;
 
     private List<PreviewTile> previewTiles = new List<PreviewTile>();
@@ -66,11 +68,15 @@ public class PlaceMode : MonoBehaviour
     private void Place()
     {
         Instantiate(normalPrefab, previewInstance.transform.position, Quaternion.identity);
+        InventoryManager.Instance.TryRemoveItemGlobally(itemSO, 1);
+        SetActiveFalsePlaceMode();
     }
 
-    public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo)
+
+    public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo, ItemSO _itemSO)
     {
         Initialize(_placeableInfo);
+        itemSO = _itemSO;
         gameObject.SetActive(true);
     }
 
