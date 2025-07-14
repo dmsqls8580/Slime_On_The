@@ -171,9 +171,6 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
                 _item.Quantity--;
                 //TryConsume(_item);
                 break;
-            case ItemType.Placeable:
-                inventoryManager.placeMode.SetActiveTruePlaceMode(_item.ItemData.placeableData.placeableInfo);
-                break;
             default:
                 break;
         }

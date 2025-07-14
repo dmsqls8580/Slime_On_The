@@ -6,7 +6,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
 
-
     public const int MaxSlotCount = 40;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 20;
