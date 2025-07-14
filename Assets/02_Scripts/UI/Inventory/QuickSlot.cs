@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,10 +25,13 @@ public class QuickSlot : SlotBase
         if (_isSelected)
         {
             var data = GetData();
-            if (data.ItemData.itemTypes == ItemType.Placeable)
-                InventoryManager.Instance.placeMode.SetActiveTruePlaceMode(data.ItemData.placeableData.placeableInfo);
-            else
-                InventoryManager.Instance.placeMode.SetActiveFalsePlaceMode();
+            if (!data.IsUnityNull())
+            {
+                if (data.ItemData.itemTypes == ItemType.Placeable)
+                    InventoryManager.Instance.placeMode.SetActiveTruePlaceMode(data.ItemData.placeableData.placeableInfo, data.ItemData);
+                else
+                    InventoryManager.Instance.placeMode.SetActiveFalsePlaceMode();
+            }
         }
     }
 
