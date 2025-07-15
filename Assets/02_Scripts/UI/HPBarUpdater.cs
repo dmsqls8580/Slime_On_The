@@ -28,8 +28,8 @@ public class HPBarUpdater : MonoBehaviour
         }
     }
 
-    private void UpdateHPBar(float fillAmount)
+    private void UpdateHPBar(float _fillAmount)
     {
-        HPBar.fillAmount = fillAmount;
+        HPBar.fillAmount = _fillAmount;
     }
 }
