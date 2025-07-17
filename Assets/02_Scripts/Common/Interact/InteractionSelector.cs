@@ -7,6 +7,7 @@ public class InteractionSelector : MonoBehaviour
     [SerializeField] private LayerMask npcMask;
     [SerializeField] private LayerMask buildingMask;
     [SerializeField] private LayerMask resourceMask;
+    [SerializeField] private InteractionZone interactionZone;
 
     //TODO.
     //private Item currentQuickSlotItem;
@@ -18,13 +19,7 @@ public class InteractionSelector : MonoBehaviour
     public Collider2D FInteractable => fInteractable;
     public Collider2D SpaceInteractable => spaceInteractable;
 
-    private InteractionZone interactionZone;
     private HashSet<Collider2D> interactables;
-
-    private void Awake()
-    {
-        interactionZone = GetComponent<InteractionZone>();
-    }
 
     private void Start()
     {

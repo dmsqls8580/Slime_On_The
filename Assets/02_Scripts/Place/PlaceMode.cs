@@ -10,8 +10,8 @@ public class PlaceMode : MonoBehaviour
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Tilemap tilemap;
 
-    private GameObject normalPrefab;
-    private GameObject previewInstance;
+    private GameObject objectPrefab;
+    private GameObject prefabInstance;
     private ItemSO itemSO;
     
     private Vector2Int size;
@@ -21,6 +21,13 @@ public class PlaceMode : MonoBehaviour
     private bool canPlace = false;
     private Vector3 mouseWorldPos = Vector3.zero;
     private Vector3Int baseCell = Vector3Int.zero;
+
+    private InventoryManager inventoryManager;
+
+    private void Awake()
+    {
+        inventoryManager = InventoryManager.Instance;
+    }
 
     private void Update()
     {
@@ -40,7 +47,7 @@ public class PlaceMode : MonoBehaviour
 
         float previewOffsetX = (size.x - 1) * tilemap.cellSize.x / 2f;
         Vector3 previewWorldPos = tilemap.GetCellCenterWorld(bottomLeftCell) + new Vector3(previewOffsetX, 0f, 0f);
-        previewInstance.transform.position = previewWorldPos;
+        prefabInstance.transform.position = previewWorldPos;
 
         canPlace = true;
 
@@ -67,24 +74,40 @@ public class PlaceMode : MonoBehaviour
 
     private void Place()
     {
-        Instantiate(normalPrefab, previewInstance.transform.position, Quaternion.identity);
-        InventoryManager.Instance.TryRemoveItemGlobally(itemSO, 1);
+        GameObject placedObject = Instantiate(objectPrefab, prefabInstance.transform.position, Quaternion.identity);
+        SetObject(placedObject);
+        inventoryManager.TryRemoveItemGlobally(itemSO, 1);
         SetActiveFalsePlaceMode();
     }
 
-
-    public void SetActiveTruePlaceMode(PlaceableInfo _placeableInfo, ItemSO _itemSO)
+    private void SetObject(GameObject _placedObject)
     {
-        Initialize(_placeableInfo);
-        itemSO = _itemSO;
-        gameObject.SetActive(true);
+        Collider2D collider2D = _placedObject.GetComponent<Collider2D>();
+        if (collider2D != null)
+            collider2D.enabled = true;
+
+        SpriteRenderer spriteRenderer = _placedObject.GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            Color color = spriteRenderer.color;
+            color.a = 1f;
+            spriteRenderer.color = color;
+        }
     }
 
-    private void Initialize(PlaceableInfo _placeableInfo)
+    public void SetActiveTruePlaceMode(ItemSO _itemSO)
     {
-        normalPrefab = _placeableInfo.normalPrefab;
-        previewInstance = Instantiate(_placeableInfo.previewPrefab, transform);
-        size = _placeableInfo.size;
+        gameObject.SetActive(true);
+        Initialize(_itemSO);
+    }
+
+    private void Initialize(ItemSO _itemSO)
+    {
+        itemSO = _itemSO;
+        PlaceableInfo info = itemSO.placeableData.placeableInfo;
+        objectPrefab = info.objectPrefab;
+        prefabInstance = Instantiate(info.objectPrefab, transform);
+        size = info.size;
         clampArea.Initialize(tilemap);
 
         for (int i = 0; i < size.x * size.y; i++)
@@ -96,8 +119,8 @@ public class PlaceMode : MonoBehaviour
 
     public void SetActiveFalsePlaceMode()
     {
-        if (previewInstance != null)
-            Destroy(previewInstance);
+        if (prefabInstance != null)
+            Destroy(prefabInstance);
         foreach (PreviewTile tile in previewTiles)
             Destroy(tile.gameObject);
         previewTiles.Clear();
