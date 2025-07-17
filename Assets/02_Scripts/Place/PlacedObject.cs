@@ -4,7 +4,7 @@ using UnityEngine;
 public class PlacedObject : MonoBehaviour, IInteractable
 {
 
-    public void Interact(InteractionCommandType _type, PlayerController _playerController)
+    public void Interact(PlayerController _playerController)
     {
 
     }
