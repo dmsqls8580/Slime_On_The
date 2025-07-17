@@ -13,12 +13,19 @@ public class NormalAttack : PlayerSkillSO
         Vector2 attackDir = _owner.UpdatePlayerDirectionByMouse();
 
         // 투사체 풀에서 꺼내서 발사
-        ProjectilePoolManager.Instance.Spawn(
-            (Vector2)_owner.AttackPivot.position,
-            attackDir,
-            speed,
-            range
-        );
+
+        GameObject projObj = ObjectPoolManager.Instance.GetObject("PlayerProjectile");
+        if (projObj != null)
+        {
+            projObj.transform.position = _owner.AttackPivot.position;
+
+            // 투사체 초기화
+            var projectile = projObj.GetComponent<PlayerProjectile>();
+            projectile.Init(_owner.StatManager,attackDir, speed, range);
+
+            // 풀에서 꺼낼 때 필요한 추가 초기화(예: 이펙트 등) 있으면 OnSpawnFromPool 호출
+            projectile.OnSpawnFromPool();
+        }
         // 쿨타임 등은 SkillMananger에서 통합 관리
     }
 }

@@ -34,6 +34,9 @@ namespace PlayerStates
 
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
+        
+        private PlayerAfterEffect playerAfterEffect;
+        public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
 
         private Rigidbody2D rigid2D;
         public Rigidbody2D Rigid2D => rigid2D;
@@ -80,7 +83,7 @@ namespace PlayerStates
             toolController = GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
-
+            playerAfterEffect = GetComponentInChildren<PlayerAfterEffect>();
             rigid2D = GetComponent<Rigidbody2D>();
         }
 

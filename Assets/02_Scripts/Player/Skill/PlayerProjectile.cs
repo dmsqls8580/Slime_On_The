@@ -1,15 +1,13 @@
 using PlayerStates;
 using System;
 using UnityEngine;
-using UnityEngine.Pool;
 
-public class PlayerProjectile : MonoBehaviour, IAttackable
+public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
 {
     private StatManager statManager;
     private StatBase damage;
     public StatBase AttackStat => damage;
     public IDamageable Target => null;
-    private IObjectPool<PlayerProjectile> pool;
     private Rigidbody2D rigid;
     
     private float speed;
@@ -20,21 +18,24 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
     private Vector2 startAttackPos;
 
     private bool isCritical;
+    
+    public GameObject GameObject => gameObject;
+
+    [SerializeField] private string poolID = "playerProjectile";
+    public string PoolID => poolID;
+    [SerializeField] private int poolSize = 5;
+    public int PoolSize => poolSize;
 
 
     private void Awake()
     {
-        statManager = GetComponentInParent<StatManager>();
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public void SetPool(IObjectPool<PlayerProjectile> pool)
-    {
-        this.pool = pool;
-    }
 
-    public void Init(Vector2 _dir, float _speed, float _range)
+    public void Init(StatManager _statManager, Vector2 _dir, float _speed, float _range)
     {
+        statManager = _statManager;
         direction = _dir.normalized;
         speed = _speed;
         range = _range; 
@@ -59,7 +60,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
 
         float shootingRange = Vector2.Distance(startAttackPos, transform.position);
         if (shootingRange >= range)
-            ReturnToPool(); // 일정 시간 지나면 반환
+            ObjectPoolManager.Instance.ReturnObject(gameObject); // 일정 시간 지나면 반환
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -76,27 +77,26 @@ public class PlayerProjectile : MonoBehaviour, IAttackable
                 isCritical ? Color.yellow : Color.red);
 
             target.TakeDamage(this, gameObject);
-            pool?.Release(this);
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
         }
     }
-
-    private void ReturnToPool()
-    {
-        if (pool != null)
-        {
-            pool.Release(this); // 풀로 되돌림
-        }
-        else
-        {
-            Destroy(gameObject); // 풀 없을 시 직접 파괴 (예외 상황)
-        }
-    }
+    
+    public void Attack() { }
 
     private void OnDisable()
     {
         rigid.velocity = Vector2.zero;
         CancelInvoke();
     }
+    
+    public void OnSpawnFromPool()
+    {
+        statManager = GetComponentInParent<StatManager>();
+        gameObject.SetActive(true);
+    }
 
-    public void Attack() { }
+    public void OnReturnToPool()
+    {
+        gameObject.SetActive(false);
+    }
 }
