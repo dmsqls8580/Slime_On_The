@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum EffectType
 {
+    
     DashEffect = 0, //플레이어는 0~20, Enemy는 21~40 
 }
 
