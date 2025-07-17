@@ -49,14 +49,11 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
-        private float slimeTimer;
-        private const float consumeInterval = 1f;
-        private const float consumeAmount = 0.5f;
+
 
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
-            slimeTimer = 0f;
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -65,13 +62,6 @@ namespace PlayerStates
 
             Vector2 lookDir = _owner.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
-
-            slimeTimer += Time.deltaTime;
-            if (slimeTimer >= consumeInterval)
-            {
-                _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
-                slimeTimer = 0f;
-            }
         }
 
         public void OnFixedUpdate(PlayerController _owner) { }
