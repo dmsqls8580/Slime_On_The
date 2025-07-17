@@ -1,6 +1,5 @@
 using _02_Scripts.Manager;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +16,7 @@ namespace PlayerStates
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
         [SerializeField] private UIDead uiDead;
+        [SerializeField] private PlaceMode placeMode;
         public UIDead UiDead => uiDead;
         
         public Transform attackPivotRotate;
@@ -104,7 +104,7 @@ namespace PlayerStates
 
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
 
-            //Attack
+            // Attack
             action.Attack0.performed += context =>
             {        
                 if (EventSystem.current.IsPointerOverGameObject())
@@ -113,13 +113,19 @@ namespace PlayerStates
                     attackQueued = true;
             };
 
-            //Dash
+            // Dash
             action.Dash.performed += context => dashTrigger = true;
 
-            //Gathering
+            // Interaction
+            action.Interaction.performed += context =>
+            {
+                Interaction();
+            };
+
+            // Gathering
             action.Gathering.performed += context =>
             {
-                TryInteract();
+                Gathering();
             };
 
             // Inventory
@@ -132,6 +138,12 @@ namespace PlayerStates
             action.Crafting.performed += context =>
             {
                 UIManager.Instance.Toggle<UICrafting>();
+            };
+
+            // Place
+            action.Place.performed += context =>
+            {
+                placeMode.Place();
             };
         }
 
@@ -224,7 +236,22 @@ namespace PlayerStates
             rigid2D.velocity = moveVelocity;
         }
 
-        public void TryInteract()
+        // NPC, 창고, 제작대 등 이용
+        public void Interaction()
+        {
+            var target = interactionSelector.FInteractable;
+
+            if (target == null)
+            {
+                Logger.Log("Target is null");
+                return;
+            }
+
+            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+        }
+
+        // 스페이스바 눌렀을 때 오브젝트 피깎기.
+        public void Gathering()
         {
             if (actCoolDown > 0) return;
 
@@ -236,7 +263,7 @@ namespace PlayerStates
                 return;
             }
 
-            interactionHandler.HandleInteraction(target, this);
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);

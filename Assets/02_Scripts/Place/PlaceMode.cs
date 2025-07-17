@@ -35,8 +35,6 @@ public class PlaceMode : MonoBehaviour
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         baseCell = clampArea.GetClampedCell(mouseWorldPos);
         UpdatePreview();
-        if (Input.GetKeyDown(KeyCode.B) && canPlace)
-            Place();
     }
 
     private void UpdatePreview()
@@ -72,8 +70,9 @@ public class PlaceMode : MonoBehaviour
         return colliders.Length == 0;
     }
 
-    private void Place()
+    public void Place()
     {
+        if (!canPlace) return;
         GameObject placedObject = Instantiate(objectPrefab, prefabInstance.transform.position, Quaternion.identity);
         SetObject(placedObject);
         inventoryManager.TryRemoveItemGlobally(itemSO, 1);

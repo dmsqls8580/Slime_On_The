@@ -125,6 +125,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Place"",
+                    ""type"": ""Button"",
+                    ""id"": ""fbc76744-0014-48e8-a5c5-43ad90d355f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d04b7df5-154c-4f8d-bfed-e98608ddab47"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Place"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -311,6 +331,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Gathering = m_Player.FindAction("Gathering", throwIfNotFound: true);
         m_Player_Settings = m_Player.FindAction("Settings", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Place = m_Player.FindAction("Place", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -383,6 +404,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Gathering;
     private readonly InputAction m_Player_Settings;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Place;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -398,6 +420,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Gathering => m_Wrapper.m_Player_Gathering;
         public InputAction @Settings => m_Wrapper.m_Player_Settings;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Place => m_Wrapper.m_Player_Place;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -440,6 +463,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Place.started += instance.OnPlace;
+            @Place.performed += instance.OnPlace;
+            @Place.canceled += instance.OnPlace;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -477,6 +503,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Place.started -= instance.OnPlace;
+            @Place.performed -= instance.OnPlace;
+            @Place.canceled -= instance.OnPlace;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -507,5 +536,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnGathering(InputAction.CallbackContext context);
         void OnSettings(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnPlace(InputAction.CallbackContext context);
     }
 }
