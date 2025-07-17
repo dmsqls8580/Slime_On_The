@@ -41,6 +41,7 @@ public class CraftingSlotManager : MonoBehaviour
 
     public void UpdateCraftingSlot(CraftingStation _currentCraftingStation, CraftingStation _previousCraftingStation)
     {
+        if (_currentCraftingStation == _previousCraftingStation) { return; }
         if (_currentCraftingStation == CraftingStation.Normal)
             SetLocked(_previousCraftingStation, false);
         else
