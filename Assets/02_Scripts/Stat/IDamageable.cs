@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public interface IDamageable
@@ -12,4 +13,5 @@ public interface IDamageable
     /// <param name="_attacker">공격을 실행한 대상</param>
     public void TakeDamage(IAttackable _attacker, GameObject _attackerObj);
     public void Dead();
+    
 }
