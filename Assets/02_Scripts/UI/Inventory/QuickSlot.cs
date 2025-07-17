@@ -8,7 +8,13 @@ public class QuickSlot : SlotBase
     [SerializeField] private Image outLineImage;
     private UIQuickSlot owner;
     private int quickSlotIndex;
-    
+
+    private PlaceMode placeMode;
+
+    private void Awake()
+    {
+        placeMode = InventoryManager.Instance.placeMode;
+    }
 
     public void Initialize(int _index, UIQuickSlot _ownerUI)
     {
@@ -16,7 +22,7 @@ public class QuickSlot : SlotBase
         owner = _ownerUI;
         base.Initialize(_index);
     }
-    
+
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
         outLineImage.gameObject.SetActive(_isSelected);
@@ -24,13 +30,14 @@ public class QuickSlot : SlotBase
 
         if (_isSelected)
         {
+            if (placeMode.gameObject.activeSelf == true)
+                placeMode.SetActiveFalsePlaceMode();
+
             var data = GetData();
             if (!data.IsUnityNull())
             {
                 if (data.ItemData.itemTypes == ItemType.Placeable)
-                    InventoryManager.Instance.placeMode.SetActiveTruePlaceMode(data.ItemData.placeableData.placeableInfo, data.ItemData);
-                else
-                    InventoryManager.Instance.placeMode.SetActiveFalsePlaceMode();
+                    placeMode.SetActiveTruePlaceMode(data.ItemData);
             }
         }
     }

@@ -228,7 +228,7 @@ namespace PlayerStates
         {
             if (actCoolDown > 0) return;
 
-            var target = interactionSelector.FInteractable;
+            var target = interactionSelector.SpaceInteractable;
 
             if (target == null)
             {
@@ -236,7 +236,7 @@ namespace PlayerStates
                 return;
             }
 
-            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+            interactionHandler.HandleInteraction(target, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);

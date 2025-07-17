@@ -1,6 +1,5 @@
 using PlayerStates;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -70,7 +69,7 @@ public class Resource : MonoBehaviour, IInteractable
         }
     }
 
-    public void Interact(InteractionCommandType _type, PlayerController _playerController)
+    public void Interact(PlayerController _playerController)
     {
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
