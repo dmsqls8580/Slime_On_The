@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5862761655695614341}
   - component: {fileID: 2618037898291903509}
   - component: {fileID: -8547202021649313537}
+  - component: {fileID: -2414108310726490193}
   m_Layer: 31
   m_Name: iron
   m_TagString: Untagged
@@ -133,9 +134,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItems: []
-  dropItemPrefab: {fileID: 0}
+  dropItems:
+  - itemSo: {fileID: 11400000, guid: 52fe170ff9deb7840a6a4a1bd79c529c, type: 2}
+    amount: 1
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 52fe170ff9deb7840a6a4a1bd79c529c, type: 2}
+    amount: 1
+    dropChance: 50
+  - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
+    amount: 2
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
+    amount: 1
+    dropChance: 80
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
+--- !u!114 &-2414108310726490193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4267898107659353713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

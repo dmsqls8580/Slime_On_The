@@ -1,5 +1,8 @@
+using _02_Scripts.Manager;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine; 
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 namespace PlayerStates
@@ -8,34 +11,30 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerAnimationController))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    [RequireComponent(typeof(ForceReceiver))]
     [RequireComponent(typeof(PlayerStatus))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
-
+        [SerializeField] private GameObject damageTextPrefab;
+        [SerializeField] private Canvas damageTextCanvas;
+        [SerializeField] private UIDead uiDead;
+        public UIDead UiDead => uiDead;
+        
         public Transform attackPivotRotate;
         public Transform attackPivot;
-        
         public Transform AttackPivot => attackPivot;
         
         public PlayerStatus PlayerStatus { get; private set; }
-
         private ToolController toolController;
         public ToolController ToolController => toolController;
-
         private InputController inputController;
         private PlayerAnimationController animationController;
-        private PlayerSkillMananger  playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
-        
+        private PlayerSkillMananger playerSkillMananger;
+        public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
+
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
-        
-        private SkillExecutor skillExecutor;
-        public SkillExecutor SkillExecutor => skillExecutor;
 
-        private ForceReceiver forceReceiver;
-        
         private Rigidbody2D rigid2D;
         public Rigidbody2D Rigid2D => rigid2D;
 
@@ -48,7 +47,7 @@ namespace PlayerStates
         private float actCoolDown = 0f;
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
-        
+
         private bool dashTrigger;
 
         public bool DashTrigger
@@ -67,7 +66,8 @@ namespace PlayerStates
 
         public IDamageable Target { get; private set; }
 
-        public bool IsDead { get; }
+        public bool IsDead { get; private set; }
+        public bool CanRespawn { get; set; }
         public Collider2D Collider => GetComponent<Collider2D>();
 
         protected override void Awake()
@@ -75,14 +75,12 @@ namespace PlayerStates
             base.Awake();
             inputController = GetComponent<InputController>();
             PlayerStatus = GetComponent<PlayerStatus>();
-            playerSkillMananger= GetComponent<PlayerSkillMananger>();
-            forceReceiver = GetComponent<ForceReceiver>();
-            animationController =  GetComponent<PlayerAnimationController>();
-            skillExecutor = GetComponent<SkillExecutor>();
-            toolController= GetComponent<ToolController>();
+            playerSkillMananger = GetComponent<PlayerSkillMananger>();
+            animationController = GetComponent<PlayerAnimationController>();
+            toolController = GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
-            
+
             rigid2D = GetComponent<Rigidbody2D>();
         }
 
@@ -103,23 +101,37 @@ namespace PlayerStates
                 if (moveInput.sqrMagnitude > 0.01f)
                     lastMoveDir = moveInput.normalized;
             };
-            
+
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
-            
+
             //Attack
             action.Attack0.performed += context =>
-            {
+            {        
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
                 if (CanAttack)
                     attackQueued = true;
             };
+
             //Dash
             action.Dash.performed += context => dashTrigger = true;
-            
+
             //Gathering
-            
-            action.Gathering.performed+= context =>
+            action.Gathering.performed += context =>
             {
-               TryInteract();
+                TryInteract();
+            };
+
+            // Inventory
+            action.Inventory.performed += context =>
+            {
+                UIManager.Instance.Toggle<UIInventory>();
+            };
+
+            // Crafting
+            action.Crafting.performed += context =>
+            {
+                UIManager.Instance.Toggle<UICrafting>();
             };
         }
 
@@ -146,6 +158,11 @@ namespace PlayerStates
             {
                 PlayerStatus.RecoverSlimeGauge(30);
             }
+
+            if (Input.GetKey(KeyCode.T))
+            {
+                TestDeath();
+            }
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
@@ -159,9 +176,12 @@ namespace PlayerStates
                 case PlayerState.Dash:
                     return new DashState();
                 case PlayerState.Attack0:
-                    return new Attack0State(playerSkillMananger.GetSkill(false));
+                    return new Attack0State(0);
+
                 case PlayerState.Attack1:
-                    //return new Attack1State(PlayerSkillMananger.Instance.GetSkill(true));
+
+                //todo: 스킬 구조 바꿔서 적용
+
                 case PlayerState.Dead:
                     return new DeadState();
                 case PlayerState.Gathering:
@@ -199,14 +219,7 @@ namespace PlayerStates
 
             Vector2 moveVelocity = Vector2.zero;
 
-            if (moveInput.magnitude < 0.01f)
-            {
-                moveVelocity = forceReceiver.Force;
-            }
-            else
-            {
-                moveVelocity = moveInput.normalized * speed + forceReceiver.Force;
-            }
+            moveVelocity = moveInput.normalized * speed;
 
             rigid2D.velocity = moveVelocity;
         }
@@ -214,23 +227,23 @@ namespace PlayerStates
         public void TryInteract()
         {
             if (actCoolDown > 0) return;
-            
-            var target = interactionSelector.FInteractable;
-            
+
+            var target = interactionSelector.SpaceInteractable;
+
             if (target == null)
             {
                 Logger.Log("Target is null");
                 return;
             }
-            
-            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+
+            interactionHandler.HandleInteraction(target, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
-            
+
             ChangeState(PlayerState.Gathering);
         }
-        
+
         public Vector2 UpdatePlayerDirectionByMouse()
         {
             Vector2 mouseScreenPos = inputController.LookDirection;
@@ -252,7 +265,7 @@ namespace PlayerStates
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
 
-        public void TakeDamage(IAttackable _attacker)
+        public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
         {
             if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
@@ -267,13 +280,50 @@ namespace PlayerStates
             }
         }
 
+        public void ShowDamageText(float _damage, Vector3 _worldPos, Color _color)
+        {
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldPos);
+
+            var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
+            textObj.transform.position = screenPos;
+
+            var damageText = textObj.GetComponent<DamageTextUI>();
+            damageText.Init(_damage, _color);
+        }
+
         public void Dead()
         {
             if (PlayerStatus.CurrentHp <= 0)
             {
+                IsDead = true;
+                animationController.TriggerDead();
+                StartCoroutine(DelayDeathUi(3f, "아기 거북이"));
                 ChangeState(PlayerState.Dead);
             }
         }
-        
+
+        public void TestDeath()
+        {
+            PlayerStatus.ConsumeHp(50f);
+            IsDead = true;
+            animationController.TriggerDead();
+            StartCoroutine(DelayDeathUi(3f, "행복사"));
+            ChangeState(PlayerState.Dead);
+        }
+
+// 죽음 연출 후 UI 딜레이 호출
+        private IEnumerator DelayDeathUi(float _delay, string _reason)
+        {
+            yield return new WaitForSeconds(_delay);
+            UiDead.TriggerDeath(1, _reason);
+        }
+
+        public void Respawn(Vector3 _spawnPos)
+        {
+            //PlayerStatus.CurrentHp = PlayerStatus.MaxHp;
+            IsDead = false;
+            transform.position = _spawnPos;
+            ChangeState(PlayerState.Idle);
+        }
     }
 }

@@ -76,8 +76,18 @@ public class ItemDrop : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         canItemToPlayer = true;
     }
-
     private void OnTriggerEnter2D(Collider2D _other)
+    {
+        if(!canItemToPlayer) return;
+
+        if (playerTransform != null && _other.transform == playerTransform)
+        {
+            AddToInventory();
+            Destroy(gameObject);
+        }
+    }
+    
+    private void OnTriggerStay2D(Collider2D _other)
     {
         if(!canItemToPlayer) return;
         

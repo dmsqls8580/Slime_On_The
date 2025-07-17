@@ -11,7 +11,7 @@ namespace BossStates
         Wander,
         Chase,
         Pattern1, // cast1 → stomp
-        Pattern2, // cast2 → shout
+        Pattern2, // cast2 → stomp
         Pattern3, // cast1 → cast2
         Dead
     }

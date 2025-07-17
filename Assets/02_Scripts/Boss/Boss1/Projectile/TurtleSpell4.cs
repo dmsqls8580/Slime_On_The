@@ -15,14 +15,10 @@ public class TurtleSpell4 : ProjectileBase
         animator = GetComponent<Animator>();
         circleCollider = GetComponent<CircleCollider2D>();
     }
-    private void Update()
+    
+    private void ReturnToPool()
     {
-        // 애니메이션의 현 상태
-        var state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("TurtleSpell4") && state.normalizedTime >= 1.0f)
-        {
-            ObjectPoolManager.Instance.ReturnObject(this.gameObject);
-        }
+        ObjectPoolManager.Instance.ReturnObject(this.gameObject);
     }
 
     public void SetColliderToTrigger()
@@ -57,7 +53,7 @@ public class TurtleSpell4 : ProjectileBase
         if (other.TryGetComponent<IDamageable>(out var target)
             && other.CompareTag("Player") && canDealDamage)
         {
-            target.TakeDamage(this);
+            target.TakeDamage(this, gameObject);
             canDealDamage = false;
         }
     }

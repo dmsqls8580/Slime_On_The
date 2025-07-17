@@ -20,14 +20,9 @@ public class TurtleSpell3 : ProjectileBase
         animator.speed = Constants.Boss.TENTACLE_SPEED_BERSERKED;
     }
     
-    private void Update()
+    private void ReturnToPool()
     {
-        // 애니메이션의 현 상태
-        var state = animator.GetCurrentAnimatorStateInfo(0);
-        if (state.IsName("TurtleSpell3") && state.normalizedTime >= 1.0f)
-        {
-            ObjectPoolManager.Instance.ReturnObject(this.gameObject);
-        }
+        ObjectPoolManager.Instance.ReturnObject(this.gameObject);
     }
     
     // 애니메이션 이벤트로 호출
@@ -47,7 +42,7 @@ public class TurtleSpell3 : ProjectileBase
         if (other.TryGetComponent<IDamageable>(out var target) 
             && other.CompareTag("Player") && canDealDamage)
         {
-            target.TakeDamage(this);
+            target.TakeDamage(this, gameObject);
             canDealDamage =  false;
         }
     }

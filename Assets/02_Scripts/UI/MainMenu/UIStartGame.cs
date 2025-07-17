@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using _02_Scripts.Manager;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class UIStartGame : UIBase
 {
@@ -10,7 +10,8 @@ public class UIStartGame : UIBase
 
     public void OnClickCreateSave()
     {
-        UIManager.Instance.Toggle<UICreateSave>();
+        //UIManager.Instance.Toggle<UICreateSave>();
+        SceneManager.LoadScene("MVP_Play_Test_Scene");
     }
 
     public void OnClickCancel()

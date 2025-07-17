@@ -1,10 +1,13 @@
 using BossStates;
+using PlayerStates;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using DeadState = BossStates.DeadState;
+using IdleState = BossStates.IdleState;
 
 public class BossController : BaseController<BossController, BossState>, IDamageable, IAttackable, IPoolObject
 {
@@ -25,6 +28,8 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     public float Cast2Duration  => BossStatus.BossSO.Cast2Duration;
     public float StompDuration  => BossStatus.BossSO.StompDuration;
     
+    private CameraController cameraController => AttackTarget != null
+        ? AttackTarget.GetComponent<CameraController>() : null;
     private StatManager statManager;
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
@@ -45,17 +50,19 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
     public Collider2D Collider  => GetComponent<Collider2D>();
-    public void TakeDamage(IAttackable _attacker)
+    public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
     {
         if (IsDead) return;
         if (_attacker != null)
         {
             // 피격
             BossStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            SoundManager.Instance.PlaySFX(SFX.Grount);
             if (BossStatus.CurrentHealth <= 0)
             {
                 Dead();
             }
+            StartCoroutine(ShakeIDamageable());
         }
     }
 
@@ -73,6 +80,30 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         }
     }
 
+    private IEnumerator ShakeIDamageable()
+    {
+        float timer = 0f;
+        float shakeDuration = 0.2f;
+        Vector2 currentPos = transform.position;
+        Color currentColor = spriteRenderer.color;
+        
+        while (timer <= shakeDuration)
+        {
+            // shakeDuration 동안 몬스터 흔들림, 붉은색 피격 모션
+            float offsetX = Random.Range(-1f, 1f) * 0.1f;
+            float offsetY = Random.Range(-1f, 1f) * 0.1f;
+            transform.position = new Vector2(currentPos.x + offsetX, currentPos.y + offsetY);
+            
+            spriteRenderer.color = new Color(1f, 200/255f,200/255f,1);
+            
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = currentPos;
+        spriteRenderer.color = currentColor;
+    }
+
     /************************ IAttackable ***********************/
     public StatBase AttackStat => StatManager.Stats[StatType.Attack];
     
@@ -82,7 +113,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     {
         if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
-            Target.TakeDamage(this);
+            Target.TakeDamage(this, this.gameObject);
         }
     }
 
@@ -112,8 +143,6 @@ public class BossController : BaseController<BossController, BossState>, IDamage
 
     public void OnReturnToPool()
     {
-        // 상태 정리, Agent.ResetPath() 등
-        Agent.ResetPath();
         gameObject.SetActive(false);
     }
     
@@ -305,7 +334,14 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     // Cast2 상태에서 호출할 공격 패턴
     public void Cast2()
     {
-        SpawnTentacle();
+        if (!IsBerserked)
+        {
+            SpawnTentacle();
+        }
+        else
+        {
+            StartCoroutine(DelayTentacle(1f));
+        }
     }
 
     private void SpawnTentacle()
@@ -337,17 +373,45 @@ public class BossController : BaseController<BossController, BossState>, IDamage
             projectile.Init(dirTarget, AttackStat);
         }
     }
+
+    private IEnumerator DelayTentacle(float _delay)
+    {
+        SpawnTentacle();
+        yield return new WaitForSeconds(_delay);
+        SpawnTentacle();
+    }
     
     // Stomp 상태에서 호출할 공격 패턴
     public void Stomp()
     {
+        if (!cameraController.IsUnityNull())
+        {
+            cameraController.CameraShake(2, 1, 1);
+        }
+        
         if (!IsBerserked)
         {
+            /*
+            var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
+            Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
+            float knockbackPower = 10f;
+            playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
+            playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            */
+            
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_NOTBERSERKED));
         }
         else
         {
+            /*
+            var playerRigidbody = AttackTarget.GetComponent<Rigidbody2D>();
+            Vector2 dir = (AttackTarget.transform.position - transform.position).normalized;
+            float knockbackPower = 10f;
+            playerRigidbody.velocity = Vector2.zero; // 기존 속도 초기화
+            playerRigidbody.AddForce(dir * knockbackPower, ForceMode2D.Impulse);
+            */
+            
             StartCoroutine(SpawnLeafSpell(transform.position, 
                 Constants.Boss.SPAWN_LEAF_RADIUS, Constants.Boss.SPAWN_LEAF_DELAY_BERSERKED));
         }
@@ -444,6 +508,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
+        Transform itemTarget = ChaseTarget.transform;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -463,7 +528,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, transform);
+                    itemDrop.Init(item.itemSo,1, itemTarget);
                     
                 }
                 

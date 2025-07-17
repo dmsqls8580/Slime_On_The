@@ -107,11 +107,11 @@ public class BossSpawner : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        // SpawnBoss();
+        SpawnBoss();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // ClearBoss();
+        ClearBoss();
     }
 }

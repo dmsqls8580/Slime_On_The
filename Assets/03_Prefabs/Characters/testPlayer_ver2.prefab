@@ -89,7 +89,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1320570239638627344}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 3.5
+    OrthographicSize: 5
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -424,7 +424,6 @@ GameObject:
   - component: {fileID: 6796973682356272748}
   - component: {fileID: 3580914035793469543}
   - component: {fileID: 1429055705134351675}
-  - component: {fileID: 1661479975884186786}
   - component: {fileID: 5967410517343274}
   - component: {fileID: 3999097471210572621}
   m_Layer: 0
@@ -724,8 +723,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a161195bd1c72d74fa0562e52f463f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalAttack: {fileID: 11400000, guid: ca5a207c0abd68c449ee012efeef8054, type: 2}
-  specialAttack: {fileID: 0}
+  _skills:
+  - {fileID: 11400000, guid: cf5a2705406c43e4b9a810ede0dad951, type: 2}
 --- !u!114 &5289312409628342510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -767,6 +766,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPivotRotate: {fileID: 2712631923495137926}
   attackPivot: {fileID: 2210137339734390434}
+  damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
+  damageTextCanvas: {fileID: 0}
+  uiDead: {fileID: 0}
 --- !u!114 &6796973682356272748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -805,18 +807,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlimeGaugeImage: {fileID: 0}
---- !u!114 &1661479975884186786
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239740537725770930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b1029181859c194786c203c056910d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &5967410517343274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,7 +819,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8859bdcd980dc754caf8f40052f23d31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _force: {x: 0, y: 0}
+  force: {x: 0, y: 0}
 --- !u!114 &3999097471210572621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -843,6 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolController: {fileID: 6796973682356272748}
+  testToolItemSo: {fileID: 0}
 --- !u!1 &4982578675555849736
 GameObject:
   m_ObjectHideFlags: 0
@@ -944,7 +935,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.5
+  orthographic size: 5
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -991,7 +982,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0

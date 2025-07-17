@@ -62,6 +62,7 @@ public class ResourceSpawner : MonoBehaviour
     {
         SetupDictionaries();    // 타일맵 및 자원 매핑
         SpawnResources();       // 자원 실제 생성
+        NavMesh2DManager.Instance.UpdateThisNavMesh();
     }
 
     // 유효한 바이옴 타일맵만 Dictionary에 등록

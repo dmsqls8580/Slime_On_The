@@ -8,7 +8,13 @@ public class QuickSlot : SlotBase
     [SerializeField] private Image outLineImage;
     private UIQuickSlot owner;
     private int quickSlotIndex;
-    
+
+    private PlaceMode placeMode;
+
+    private void Awake()
+    {
+        placeMode = InventoryManager.Instance.placeMode;
+    }
 
     public void Initialize(int _index, UIQuickSlot _ownerUI)
     {
@@ -16,19 +22,22 @@ public class QuickSlot : SlotBase
         owner = _ownerUI;
         base.Initialize(_index);
     }
-    
+
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
         outLineImage.gameObject.SetActive(_isSelected);
         outLineImage.color = _isSelected ? Color.yellow : Color.white;
 
-        var handIcon = FindObjectOfType<ItemHandler>();
-        if (!handIcon.IsUnityNull())
+        if (_isSelected)
         {
-            if (_isSelected)
+            if (placeMode.gameObject.activeSelf == true)
+                placeMode.SetActiveFalsePlaceMode();
+
+            var data = GetData();
+            if (!data.IsUnityNull())
             {
-                var data = GetData();
-                handIcon.ShowItemIcon(data != null ? data.ItemData : null);
+                if (data.ItemData.itemTypes == ItemType.Placeable)
+                    placeMode.SetActiveTruePlaceMode(data.ItemData);
             }
         }
     }

@@ -22,7 +22,7 @@ public class Bolt : ProjectileBase
         if (other.TryGetComponent<IDamageable>(out var target)
             && other.CompareTag("Player"))
         {
-            target.TakeDamage(this);
+            target.TakeDamage(this,gameObject);
 
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }

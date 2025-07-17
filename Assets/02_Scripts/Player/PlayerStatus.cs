@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class PlayerStatus : MonoBehaviour
 {
     [SerializeField] private Image SlimeGaugeImage;
     private StatManager statManager;
+    public UnityAction<float> OnHpChanged;
+
 
     public PlayerStatus(StatManager _statManager)
     {
@@ -19,8 +22,12 @@ public class PlayerStatus : MonoBehaviour
     }
 
 
-    public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue;
-    public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue;
+    public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp) != null
+        ? statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue
+        : 0f;
+    public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp) != null
+        ? statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue
+        : 1f;
     
     
     public float FinalAttackDamage => statManager.GetValue(StatType.FinalAtk);
@@ -62,6 +69,7 @@ public class PlayerStatus : MonoBehaviour
     {
         statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
         Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
+        NotifyHpChanged();
     }
     
     private void UpdateSlimeGaugeUI()
@@ -79,11 +87,13 @@ public class PlayerStatus : MonoBehaviour
     public void ConsumeHp(float _amount)
     {
         statManager.Consume(StatType.CurrentHp, StatModifierType.Base, _amount);
+        NotifyHpChanged();
     }
 
     public void RecoverHp(float _amount)
     {
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
+        NotifyHpChanged();
     }
     public void ConsumeHunger(float _amount)
     {
@@ -95,4 +105,9 @@ public class PlayerStatus : MonoBehaviour
         statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
     }
     
+    private void NotifyHpChanged()
+    {
+        float ratio = MaxHp > 0 ? CurrentHp / MaxHp : 0f;
+        OnHpChanged?.Invoke(ratio);
+    }
 }

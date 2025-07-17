@@ -6,7 +6,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
 
-
     public const int MaxSlotCount = 40;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 20;
@@ -90,7 +89,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public bool TryAddItemGlobally(ItemSO _itemData, int _amount)
     {
         if (_itemData == null || _amount <= 0) return false;
-
         // 같은 아이템 있는 곳에 병합
         for (int i = 0; i < unlockedSlotCount; i++)
         {

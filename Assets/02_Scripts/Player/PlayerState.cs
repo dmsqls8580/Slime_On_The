@@ -16,26 +16,16 @@ namespace PlayerStates
 
     public class IdleState : IState<PlayerController, PlayerState>
     {
-        public void OnEnter(PlayerController _owner)
-        {
-        }
+        public void OnEnter(PlayerController _owner) { }
 
-        public void OnUpdate(PlayerController _owner)
-        {
-        }
+        public void OnUpdate(PlayerController _owner) { }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
-        {
-        }
+        public void OnExit(PlayerController _owner) { }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            //달리기는 없음 Move만
-            //공격 상태일때 Attack 상태 변환
             if (_owner.AttackTrigger)
             {
                 _owner.Attack();
@@ -59,14 +49,11 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
-        private float slimeTimer;
-        private const float consumeInterval = 1f;
-        private const float consumeAmount = 0.5f;
+
 
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
-            slimeTimer = 0f;
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -75,23 +62,13 @@ namespace PlayerStates
 
             Vector2 lookDir = _owner.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
-
-            slimeTimer += Time.deltaTime;
-
-            if (slimeTimer >= consumeInterval)
-            {
-                _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
-                slimeTimer = 0f;
-            }
         }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
-            _entity.AnimationController.SetMove(false);
+            _owner.AnimationController.SetMove(false);
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
@@ -144,7 +121,6 @@ namespace PlayerStates
         public void OnUpdate(PlayerController _owner)
         {
             timer += Time.deltaTime;
-
             if (timer >= dashDuration)
             {
                 _owner.Rigid2D.velocity = Vector2.zero;
@@ -156,10 +132,10 @@ namespace PlayerStates
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
         }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
-            _entity.Rigid2D.velocity = Vector2.zero;
-            _entity.AnimationController.ReleaseLookDir();
+            _owner.Rigid2D.velocity = Vector2.zero;
+            _owner.AnimationController.ReleaseLookDir();
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
@@ -173,57 +149,58 @@ namespace PlayerStates
         }
     }
 
+    // SO 기반 스킬 실행 구조로 변경된 Attack0State
     public class Attack0State : IState<PlayerController, PlayerState>
     {
-        private readonly PlayerSkillSO skill;
-
+        private int _skillIndex = 0;
+        private PlayerSkillSO _skill;
         private float timer;
-        private bool _attackDone;
+        private bool attackDone;
 
-        public Attack0State(PlayerSkillSO skill)
+        public Attack0State(int skillIndex)
         {
-            this.skill = skill;
+            _skillIndex = skillIndex;
         }
 
         public void OnEnter(PlayerController _owner)
         {
+            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            if (_skill == null)
+            {
+                Debug.LogError($"Skill not found for index {_skillIndex}");
+                attackDone = true;
+                return;
+            }
+
+            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
             _owner.Attack();
             timer = 0f;
-            _attackDone = false;
-            Vector2 mousePos = _owner.GetComponent<InputController>().LookDirection;
-            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y,
-                Mathf.Abs(Camera.main.transform.position.z)));
-            Vector2 attackDir = ((Vector2)(mouseWorld - _owner.transform.position)).normalized;
+            attackDone = false;
+
             _owner.AnimationController.TriggerAttack();
-
-            _owner.SkillExecutor.Executor(skill, _owner.AttackPivot.gameObject, attackDir);
-
-            _owner.SetAttackCoolDown(skill.cooldown);
+            _owner.SetAttackCoolDown(_skill.cooldown);
         }
 
         public void OnUpdate(PlayerController _owner)
         {
             _owner.Movement();
-
             timer += Time.deltaTime;
-            if (timer >= skill.actionDuration)
+            if (timer >= _skill.actionDuration)
             {
-                _attackDone = true;
+                attackDone = true;
             }
         }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
-            _attackDone = true;
+            attackDone = true;
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            if (_attackDone)
+            if (attackDone)
             {
                 return _owner.MoveInput.sqrMagnitude < 0.01f ? PlayerState.Idle : PlayerState.Move;
             }
@@ -232,31 +209,63 @@ namespace PlayerStates
         }
     }
 
+    // Attack1State 예시 (동일 구조, 스킬 인덱스만 다름)
     public class Attack1State : IState<PlayerController, PlayerState>
     {
+        private int _skillIndex = 1;
+        private PlayerSkillSO _skill;
+        private float timer;
+        private bool attackDone;
+
+        public Attack1State(int skillIndex)
+        {
+            _skillIndex = skillIndex;
+        }
+
         public void OnEnter(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            if (_skill == null)
+            {
+                Debug.LogError($"Skill not found for index {_skillIndex}");
+                attackDone = true;
+                return;
+            }
+
+            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
+            _owner.Attack();
+            timer = 0f;
+            attackDone = false;
+
+            _owner.AnimationController.TriggerAttack();
+            _owner.SetAttackCoolDown(_skill.cooldown);
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            _owner.Movement();
+            timer += Time.deltaTime;
+            if (timer >= _skill.actionDuration)
+            {
+                attackDone = true;
+            }
         }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            attackDone = true;
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            if (attackDone)
+            {
+                return _owner.MoveInput.sqrMagnitude < 0.01f ? PlayerState.Idle : PlayerState.Move;
+            }
+
+            return PlayerState.Attack1;
         }
     }
 
@@ -270,15 +279,11 @@ namespace PlayerStates
             _owner.AnimationController.TriggerGather();
         }
 
-        public void OnUpdate(PlayerController _owner)
-        {
-        }
+        public void OnUpdate(PlayerController _owner) { }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
             Logger.Log("End Gather");
         }
@@ -292,29 +297,27 @@ namespace PlayerStates
 
     public class DeadState : IState<PlayerController, PlayerState>
     {
+        
         public void OnEnter(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
         }
 
-        public void OnFixedUpdate(PlayerController _owner)
-        {
-            throw new System.NotImplementedException();
-        }
+        public void OnFixedUpdate(PlayerController _owner) { }
 
-        public void OnExit(PlayerController _entity)
+        public void OnExit(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            _owner.CanRespawn = true;
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            throw new System.NotImplementedException();
+            if (_owner.CanRespawn)
+                return PlayerState.Idle;
+            return PlayerState.Dead;
         }
     }
 }

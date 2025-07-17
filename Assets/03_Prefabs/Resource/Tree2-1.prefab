@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4885801311188938698}
   - component: {fileID: 6698297166887991553}
   - component: {fileID: -1063159461235075718}
+  - component: {fileID: 1906335492371808908}
   m_Layer: 31
   m_Name: Tree2-1
   m_TagString: Untagged
@@ -147,8 +148,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropItems: []
-  dropItemPrefab: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
+--- !u!114 &1906335492371808908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7737528887651044872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff

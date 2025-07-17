@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -24,7 +25,7 @@ public class UIPauseMenu : UIBase
             
             // 타이틀 씬으로 돌아가기
             Time.timeScale = 1f;
-            SceneManager.LoadScene("TempTitleScene");
+            SceneManager.LoadScene("MainMenuScene");
         });
     }
     
