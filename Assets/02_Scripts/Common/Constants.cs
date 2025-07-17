@@ -26,7 +26,7 @@ public static class Constants
         public const float SPAWN_LEAF_DELAY_NOTBERSERKED = 0.2f;	// 채력 50퍼 이상 패턴 사이 딜레이
         public const float SPAWN_LEAF_DELAY_BERSERKED = 0.1f;		// 체력 50퍼 이하 패턴 사이 딜레이
         public const float LEAF_SHAKE_DURATION = 0.2f;				// 폭발 전 흔들림 지속 시간
-        public const float LEAF_SHAKE_MAGNITUDE = 0.1f;				// 폭발 범위
+        public const float LEAF_SHAKE_MAGNITUDE = 0.1f;				// 폭발 전 흔들림 크기
         
         // BabyTurtle Tentacle
         public const float SPAWN_TENTACLE_DISTANCE = 3f;			// 촉수 소환 거리(플레이어 기준)

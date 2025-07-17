@@ -6,6 +6,8 @@ public class IngredientSlot : MonoBehaviour
 {
     [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI amount;
+    
+    
 
     public void UpdateIngredientSlot(Sprite _icon, int _having, int _required)
     {

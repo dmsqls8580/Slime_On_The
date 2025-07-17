@@ -57,10 +57,12 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         {
             // 피격
             BossStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            SoundManager.Instance.PlaySFX(SFX.Grount);
             if (BossStatus.CurrentHealth <= 0)
             {
                 Dead();
             }
+            StartCoroutine(ShakeIDamageable());
         }
     }
 
@@ -76,6 +78,30 @@ public class BossController : BaseController<BossController, BossState>, IDamage
             
             DropItems(this.gameObject.transform);
         }
+    }
+
+    private IEnumerator ShakeIDamageable()
+    {
+        float timer = 0f;
+        float shakeDuration = 0.2f;
+        Vector2 currentPos = transform.position;
+        Color currentColor = spriteRenderer.color;
+        
+        while (timer <= shakeDuration)
+        {
+            // shakeDuration 동안 몬스터 흔들림, 붉은색 피격 모션
+            float offsetX = Random.Range(-1f, 1f) * 0.1f;
+            float offsetY = Random.Range(-1f, 1f) * 0.1f;
+            transform.position = new Vector2(currentPos.x + offsetX, currentPos.y + offsetY);
+            
+            spriteRenderer.color = new Color(1f, 200/255f,200/255f,1);
+            
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = currentPos;
+        spriteRenderer.color = currentColor;
     }
 
     /************************ IAttackable ***********************/
