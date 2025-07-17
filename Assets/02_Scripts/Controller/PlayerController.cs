@@ -116,10 +116,16 @@ namespace PlayerStates
             //Dash
             action.Dash.performed += context => dashTrigger = true;
 
+            //Interaction
+            action.Interaction.performed += context =>
+            {
+                Interaction();
+            };
+
             //Gathering
             action.Gathering.performed += context =>
             {
-                TryInteract();
+                Gathering();
             };
 
             // Inventory
@@ -224,7 +230,22 @@ namespace PlayerStates
             rigid2D.velocity = moveVelocity;
         }
 
-        public void TryInteract()
+        // NPC, 창고, 제작대 등 이용
+        public void Interaction()
+        {
+            var target = interactionSelector.FInteractable;
+
+            if (target == null)
+            {
+                Logger.Log("Target is null");
+                return;
+            }
+
+            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+        }
+
+        // 스페이스바 눌렀을 때 오브젝트 피깎기.
+        public void Gathering()
         {
             if (actCoolDown > 0) return;
 
@@ -236,7 +257,7 @@ namespace PlayerStates
                 return;
             }
 
-            interactionHandler.HandleInteraction(target, this);
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);

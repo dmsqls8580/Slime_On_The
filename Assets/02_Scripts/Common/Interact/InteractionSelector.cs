@@ -57,7 +57,6 @@ public class InteractionSelector : MonoBehaviour
             {
                 if (newFInteractable == null && newSpaceInteractable == null)
                 {
-                    Logger.Log("BuildingMask");
                     newFInteractable = collider;
                     newSpaceInteractable = collider;
 
@@ -81,7 +80,6 @@ public class InteractionSelector : MonoBehaviour
             {
                 if (newSpaceInteractable == null && !IsCompatibleWithCurrentQuickSlotItem(collider))
                 {
-                    Logger.Log("리소스 찾음");
                     newSpaceInteractable = collider;
                     if (newFInteractable != null)
                     {
@@ -92,7 +90,7 @@ public class InteractionSelector : MonoBehaviour
             }
             else
             {
-                Debug.Log("Collider의 Layer 오류 입니다.");
+                Logger.Log("Collider의 Layer 오류 입니다.");
             }
         }
 
