@@ -14,26 +14,23 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerStatus))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
-        public Transform attackPivotRotate;
-        public Transform attackPivot;
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
-
         [SerializeField] private UIDead uiDead;
         public UIDead UiDead => uiDead;
-
+        
+        public Transform attackPivotRotate;
+        public Transform attackPivot;
         public Transform AttackPivot => attackPivot;
-
+        
         public PlayerStatus PlayerStatus { get; private set; }
-
         private ToolController toolController;
         public ToolController ToolController => toolController;
-
         private InputController inputController;
         private PlayerAnimationController animationController;
+        public PlayerAnimationController AnimationController => animationController;
         private PlayerSkillMananger playerSkillMananger;
         public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
-        public PlayerAnimationController AnimationController => animationController;
 
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
