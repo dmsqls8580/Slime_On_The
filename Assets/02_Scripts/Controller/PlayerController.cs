@@ -1,6 +1,5 @@
 using _02_Scripts.Manager;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +16,7 @@ namespace PlayerStates
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
         [SerializeField] private UIDead uiDead;
+        [SerializeField] private PlaceMode placeMode;
         public UIDead UiDead => uiDead;
         
         public Transform attackPivotRotate;
@@ -104,7 +104,7 @@ namespace PlayerStates
 
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
 
-            //Attack
+            // Attack
             action.Attack0.performed += context =>
             {        
                 if (EventSystem.current.IsPointerOverGameObject())
@@ -113,16 +113,16 @@ namespace PlayerStates
                     attackQueued = true;
             };
 
-            //Dash
+            // Dash
             action.Dash.performed += context => dashTrigger = true;
 
-            //Interaction
+            // Interaction
             action.Interaction.performed += context =>
             {
                 Interaction();
             };
 
-            //Gathering
+            // Gathering
             action.Gathering.performed += context =>
             {
                 Gathering();
@@ -138,6 +138,12 @@ namespace PlayerStates
             action.Crafting.performed += context =>
             {
                 UIManager.Instance.Toggle<UICrafting>();
+            };
+
+            // Place
+            action.Place.performed += context =>
+            {
+                placeMode.Place();
             };
         }
 
