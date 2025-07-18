@@ -1,10 +1,12 @@
+using PlayerStates;
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationDataSO animationDataSo;
-
+    [SerializeField]private CameraController cameraController;
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
     private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
@@ -97,6 +99,19 @@ public class PlayerAnimationController : MonoBehaviour
         return (mouseWorldPos - playerPos).normalized;
     }
 
+    public void TakeDamageAnim(Color _color)
+    {
+        cameraController.CameraShake(0.2f,0.3f,0.3f);
+        StartCoroutine(TakeDamageAnimRoutine(_color));
+    }
+
+    private IEnumerator TakeDamageAnimRoutine(Color _damageColor)
+    {
+        spriteRenderer.color = _damageColor;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = new Color(1, 1, 1,1f);
+    }
+    
     public void UpdateAnimatorParameters(Vector2 _lookDir)
     {
         Animator.SetFloat(MOUSE_X, Mathf.Abs(_lookDir.x));
