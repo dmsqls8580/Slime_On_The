@@ -1,5 +1,7 @@
+using _02_Scripts.Player.Effect;
 using PlayerStates;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
@@ -25,13 +27,20 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
     public string PoolID => poolID;
     [SerializeField] private int poolSize = 5;
     public int PoolSize => poolSize;
-
+    
+    private EffectTable effectTable;
+    
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        effectTable= TableManager.Instance.GetTable<EffectTable>();
+        effectTable.CreateTable();
+    }
 
     public void Init(StatManager _statManager, Vector2 _dir, float _speed, float _range)
     {
@@ -76,6 +85,19 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
                 other.transform.position,
                 isCritical ? Color.yellow : Color.red);
 
+
+            var effectData = effectTable.GetDataByID(1);
+            if (!effectData.IsUnityNull())
+            {
+                var effectObj = ObjectPoolManager.Instance.GetObject(effectData.poolID);
+                if (!effectObj.IsUnityNull() && effectObj.TryGetComponent<ImpactEffect>(out var impactEffect))
+                {
+                    var hit = other.ClosestPoint(transform.position);
+                    impactEffect.PlayEffect(hit, effectData.duration);
+                    SoundManager.Instance.PlaySFX(SFX.SlimeNormalAttack);
+                }
+            }
+            
             target.TakeDamage(this, gameObject);
             ObjectPoolManager.Instance.ReturnObject(gameObject);
         }

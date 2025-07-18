@@ -13,7 +13,7 @@ public class PlayerAfterEffect : MonoBehaviour
     public bool IsEffectActive => isEffectActive;
     private SpriteRenderer playerSprite;
 
-    private EffectTableSO effectTable;
+    private EffectTable effectTable;
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class PlayerAfterEffect : MonoBehaviour
 
     private void Start()
     {
-        effectTable = TableManager.Instance.GetTable<EffectTableSO>();
+        effectTable = TableManager.Instance.GetTable<EffectTable>();
         effectDelayTimer = effectDelay;
         effectTable.CreateTable();
     }

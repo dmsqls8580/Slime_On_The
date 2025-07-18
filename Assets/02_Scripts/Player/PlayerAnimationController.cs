@@ -1,3 +1,4 @@
+using PlayerStates;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationDataSO animationDataSo;
-
+    [SerializeField]private CameraController cameraController;
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
     private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
@@ -100,6 +101,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void TakeDamageAnim(Color _color)
     {
+        cameraController.CameraShake(0.2f,0.3f,0.3f);
         StartCoroutine(TakeDamageAnimRoutine(_color));
     }
 
