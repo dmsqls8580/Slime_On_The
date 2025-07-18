@@ -302,6 +302,7 @@ namespace PlayerStates
             {
                 // 피격
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
                 if (PlayerStatus.CurrentHp <= 0)
                 {
