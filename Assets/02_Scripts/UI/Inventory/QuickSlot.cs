@@ -23,6 +23,7 @@ public class QuickSlot : SlotBase
         base.Initialize(_index);
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
         outLineImage.gameObject.SetActive(_isSelected);
@@ -39,6 +40,7 @@ public class QuickSlot : SlotBase
                 if (data.ItemData.itemTypes == ItemType.Placeable)
                     placeMode.SetActiveTruePlaceMode(data.ItemData);
             }
+            
         }
     }
 
@@ -55,5 +57,37 @@ public class QuickSlot : SlotBase
 
             InventoryInteractionHandler.Instance.TryUse(data, this);
         }
+    }
+
+    public void EquipToolToController(ToolController _controller)
+    {   
+        var data = GetData();
+        if (data.IsUnityNull()) {
+            return ;
+        }
+        if (data.ItemData.IsUnityNull()) {
+            return ;
+        }
+
+        if ((data.ItemData.itemTypes & ItemType.Tool) != 0)
+        {
+            _controller.EquipTool(data.ItemData as ITool);
+        }
+        else
+        {
+            _controller.EquipTool(null);
+        }
+    }
+
+    public ToolType GetToolType()
+    {
+        var data = GetData();
+        if(data.IsUnityNull()||data.ItemData.IsUnityNull()) 
+            return ToolType.None;
+        if(data.ItemData.itemTypes!=ItemType.Tool)
+            return ToolType.None;
+        
+        return data.ItemData.toolData.toolType;
+        
     }
 }

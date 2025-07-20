@@ -1,9 +1,7 @@
-using UnityEngine;
 
-public interface IWeapon
+public interface ITool
 {
     float AttackPow { get; }
     float AttackSpd { get; }
-    GameObject ToolPrefab { get; }
     ToolType  ToolType { get; }
 }
