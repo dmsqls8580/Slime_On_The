@@ -68,9 +68,15 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetTrigger(AnimationDataSo.GatherTriggerHash);
     }
 
+    public void RegisterToolController(ToolController _toolController)
+    {
+        _toolController.OnToolTypeChanged += SetToolType;
+    }
+    
     public void SetToolType(ToolType _toolIndex)
     {
-        Animator.SetFloat(AnimationDataSo.ToolTypeParameterHash,(float)_toolIndex);
+        Logger.Log("SetToolType");
+        Animator.SetFloat("toolTypeIndex", (float)_toolIndex); // 직접 이름으로 시도
     }
 
     public void SetLookDir(Vector2 _lookDir)

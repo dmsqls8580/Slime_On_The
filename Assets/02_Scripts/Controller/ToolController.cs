@@ -1,27 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ToolController : MonoBehaviour
 {
-    private IWeapon equippedTool;
-    private GameObject equippedToolModel;
-    private IWeapon EquippedTool => equippedTool;
+    private ITool equippedTool;
+    private ITool EquippedTool => equippedTool;
+    
+    public event Action<ToolType> OnToolTypeChanged;
 
-    public void EquipTool(IWeapon _tool)
+    public void EquipTool(ITool _tool)
     {
+        if(equippedTool==_tool)
+            return;
+        
         equippedTool = _tool;
-        
-        Logger.Log($"{EquippedTool.ToolType}");
-        if (equippedToolModel != null)
-        {
-            Destroy(equippedToolModel);
-        }
-        
-        if (_tool.ToolPrefab != null)
-        {
-            equippedToolModel = GameObject.Instantiate(_tool.ToolPrefab, transform);
-        }
+        OnToolTypeChanged?.Invoke(GetEquippedToolType());
     }
 
     public float GetAttackPow()

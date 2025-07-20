@@ -16,8 +16,11 @@ public class PlayerAnimationDataSO : ScriptableObject
 
     public int MouseXParameterHash => mouseX;
     public int MouseYParameterHash => mouseY;
-    
+
     public int ToolTypeParameterHash => toolTypeIndex;
+    // Axe = 1,
+    // PickAxe= 2,
+
     public int IsDeadParameterHash => isDead;
     public int IsMoveHash=> Animator.StringToHash(isMoveParameter);
     public int IsAttackTriggerHash => Animator.StringToHash(attackTriggerParameter);

@@ -35,16 +35,21 @@ public enum EquipType
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
-public class ItemSO : ScriptableObject
+public class ItemSO : ScriptableObject, ITool
 {
     [Header("기본 정보")]
     public int idx;
     public string itemName;
     [TextArea] public string description;
     public Sprite icon;
+    
+    public float AttackPow => toolData.power;
+    public float AttackSpd => toolData.actSpd;
+    public ToolType ToolType => toolData.toolType;
 
     [Header("공통")]
     public ItemType itemTypes; // 다중 타입 가능
+    public ToolType toolType;
     public bool stackable;
     public int maxStack;
 

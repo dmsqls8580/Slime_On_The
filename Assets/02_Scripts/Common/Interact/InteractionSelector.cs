@@ -1,5 +1,7 @@
+using PlayerStates;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InteractionSelector : MonoBehaviour
@@ -8,9 +10,7 @@ public class InteractionSelector : MonoBehaviour
     [SerializeField] private LayerMask buildingMask;
     [SerializeField] private LayerMask resourceMask;
     [SerializeField] private InteractionZone interactionZone;
-
-    //TODO.
-    //private Item currentQuickSlotItem;
+    [SerializeField] private UIQuickSlot uiQuickSlot;
 
     // F 키 전용.
     private Collider2D fInteractable;
@@ -78,9 +78,10 @@ public class InteractionSelector : MonoBehaviour
             }
             else if (IsInLayerMask(layer, resourceMask))
             {
-                if (newSpaceInteractable == null && !IsCompatibleWithCurrentQuickSlotItem(collider))
+                if (newSpaceInteractable == null && IsCompatibleWithCurrentQuickSlotItem(collider))
                 {
                     newSpaceInteractable = collider;
+                    
                     if (newFInteractable != null)
                     {
                         // 둘 다 찾았으면 종료.
@@ -109,13 +110,27 @@ public class InteractionSelector : MonoBehaviour
         return (mask.value & (1 << layer)) != 0;
     }
 
-    private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D collider)
+    // ReSharper disable Unity.PerformanceAnalysis
+    private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D _collider)
     {
-        //TODO.
-        //if (collider.TryGetComponent(out Resource resource))
-        //{
-        //    return resource.resourceType == currentQuickSlotItem.interactableResourceType;
-        //}
+
+        if (_collider.TryGetComponent(out Resource resource))
+        {
+            var selectedSlot = uiQuickSlot?.GetSelectedSlot();
+            
+            if (selectedSlot.IsUnityNull())
+            {
+                return false;
+            }
+
+            if (!selectedSlot.IsUnityNull())
+            {
+                PlayerController playerController = GetComponentInParent<PlayerController>();
+                ToolType toolType = selectedSlot.GetToolType();
+                ToolType requiredToolType = resource.GetRequiredToolType();
+                return toolType == requiredToolType;
+            }
+        }
 
         return false;
     }
