@@ -105,13 +105,14 @@ public class PlaceMode : MonoBehaviour
         itemSO = _itemSO;
         PlaceableInfo info = itemSO.placeableData.placeableInfo;
         objectPrefab = info.objectPrefab;
-        prefabInstance = Instantiate(info.objectPrefab, transform);
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        prefabInstance = Instantiate(info.objectPrefab, mouseWorldPos, Quaternion.identity);
         size = info.size;
         clampArea.Initialize(tilemap);
 
         for (int i = 0; i < size.x * size.y; i++)
         {
-            GameObject tileInstance = Instantiate(previewTilePrefab, transform);
+            GameObject tileInstance = Instantiate(previewTilePrefab, mouseWorldPos, Quaternion.identity);
             previewTiles.Add(tileInstance.GetComponent<PreviewTile>());
         }
     }
