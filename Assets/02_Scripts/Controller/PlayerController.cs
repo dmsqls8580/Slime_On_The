@@ -1,5 +1,6 @@
 using _02_Scripts.Manager;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -16,6 +17,7 @@ namespace PlayerStates
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
         [SerializeField] private UIDead uiDead;
+        [SerializeField] private UIQuickSlot uiQuickSlot;
         [SerializeField] private PlaceMode placeMode;
         public UIDead UiDead => uiDead;
         
@@ -254,10 +256,50 @@ namespace PlayerStates
         }
 
         // 스페이스바 눌렀을 때 오브젝트 피깎기.
-        public void Gathering()
+
+        private bool CanGathering()
+        {
+            // uiQuickSlot 자체가 null일 때
+            if (uiQuickSlot.IsUnityNull())
+            {
+                return false;
+            }
+            QuickSlot selectedSlot = uiQuickSlot.GetSelectedSlot();
+            if (selectedSlot.IsUnityNull())
+            {
+                return false;
+            }
+
+            if (interactionSelector.IsUnityNull())
+            {
+                return false;
+            }
+            var target = interactionSelector.SpaceInteractable;
+            if (target.IsUnityNull())
+            {
+                return false;
+            }
+
+            if (!target.TryGetComponent(out Resource resource) || resource == null)
+            {
+                return false;
+            }
+
+            ToolType toolType = selectedSlot.GetToolType();
+            ToolType requiredToolType = resource.GetRequiredToolType();
+
+            return toolType == requiredToolType;
+        }
+
+        private void Gathering()
         {
             if (actCoolDown > 0) return;
-
+            if(!CanGathering())
+            {
+                Logger.Log("Not Selected Tool");
+                return;
+            }
+            
             var target = interactionSelector.SpaceInteractable;
 
             if (target == null)

@@ -1,15 +1,23 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class UIQuickSlot : MonoBehaviour
 {
     [SerializeField] private QuickSlot[] slots;
+    [SerializeField] private ToolController toolController; 
+    [SerializeField]private PlayerAnimationController  playerAnimationController;
     private int selectedIndex = 0;
 
     public int SelectedIndex => selectedIndex;
 
     private void Start()
     {
+        if (!toolController.IsUnityNull() && !playerAnimationController.IsUnityNull())
+        {
+            playerAnimationController.RegisterToolController(toolController);
+        }
+        
         for (int i = 0; i < slots.Length; i++)
         {
             slots[i].Initialize(i, this);
@@ -32,6 +40,14 @@ public class UIQuickSlot : MonoBehaviour
         selectedIndex = index;
         
         UpdateSelectedVisual();
+        slots[selectedIndex].EquipToolToController(toolController);
+    }
+
+    public QuickSlot GetSelectedSlot()
+    {
+        if(selectedIndex<0||selectedIndex>=slots.Length)
+            return null;
+        return slots[selectedIndex];
     }
 
     private void HandleNumberInput()

@@ -277,8 +277,6 @@ namespace PlayerStates
         public void OnEnter(PlayerController _owner)
         {
             Logger.Log("Gather");
-            var equippedToolType = _owner.ToolController.GetEquippedToolType();
-            _owner.AnimationController.SetToolType(equippedToolType);
             _owner.AnimationController.TriggerGather();
         }
 
