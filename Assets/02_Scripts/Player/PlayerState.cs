@@ -116,6 +116,7 @@ namespace PlayerStates
             timer = 0f;
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
             _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
+            _owner.PlayerAfterEffect.SetEffectActive(true);
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -136,6 +137,8 @@ namespace PlayerStates
         {
             _owner.Rigid2D.velocity = Vector2.zero;
             _owner.AnimationController.ReleaseLookDir();
+            
+            _owner.PlayerAfterEffect.SetEffectActive(false);
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
