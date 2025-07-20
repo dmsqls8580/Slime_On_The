@@ -1,5 +1,6 @@
 using System;
 using Enemystates;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -33,7 +34,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
-
+    private float neutralTargetResetTime = 10f;            // 중립 몬스터 타겟 리셋 타이머
+    private Coroutine resetAttackTargetCoroutine;
+    
     /************************ Item Drop ***********************/
     [Header("Drop Item Prefab")]
     [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
@@ -62,6 +65,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
             {
                 IsAttacked = true;
+
+                // 중립 몬스터 공격 타겟 초기화 코루틴
+                StartResetAttackTargetTimer();
             }
             if (EnemyStatus.CurrentHealth <= 0)
             {
@@ -277,4 +283,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
     
+    // 중립 몬스터 공격 타겟 초기화 코루틴
+    private void StartResetAttackTargetTimer()
+    {
+        // 진행중인 코루틴이 있을 시 초기화
+        if (resetAttackTargetCoroutine != null)
+        {
+            StopCoroutine(ResetAttackTarget());
+        }
+
+        resetAttackTargetCoroutine = StartCoroutine(ResetAttackTarget());
+    }
+
+    private IEnumerator ResetAttackTarget()
+    {
+        yield return new WaitForSeconds(neutralTargetResetTime);
+
+        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
+        {
+            AttackTarget = null;
+        }
+    }
 }
