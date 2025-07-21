@@ -43,9 +43,10 @@ public class TurtleSpell4 : ProjectileBase
         animator.speed = 1f;
     }
     
-    public override void Init(Vector2 dir, StatBase _damage, float _radius)
+    public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
         damage = _damage;
+        projectileHost =  _host;
     }
 
     protected override void OnTriggerEnter2D(Collider2D other)

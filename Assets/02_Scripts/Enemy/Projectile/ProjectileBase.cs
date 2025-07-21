@@ -32,13 +32,14 @@ public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
     
     
     /************************ ProjectileBase ***********************/
+    public GameObject projectileHost;
     
     public virtual void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public abstract void Init(Vector2 dir, StatBase _damage, float _radius = 0f);
+    public abstract void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius = 0f);
 
     protected virtual void OnTriggerEnter2D(Collider2D other) {}
     protected virtual void OnTriggerStay2D(Collider2D other) {}

@@ -2,9 +2,10 @@ using UnityEngine;
 
 public class Bolt : ProjectileBase
 {
-    public override void Init(Vector2 dir, StatBase _damage, float _radius)
+    public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
         damage = _damage;
+        projectileHost =  _host;
         
         // 발사 방향 조절
         rigid.velocity = dir * speed;

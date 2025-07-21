@@ -252,7 +252,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             Vector2 shootdir = SensedAttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
-            projectile.Init(direction, AttackStat, EnemyStatus.AttackRadius);
+            projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
         }
     }
     
@@ -339,7 +339,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
         UpdateAggro();
     }
-
+    
     // 공격 타겟 업데이트
     // 딕셔너리 내 가장 높은 어그로 수치를 가진 오브젝트를 AttackTarget으로 설정
     private void UpdateAggro()
