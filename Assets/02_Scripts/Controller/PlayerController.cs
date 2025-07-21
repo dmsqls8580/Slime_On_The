@@ -50,6 +50,7 @@ namespace PlayerStates
         public Vector2 LastMoveDir => lastMoveDir;
 
         private float actCoolDown = 0f;
+        
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
 
@@ -65,8 +66,7 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-
-
+        
         public StatBase AttackStat { get; }
 
         public IDamageable Target { get; private set; }
@@ -106,7 +106,7 @@ namespace PlayerStates
                 if (moveInput.sqrMagnitude > 0.01f)
                     lastMoveDir = moveInput.normalized;
             };
-
+            
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
 
             // Attack
@@ -217,9 +217,8 @@ namespace PlayerStates
         {
             attackQueued = false;
         }
-
+        
         private float attackCooldown = 0f;
-
 
         public void SetAttackCoolDown(float _coolDown)
         {
@@ -231,7 +230,7 @@ namespace PlayerStates
         public override void Movement()
         {
             base.Movement();
-
+            
             float speed = PlayerStatus.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
@@ -240,7 +239,7 @@ namespace PlayerStates
 
             rigid2D.velocity = moveVelocity;
         }
-
+        
         // NPC, 창고, 제작대 등 이용
         public void Interaction()
         {
@@ -251,15 +250,14 @@ namespace PlayerStates
                 Logger.Log("Target is null");
                 return;
             }
-
+            
             interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
         }
-
+        
         // 스페이스바 눌렀을 때 오브젝트 피깎기.
-
+        
         private bool CanGathering()
         {
-            // uiQuickSlot 자체가 null일 때
             if (uiQuickSlot.IsUnityNull())
             {
                 return false;
@@ -269,25 +267,27 @@ namespace PlayerStates
             {
                 return false;
             }
-
+            
             if (interactionSelector.IsUnityNull())
             {
                 return false;
             }
+            
             var target = interactionSelector.SpaceInteractable;
+            
             if (target.IsUnityNull())
             {
                 return false;
             }
-
+            
             if (!target.TryGetComponent(out Resource resource) || resource == null)
             {
                 return false;
             }
-
+            
             ToolType toolType = selectedSlot.GetToolType();
             ToolType requiredToolType = resource.GetRequiredToolType();
-
+            
             return toolType == requiredToolType;
         }
 
@@ -307,7 +307,7 @@ namespace PlayerStates
                 Logger.Log("Target is null");
                 return;
             }
-
+            
             interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = toolController.GetAttackSpd();
@@ -322,7 +322,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector3 playerPos = transform.position;
-
+            
             return (mouseWorldPos - playerPos).normalized;
         }
 
@@ -332,7 +332,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
-
+            
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
@@ -384,8 +384,8 @@ namespace PlayerStates
             StartCoroutine(DelayDeathUi(3f, "행복사"));
             ChangeState(PlayerState.Dead);
         }
-
-// 죽음 연출 후 UI 딜레이 호출
+        
+        // 죽음 연출 후 UI 딜레이 호출
         private IEnumerator DelayDeathUi(float _delay, string _reason)
         {
             yield return new WaitForSeconds(_delay);

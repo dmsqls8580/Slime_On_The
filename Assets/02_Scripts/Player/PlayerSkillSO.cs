@@ -1,10 +1,12 @@
 using PlayerStates;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class PlayerSkillSO : ScriptableObject
 {
-    public string skillName;
     public int skillIndex;
+    public string skillName;
+    private string scriptName;
     public float damage;
     public float speed;
     public float range;
