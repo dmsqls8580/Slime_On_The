@@ -9,8 +9,11 @@ public class InteractionSelector : MonoBehaviour
     [SerializeField] private LayerMask npcMask;
     [SerializeField] private LayerMask buildingMask;
     [SerializeField] private LayerMask resourceMask;
+
+    [Header("스크립트 참조")]
     [SerializeField] private InteractionZone interactionZone;
     [SerializeField] private UIQuickSlot uiQuickSlot;
+    [SerializeField] private CraftingStationManager craftingStationManager;
 
     // F 키 전용.
     private Collider2D fInteractable;
@@ -60,6 +63,10 @@ public class InteractionSelector : MonoBehaviour
                     newFInteractable = collider;
                     newSpaceInteractable = collider;
 
+                    if (collider.TryGetComponent(out IStationType type))
+                    {
+                        craftingStationManager.UpdateCurrentCraftingStation(type.GetStationType());
+                    }
                     // 빌딩은 "F", "Space bar" 둘 다 할당.
                     break;
                 }

@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class PlacedObject : MonoBehaviour, IInteractable
+public class PlacedObject : MonoBehaviour, IInteractable, IStationType
 {
     [Header("Drop Item Data Info(SO, 개수, 확률)")]
     [SerializeField] private List<DropItemData> dropItems;
@@ -87,4 +87,6 @@ public class PlacedObject : MonoBehaviour, IInteractable
         Logger.Log($"{currentHealth}");
         currentHealth = Mathf.Max(currentHealth, 0);
     }
+
+    public CraftingStation GetStationType() => CraftingStation.Workbench;
 }
