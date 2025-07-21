@@ -1,5 +1,5 @@
 idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,power,luck,durability,equipableType,actSpd,maxHealth,atk,def,spd,crt,recoverHP,fullness,slimeGauge,duration,eatableRottable,freshness,placeType
-0,Wood,A basic piece of wood from trees.,,Material,y,99,N,,,,,,,,,,,,,,,,,,
+0,,,,None,n,0,N,,,,,,,,,,,,,,,,,,
 2,Plank,판자,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 101,Copper Ore,광석,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 102,Iron Ore,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
@@ -8,7 +8,7 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 202,Iron Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 203,Gold Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 301,Workbench,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
-302,Anvil,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
+302,Anvil,,,Cookable,n,1,,,,,,,,,,,,,,,,,,,
 303,Cooking Pot,냄비,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
 401,Wood Axe,,,Tool,n,1,,Axe,1.5,0.1,70,,1,,,,,,,,,,,,
 402,Wood Pickaxe,,,Tool,n,1,,Pickaxe,1.5,0.1,70,,1,,,,,,,,,,,,
@@ -37,5 +37,5 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 601,Wood Fence,Fence,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
 602,Wood Fence Gate,,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
 701,Apple,,,Material|Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
-801,Cooked Meat,Restores health and fills you up.,cooked_meat,Eatable,y,40,,,,,,,,,,,,,20,15,5,0,y,100,
+801,Meat,eat,cooked_meat,Eatable,n,99,,,,,,,,,,,,,0,0,0,0,n,100,
 802,Winter Dinner,Food,,Eatable,y,40,,,,,,,,,,,,,100,50,20,0,y,100,
