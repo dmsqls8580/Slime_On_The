@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 288877907862692532}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.19999997, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0.20000005, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -277,7 +277,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 1
 --- !u!50 &2945271577920063520
 Rigidbody2D:
   serializedVersion: 4
@@ -331,13 +331,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npcMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 536870912
   buildingMask:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 1073741824
   resourceMask:
     serializedVersion: 2
     m_Bits: 2147483648
+  interactionZone: {fileID: 5773050741700073181}
+  uiQuickSlot: {fileID: 0}
 --- !u!114 &5773050741700073181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableMask:
     serializedVersion: 2
-    m_Bits: 2147483648
+    m_Bits: 3758096384
 --- !u!1 &3895693573737440218
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +418,6 @@ GameObject:
   - component: {fileID: 7676578801928857935}
   - component: {fileID: 2263581524882212771}
   - component: {fileID: 968847061373714810}
-  - component: {fileID: 1031245360983673619}
   - component: {fileID: 5151515593578593484}
   - component: {fileID: 5289312409628342510}
   - component: {fileID: 6703258985890753166}
@@ -424,8 +425,7 @@ GameObject:
   - component: {fileID: 6796973682356272748}
   - component: {fileID: 3580914035793469543}
   - component: {fileID: 1429055705134351675}
-  - component: {fileID: 5967410517343274}
-  - component: {fileID: 3999097471210572621}
+  - component: {fileID: 5372810898574895508}
   m_Layer: 0
   m_Name: testPlayer_ver2
   m_TagString: Player
@@ -542,8 +542,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.4375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.46153846, y: 0}
-    oldSize: {x: 0.8125, y: 1.1875}
+    pivot: {x: 0.46153846, y: -0.095238104}
+    oldSize: {x: 0.8125, y: 1.3125}
     newSize: {x: 0.6875, y: 0.875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -681,6 +681,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 34c0c046-31df-4f32-8c0d-9c202f6dac5b
     m_ActionName: Player/Look[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fbc76744-0014-48e8-a5c5-43ad90d355f5
+    m_ActionName: Player/Place[/Mouse/leftButton]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -698,19 +702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a97cf9ce2afed243ae5c1351b48bfe3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1031245360983673619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239740537725770930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e932d17bf7bb33948ae71da99243561b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 7727134400760234523, guid: 816fdee1270d91f4a9eda429205b0ca8, type: 3}
 --- !u!114 &5151515593578593484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -764,11 +755,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5fc0d0f1b5fa8e4c91c048eeee5f3ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPivotRotate: {fileID: 2712631923495137926}
-  attackPivot: {fileID: 2210137339734390434}
   damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
   damageTextCanvas: {fileID: 0}
   uiDead: {fileID: 0}
+  uiQuickSlot: {fileID: 0}
+  placeMode: {fileID: 0}
+  attackPivotRotate: {fileID: 2712631923495137926}
+  attackPivot: {fileID: 2210137339734390434}
 --- !u!114 &6796973682356272748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationDataSo: {fileID: 11400000, guid: 7738c08bb6427004cb85ab5e58d8862d, type: 2}
+  cameraController: {fileID: 6703258985890753166}
 --- !u!114 &1429055705134351675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -807,7 +801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SlimeGaugeImage: {fileID: 0}
---- !u!114 &5967410517343274
+--- !u!114 &5372810898574895508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -816,24 +810,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4239740537725770930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8859bdcd980dc754caf8f40052f23d31, type: 3}
+  m_Script: {fileID: 11500000, guid: 69b6a38fa10732b40996967a41472063, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: {x: 0, y: 0}
---- !u!114 &3999097471210572621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239740537725770930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c4c739822a2614fa78f1984dd55c3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolController: {fileID: 6796973682356272748}
-  testToolItemSo: {fileID: 0}
+  effectDelay: 0.04
+  effectDuration: 0.2
+  afterImageColor: {r: 1, g: 1, b: 1, a: 0.5}
+  isEffectActive: 0
 --- !u!1 &4982578675555849736
 GameObject:
   m_ObjectHideFlags: 0
@@ -894,7 +877,7 @@ Transform:
   m_GameObject: {fileID: 7650520237985061277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.19999997, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0.20000005, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children: []

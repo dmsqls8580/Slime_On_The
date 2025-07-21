@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2ae77c69d3b7c459c094bf25aa3d33, type: 3}
+  m_Name: AfterEffect
+  m_EditorClassIdentifier: 
+  poolID: AfterEffect
+  effectPrefab: {fileID: 463714517288214479, guid: d77f4e8a2da5d304483cbb4b60287031, type: 3}
+  effectID: 0
+  duration: 0.4
+  color: {r: 0, g: 0, b: 0, a: 0}

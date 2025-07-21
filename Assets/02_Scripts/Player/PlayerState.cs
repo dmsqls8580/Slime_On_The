@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace PlayerStates
@@ -116,6 +115,7 @@ namespace PlayerStates
             timer = 0f;
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
             _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
+            _owner.PlayerAfterEffect.SetEffectActive(true);
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -136,6 +136,8 @@ namespace PlayerStates
         {
             _owner.Rigid2D.velocity = Vector2.zero;
             _owner.AnimationController.ReleaseLookDir();
+            
+            _owner.PlayerAfterEffect.SetEffectActive(false);
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
@@ -274,8 +276,6 @@ namespace PlayerStates
         public void OnEnter(PlayerController _owner)
         {
             Logger.Log("Gather");
-            var equippedToolType = _owner.ToolController.GetEquippedToolType();
-            _owner.AnimationController.SetToolType(equippedToolType);
             _owner.AnimationController.TriggerGather();
         }
 

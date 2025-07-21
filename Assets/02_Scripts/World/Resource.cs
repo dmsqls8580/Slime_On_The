@@ -1,10 +1,16 @@
 using PlayerStates;
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+[System.Serializable]
+public enum ResourceType
+{
+    Tree,
+    Ore ,
+    
+}
 
 [System.Serializable]
 public class DropItemData
@@ -16,19 +22,20 @@ public class DropItemData
 
 public class Resource : MonoBehaviour, IInteractable
 {
-    [Header("Drop Item Data Info(SO, 개수, 확률)")] [SerializeField]
-    private List<DropItemData> dropItems;
+    [Header("Drop Item Data Info(SO, 개수, 확률)")]
+    [SerializeField] private List<DropItemData> dropItems;
+    [SerializeField] private ResourceType resourceType;
 
     [SerializeField] private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
 
-    [Header("Drop Animation")] [SerializeField]
-    private float dropUpForce = 5f;
+    [Header("Drop Animation")]
+    [SerializeField] private float dropUpForce = 5f;
 
     [SerializeField] private float dropSideForce = 2f;
     [SerializeField] private float dropAngleRange = 60f;
 
-    [Header("Drop Item Health")] [SerializeField]
-    private float maxHealth;
+    [Header("Drop Item Health")]
+    [SerializeField] private float maxHealth;
 
     private float currentHealth;
     private Rigidbody2D rigid;
@@ -69,16 +76,28 @@ public class Resource : MonoBehaviour, IInteractable
         }
     }
 
-    public void Interact(PlayerController _playerController)
+    public void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         var toolController = _playerController.GetComponent<ToolController>();
-        float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
+        float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
         TakeInteraction(toolPower);
 
         if (currentHealth <= 0)
         {
             DropItems(_playerController.transform);
             Destroy(gameObject);
+        }
+    }
+    public ToolType GetRequiredToolType()
+    {
+        switch (resourceType)
+        {
+            case ResourceType.Tree:
+                return ToolType.Axe;
+            case ResourceType.Ore:
+                return ToolType.Pickaxe;
+            default:
+                return ToolType.None;
         }
     }
 

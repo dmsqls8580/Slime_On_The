@@ -35,8 +35,6 @@ public class PlaceMode : MonoBehaviour
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         baseCell = clampArea.GetClampedCell(mouseWorldPos);
         UpdatePreview();
-        if (Input.GetKeyDown(KeyCode.B) && canPlace)
-            Place();
     }
 
     private void UpdatePreview()
@@ -72,8 +70,9 @@ public class PlaceMode : MonoBehaviour
         return colliders.Length == 0;
     }
 
-    private void Place()
+    public void Place()
     {
+        if (!canPlace) return;
         GameObject placedObject = Instantiate(objectPrefab, prefabInstance.transform.position, Quaternion.identity);
         SetObject(placedObject);
         inventoryManager.TryRemoveItemGlobally(itemSO, 1);
@@ -106,13 +105,14 @@ public class PlaceMode : MonoBehaviour
         itemSO = _itemSO;
         PlaceableInfo info = itemSO.placeableData.placeableInfo;
         objectPrefab = info.objectPrefab;
-        prefabInstance = Instantiate(info.objectPrefab, transform);
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        prefabInstance = Instantiate(info.objectPrefab, mouseWorldPos, Quaternion.identity);
         size = info.size;
         clampArea.Initialize(tilemap);
 
         for (int i = 0; i < size.x * size.y; i++)
         {
-            GameObject tileInstance = Instantiate(previewTilePrefab, transform);
+            GameObject tileInstance = Instantiate(previewTilePrefab, mouseWorldPos, Quaternion.identity);
             previewTiles.Add(tileInstance.GetComponent<PreviewTile>());
         }
     }

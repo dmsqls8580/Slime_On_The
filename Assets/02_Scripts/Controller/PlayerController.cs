@@ -1,6 +1,6 @@
 using _02_Scripts.Manager;
 using System.Collections;
-using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +17,8 @@ namespace PlayerStates
         [SerializeField] private GameObject damageTextPrefab;
         [SerializeField] private Canvas damageTextCanvas;
         [SerializeField] private UIDead uiDead;
+        [SerializeField] private UIQuickSlot uiQuickSlot;
+        [SerializeField] private PlaceMode placeMode;
         public UIDead UiDead => uiDead;
         
         public Transform attackPivotRotate;
@@ -34,6 +36,9 @@ namespace PlayerStates
 
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
+        
+        private PlayerAfterEffect playerAfterEffect;
+        public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
 
         private Rigidbody2D rigid2D;
         public Rigidbody2D Rigid2D => rigid2D;
@@ -45,6 +50,7 @@ namespace PlayerStates
         public Vector2 LastMoveDir => lastMoveDir;
 
         private float actCoolDown = 0f;
+        
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
 
@@ -60,8 +66,7 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-
-
+        
         public StatBase AttackStat { get; }
 
         public IDamageable Target { get; private set; }
@@ -80,7 +85,7 @@ namespace PlayerStates
             toolController = GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
-
+            playerAfterEffect = GetComponentInChildren<PlayerAfterEffect>();
             rigid2D = GetComponent<Rigidbody2D>();
         }
 
@@ -101,10 +106,10 @@ namespace PlayerStates
                 if (moveInput.sqrMagnitude > 0.01f)
                     lastMoveDir = moveInput.normalized;
             };
-
+            
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
 
-            //Attack
+            // Attack
             action.Attack0.performed += context =>
             {        
                 if (EventSystem.current.IsPointerOverGameObject())
@@ -113,13 +118,19 @@ namespace PlayerStates
                     attackQueued = true;
             };
 
-            //Dash
+            // Dash
             action.Dash.performed += context => dashTrigger = true;
 
-            //Gathering
+            // Interaction
+            action.Interaction.performed += context =>
+            {
+                Interaction();
+            };
+
+            // Gathering
             action.Gathering.performed += context =>
             {
-                TryInteract();
+                Gathering();
             };
 
             // Inventory
@@ -132,6 +143,12 @@ namespace PlayerStates
             action.Crafting.performed += context =>
             {
                 UIManager.Instance.Toggle<UICrafting>();
+            };
+
+            // Place
+            action.Place.performed += context =>
+            {
+                placeMode.Place();
             };
         }
 
@@ -200,9 +217,8 @@ namespace PlayerStates
         {
             attackQueued = false;
         }
-
+        
         private float attackCooldown = 0f;
-
 
         public void SetAttackCoolDown(float _coolDown)
         {
@@ -214,7 +230,7 @@ namespace PlayerStates
         public override void Movement()
         {
             base.Movement();
-
+            
             float speed = PlayerStatus.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
@@ -223,11 +239,67 @@ namespace PlayerStates
 
             rigid2D.velocity = moveVelocity;
         }
+        
+        // NPC, 창고, 제작대 등 이용
+        public void Interaction()
+        {
+            var target = interactionSelector.FInteractable;
 
-        public void TryInteract()
+            if (target == null)
+            {
+                Logger.Log("Target is null");
+                return;
+            }
+            
+            interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+        }
+        
+        // 스페이스바 눌렀을 때 오브젝트 피깎기.
+        
+        private bool CanGathering()
+        {
+            if (uiQuickSlot.IsUnityNull())
+            {
+                return false;
+            }
+            QuickSlot selectedSlot = uiQuickSlot.GetSelectedSlot();
+            if (selectedSlot.IsUnityNull())
+            {
+                return false;
+            }
+            
+            if (interactionSelector.IsUnityNull())
+            {
+                return false;
+            }
+            
+            var target = interactionSelector.SpaceInteractable;
+            
+            if (target.IsUnityNull())
+            {
+                return false;
+            }
+            
+            if (!target.TryGetComponent(out Resource resource) || resource == null)
+            {
+                return false;
+            }
+            
+            ToolType toolType = selectedSlot.GetToolType();
+            ToolType requiredToolType = resource.GetRequiredToolType();
+            
+            return toolType == requiredToolType;
+        }
+
+        private void Gathering()
         {
             if (actCoolDown > 0) return;
-
+            if(!CanGathering())
+            {
+                Logger.Log("Not Selected Tool");
+                return;
+            }
+            
             var target = interactionSelector.SpaceInteractable;
 
             if (target == null)
@@ -235,8 +307,8 @@ namespace PlayerStates
                 Logger.Log("Target is null");
                 return;
             }
-
-            interactionHandler.HandleInteraction(target, this);
+            
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
@@ -250,7 +322,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector3 playerPos = transform.position;
-
+            
             return (mouseWorldPos - playerPos).normalized;
         }
 
@@ -260,7 +332,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
-
+            
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
@@ -272,6 +344,8 @@ namespace PlayerStates
             {
                 // 피격
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                
+                animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
                 if (PlayerStatus.CurrentHp <= 0)
                 {
@@ -310,8 +384,8 @@ namespace PlayerStates
             StartCoroutine(DelayDeathUi(3f, "행복사"));
             ChangeState(PlayerState.Dead);
         }
-
-// 죽음 연출 후 UI 딜레이 호출
+        
+        // 죽음 연출 후 UI 딜레이 호출
         private IEnumerator DelayDeathUi(float _delay, string _reason)
         {
             yield return new WaitForSeconds(_delay);
