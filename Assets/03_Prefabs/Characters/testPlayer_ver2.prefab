@@ -339,6 +339,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483648
   interactionZone: {fileID: 5773050741700073181}
+  uiQuickSlot: {fileID: 0}
 --- !u!114 &5773050741700073181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,7 +426,6 @@ GameObject:
   - component: {fileID: 3580914035793469543}
   - component: {fileID: 1429055705134351675}
   - component: {fileID: 5967410517343274}
-  - component: {fileID: 3999097471210572621}
   - component: {fileID: 5372810898574895508}
   m_Layer: 0
   m_Name: testPlayer_ver2
@@ -543,8 +543,8 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0.4375}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.46153846, y: 0}
-    oldSize: {x: 0.8125, y: 1.1875}
+    pivot: {x: 0.46153846, y: -0.095238104}
+    oldSize: {x: 0.8125, y: 1.3125}
     newSize: {x: 0.6875, y: 0.875}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -755,6 +755,7 @@ MonoBehaviour:
   damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
   damageTextCanvas: {fileID: 0}
   uiDead: {fileID: 0}
+  uiQuickSlot: {fileID: 0}
   placeMode: {fileID: 0}
   attackPivotRotate: {fileID: 2712631923495137926}
   attackPivot: {fileID: 2210137339734390434}
@@ -810,20 +811,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   force: {x: 0, y: 0}
---- !u!114 &3999097471210572621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4239740537725770930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6c4c739822a2614fa78f1984dd55c3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolController: {fileID: 6796973682356272748}
-  testToolItemSo: {fileID: 0}
 --- !u!114 &5372810898574895508
 MonoBehaviour:
   m_ObjectHideFlags: 0

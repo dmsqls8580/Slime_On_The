@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "EffectTable", menuName = "Tables/EffectTable", order = 2)]

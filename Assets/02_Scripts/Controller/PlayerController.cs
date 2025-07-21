@@ -217,9 +217,8 @@ namespace PlayerStates
         {
             attackQueued = false;
         }
-
+        
         private float attackCooldown = 0f;
-
 
         public void SetAttackCoolDown(float _coolDown)
         {
@@ -259,7 +258,6 @@ namespace PlayerStates
 
         private bool CanGathering()
         {
-            // uiQuickSlot 자체가 null일 때
             if (uiQuickSlot.IsUnityNull())
             {
                 return false;
@@ -274,7 +272,9 @@ namespace PlayerStates
             {
                 return false;
             }
+            
             var target = interactionSelector.SpaceInteractable;
+            
             if (target.IsUnityNull())
             {
                 return false;

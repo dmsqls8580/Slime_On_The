@@ -1,5 +1,4 @@
 using PlayerStates;
-using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -89,7 +88,6 @@ public class Resource : MonoBehaviour, IInteractable
             Destroy(gameObject);
         }
     }
-
     public ToolType GetRequiredToolType()
     {
         switch (resourceType)
