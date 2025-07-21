@@ -7,8 +7,7 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField]private CameraController cameraController;
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
-    private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
-    private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
+    private static readonly int ToolTypeIndex = Animator.StringToHash("toolTypeIndex");
 
     private InputController inputController;
     private SpriteRenderer spriteRenderer;
@@ -73,8 +72,7 @@ public class PlayerAnimationController : MonoBehaviour
     
     public void SetToolType(ToolType _toolIndex)
     {
-        Logger.Log("SetToolType");
-        Animator.SetFloat("toolTypeIndex", (float)_toolIndex); // 직접 이름으로 시도
+        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); // 직접 이름으로 시도
     }
 
     public void SetLookDir(Vector2 _lookDir)
@@ -118,7 +116,7 @@ public class PlayerAnimationController : MonoBehaviour
     
     public void UpdateAnimatorParameters(Vector2 _lookDir)
     {
-        Animator.SetFloat(MOUSE_X, Mathf.Abs(_lookDir.x));
-        Animator.SetFloat(MOUSE_Y, _lookDir.y);
+        Animator.SetFloat(AnimationDataSo.MouseXParameterHash, Mathf.Abs(_lookDir.x));
+        Animator.SetFloat(AnimationDataSo.MouseYParameterHash, _lookDir.y);
     }
 }
