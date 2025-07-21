@@ -16,6 +16,7 @@ public class EnemySenseRange : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             enemyController.ChaseTarget = other.gameObject;
+            enemyController.ModifyAggro(other.gameObject, 20f);
         }
     }
 
@@ -39,6 +40,8 @@ public class EnemySenseRange : MonoBehaviour
             {
                 enemyController.ChaseTarget = null;
             }
+            
+            enemyController.ModifyAggro(other.gameObject, -20f);
         }
     }
 

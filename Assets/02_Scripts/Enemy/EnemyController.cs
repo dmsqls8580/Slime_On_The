@@ -35,7 +35,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private float neutralTargetResetTime = 10f;            // 중립 몬스터 타겟 리셋 타이머
-    private Coroutine resetAttackTargetCoroutine;
+    private Coroutine aggroCoroutine;
+    private Dictionary<GameObject, float> AttackTargets = new Dictionary<GameObject, float>();
     
     /************************ Item Drop ***********************/
     [Header("Drop Item Prefab")]
@@ -62,13 +63,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             // 피격
             EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
 
+            // 어그로 수치 증가, 피격 시 30 증가
+            if (_attackerObj != null)
+            {
+                ModifyAggro(_attackerObj, 30f);
+                // 어그로 코루틴 시작
+                StartAggroCoroutine();
+            }
+            
             if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
             {
                 IsAttacked = true;
-
-                // 중립 몬스터 공격 타겟 초기화 코루틴
-                StartResetAttackTargetTimer();
             }
+            
             if (EnemyStatus.CurrentHealth <= 0)
             {
                 Dead();
@@ -247,9 +254,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, EnemyStatus.AttackRadius);
         }
-        
     }
-
+    
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
@@ -283,25 +289,74 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
     
-    // 중립 몬스터 공격 타겟 초기화 코루틴
-    private void StartResetAttackTargetTimer()
+    // 몬스터 어그로 코루틴 시작
+    public void StartAggroCoroutine()
     {
-        // 진행중인 코루틴이 있을 시 초기화
-        if (resetAttackTargetCoroutine != null)
+        if (aggroCoroutine != null)
         {
-            StopCoroutine(ResetAttackTarget());
+            StopCoroutine(aggroCoroutine);
         }
 
-        resetAttackTargetCoroutine = StartCoroutine(ResetAttackTarget());
+        aggroCoroutine = StartCoroutine(DecreaseAggroValue());
     }
-
-    private IEnumerator ResetAttackTarget()
+    
+    // 1초에 어그로 수치 2씩 감소 
+    private IEnumerator DecreaseAggroValue()
     {
-        yield return new WaitForSeconds(neutralTargetResetTime);
-
-        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
+        while (true)
         {
-            AttackTarget = null;
+            var keys = new List<GameObject>(AttackTargets.Keys);
+            foreach (var key in keys)
+            {
+                if (key != null && AttackTargets.ContainsKey(key))
+                {
+                    ModifyAggro(key, -2f);
+                }
+            }
+            yield return new WaitForSeconds(1f);
         }
     }
+
+    // 어그로 계산 메서드
+    public void ModifyAggro(GameObject aggroObject, float value)
+    {
+        if (AttackTargets.ContainsKey(aggroObject))
+        {
+            AttackTargets[aggroObject] += value;
+        }
+        else
+        {
+            AttackTargets[aggroObject] = value;
+        }
+
+        AttackTargets[aggroObject] = Mathf.Clamp(AttackTargets[aggroObject], 0f, 100f);
+
+        if (AttackTargets[aggroObject] == 0f)
+        {
+            AttackTargets.Remove(aggroObject);
+            IsAttacked = false;
+        }
+        
+        UpdateAggro();
+    }
+
+    // 공격 타겟 업데이트
+    // 딕셔너리 내 가장 높은 어그로 수치를 가진 오브젝트를 AttackTarget으로 설정
+    private void UpdateAggro()
+    {
+        GameObject maxValueTarget = null;
+        float maxvalue = 0f;
+        foreach (var target in AttackTargets)
+        {
+            if (target.Key != null && target.Value > maxvalue)
+            {
+                maxvalue = target.Value;
+                maxValueTarget = target.Key;
+            }
+        }
+        ChaseTarget = maxValueTarget;
+        AttackTarget =  maxValueTarget;
+    }
+    
+    
 }
