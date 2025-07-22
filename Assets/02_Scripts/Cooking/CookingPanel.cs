@@ -24,7 +24,7 @@ public class CookingPanel : MonoBehaviour
     private void OnClickCookButton()
     {
         if (!canCook) { return; }
-
+        // dictionary와 cookingTime을 여기서 선언하고 넘겨주기 vs 지금처럼 필드에서 하고 초기화시키기
         foreach (CookingSlot slot in cookingSlots)
         {
             List<TagValuePair> _tags = slot.Item.cookableData.tags;

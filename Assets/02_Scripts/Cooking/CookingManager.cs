@@ -11,38 +11,31 @@ public class CookingManager : MonoBehaviour
         List<ItemSO> items = database.Items;
         foreach (ItemSO item in items)
         {
-            Dictionary<IngredientTag, float> tags = new Dictionary<IngredientTag, float>();
-            SumRecipeTags(item.recipe, tags);
-            if (IsMatched(_tags, tags))
+            if (IsMatched(_tags, item.cookedData))
             {
                 _cookingPot.Cook(item, cookingPanel.CookingTime);
                 cookingPanel.Initialize();
+                return;
             }
         }
     }
 
-    private void SumRecipeTags(List<RecipeIngredient> _ingredients, Dictionary<IngredientTag, float> _tags)
+    private bool IsMatched(Dictionary<IngredientTag, float> _tags, CookedData _data)
     {
-        foreach (RecipeIngredient ingredient in _ingredients)
+        // 이 레시피의 필수 조건들을 모두 만족하는지 확인.
+        foreach (TagValuePair pair in _data.requiredTags)
         {
-            List<TagValuePair> tags = ingredient.item.cookableData.tags;
-            foreach (TagValuePair pair in tags) { _tags[pair.tag] += pair.value; }
-        }
-    }
-
-    private bool IsMatched(Dictionary<IngredientTag, float> _ingredient, Dictionary<IngredientTag, float> _finished)
-    {
-        // 완성될 요리가 요구하는 모든 태그(key)에 대해 반복
-        foreach (KeyValuePair<IngredientTag, float> pair in _finished)
-        {
-            IngredientTag tag = pair.Key;
-            float value = pair.Value;
-
-            if (!_ingredient.ContainsKey(tag) || _ingredient[tag] < value)
-            { return false; }
+            // _tags가 해당 태그를 가지고 있지 않거나, 값이 부족하다면.
+            if (!_tags.ContainsKey(pair.tag) || _tags[pair.tag] < pair.value) { return false; }
         }
 
-        // 모든 요구사항을 통과했으면 성공
+        // 이 레시피의 금지 조건을 위반하는지 확인.
+        foreach (TagValuePair pair in _data.forbiddenTags)
+        {
+            // _tags가 금지된 태그를 value 이상 가지고 있다면.
+            if (_tags.ContainsKey(pair.tag) && _tags[pair.tag] >= pair.value) { return false; }
+        }
+
         return true;
     }
 }

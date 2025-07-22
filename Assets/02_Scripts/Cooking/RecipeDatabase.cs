@@ -8,6 +8,7 @@ public class RecipeDatabase : MonoBehaviour
 
     private void Awake()
     {
-        items.Sort((a, b) => a.idx.CompareTo(b.idx));
+        // 우선 순위 오름차순 정렬.
+        items.Sort((a, b) => a.cookedData.priority.CompareTo(b.cookedData.priority));
     }
 }

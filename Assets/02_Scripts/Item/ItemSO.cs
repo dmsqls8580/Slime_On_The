@@ -135,6 +135,7 @@ public class CookableData
 [System.Serializable]
 public class CookedData
 {
+    public int priority;
     public List<TagValuePair> requiredTags;
     public List<TagValuePair> forbiddenTags;
 }
