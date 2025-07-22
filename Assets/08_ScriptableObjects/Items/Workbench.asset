@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Workbench
   description: 
   icon: {fileID: 21300000, guid: a6db6cae81ef8d640a532833a1df36e0, type: 3}
-  itemTypes: 16
+  itemTypes: 32
   stackable: 0
   maxStack: 1
   materialData:
@@ -41,6 +41,9 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    cookingTime: 0
   placeableData:
     placeableInfo: {fileID: 11400000, guid: aae317426569f064eba65906a3298bce, type: 2}
   recipe: []

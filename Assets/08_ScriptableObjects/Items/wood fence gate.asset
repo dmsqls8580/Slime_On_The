@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Wood Fence Gate
   description: 
   icon: {fileID: -264430679, guid: 64592110654e81242b5c729db2fcb64d, type: 3}
-  itemTypes: 16
+  itemTypes: 32
   stackable: 1
   maxStack: 99
   materialData:
@@ -41,6 +41,9 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    cookingTime: 0
   placeableData:
     placeableInfo: {fileID: 11400000, guid: dfe854297bf0c934abc698c19e8aca9b, type: 2}
   recipe:

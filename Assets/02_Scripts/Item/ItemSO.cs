@@ -35,16 +35,15 @@ public enum EquipType
     Core = 5,
 }
 
-[System.Flags]
 public enum IngredientTag
 {
     None = 0,
-    Meat = 1 << 0,
-    Fruit = 1 << 1,
-    Vegetable = 1 << 2,
-    Egg = 1 << 3,
-    Monster = 1 << 4,
-    Ice = 1 << 5,
+    Meat = 1,
+    Fruit = 2,
+    Vegetable = 3,
+    Egg = 4,
+    Monster = 5,
+    Ice = 6,
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
@@ -115,42 +114,18 @@ public class EatableData
     public bool permanent;
 }
 
-//[System.Serializable]
-//public struct TagValuePair
-//{
-//    public IngredientTag tag;
-//    public float value;
-//}
+[System.Serializable]
+public struct TagValuePair
+{
+    public IngredientTag tag;
+    public float value;
+}
 
 [System.Serializable]
 public class CookableData
 {
-    //public List<TagValuePair> tags;
-
+    public List<TagValuePair> tags;
     public float cookingTime;
-
-    public Dictionary<IngredientTag, float> tagMap;
-
-    // List를 Dictionary로 변환하는 초기화 함수
-    //public void Initialize()
-    //{
-    //    tagMap = new Dictionary<IngredientTag, float>();
-    //    if (tags == null) return;
-
-    //    foreach (var pair in tags)
-    //    {
-    //        if (!tagMap.ContainsKey(pair.tag))
-    //        {
-    //            tagMap.Add(pair.tag, pair.value);
-    //        }
-    //    }
-    //}
-
-    //// 특정 태그의 값을 가져오는 함수
-    //public float GetTagValue(IngredientTag tag)
-    //{
-    //    return tagMap.ContainsKey(tag) ? tagMap[tag] : 0f;
-    //}
 }
 
 [System.Serializable]

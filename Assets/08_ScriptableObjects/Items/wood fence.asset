@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Wood Fence
   description: Fence
   icon: {fileID: -1943025326, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
-  itemTypes: 16
+  itemTypes: 32
   stackable: 1
   maxStack: 99
   materialData:
@@ -41,6 +41,9 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    cookingTime: 0
   placeableData:
     placeableInfo: {fileID: 11400000, guid: 83fbba39bbac4d94f8ee069eb1dec6c5, type: 2}
   recipe:

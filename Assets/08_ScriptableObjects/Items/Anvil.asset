@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Anvil
   description: 
   icon: {fileID: 1282399439755417274, guid: 62d3c6ec4d47d0749aae0c7342d806a3, type: 3}
-  itemTypes: 16
+  itemTypes: 32
   stackable: 0
   maxStack: 1
   materialData:
@@ -42,7 +42,8 @@ MonoBehaviour:
     rottenable: 0
     permanent: 0
   cookableData:
-    a: 0
+    tags: []
+    cookingTime: 0
   placeableData:
     placeableInfo: {fileID: 11400000, guid: f667f0a65050f8e4282ce8f664ccaff4, type: 2}
   recipe:
