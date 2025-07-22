@@ -10,6 +10,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
     public StatBase AttackStat => damage;
     public IDamageable Target => null;
     private Rigidbody2D rigid;
+    private GameObject _attackHost;
     
     private float speed;
     private float calcDamage; 
@@ -41,13 +42,14 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         effectTable.CreateTable();
     }
 
-    public void Init(StatManager _statManager, Vector2 _dir, float _speed, float _range)
+    public void Init(StatManager _statManager, Vector2 _dir, GameObject _host, float _speed, float _range)
     {
         statManager = _statManager;
         direction = _dir.normalized;
         speed = _speed;
         range = _range; 
         startAttackPos = transform.position;
+        _attackHost = _host;
 
         //크리티컬 계산식
         float baseAtk = statManager.GetValue(StatType.Attack);
@@ -98,7 +100,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
                 }
             }
             
-            target.TakeDamage(this, gameObject);
+            target.TakeDamage(this, _attackHost);
             ObjectPoolManager.Instance.ReturnObject(gameObject);
         }
     }

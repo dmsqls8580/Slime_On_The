@@ -61,8 +61,17 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (_attacker != null)
         {
             // 피격
-            EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            if (EnemyStatus == null)
+            {
+                Logger.Log("EnemyStatus is null");
+            }
 
+            if (_attacker.AttackStat == null)
+            {
+                Logger.Log("AttackStat is null");
+            }
+            EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            
             // 어그로 수치 증가, 피격 시 30 증가
             if (_attackerObj != null)
             {
@@ -80,6 +89,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Dead();
             }
+        }
+        else
+        {
+            Logger.Log("No attacker found");
         }
     }
     
@@ -211,7 +224,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
     }
     
-    
     protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
     {
         return state switch
@@ -222,10 +234,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             EnemyState.Attack => new AttackState(),
             EnemyState.Dead => new DeadState(),
             _ => null
-
         };
     }
-
+    
     public override void FindTarget()
     {
         
@@ -253,9 +264,15 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Vector2 shootdir = SensedAttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
+            Logger.Log("Init 호출");
+        }
+        else
+        {
+            Logger.Log("SensedAttackTarget == null");
         }
     }
     
+    // 아이템 드롭 메서드
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
@@ -272,7 +289,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 continue;
             }
-
             for (int i = 0; i < item.amount; i++)
             {
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
@@ -316,7 +332,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             yield return new WaitForSeconds(1f);
         }
     }
-
+    
     // 어그로 계산 메서드
     public void ModifyAggro(GameObject aggroObject, float value)
     {
@@ -348,7 +364,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         float maxvalue = 0f;
         foreach (var target in AttackTargets)
         {
-            if (target.Key != null && target.Value > maxvalue)
+            if (target.Key != null && target.Value >= maxvalue)
             {
                 maxvalue = target.Value;
                 maxValueTarget = target.Key;

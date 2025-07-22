@@ -21,7 +21,7 @@ public class FireBall : PlayerSkillSO
 
             // 투사체 초기화
             var projectile = projObj.GetComponent<PlayerProjectile>();
-            projectile.Init(_owner.StatManager,attackDir, speed, range);
+            projectile.Init(_owner.StatManager,attackDir,_owner.gameObject, speed, range);
 
             // 풀에서 꺼낼 때 필요한 추가 초기화(예: 이펙트 등) 있으면 OnSpawnFromPool 호출
             projectile.OnSpawnFromPool();

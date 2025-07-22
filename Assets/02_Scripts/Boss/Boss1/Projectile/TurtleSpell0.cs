@@ -37,7 +37,7 @@ public class TurtleSpell0 : ProjectileBase
     {
         animator.speed = 0;
     }
-
+    
     // 애니메이션 재생 메서드
     public void AnimationPlay()
     {
@@ -47,9 +47,10 @@ public class TurtleSpell0 : ProjectileBase
     protected override void OnTriggerStay2D(Collider2D other)
     {
         if (other.TryGetComponent<IDamageable>(out var target) 
-            && canDealDamage)
+            && canDealDamage && other.gameObject != projectileHost)
         {
-            target.TakeDamage(this, gameObject);
+            // 공격 호스트 정보를 target에게 전달(projectileHost)
+            target.TakeDamage(this, projectileHost);
             canDealDamage =  false;
         }
     }

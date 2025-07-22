@@ -343,6 +343,15 @@ namespace PlayerStates
             if (_attacker != null)
             {
                 // 피격
+                if (PlayerStatus == null)
+                {
+                    Logger.Log("EnemyStatus is null");
+                }
+
+                if (_attacker.AttackStat == null)
+                {
+                    Logger.Log("AttackStat is null");
+                }
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
                 
                 animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
