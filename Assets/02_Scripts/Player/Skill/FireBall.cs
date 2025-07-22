@@ -10,7 +10,7 @@ public class FireBall : PlayerSkillSO
     {
 
         // 공격 방향 계산
-        Vector2 attackDir = _owner.UpdatePlayerDirectionByMouse();
+        Vector2 attackDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
 
         // 투사체 풀에서 꺼내서 발사
 
