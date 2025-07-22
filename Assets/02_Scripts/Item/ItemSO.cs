@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,8 +11,9 @@ public enum ItemType
     Equipable = 1 << 2,
     Eatable = 1 << 3,
     Cookable = 1 << 4,
-    Placeable = 1 << 5,
-    BuffItem = 1 << 6
+    Cooked = 1 << 5,
+    Placeable = 1 << 6,
+    BuffItem = 1 << 7,
 }
 
 public enum ToolType 
@@ -70,6 +72,7 @@ public class ItemSO : ScriptableObject, ITool
     public EquipableData equipableData;
     public EatableData eatableData;
     public CookableData cookableData;
+    public CookedData cookedData;
     public PlaceableData placeableData;
 
     [Header("레시피")]
@@ -127,6 +130,13 @@ public class CookableData
 {
     public List<TagValuePair> tags;
     public float cookingTime;
+}
+
+[System.Serializable]
+public class CookedData
+{
+    public List<TagValuePair> requiredTags;
+    public List<TagValuePair> forbiddenTags;
 }
 
 [System.Serializable]
