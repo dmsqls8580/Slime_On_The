@@ -59,7 +59,7 @@ public abstract class BaseController<TController, TState> : MonoBehaviour where 
     private void TryStateTransition()
     {
         int currentIndex = Convert.ToInt32(CurrentState);
-        var next         = states[currentIndex].CheckTransition((TController)this);
+        var next = states[currentIndex].CheckTransition((TController)this);
         if (!next.Equals(CurrentState))
         {
             ChangeState(next);

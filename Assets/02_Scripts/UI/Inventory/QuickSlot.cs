@@ -27,7 +27,7 @@ public class QuickSlot : SlotBase
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
         outLineImage.gameObject.SetActive(_isSelected);
-        outLineImage.color = _isSelected ? Color.yellow : Color.white;
+        outLineImage.color = _isSelected ? new Color32(242, 109, 91, 255) : Color.white;
 
         if (_isSelected)
         {
