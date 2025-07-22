@@ -16,18 +16,14 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     public EnemyStatus EnemyStatus;                        // EnemyStatus
     
-    public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
-    
     public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
-    public GameObject SensedAttackTarget;                 // 공격 시점에 공격 대상으로 인식된 오브젝트
-    
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
-    public bool IsAttacked { get; private set; } = false;  // 중립 몬스터가 공격받았는지 여부
+    public bool IsAttacked = false;  // 중립 몬스터가 공격받았는지 여부
     
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
@@ -36,7 +32,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private float neutralTargetResetTime = 10f;            // 중립 몬스터 타겟 리셋 타이머
     private Coroutine aggroCoroutine;
-    private Dictionary<GameObject, float> AttackTargets = new Dictionary<GameObject, float>();
+    public Dictionary<GameObject, float> AttackTargets = new Dictionary<GameObject, float>();
     
     /************************ Item Drop ***********************/
     [Header("Drop Item Prefab")]
@@ -203,16 +199,13 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
         // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null)
+        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != EnemyAttackType.Neutral)
         {
-            if (ChaseTarget != null)
-            {
-                Vector2 targetDir = ChaseTarget.transform.position - transform.position;
-                lastFlipX = targetDir.x < 0;
-            }
+            Vector2 targetDir = AttackTarget.transform.position - transform.position;
+            lastFlipX = targetDir.x < 0;
         }
         
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX
+        // Enemy의 이동 방향에 따라 SpriteRenderer flipX, AttackType이 None인 경우 반대로 flip
         if (EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
         {
             spriteRenderer.flipX = !lastFlipX; 
@@ -259,9 +252,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         // 플레이어가 AttackTarget에서 벗어나는 문제로 인해 새로운 게임 오브젝트 SensedAttackTarget 추가
         // SensedAttackTarget을 이용해 초기화
         if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile)
-            && !SensedAttackTarget.IsUnityNull())
+            && !AttackTarget.IsUnityNull())
         {
-            Vector2 shootdir = SensedAttackTarget.transform.position - projectileTransform.position;
+            Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
             Logger.Log("Init 호출");
@@ -276,7 +269,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
-        Transform itemTarget = ChaseTarget.transform;
+        Transform itemTarget = AttackTarget.transform;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -327,6 +320,11 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 if (key != null && AttackTargets.ContainsKey(key))
                 {
                     ModifyAggro(key, -2f);
+                    float afterAggro = 0f;
+                    if (AttackTargets.TryGetValue(key, out afterAggro))
+                    {
+                        Logger.Log(afterAggro.ToString());
+                    }
                 }
             }
             yield return new WaitForSeconds(1f);
@@ -344,15 +342,25 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             AttackTargets[aggroObject] = value;
         }
-
+        
         AttackTargets[aggroObject] = Mathf.Clamp(AttackTargets[aggroObject], 0f, 100f);
 
         if (AttackTargets[aggroObject] == 0f)
         {
             AttackTargets.Remove(aggroObject);
-            IsAttacked = false;
         }
         
+        UpdateAggro();
+    }
+
+    public void SetAggro(GameObject aggroObject, float value)
+    {
+        AttackTargets[aggroObject] = Mathf.Clamp(value, 0f, 100f);
+
+        if (AttackTargets[aggroObject] == 0f)
+        {
+            AttackTargets.Remove(aggroObject);
+        }
         UpdateAggro();
     }
     
@@ -370,8 +378,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 maxValueTarget = target.Key;
             }
         }
-        ChaseTarget = maxValueTarget;
-        AttackTarget =  maxValueTarget;
+        AttackTarget = maxValueTarget;
+        
+        if (maxvalue <= 0)
+        {
+            IsAttacked = false;
+        }
     }
     
     

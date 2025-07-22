@@ -17,29 +17,24 @@ public class EnemyAttackRange : MonoBehaviour
     {
         if (enemyController.IsPlayerInAttackRange)
         {
-            // Enemy 공격 범위 가시화
+            // Enemy 공격 범위 활성화
             circleCollider2D.enabled = true;
         }
     }
     
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Player")
-            && other.TryGetComponent(out IDamageable iDamageable))
+        if (other.TryGetComponent(out IDamageable iDamageable))
         {
             enemyController.SetPlayerInAttackRange(true);
-            enemyController.AttackTarget = other.gameObject;
-            enemyController.SensedAttackTarget = other.gameObject;
         }
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other.CompareTag("Player")
-            && other.TryGetComponent(out IDamageable iDamageable))
+        if (other.TryGetComponent(out IDamageable iDamageable))
         {
             enemyController.SetPlayerInAttackRange(false);
-            enemyController.AttackTarget = null;
         }
     }
     

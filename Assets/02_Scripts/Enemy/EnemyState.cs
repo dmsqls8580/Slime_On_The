@@ -46,13 +46,13 @@ namespace  Enemystates
             idleTimer += Time.deltaTime;
             
             // 플레이어가 너무 가까이 있을 경우 감지
-            GameObject player = owner.ChaseTarget;
+            GameObject player = owner.AttackTarget;
             if (player != null)
             {
                 float distance = Vector2.Distance(owner.transform.position, player.transform.position);
                 if (distance <= owner.EnemyStatus.AttackRange)
                 {
-                    owner.ChaseTarget = player;
+                    owner.AttackTarget = player;
                 }
             }
         }
@@ -79,7 +79,7 @@ namespace  Enemystates
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
                 // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-                if (owner.ChaseTarget != null) 
+                if (owner.AttackTarget != null) 
                 {
                     return EnemyState.Chase;
                 }
@@ -121,12 +121,12 @@ namespace  Enemystates
             }
             
             // 공격 범위 내에 있을 시 Attack 모드로 전환
-            if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null && owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            if (owner.ChaseTarget != null) 
+            if (owner.AttackTarget != null) 
             {
                 return EnemyState.Chase;
             }
@@ -180,7 +180,7 @@ namespace  Enemystates
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
                 // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-                if (owner.ChaseTarget != null)
+                if (owner.AttackTarget != null)
                 {
                     return EnemyState.Chase;
                 }
@@ -205,12 +205,12 @@ namespace  Enemystates
             }
             
             // 공격 범위 내에 있을 시 Attack 모드로 전환
-            if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null && owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return EnemyState.Chase;
             }
@@ -258,9 +258,9 @@ namespace  Enemystates
             // AttackType이 None일 경우 Chase State에서 플레이어에게서 도망
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
-                if (owner.ChaseTarget != null)
+                if (owner.AttackTarget != null)
                 {
-                    Vector3 dir = (owner.transform.position - owner.ChaseTarget.transform.position).normalized;
+                    Vector3 dir = (owner.transform.position - owner.AttackTarget.transform.position).normalized;
                     float distance = owner.EnemyStatus.FleeDistance;
                     Vector3 fleeDir = owner.transform.position + dir * distance;
                     
@@ -274,7 +274,7 @@ namespace  Enemystates
                 return;
             }
             // Target의 위치를 추적해 이동.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 if (owner.IsPlayerInAttackRange)
                 {
@@ -282,7 +282,7 @@ namespace  Enemystates
                 }
                 else
                 {
-                    owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                 }
             }
         }
@@ -308,7 +308,7 @@ namespace  Enemystates
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
                 // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-                if (owner.ChaseTarget == null)
+                if (owner.AttackTarget == null || !owner.IsAttacked)
                 {
                     return EnemyState.Idle;
                 }
@@ -316,12 +316,12 @@ namespace  Enemystates
             }
             
             // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-            if (owner.ChaseTarget == null)
+            if (owner.AttackTarget == null || !owner.IsAttacked)
             {
                 return EnemyState.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
