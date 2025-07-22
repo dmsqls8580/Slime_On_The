@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class SlimeFormChangeEffect : MonoBehaviour
     private static readonly int BlendAmount = Shader.PropertyToID("_BlendAmount");
 
     [Header("연출용 오브젝트")]
+    [SerializeField] private InputController inputController;
     [SerializeField] private Camera playerOnlyCamera; // 플레이어만 찍는 카메라
     [SerializeField] private RawImage playerRawImage; // RenderTexture 출력용 RawImage
     [SerializeField] private SpriteRenderer playerRenderer; 
@@ -52,6 +54,7 @@ public class SlimeFormChangeEffect : MonoBehaviour
 
     private IEnumerator AnimStart()
     {
+        inputController.PlayerActions.Disable();
         mainCameraOriginalMask = mainCamera.cullingMask;
         mainCamera.cullingMask &= ~(1 << playerLayer);
         playerOnlyCamera.orthographicSize = mainCameraOriginalSize;
@@ -97,6 +100,7 @@ public class SlimeFormChangeEffect : MonoBehaviour
         // 시간원래대로
         Time.timeScale = 1f;
 
+        inputController.PlayerActions.Enable();
         mainCamera.cullingMask = mainCameraOriginalMask;
         playerOnlyCamera.gameObject.SetActive(false);
         playerRawImage.gameObject.SetActive(false);

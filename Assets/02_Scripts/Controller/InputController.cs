@@ -20,6 +20,18 @@ public class InputController : MonoBehaviour
         PlayerActions = PlayerInputs.Player;
     }
 
+    public void SetEnable(bool _enable)
+    {
+        if (_enable)
+        {
+            PlayerInputs.Enable();
+        }
+        else
+        {
+            PlayerInputs.Disable();
+        }
+    }
+
     private void OnEnable()
     {
         PlayerInputs?.Enable();
