@@ -118,6 +118,8 @@ namespace PlayerStates
             action.Crafting.performed += OnCrafting;
             // Place
             action.Place.performed += OnPlace;
+            //Setting
+            action.Settings.performed += OnSetting;
         }
 
         private void LateUpdate()
@@ -228,6 +230,14 @@ namespace PlayerStates
         private void OnCrafting(InputAction.CallbackContext _context)
         {
             UIManager.Instance.Toggle<UICrafting>();
+        }
+
+        private void OnSetting(InputAction.CallbackContext _context)
+        {
+            if (!UIManager.Instance.CloseTop())
+            {
+                UIManager.Instance.Toggle<UIPauseMenu>();
+            }
         }
 
         private void OnPlace(InputAction.CallbackContext _context)
