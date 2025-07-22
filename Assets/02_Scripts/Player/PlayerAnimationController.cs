@@ -78,7 +78,7 @@ public class PlayerAnimationController : MonoBehaviour
     
     public void SetToolType(ToolType _toolIndex)
     {
-        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); // 직접 이름으로 시도
+        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); 
     }
 
     public void SetLookDir(Vector2 _lookDir)
