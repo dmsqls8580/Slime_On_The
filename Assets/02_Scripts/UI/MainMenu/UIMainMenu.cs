@@ -12,7 +12,7 @@ public class UIMainMenu : MonoBehaviour
 
     public void OnClickSettings()
     {
-        
+        UIManager.Instance.Toggle<UISettings>();
     }
     
     public void OnClickQuit()

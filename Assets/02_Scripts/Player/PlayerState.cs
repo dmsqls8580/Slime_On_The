@@ -59,7 +59,7 @@ namespace PlayerStates
         {
             _owner.Movement();
 
-            Vector2 lookDir = _owner.UpdatePlayerDirectionByMouse();
+            Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
         }
 
@@ -106,7 +106,7 @@ namespace PlayerStates
         {
             if (_owner.PlayerStatus.CurrentSlimeGauge <= 20) return;
 
-            lookDir = _owner.UpdatePlayerDirectionByMouse();
+            lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
 
             _owner.AnimationController.TriggerDash();
@@ -154,27 +154,27 @@ namespace PlayerStates
     // SO 기반 스킬 실행 구조로 변경된 Attack0State
     public class Attack0State : IState<PlayerController, PlayerState>
     {
-        private int _skillIndex = 0;
+        private int attackSlot = 0;
         private PlayerSkillSO _skill;
         private float timer;
         private bool attackDone;
 
-        public Attack0State(int skillIndex)
+        public Attack0State(int _attackSlot)
         {
-            _skillIndex = skillIndex;
+            attackSlot = _attackSlot;
         }
 
         public void OnEnter(PlayerController _owner)
         {
-            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {_skillIndex}");
+                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
 
-            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
+            _owner.PlayerSkillMananger.UseSkill(attackSlot, _owner);
             _owner.Attack();
             timer = 0f;
             attackDone = false;
@@ -214,27 +214,27 @@ namespace PlayerStates
     // Attack1State 예시 (동일 구조, 스킬 인덱스만 다름)
     public class Attack1State : IState<PlayerController, PlayerState>
     {
-        private int _skillIndex = 1;
+        private int attackSlot = 1;
         private PlayerSkillSO _skill;
         private float timer;
         private bool attackDone;
 
-        public Attack1State(int skillIndex)
+        public Attack1State(int _attackSlot)
         {
-            _skillIndex = skillIndex;
+            attackSlot = _attackSlot;
         }
 
         public void OnEnter(PlayerController _owner)
         {
-            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {_skillIndex}");
+                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
 
-            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
+            _owner.PlayerSkillMananger.UseSkill(attackSlot, _owner);
             _owner.Attack();
             timer = 0f;
             attackDone = false;

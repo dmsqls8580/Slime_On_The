@@ -19,6 +19,7 @@ public class PlaceMode : MonoBehaviour
     private List<PreviewTile> previewTiles = new List<PreviewTile>();
 
     private bool canPlace = false;
+    public bool CanPlace=>canPlace; 
     private Vector3 mouseWorldPos = Vector3.zero;
     private Vector3Int baseCell = Vector3Int.zero;
 
@@ -77,6 +78,7 @@ public class PlaceMode : MonoBehaviour
         SetObject(placedObject);
         inventoryManager.TryRemoveItemGlobally(itemSO, 1);
         SetActiveFalsePlaceMode();
+        canPlace = false;
     }
 
     private void SetObject(GameObject _placedObject)
