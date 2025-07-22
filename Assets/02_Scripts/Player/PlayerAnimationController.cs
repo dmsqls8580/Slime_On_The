@@ -9,6 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private static readonly int ToolTypeIndex = Animator.StringToHash("toolTypeIndex");
 
+    
     private InputController inputController;
     private SpriteRenderer spriteRenderer;
 
@@ -38,6 +39,11 @@ public class PlayerAnimationController : MonoBehaviour
 
         UpdateAnimatorParameters(lookDir);
         UpdateSpriteFlip(lookDir);
+    }
+
+    public void FormChangeAnimation()
+    {
+        
     }
 
     public void SetMove(bool _isMoving)

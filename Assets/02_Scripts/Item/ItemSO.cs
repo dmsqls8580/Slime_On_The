@@ -83,6 +83,7 @@ public class ToolData
 public class EquipableData
 {
     public EquipType equipableType;
+    public int formId;
     public float maxHealth;
     public float atk;
     public float def;
