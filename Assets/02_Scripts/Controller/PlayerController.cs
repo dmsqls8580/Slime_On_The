@@ -1,7 +1,8 @@
 using _02_Scripts.Manager;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine; 
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 
 namespace PlayerStates
@@ -13,31 +14,32 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerStatus))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
+        [SerializeField] private GameObject damageTextPrefab;
+        [SerializeField] private Canvas damageTextCanvas;
+        [SerializeField] private UIDead uiDead;
+        [SerializeField] private UIQuickSlot uiQuickSlot;
+        [SerializeField] private PlaceMode placeMode;
+        public UIDead UiDead => uiDead;
         
         public Transform attackPivotRotate;
         public Transform attackPivot;
-        [SerializeField] private GameObject damageTextPrefab;
-        [SerializeField] private Canvas damageTextCanvas;
-
-        [SerializeField] private UIDead uiDead;
-        public UIDead UiDead => uiDead;
-        
         public Transform AttackPivot => attackPivot;
         
         public PlayerStatus PlayerStatus { get; private set; }
-
         private ToolController toolController;
         public ToolController ToolController => toolController;
-
         private InputController inputController;
         private PlayerAnimationController animationController;
-        private PlayerSkillMananger  playerSkillMananger;
-        public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
         public PlayerAnimationController AnimationController => animationController;
-        
+        private PlayerSkillMananger playerSkillMananger;
+        public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
+
         private InteractionHandler interactionHandler;
         private InteractionSelector interactionSelector;
         
+        private PlayerAfterEffect playerAfterEffect;
+        public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
+
         private Rigidbody2D rigid2D;
         public Rigidbody2D Rigid2D => rigid2D;
 
@@ -48,9 +50,10 @@ namespace PlayerStates
         public Vector2 LastMoveDir => lastMoveDir;
 
         private float actCoolDown = 0f;
+        
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
-        
+
         private bool dashTrigger;
 
         public bool DashTrigger
@@ -63,14 +66,13 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-
-
+        
         public StatBase AttackStat { get; }
 
         public IDamageable Target { get; private set; }
 
         public bool IsDead { get; private set; }
-        public bool CanRespawn{get; set;}
+        public bool CanRespawn { get; set; }
         public Collider2D Collider => GetComponent<Collider2D>();
 
         protected override void Awake()
@@ -78,12 +80,12 @@ namespace PlayerStates
             base.Awake();
             inputController = GetComponent<InputController>();
             PlayerStatus = GetComponent<PlayerStatus>();
-            playerSkillMananger= GetComponent<PlayerSkillMananger>();
-            animationController =  GetComponent<PlayerAnimationController>();
-            toolController= GetComponent<ToolController>();
+            playerSkillMananger = GetComponent<PlayerSkillMananger>();
+            animationController = GetComponent<PlayerAnimationController>();
+            toolController = GetComponent<ToolController>();
             interactionHandler = GetComponentInChildren<InteractionHandler>();
             interactionSelector = GetComponentInChildren<InteractionSelector>();
-            
+            playerAfterEffect = GetComponentInChildren<PlayerAfterEffect>();
             rigid2D = GetComponent<Rigidbody2D>();
         }
 
@@ -106,29 +108,37 @@ namespace PlayerStates
             };
             
             action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
-            
-            //Attack
+
+            // Attack
             action.Attack0.performed += context =>
-            {
+            {        
+                if (EventSystem.current.IsPointerOverGameObject())
+                    return;
                 if (CanAttack)
                     attackQueued = true;
             };
-            
-            //Dash
+
+            // Dash
             action.Dash.performed += context => dashTrigger = true;
-            
-            //Gathering
-            action.Gathering.performed+= context =>
+
+            // Interaction
+            action.Interaction.performed += context =>
             {
-               TryInteract();
+                Interaction();
             };
-            
+
+            // Gathering
+            action.Gathering.performed += context =>
+            {
+                Gathering();
+            };
+
             // Inventory
             action.Inventory.performed += context =>
             {
                 UIManager.Instance.Toggle<UIInventory>();
             };
-            
+
             // Crafting
             action.Crafting.performed += context =>
             {
@@ -143,8 +153,14 @@ namespace PlayerStates
                     UIManager.Instance.Toggle<UIPauseMenu>();
                 }
             };
+
+            // Place
+            action.Place.performed += context =>
+            {
+                placeMode.Place();
+            };
         }
-        
+
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
@@ -168,6 +184,11 @@ namespace PlayerStates
             {
                 PlayerStatus.RecoverSlimeGauge(30);
             }
+
+            if (Input.GetKey(KeyCode.T))
+            {
+                TestDeath();
+            }
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
@@ -182,11 +203,11 @@ namespace PlayerStates
                     return new DashState();
                 case PlayerState.Attack0:
                     return new Attack0State(0);
-                
+
                 case PlayerState.Attack1:
-                    
+
                 //todo: 스킬 구조 바꿔서 적용
-                
+
                 case PlayerState.Dead:
                     return new DeadState();
                 case PlayerState.Gathering:
@@ -205,9 +226,8 @@ namespace PlayerStates
         {
             attackQueued = false;
         }
-
+        
         private float attackCooldown = 0f;
-
 
         public void SetAttackCoolDown(float _coolDown)
         {
@@ -219,22 +239,21 @@ namespace PlayerStates
         public override void Movement()
         {
             base.Movement();
-
+            
             float speed = PlayerStatus.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
 
-                moveVelocity = moveInput.normalized * speed;
+            moveVelocity = moveInput.normalized * speed;
 
             rigid2D.velocity = moveVelocity;
         }
-
-        public void TryInteract()
+        
+        // NPC, 창고, 제작대 등 이용
+        public void Interaction()
         {
-            if (actCoolDown > 0) return;
-            
             var target = interactionSelector.FInteractable;
-            
+
             if (target == null)
             {
                 Logger.Log("Target is null");
@@ -242,20 +261,77 @@ namespace PlayerStates
             }
             
             interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
+        }
+        
+        // 스페이스바 눌렀을 때 오브젝트 피깎기.
+        
+        private bool CanGathering()
+        {
+            if (uiQuickSlot.IsUnityNull())
+            {
+                return false;
+            }
+            QuickSlot selectedSlot = uiQuickSlot.GetSelectedSlot();
+            if (selectedSlot.IsUnityNull())
+            {
+                return false;
+            }
+            
+            if (interactionSelector.IsUnityNull())
+            {
+                return false;
+            }
+            
+            var target = interactionSelector.SpaceInteractable;
+            
+            if (target.IsUnityNull())
+            {
+                return false;
+            }
+            
+            if (!target.TryGetComponent(out Resource resource) || resource == null)
+            {
+                return false;
+            }
+            
+            ToolType toolType = selectedSlot.GetToolType();
+            ToolType requiredToolType = resource.GetRequiredToolType();
+            
+            return toolType == requiredToolType;
+        }
+
+        private void Gathering()
+        {
+            if (actCoolDown > 0) return;
+            if(!CanGathering())
+            {
+                Logger.Log("Not Selected Tool");
+                return;
+            }
+            
+            var target = interactionSelector.SpaceInteractable;
+
+            if (target == null)
+            {
+                Logger.Log("Target is null");
+                return;
+            }
+            
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
-            
+
             ChangeState(PlayerState.Gathering);
         }
-        
+
         public Vector2 UpdatePlayerDirectionByMouse()
         {
             Vector2 mouseScreenPos = inputController.LookDirection;
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector3 playerPos = transform.position;
-
+            
             return (mouseWorldPos - playerPos).normalized;
         }
 
@@ -265,7 +341,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
-
+            
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
@@ -277,6 +353,8 @@ namespace PlayerStates
             {
                 // 피격
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                
+                animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
                 if (PlayerStatus.CurrentHp <= 0)
                 {
@@ -290,7 +368,7 @@ namespace PlayerStates
             Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldPos);
 
             var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
-            textObj.transform.position= screenPos;
+            textObj.transform.position = screenPos;
 
             var damageText = textObj.GetComponent<DamageTextUI>();
             damageText.Init(_damage, _color);
@@ -302,12 +380,21 @@ namespace PlayerStates
             {
                 IsDead = true;
                 animationController.TriggerDead();
-                StartCoroutine(DelayDeathUi(3f, "테스트당함."));
+                StartCoroutine(DelayDeathUi(3f, "아기 거북이"));
                 ChangeState(PlayerState.Dead);
             }
         }
 
-// 죽음 연출 후 UI 딜레이 호출
+        public void TestDeath()
+        {
+            PlayerStatus.ConsumeHp(50f);
+            IsDead = true;
+            animationController.TriggerDead();
+            StartCoroutine(DelayDeathUi(3f, "행복사"));
+            ChangeState(PlayerState.Dead);
+        }
+        
+        // 죽음 연출 후 UI 딜레이 호출
         private IEnumerator DelayDeathUi(float _delay, string _reason)
         {
             yield return new WaitForSeconds(_delay);
@@ -321,6 +408,5 @@ namespace PlayerStates
             transform.position = _spawnPos;
             ChangeState(PlayerState.Idle);
         }
-        
     }
-} 
+}

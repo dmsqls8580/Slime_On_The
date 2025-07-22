@@ -9,7 +9,8 @@ public enum BGM
 
 public enum SFX
 {
-    CanonSFX,
+    Grount,
+    SlimeNormalAttack,
 }
 
 public class SoundManager : Singleton<SoundManager>

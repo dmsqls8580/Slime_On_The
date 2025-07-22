@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,8 +21,12 @@ public class PlayerStatus : MonoBehaviour
     }
 
 
-    public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue;
-    public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue;
+    public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp) != null
+        ? statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue
+        : 0f;
+    public float MaxHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp) != null
+        ? statManager.GetStat<ResourceStat>(StatType.CurrentHp).MaxValue
+        : 1f;
     
     
     public float FinalAttackDamage => statManager.GetValue(StatType.FinalAtk);

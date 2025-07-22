@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f2ae77c69d3b7c459c094bf25aa3d33, type: 3}
+  m_Name: PlayerImpactEffect
+  m_EditorClassIdentifier: 
+  poolID: ImpactEffect
+  effectPrefab: {fileID: 7679799755868242715, guid: 875608b882498794493a9dfaa58dab55, type: 3}
+  effectID: 1
+  duration: 0.3
+  color: {r: 0, g: 0, b: 0, a: 0}

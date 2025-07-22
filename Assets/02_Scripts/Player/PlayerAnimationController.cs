@@ -1,14 +1,13 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private PlayerAnimationDataSO animationDataSo;
-
+    [SerializeField]private CameraController cameraController;
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
-    private static readonly int MOUSE_X = Animator.StringToHash("mouseX");
-    private static readonly int MOUSE_Y = Animator.StringToHash("mouseY");
+    private static readonly int ToolTypeIndex = Animator.StringToHash("toolTypeIndex");
 
     private InputController inputController;
     private SpriteRenderer spriteRenderer;
@@ -66,9 +65,14 @@ public class PlayerAnimationController : MonoBehaviour
         Animator.SetTrigger(AnimationDataSo.GatherTriggerHash);
     }
 
+    public void RegisterToolController(ToolController _toolController)
+    {
+        _toolController.OnToolTypeChanged += SetToolType;
+    }
+    
     public void SetToolType(ToolType _toolIndex)
     {
-        Animator.SetFloat(AnimationDataSo.ToolTypeParameterHash,(float)_toolIndex);
+        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); // 직접 이름으로 시도
     }
 
     public void SetLookDir(Vector2 _lookDir)
@@ -97,9 +101,22 @@ public class PlayerAnimationController : MonoBehaviour
         return (mouseWorldPos - playerPos).normalized;
     }
 
+    public void TakeDamageAnim(Color _color)
+    {
+        cameraController.CameraShake(0.2f,0.3f,0.3f);
+        StartCoroutine(TakeDamageAnimRoutine(_color));
+    }
+
+    private IEnumerator TakeDamageAnimRoutine(Color _damageColor)
+    {
+        spriteRenderer.color = _damageColor;
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = new Color(1, 1, 1,1f);
+    }
+    
     public void UpdateAnimatorParameters(Vector2 _lookDir)
     {
-        Animator.SetFloat(MOUSE_X, Mathf.Abs(_lookDir.x));
-        Animator.SetFloat(MOUSE_Y, _lookDir.y);
+        Animator.SetFloat(AnimationDataSo.MouseXParameterHash, Mathf.Abs(_lookDir.x));
+        Animator.SetFloat(AnimationDataSo.MouseYParameterHash, _lookDir.y);
     }
 }

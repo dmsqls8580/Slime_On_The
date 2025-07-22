@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace PlayerStates
@@ -49,14 +48,11 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
-        private float slimeTimer;
-        private const float consumeInterval = 1f;
-        private const float consumeAmount = 0.5f;
+
 
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
-            slimeTimer = 0f;
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -65,13 +61,6 @@ namespace PlayerStates
 
             Vector2 lookDir = _owner.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
-
-            slimeTimer += Time.deltaTime;
-            if (slimeTimer >= consumeInterval)
-            {
-                _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
-                slimeTimer = 0f;
-            }
         }
 
         public void OnFixedUpdate(PlayerController _owner) { }
@@ -126,6 +115,7 @@ namespace PlayerStates
             timer = 0f;
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
             _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
+            _owner.PlayerAfterEffect.SetEffectActive(true);
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -146,6 +136,8 @@ namespace PlayerStates
         {
             _owner.Rigid2D.velocity = Vector2.zero;
             _owner.AnimationController.ReleaseLookDir();
+            
+            _owner.PlayerAfterEffect.SetEffectActive(false);
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
@@ -284,8 +276,6 @@ namespace PlayerStates
         public void OnEnter(PlayerController _owner)
         {
             Logger.Log("Gather");
-            var equippedToolType = _owner.ToolController.GetEquippedToolType();
-            _owner.AnimationController.SetToolType(equippedToolType);
             _owner.AnimationController.TriggerGather();
         }
 

@@ -4,13 +4,10 @@ using UnityEngine.UI;
 
 public class IngredientSlot : MonoBehaviour
 {
+    [SerializeField] private Image icon;
     [SerializeField] private TextMeshProUGUI amount;
-    private Image icon;
-
-    private void Awake()
-    {
-        icon = GetComponent<Image>();
-    }
+    
+    
 
     public void UpdateIngredientSlot(Sprite _icon, int _having, int _required)
     {
