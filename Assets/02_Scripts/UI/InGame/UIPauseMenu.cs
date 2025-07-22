@@ -13,7 +13,7 @@ public class UIPauseMenu : UIBase
     // 설정
     public void OnClickSettings()
     { 
-        // Setting UI추가로 열기
+        UIManager.Instance.Toggle<UISettings>();
     }
     
     // 타이틀
