@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 288877907862692532}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.20000005, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0.19999997, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -340,6 +340,7 @@ MonoBehaviour:
     m_Bits: 2147483648
   interactionZone: {fileID: 5773050741700073181}
   uiQuickSlot: {fileID: 0}
+  craftingStationManager: {fileID: 0}
 --- !u!114 &5773050741700073181
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +356,7 @@ MonoBehaviour:
   interactableMask:
     serializedVersion: 2
     m_Bits: 3758096384
+  craftingStationManager: {fileID: 0}
 --- !u!1 &3895693573737440218
 GameObject:
   m_ObjectHideFlags: 0
@@ -426,6 +428,7 @@ GameObject:
   - component: {fileID: 3580914035793469543}
   - component: {fileID: 1429055705134351675}
   - component: {fileID: 5372810898574895508}
+  - component: {fileID: 3493354041981446302}
   m_Layer: 0
   m_Name: testPlayer_ver2
   m_TagString: Player
@@ -714,8 +717,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a161195bd1c72d74fa0562e52f463f89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _skills:
-  - {fileID: 11400000, guid: cf5a2705406c43e4b9a810ede0dad951, type: 2}
+  currentSkill0: {fileID: 0}
+  currentSkill1: {fileID: 0}
 --- !u!114 &5289312409628342510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -817,6 +820,32 @@ MonoBehaviour:
   effectDuration: 0.2
   afterImageColor: {r: 1, g: 1, b: 1, a: 0.5}
   isEffectActive: 0
+--- !u!114 &3493354041981446302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4239740537725770930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0327d1427b3b5004ebca5aff4d54141d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  formDataList:
+  - formId: 0
+    animator: {fileID: 9100000, guid: ff645c816a3ec8d40846bf1a1acaaf72, type: 2}
+    mainSprite: {fileID: -6875328119273417525, guid: 9c610d75f8271a94fbc50228ab914d9c, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 1}
+    attack0Slot: {fileID: 11400000, guid: a4eaea58640bbb14b8a6bbd70bf4795a, type: 2}
+    attack1Slot: {fileID: 11400000, guid: a4eaea58640bbb14b8a6bbd70bf4795a, type: 2}
+  - formId: 1
+    animator: {fileID: 9100000, guid: ff645c816a3ec8d40846bf1a1acaaf72, type: 2}
+    mainSprite: {fileID: -6875328119273417525, guid: 9c610d75f8271a94fbc50228ab914d9c, type: 3}
+    color: {r: 1, g: 0, b: 0, a: 1}
+    attack0Slot: {fileID: 11400000, guid: 763b8eb58ec64dd409d45337d6e8d16a, type: 2}
+    attack1Slot: {fileID: 11400000, guid: 763b8eb58ec64dd409d45337d6e8d16a, type: 2}
+  defaultFormId: 0
 --- !u!1 &4982578675555849736
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,7 +906,7 @@ Transform:
   m_GameObject: {fileID: 7650520237985061277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.20000005, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0.19999997, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children: []

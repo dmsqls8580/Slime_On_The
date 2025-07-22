@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAnimationController : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class PlayerAnimationController : MonoBehaviour
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
     private static readonly int ToolTypeIndex = Animator.StringToHash("toolTypeIndex");
-
     
     private InputController inputController;
     private SpriteRenderer spriteRenderer;

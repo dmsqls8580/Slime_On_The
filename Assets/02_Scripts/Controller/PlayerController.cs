@@ -28,7 +28,6 @@ namespace PlayerStates
         
         public PlayerStatus PlayerStatus { get; private set; }
         private ToolController toolController;
-        public ToolController ToolController => toolController;
         private InputController inputController;
         private PlayerAnimationController animationController;
         public PlayerAnimationController AnimationController => animationController;
@@ -100,6 +99,9 @@ namespace PlayerStates
             StatManager.Init(playerData);
 
             var action = inputController.PlayerActions;
+            
+            //Look
+            action.Look.performed+=OnLook;
             // Move
             action.Move.performed += OnMove;
             action.Move.canceled += CancelMove ;
@@ -181,6 +183,11 @@ namespace PlayerStates
         public override void FindTarget(){ }
 
         //------------------------------------------------------------
+
+        private void OnLook(InputAction.CallbackContext _context)
+        {
+            inputController.LookDirection = _context.ReadValue<Vector2>();
+        }
         private void OnMove(InputAction.CallbackContext _context)
         {
             moveInput = _context.ReadValue<Vector2>();
