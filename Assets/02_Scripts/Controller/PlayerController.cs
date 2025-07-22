@@ -144,6 +144,15 @@ namespace PlayerStates
             {
                 UIManager.Instance.Toggle<UICrafting>();
             };
+            
+            //Quit
+            action.Settings.performed += context =>
+            {
+                if (!UIManager.Instance.CloseTop())
+                {
+                    UIManager.Instance.Toggle<UIPauseMenu>();
+                }
+            };
 
             // Place
             action.Place.performed += context =>

@@ -108,14 +108,15 @@ public static class ItemSOToCSVUpdater
             var cols = line.Split(',');
             if (cols.Length < 3) continue;
 
-            if (int.TryParse(cols[0].Trim(), out int rowIdx) && rowIdx == item.idx)
+            if (int.TryParse(cols[0].Trim(), out int rowIdx) 
+                            && rowIdx == item.idx)
             {
                 if (insertIndex == lines.Count)
                     insertIndex = newLines.Count;
-                continue; // 제거
+                continue;
             }
 
-            newLines.Add(line); // 유지
+            newLines.Add(line);
         }
 
         // 새 레시피 줄 생성
