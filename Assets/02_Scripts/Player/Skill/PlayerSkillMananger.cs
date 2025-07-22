@@ -5,19 +5,39 @@ using System.Linq;
 
 public class PlayerSkillMananger : MonoBehaviour
 {
-    [SerializeField] private List<PlayerSkillSO> _skills;
     private Dictionary<int, float> _skillCooldowns = new();
 
+    public PlayerSkillSO attack0Slot { get; private set; }
+    public PlayerSkillSO attack1Slot { get; private set; }
+    
+    [Header("디버깅 확인용")]
+    [SerializeField]private PlayerSkillSO currentSkill0;
+    [SerializeField]private PlayerSkillSO currentSkill1;
+
     // 인덱스로 SO 반환
-    public PlayerSkillSO GetSkillIndex(int _index)
+    public void SetSkillSlot(PlayerSkillSO _attack0, PlayerSkillSO _attack1)
     {
-        return _skills.FirstOrDefault(_skill => _skill.skillIndex == _index);
+        attack0Slot = _attack0;
+        attack1Slot = _attack1;
+
+        currentSkill0 = attack0Slot;
+        currentSkill1 = attack1Slot;
     }
 
-    // 스킬 사용 요청
+    public PlayerSkillSO GetSkillSlot(int _slot)
+    {
+        return _slot switch
+        {
+            0 => attack0Slot,
+            1 => attack1Slot,
+            _ => null
+        };
+    }
+
+// 스킬 사용 요청
     public void UseSkill(int _index, PlayerController _owner)
     {
-        var _skill = GetSkillIndex(_index);
+        var _skill = GetSkillSlot(_index);
         if (_skill == null) return;
         if (!CanUseSkill(_index)) return;
 
@@ -29,7 +49,7 @@ public class PlayerSkillMananger : MonoBehaviour
     {
         return !_skillCooldowns.ContainsKey(_index) || _skillCooldowns[_index] <= 0;
     }
-
+    
     private void Update()
     {
         var _keys = _skillCooldowns.Keys.ToList();

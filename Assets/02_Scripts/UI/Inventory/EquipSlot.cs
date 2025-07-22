@@ -58,6 +58,18 @@ public class EquipSlot : SlotBase
                    $"Atk: {statManager.GetValue(StatType.Attack)}, " +
                    $"Def: {statManager.GetValue(StatType.Defense)}, " +
                    $"Spd: {statManager.GetValue(StatType.MoveSpeed)}");
+
+
+        if (equipData.equipableType == EquipType.Core)
+        {
+            var formChanger = FindObjectOfType<SlimeFormChanger>();
+            if (_apply)
+            {
+                formChanger.ChangeForm(equipData.formId);
+            }
+            else
+                formChanger.ResetForm();
+        }
     }
 
     public override void Clear(int _amount)

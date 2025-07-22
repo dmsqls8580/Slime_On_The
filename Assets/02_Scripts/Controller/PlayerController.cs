@@ -3,6 +3,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 
 namespace PlayerStates
@@ -100,65 +101,25 @@ namespace PlayerStates
 
             var action = inputController.PlayerActions;
             // Move
-            action.Move.performed += context =>
-            {
-                moveInput = context.ReadValue<Vector2>();
-                if (moveInput.sqrMagnitude > 0.01f)
-                    lastMoveDir = moveInput.normalized;
-            };
-            
-            action.Move.canceled += context => moveInput = rigid2D.velocity = Vector2.zero;
-
+            action.Move.performed += OnMove;
+            action.Move.canceled += CancelMove ;
             // Attack
-            action.Attack0.performed += context =>
-            {        
-                if (EventSystem.current.IsPointerOverGameObject())
-                    return;
-                if (CanAttack)
-                    attackQueued = true;
-            };
-
+            action.Attack0.performed += Attack0;
+            action.Attack1.performed += Attack1;
             // Dash
-            action.Dash.performed += context => dashTrigger = true;
-
+            action.Dash.performed += OnDash;
             // Interaction
-            action.Interaction.performed += context =>
-            {
-                Interaction();
-            };
-
+            action.Interaction.performed += OnInteraction;
             // Gathering
-            action.Gathering.performed += context =>
-            {
-                Gathering();
-            };
-
+            action.Gathering.performed += OnGathering;
             // Inventory
-            action.Inventory.performed += context =>
-            {
-                UIManager.Instance.Toggle<UIInventory>();
-            };
-
+            action.Inventory.performed += OnInventory;
             // Crafting
-            action.Crafting.performed += context =>
-            {
-                UIManager.Instance.Toggle<UICrafting>();
-            };
-            
-            //Quit
-            action.Settings.performed += context =>
-            {
-                if (!UIManager.Instance.CloseTop())
-                {
-                    UIManager.Instance.Toggle<UIPauseMenu>();
-                }
-            };
-
+            action.Crafting.performed += OnCrafting;
             // Place
-            action.Place.performed += context =>
-            {
-                placeMode.Place();
-            };
+            action.Place.performed += OnPlace;
+            //Setting
+            action.Settings.performed += OnSetting;
         }
 
         private void LateUpdate()
@@ -205,7 +166,7 @@ namespace PlayerStates
                     return new Attack0State(0);
 
                 case PlayerState.Attack1:
-
+                    return new Attack1State(1);
                 //todo: 스킬 구조 바꿔서 적용
 
                 case PlayerState.Dead:
@@ -217,11 +178,73 @@ namespace PlayerStates
             }
         }
 
-        public override void FindTarget()
+        public override void FindTarget(){ }
+
+        //------------------------------------------------------------
+        private void OnMove(InputAction.CallbackContext _context)
         {
-            throw new System.NotImplementedException();
+            moveInput = _context.ReadValue<Vector2>();
+            if (moveInput.sqrMagnitude > 0.01f)
+                lastMoveDir = moveInput.normalized;
+        }
+        private void CancelMove(InputAction.CallbackContext _context)
+        {
+            moveInput = rigid2D.velocity = Vector2.zero;
         }
 
+        private void Attack0(InputAction.CallbackContext _context)
+        {
+            if (EventSystem.current.IsPointerOverGameObject()||placeMode.CanPlace)
+                return;
+            if (CanAttack)
+                attackQueued = true;
+        }
+        private void Attack1(InputAction.CallbackContext _context)
+        {
+            if (EventSystem.current.IsPointerOverGameObject()||placeMode.CanPlace)
+                return;
+            if (CanAttack)
+                attackQueued = true;
+        }
+
+        private void OnDash(InputAction.CallbackContext _context)
+        {
+            dashTrigger = true;
+        }
+        
+        private void OnInteraction(InputAction.CallbackContext _context)
+        {
+            Interaction();
+        }
+        
+        private void OnGathering(InputAction.CallbackContext _context)
+        {
+            Gathering();
+        }
+
+        private void OnInventory(InputAction.CallbackContext _context)
+        {
+            UIManager.Instance.Toggle<UIInventory>();
+        }
+        
+        private void OnCrafting(InputAction.CallbackContext _context)
+        {
+            UIManager.Instance.Toggle<UICrafting>();
+        }
+
+        private void OnSetting(InputAction.CallbackContext _context)
+        {
+            if (!UIManager.Instance.CloseTop())
+            {
+                UIManager.Instance.Toggle<UIPauseMenu>();
+            }
+        }
+
+        private void OnPlace(InputAction.CallbackContext _context)
+        {
+            placeMode.Place();
+        }
+        //--------------------------------------------------------------
         public void Attack()
         {
             attackQueued = false;
@@ -323,16 +346,6 @@ namespace PlayerStates
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
 
             ChangeState(PlayerState.Gathering);
-        }
-
-        public Vector2 UpdatePlayerDirectionByMouse()
-        {
-            Vector2 mouseScreenPos = inputController.LookDirection;
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
-                Mathf.Abs(Camera.main.transform.position.z)));
-            Vector3 playerPos = transform.position;
-            
-            return (mouseWorldPos - playerPos).normalized;
         }
 
         private void UpdateAttackPivotRotation()
