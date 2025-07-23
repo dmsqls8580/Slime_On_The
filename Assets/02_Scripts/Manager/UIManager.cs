@@ -7,6 +7,7 @@ namespace _02_Scripts.Manager
 {
     public class UIManager : Singleton<UIManager>
     {
+        public CookingPanel cookingPanel;
         private readonly Dictionary<Type, UIBase> UIDict = new();
         private readonly List<UIBase> openedUIList = new();
     
@@ -93,13 +94,14 @@ namespace _02_Scripts.Manager
         }
     
         // ESC키 할당
-        public void CloseTop()
+        public bool CloseTop()
         {
-            if (openedUIList.Count == 0) return;
+            if (openedUIList.Count == 0) return false;
 
             UIBase topUI = openedUIList[^1]; // 리스트의 마지막 요소
             openedUIList.RemoveAt(openedUIList.Count - 1);
             topUI.Close();
+            return true;
         }
 
         public T GetUIComponent<T>() where T : UIBase

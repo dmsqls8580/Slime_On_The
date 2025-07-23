@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillIndex: 1
   skillName: FireBall
-  damage: 50
+  damage: 200
   speed: 5
   range: 5
   cooldown: 10
-  actionDuration: 10
+  actionDuration: 0.5
+  useSlimeGauge: 50

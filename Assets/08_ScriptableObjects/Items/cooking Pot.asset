@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idx: 303
   itemName: Cooking Pot
-  description: "\uB0C4\uBE44"
+  description: cooking pot
   icon: {fileID: 21300000, guid: e6b0ffe20aae42041a2f11f94d073232, type: 3}
-  itemTypes: 16
+  itemTypes: 64
   stackable: 0
   maxStack: 1
   materialData:
@@ -29,6 +29,7 @@ MonoBehaviour:
     actSpd: 0
   equipableData:
     equipableType: 0
+    formId: 0
     maxHealth: 0
     atk: 0
     def: 0
@@ -41,10 +42,12 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    cookingTime: 0
+  cookedData:
+    requiredTags: []
+    forbiddenTags: []
   placeableData:
     placeableInfo: {fileID: 11400000, guid: a67dfd1feaf9317488ba3bada2e3dfef, type: 2}
-  recipe:
-  - item: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
-    amount: 2
-  - item: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
-    amount: 1
+  recipe: []

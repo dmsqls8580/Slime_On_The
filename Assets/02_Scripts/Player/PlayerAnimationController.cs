@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerAnimationController : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
     public PlayerAnimationDataSO AnimationDataSo => animationDataSo;
 
     private static readonly int ToolTypeIndex = Animator.StringToHash("toolTypeIndex");
-
+    
     private InputController inputController;
     private SpriteRenderer spriteRenderer;
 
@@ -38,6 +39,11 @@ public class PlayerAnimationController : MonoBehaviour
 
         UpdateAnimatorParameters(lookDir);
         UpdateSpriteFlip(lookDir);
+    }
+
+    public void FormChangeAnimation()
+    {
+        
     }
 
     public void SetMove(bool _isMoving)
@@ -72,7 +78,7 @@ public class PlayerAnimationController : MonoBehaviour
     
     public void SetToolType(ToolType _toolIndex)
     {
-        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); // 직접 이름으로 시도
+        Animator.SetFloat(ToolTypeIndex, (float)_toolIndex); 
     }
 
     public void SetLookDir(Vector2 _lookDir)

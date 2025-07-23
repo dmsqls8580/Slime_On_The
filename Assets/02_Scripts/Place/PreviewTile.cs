@@ -11,6 +11,6 @@ public class PreviewTile : MonoBehaviour
 
     public void SetValid(bool isValid)
     {
-        spriteRenderer.color = isValid ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
+        spriteRenderer.color = isValid ? new Color(0, 1, 0, 0.25f) : new Color(1, 0, 0, 0.25f);
     }
 }

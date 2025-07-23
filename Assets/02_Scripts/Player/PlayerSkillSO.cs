@@ -12,7 +12,8 @@ public abstract class PlayerSkillSO : ScriptableObject
     public float range;
     public float cooldown;
     public float actionDuration;
+    public float useSlimeGauge;
 
     // 스킬 실제 동작 추상 메서드
-    public abstract void Execute(PlayerController _owner);
+    public abstract void Execute(PlayerController _owner,float _damage);
 }

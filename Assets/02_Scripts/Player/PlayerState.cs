@@ -17,7 +17,10 @@ namespace PlayerStates
     {
         public void OnEnter(PlayerController _owner) { }
 
-        public void OnUpdate(PlayerController _owner) { }
+        public void OnUpdate(PlayerController _owner)
+        {
+            
+        }
 
         public void OnFixedUpdate(PlayerController _owner) { }
 
@@ -59,7 +62,7 @@ namespace PlayerStates
         {
             _owner.Movement();
 
-            Vector2 lookDir = _owner.UpdatePlayerDirectionByMouse();
+            Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
         }
 
@@ -97,16 +100,19 @@ namespace PlayerStates
     {
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
-        private const float consumeAmount = 5f;
+        private const float consumeAmount = 50f;
         private float timer;
         private Vector2 dashDirection;
         private Vector2 lookDir;
 
         public void OnEnter(PlayerController _owner)
         {
-            if (_owner.PlayerStatus.CurrentSlimeGauge <= 20) return;
-
-            lookDir = _owner.UpdatePlayerDirectionByMouse();
+            if (_owner.PlayerStatus.CurrentStamina <= 0)
+            {
+                return;
+            }
+            _owner.PlayerStatus.ConsumeStamina(consumeAmount);
+            lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
 
             _owner.AnimationController.TriggerDash();
@@ -114,7 +120,6 @@ namespace PlayerStates
 
             timer = 0f;
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
-            _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
             _owner.PlayerAfterEffect.SetEffectActive(true);
         }
 
@@ -154,27 +159,27 @@ namespace PlayerStates
     // SO 기반 스킬 실행 구조로 변경된 Attack0State
     public class Attack0State : IState<PlayerController, PlayerState>
     {
-        private int _skillIndex = 0;
+        private int attackSlot = 0;
         private PlayerSkillSO _skill;
         private float timer;
         private bool attackDone;
 
-        public Attack0State(int skillIndex)
+        public Attack0State(int _attackSlot)
         {
-            _skillIndex = skillIndex;
+            attackSlot = _attackSlot;
         }
 
         public void OnEnter(PlayerController _owner)
         {
-            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {_skillIndex}");
+                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
 
-            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
+            _owner.PlayerSkillMananger.UseSkill(attackSlot, _owner);
             _owner.Attack();
             timer = 0f;
             attackDone = false;
@@ -214,27 +219,27 @@ namespace PlayerStates
     // Attack1State 예시 (동일 구조, 스킬 인덱스만 다름)
     public class Attack1State : IState<PlayerController, PlayerState>
     {
-        private int _skillIndex = 1;
+        private int attackSlot = 1;
         private PlayerSkillSO _skill;
         private float timer;
         private bool attackDone;
 
-        public Attack1State(int skillIndex)
+        public Attack1State(int _attackSlot)
         {
-            _skillIndex = skillIndex;
+            attackSlot = _attackSlot;
         }
 
         public void OnEnter(PlayerController _owner)
         {
-            _skill = _owner.PlayerSkillMananger.GetSkillIndex(_skillIndex);
+            _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {_skillIndex}");
+                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
 
-            _owner.PlayerSkillMananger.UseSkill(_skillIndex, _owner);
+            _owner.PlayerSkillMananger.UseSkill(attackSlot, _owner);
             _owner.Attack();
             timer = 0f;
             attackDone = false;
