@@ -31,6 +31,7 @@ public class HexShapedMapGenerator : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3Int pos = new Vector3Int(startX + x, y, 0);
+
                 tilemap.SetTile(pos, tile);
             }
         }
