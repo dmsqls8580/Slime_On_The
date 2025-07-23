@@ -8,15 +8,28 @@ public class InputController : MonoBehaviour
     public PlayerInput.PlayerActions PlayerActions {get; private set;}
     
     private Vector2 _lookDirection;
-    public Vector2 LookDirection =>  _lookDirection;
+    public Vector2 LookDirection
+    {
+        get => _lookDirection;
+        set => _lookDirection = value;
+    }
 
     private void Awake()
     {
         PlayerInputs = new PlayerInput();
         PlayerActions = PlayerInputs.Player;
-        
-        PlayerActions.Look.performed += context => _lookDirection = context.ReadValue<Vector2>();
-        PlayerActions.Look.canceled += context => _lookDirection = Vector2.zero;
+    }
+
+    public void SetEnable(bool _enable)
+    {
+        if (_enable)
+        {
+            PlayerInputs.Enable();
+        }
+        else
+        {
+            PlayerInputs.Disable();
+        }
     }
 
     private void OnEnable()
