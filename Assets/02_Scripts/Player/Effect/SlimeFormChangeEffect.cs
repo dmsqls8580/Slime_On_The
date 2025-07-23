@@ -60,7 +60,8 @@ public class SlimeFormChangeEffect : MonoBehaviour
         playerOnlyCamera.orthographicSize = mainCameraOriginalSize;
         playerOnlyCamera.gameObject.SetActive(true);
         playerRawImage.gameObject.SetActive(true);
-
+        var originUpdateMode = playerAnimator.updateMode;
+        playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         // 시간 느리게
         Time.timeScale = slowTimeScale;
 
@@ -100,6 +101,8 @@ public class SlimeFormChangeEffect : MonoBehaviour
         // 시간원래대로
         Time.timeScale = 1f;
 
+        playerAnimator.updateMode = originUpdateMode;
+        
         inputController.PlayerActions.Enable();
         mainCamera.cullingMask = mainCameraOriginalMask;
         playerOnlyCamera.gameObject.SetActive(false);

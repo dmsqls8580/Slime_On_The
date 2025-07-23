@@ -17,7 +17,10 @@ namespace PlayerStates
     {
         public void OnEnter(PlayerController _owner) { }
 
-        public void OnUpdate(PlayerController _owner) { }
+        public void OnUpdate(PlayerController _owner)
+        {
+            
+        }
 
         public void OnFixedUpdate(PlayerController _owner) { }
 
@@ -97,15 +100,18 @@ namespace PlayerStates
     {
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
-        private const float consumeAmount = 5f;
+        private const float consumeAmount = 50f;
         private float timer;
         private Vector2 dashDirection;
         private Vector2 lookDir;
 
         public void OnEnter(PlayerController _owner)
         {
-            if (_owner.PlayerStatus.CurrentSlimeGauge <= 20) return;
-
+            if (_owner.PlayerStatus.CurrentStamina <= 0)
+            {
+                return;
+            }
+            _owner.PlayerStatus.ConsumeStamina(consumeAmount);
             lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
 
@@ -114,7 +120,6 @@ namespace PlayerStates
 
             timer = 0f;
             _owner.Rigid2D.velocity = dashDirection * dashSpeed;
-            _owner.PlayerStatus.ConsumeSlimeGauge(consumeAmount);
             _owner.PlayerAfterEffect.SetEffectActive(true);
         }
 
