@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class StatManager : MonoBehaviour
@@ -41,6 +42,7 @@ public class StatManager : MonoBehaviour
             StatType.CurrentHunger => new ResourceStat(_statType, _value),
             StatType.CurrentSlimeGauge=> new ResourceStat(_statType, _value),
             StatType.Defense=> new ResourceStat(_statType, _value),
+            StatType.CurrentStamina=> new ResourceStat(_statType, _value),
             //////////////////////////////////////////////////////////////////
             _ => new CalculateStat(_statType, _value),
         };
@@ -147,7 +149,6 @@ public class StatManager : MonoBehaviour
         
         Logger.Log($"Stat : {_statType} Modify Value {_value}, FinalValue : {stat.Value}");
     }
-    
 
     private void SyncCurrentWithMax(StatType _statType, CalculateStat _stat)
     {

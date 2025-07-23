@@ -37,6 +37,7 @@ public static class SkillSOToCSVUpdater
                 cols[colMap["range"]] = _skill.range.ToString();
                 cols[colMap["cooldown"]] = _skill.cooldown.ToString();
                 cols[colMap["actionDuration"]] = _skill.actionDuration.ToString();
+                cols[colMap["useSlimeGauge"]] = _skill.useSlimeGauge.ToString();
                 
                 lines[i]= string.Join(",", cols);
                 break;
