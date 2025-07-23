@@ -7,6 +7,7 @@ public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
     
     protected Rigidbody2D rigid;
     protected StatBase damage;
+    protected bool initialized = false;
     
     /************************ IAttackable ***********************/
     public virtual StatBase AttackStat => damage;

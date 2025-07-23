@@ -5,7 +5,7 @@ public enum EnemyAttackType
 {
     None,
     Neutral,
-    Aggressive
+    Aggressive,
 }
 
 public enum ProjectileName

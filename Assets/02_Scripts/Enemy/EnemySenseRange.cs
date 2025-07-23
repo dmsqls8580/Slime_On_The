@@ -20,8 +20,8 @@ public class EnemySenseRange : MonoBehaviour
             {
                 enemyController.IsAttacked = true;
             }
-            // 인식 범위에 들어가면 어그로 수치 +max(value, 20)
-            float aggroValue = Mathf.Max(20f, curAggroValue);
+            // 인식 범위에 들어가면 어그로 수치 +max(value, 10)
+            float aggroValue = Mathf.Max(10f, curAggroValue);
             enemyController.SetAggro(other.gameObject, aggroValue);
             enemyController.StartAggroCoroutine();
         }

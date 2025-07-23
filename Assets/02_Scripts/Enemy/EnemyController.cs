@@ -23,15 +23,33 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     
-    public bool IsAttacked = false;  // 중립 몬스터가 공격받았는지 여부
+    private bool isAttackCooldown = false;
+    public bool IsAttackCooldown => isAttackCooldown;
+    
+    private float attackCooldownTimer = 0f;
+    
+    private string lastLogMessage = ""; // Todo : 나중에 삭제 
     
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
-    private float neutralTargetResetTime = 10f;            // 중립 몬스터 타겟 리셋 타이머
+    private float lastDistanceToTarget = float.MaxValue;
+    private float distanceChangeThreshold = 0.3f;          // 최소 변화 거리
+    
+    [Header("Aggro Settings")]
+    [SerializeField] private float reactiveHitAggro = 30f;        // 피격 시 추가 어그로 (플레이어/몬스터 공통)
+    [SerializeField] private float aggroSwitchThreshold = 5f;     // 새 후보가 기존보다 이 이상 커야 전환
+    [SerializeField] private float targetStickTime = 1.0f;        // 타겟 변경 후 유지 최소 시간(초)
+
+    public bool IsAttacked = false;  // 중립 몬스터가 공격받았는지 여부
+    
+    private float lastTargetChangeTime = -999f;
+    private GameObject currentTarget;
+    private float currentTargetValue = 0f;
     private Coroutine aggroCoroutine;
+    
     public Dictionary<GameObject, float> AttackTargets = new Dictionary<GameObject, float>();
     
     /************************ Item Drop ***********************/
@@ -66,12 +84,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Logger.Log("AttackStat is null");
             }
-            EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
+            EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
             
             // 어그로 수치 증가, 피격 시 30 증가
             if (_attackerObj != null)
             {
-                ModifyAggro(_attackerObj, 30f);
+                ModifyAggro(_attackerObj, reactiveHitAggro);
                 // 어그로 코루틴 시작
                 StartAggroCoroutine();
             }
@@ -110,7 +128,18 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     
     /************************ IAttackable ***********************/
-    public StatBase AttackStat => StatManager.Stats[StatType.Attack];
+    public StatBase AttackStat
+    {
+        get
+        {
+            if (statManager == null) return null;
+            if (statManager.Stats.TryGetValue(StatType.Attack, out StatBase stat))
+            {
+                return stat;
+            }
+            return null;
+        }
+    }
 
     public IDamageable Target 
         => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
@@ -120,6 +149,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
         {
             Target.TakeDamage(this, this.gameObject);
+            float cooldown = StatManager.Stats[StatType.AttackCooldown].GetCurrent();
+            StartAttackCooldown(cooldown);
         }
     }
     
@@ -132,6 +163,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public void OnSpawnFromPool()
     {
         statManager.Init(EnemyStatus.enemySO);
+        ResetAttackState();
         
         // 상태머신이 초기화되지 않았다면 초기화
         if (stateMachine == null || states == null)
@@ -146,6 +178,23 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Agent.Warp(transform.position);
         }
         
+    }
+
+    private void ResetAttackState()
+    {
+        AttackTargets.Clear();
+        currentTarget = null;
+        currentTargetValue = 0f;
+        AttackTarget = null;
+        IsAttacked = false;
+        IsPlayerInAttackRange = false;
+        isAttackCooldown = false;
+        attackCooldownTimer = 0f;
+        if (aggroCoroutine != null)
+        {
+            StopCoroutine(aggroCoroutine);
+            aggroCoroutine = null;
+        }
     }
 
     public void OnReturnToPool()
@@ -184,7 +233,48 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     protected override void Update()
     {
         base.Update();
+
+        Spriteflip();
+
+        if (isAttackCooldown)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+            if (attackCooldownTimer <= 0f)
+            {
+                isAttackCooldown = false;
+                attackCooldownTimer = 0f;
+            }
+        }
         
+        // Todo : 나중에 삭제
+        string currentMessage = $"CurrentState = {CurrentState}";
+        if (currentMessage != lastLogMessage)
+        {
+            Logger.Log(currentMessage);
+            lastLogMessage = currentMessage;
+        }
+    }
+    
+    protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
+    {
+        return state switch
+        {
+            EnemyState.Idle => new IdleState(),
+            EnemyState.Wander => new WanderState(),
+            EnemyState.Chase => new ChaseState(),
+            EnemyState.Attack => new AttackState(),
+            EnemyState.Dead => new DeadState(),
+            _ => null
+        };
+    }
+    
+    public override void FindTarget()
+    {
+        
+    }
+
+    private void Spriteflip()
+    {
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
         
@@ -214,25 +304,23 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         {
             spriteRenderer.flipX = lastFlipX; 
         }
-        
     }
     
-    protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
+    public bool IsEnoughDistanceChange()
     {
-        return state switch
-        {
-            EnemyState.Idle => new IdleState(),
-            EnemyState.Wander => new WanderState(),
-            EnemyState.Chase => new ChaseState(),
-            EnemyState.Attack => new AttackState(),
-            EnemyState.Dead => new DeadState(),
-            _ => null
-        };
+        if (AttackTarget == null) return false;
+
+        float currentDist = Vector2.Distance(transform.position, AttackTarget.transform.position);
+        float diff = Mathf.Abs(currentDist - lastDistanceToTarget);
+        lastDistanceToTarget = currentDist;
+
+        return diff >= distanceChangeThreshold;
     }
-    
-    public override void FindTarget()
+
+    public void StartAttackCooldown(float cooldown)
     {
-        
+        isAttackCooldown = true;
+        attackCooldownTimer = cooldown;
     }
     
     // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
@@ -252,7 +340,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         // 플레이어가 AttackTarget에서 벗어나는 문제로 인해 새로운 게임 오브젝트 SensedAttackTarget 추가
         // SensedAttackTarget을 이용해 초기화
         if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile)
-            && !AttackTarget.IsUnityNull())
+            && AttackTarget != null)
         {
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
@@ -261,7 +349,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         else
         {
-            Logger.Log("SensedAttackTarget == null");
+            ObjectPoolManager.Instance.ReturnObject(projectileObject);
         }
     }
     
@@ -334,6 +422,11 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // 어그로 계산 메서드
     public void ModifyAggro(GameObject aggroObject, float value)
     {
+        if (aggroObject == null)
+        {
+            return;
+        }
+        
         if (AttackTargets.ContainsKey(aggroObject))
         {
             AttackTargets[aggroObject] += value;
@@ -345,7 +438,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
         AttackTargets[aggroObject] = Mathf.Clamp(AttackTargets[aggroObject], 0f, 100f);
 
-        if (AttackTargets[aggroObject] == 0f)
+        if (AttackTargets[aggroObject] <= 0f)
         {
             AttackTargets.Remove(aggroObject);
         }
@@ -355,9 +448,14 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void SetAggro(GameObject aggroObject, float value)
     {
+        if (aggroObject == null)
+        {
+            return;
+        }
+        
         AttackTargets[aggroObject] = Mathf.Clamp(value, 0f, 100f);
 
-        if (AttackTargets[aggroObject] == 0f)
+        if (AttackTargets[aggroObject] <= 0f)
         {
             AttackTargets.Remove(aggroObject);
         }
@@ -368,23 +466,83 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // 딕셔너리 내 가장 높은 어그로 수치를 가진 오브젝트를 AttackTarget으로 설정
     private void UpdateAggro()
     {
+        // 가장 큰 aggro 값 찾기
         GameObject maxValueTarget = null;
         float maxvalue = 0f;
+        
+        toRemove.Clear();
+    
         foreach (var target in AttackTargets)
         {
-            if (target.Key != null && target.Value >= maxvalue)
+            if (target.Key == null)
             {
-                maxvalue = target.Value;
+                toRemove.Add(target.Key);
+                continue;
+            }
+
+            // 사망한 대상 제거
+            if (target.Key.TryGetComponent<IDamageable>(out var damageable))
+            {
+                if (damageable.IsDead)
+                {
+                    toRemove.Add(target.Key);
+                    continue;
+                }
+            }
+
+            if (target.Value >= maxvalue)
+            {
                 maxValueTarget = target.Key;
+                maxvalue = target.Value;
             }
         }
-        AttackTarget = maxValueTarget;
-        
-        if (maxvalue <= 0)
+
+        // 사망 또는 null인 대상 제거
+        for (int i = 0; i < toRemove.Count; i++)
         {
+            AttackTargets.Remove(toRemove[i]);
+        }
+
+        if (maxValueTarget == null || maxvalue <= 0)
+        {
+            currentTarget = null;
+            AttackTarget = null;
+            currentTargetValue = 0f;
             IsAttacked = false;
+            return;
+        }
+        
+        // 전환 여부 판단 
+        float timeSinceLastSwitch = Time.time - lastTargetChangeTime;
+        bool shouldSwitch =
+            currentTarget == null
+            || currentTarget == maxValueTarget
+            || (timeSinceLastSwitch >= targetStickTime && maxvalue >= currentTargetValue + aggroSwitchThreshold);
+        
+        if (shouldSwitch)
+        {
+            currentTarget = maxValueTarget;
+            currentTargetValue = maxvalue;
+            AttackTarget = maxValueTarget; // Inspector 확인용
+            lastTargetChangeTime = Time.time;
+        }
+        else
+        {
+            // 유지: 값 동기화
+            if (currentTarget != null && AttackTargets.TryGetValue(currentTarget, out var curVal))
+                currentTargetValue = curVal;
+            else
+            {
+                // 기존 타겟이 사라졌다면 어쩔 수 없이 후보로 전환
+                currentTarget = maxValueTarget;
+                currentTargetValue = maxvalue;
+                AttackTarget = maxValueTarget;
+                lastTargetChangeTime = Time.time;
+            }
         }
     }
+    
+    private readonly List<GameObject> toRemove = new List<GameObject>();
     
     
 }

@@ -4,6 +4,7 @@ public class Bolt : ProjectileBase
 {
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
+        initialized = true;
         damage = _damage;
         projectileHost =  _host;
         
@@ -20,6 +21,7 @@ public class Bolt : ProjectileBase
 
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (!initialized) return;
         if (other.TryGetComponent<IDamageable>(out var target)
             && other.gameObject != projectileHost)
         {
@@ -33,6 +35,7 @@ public class Bolt : ProjectileBase
     public override void OnReturnToPool()
     {
         base.OnReturnToPool();
+        initialized = false;
         rigid.velocity = Vector2.zero;
         damage = null;
     }

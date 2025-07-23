@@ -16,6 +16,7 @@ public class None : ProjectileBase
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
+        initialized = true;
         damage = _damage;
         projectileHost =  _host;
         
@@ -29,6 +30,7 @@ public class None : ProjectileBase
     
     protected override void OnTriggerEnter2D(Collider2D other)
     {
+        if (!initialized) return;
         if (other.TryGetComponent<IDamageable>(out var target)
             && other.gameObject != projectileHost)
         {
@@ -43,5 +45,12 @@ public class None : ProjectileBase
     {
         base.OnSpawnFromPool();
         Logger.Log("None spawned");
+    }
+    
+    public override void OnReturnToPool()
+    {
+        base.OnReturnToPool();
+        initialized = false;
+        damage = null;
     }
 }
