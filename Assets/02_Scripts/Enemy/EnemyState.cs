@@ -20,21 +20,20 @@ namespace  Enemystates
         
         private float idleDuration;
         private float idleTimer;
-        private bool isAttackCooldown;
         
         public void OnEnter(EnemyController owner)
         {
+            owner.Agent.ResetPath(); // Idle에서 이동 멈추기
+            
             // 이전 State가 AttackState인 경우, AttackCooldown만큼 IdleState 유지
             if (owner.PreviousState == EnemyState.Attack)
             {
                 idleDuration = owner.EnemyStatus.AttackCooldown;
-                isAttackCooldown = true;
             }
             // 일반적인 경우, MinMoveDelay와 MaxMoveDelay 사이 랜덤한 시간만큼 IdleState 유지
             else
             {
                 idleDuration = Random.Range(owner.EnemyStatus.MinMoveDelay, owner.EnemyStatus.MaxMoveDelay);
-                isAttackCooldown = false;
             }
             idleTimer = 0f;
             owner.Animator.SetBool(isMovingHash, false);
@@ -46,13 +45,13 @@ namespace  Enemystates
             idleTimer += Time.deltaTime;
             
             // 플레이어가 너무 가까이 있을 경우 감지
-            GameObject player = owner.ChaseTarget;
+            GameObject player = owner.AttackTarget;
             if (player != null)
             {
                 float distance = Vector2.Distance(owner.transform.position, player.transform.position);
                 if (distance <= owner.EnemyStatus.AttackRange)
                 {
-                    owner.ChaseTarget = player;
+                    owner.AttackTarget = player;
                 }
             }
         }
@@ -64,78 +63,97 @@ namespace  Enemystates
 
         public void OnExit(EnemyController owner)
         {
-            owner.Animator.SetBool(isMovingHash, true);
             owner.PreviousState = EnemyState.Idle;
         }
 
         public EnemyState CheckTransition(EnemyController owner)
         {
+            EnemyAttackType attackType = owner.EnemyStatus.enemySO.AttackType;
+            float dist = owner.AttackTarget == null ? float.MaxValue :
+                Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
+            float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
+            float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
+            
             // 몬스터 사망시 Dead 모드로 전환.
             if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
-            // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+
+            switch (attackType)
             {
-                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-                if (owner.ChaseTarget != null) 
-                {
-                    return EnemyState.Chase;
-                }
-                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
-                if (idleTimer >= idleDuration)
-                {
-                    return EnemyState.Wander;
-                }
-                // 배회모드로 전환되지 않았을 시 idle모드.
-                return EnemyState.Idle;
+                // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
+                case EnemyAttackType.None:
+                    // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
+                    if (owner.AttackTarget != null)
+                        return EnemyState.Chase;
+                    // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                    if (idleTimer >= idleDuration)
+                        return EnemyState.Wander;
+                    // 배회모드로 전환되지 않았을 시 idle모드.
+                    return EnemyState.Idle;
+                
+                case EnemyAttackType.Neutral:
+                    // AttackType이 Neutral이고, 공격받은 경우, IsAttackCooldown이 true인 동안은
+                    // idle이나 Chase 상태만 가능, 거리가 가까우면 멀어지고, 멀면 가까워지도록 설정
+                    if (owner.AttackTarget != null && owner.IsAttacked)
+                    {
+                        // 쿨타임 중
+                        if (owner.IsAttackCooldown)
+                        {
+                            // 거리 변화가 없다면 상태 유지
+                            if (!owner.IsEnoughDistanceChange())
+                                return EnemyState.Idle;
+                            // 거리가 fleeDistance 영역 밖이면 Chase 상태로 이동
+                            if (dist < minDist || dist > maxDist)
+                                return EnemyState.Chase;
+                            // 영역 안이면 Idle
+                            return EnemyState.Idle;
+                        }
+
+                        // 쿨타임이 끝나면 공격 가능 여부 체크
+                        if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                            return EnemyState.Attack;
+
+                        // 범위 밖 → Chase
+                        return EnemyState.Chase;
+                    }
+                    // AttackType이 Neutral이고, 공격받지 않은 경우, Idle, Wander State만 순환
+                    if (idleTimer >= idleDuration)
+                    {
+                        return EnemyState.Wander;
+                    }
+                    return EnemyState.Idle;
+                
+                // AttackType이 Aggressive일 경우, 플레이어가 인식되면 바로 공격
+                case EnemyAttackType.Aggressive:
+                    if (owner.AttackTarget != null)
+                    {
+                        if (owner.IsAttackCooldown)
+                        {
+                            // 거리 변화가 없다면 상태 유지
+                            if (!owner.IsEnoughDistanceChange())
+                                return EnemyState.Idle;
+                            // 쿨타임 중 거리 유지
+                            if (dist < minDist || dist > maxDist)
+                                return EnemyState.Chase;
+                            return EnemyState.Idle;
+                        }
+
+                        // 공격 가능
+                        if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                            return EnemyState.Attack;
+
+                        return EnemyState.Chase;
+                    }
+
+                    if (idleTimer >= idleDuration)
+                    {
+                        return EnemyState.Wander;
+                    }
+                    return EnemyState.Idle;
+                
             }
-            
-            // AttackType이 Neutral인 경우, Idle, Wander State만 순환
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral
-                && !owner.IsAttacked)
-            {
-                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
-                if (idleTimer >= idleDuration)
-                {
-                    return EnemyState.Wander;
-                }
-                // 배회모드로 전환되지 않았을 시 idle모드.
-                return EnemyState.Idle;
-            }
-            
-            // AttackCooldown 동안은 Idle 상태를 계속 유지
-            if (isAttackCooldown)
-            {
-                if (idleTimer >= idleDuration)
-                {
-                    // 쿨타임 끝, 다음 조건으로 넘어감
-                    isAttackCooldown = false; 
-                }
-                else
-                {
-                    // 쿨타임 중에는 무조건 Idle 유지
-                    return EnemyState.Idle; 
-                }
-            }
-            
-            // 공격 범위 내에 있을 시 Attack 모드로 전환
-            if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
-            {
-                return EnemyState.Attack;
-            }
-            // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            if (owner.ChaseTarget != null) 
-            {
-                return EnemyState.Chase;
-            }
-            // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
-            if (idleTimer >= idleDuration)
-            {
-                return EnemyState.Wander;
-            }
-            // 배회모드로 전환되지 않았을 시 idle모드.
             return EnemyState.Idle;
         }
     }
@@ -176,11 +194,12 @@ namespace  Enemystates
             {
                 return EnemyState.Dead;
             }
+            
             // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
                 // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-                if (owner.ChaseTarget != null)
+                if (owner.AttackTarget != null)
                 {
                     return EnemyState.Chase;
                 }
@@ -205,12 +224,12 @@ namespace  Enemystates
             }
             
             // 공격 범위 내에 있을 시 Attack 모드로 전환
-            if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null && owner.IsPlayerInAttackRange)
             {
                 return EnemyState.Attack;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return EnemyState.Chase;
             }
@@ -252,20 +271,23 @@ namespace  Enemystates
         {
             owner.Animator.SetBool(isTargetHash, true);
         }
-
+        
         public void OnUpdate(EnemyController owner)
         {
             // AttackType이 None일 경우 Chase State에서 플레이어에게서 도망
             if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
             {
-                if (owner.ChaseTarget != null)
+                if (owner.AttackTarget != null)
                 {
-                    Vector3 dir = (owner.transform.position - owner.ChaseTarget.transform.position).normalized;
-                    float distance = owner.EnemyStatus.FleeDistance;
-                    Vector3 fleeDir = owner.transform.position + dir * distance;
+                    Vector2 ownerPos = owner.transform.position;
+                    Vector2 targetPos = owner.AttackTarget.transform.position;
+                    // 방향
+                    Vector2 dir = (ownerPos - targetPos).normalized;
+                    float fleeDistance = owner.EnemyStatus.FleeDistance;
+                    Vector2 fleeDir = ownerPos + dir * fleeDistance;
                     
                     NavMeshHit hit;
-                    if (NavMesh.SamplePosition(fleeDir, out hit, distance, NavMesh.AllAreas))
+                    if (NavMesh.SamplePosition(fleeDir, out hit, fleeDistance, NavMesh.AllAreas))
                     {
                         owner.Agent.SetDestination(hit.position);
                     }
@@ -274,15 +296,43 @@ namespace  Enemystates
                 return;
             }
             // Target의 위치를 추적해 이동.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
-                if (owner.IsPlayerInAttackRange)
+                Vector2 ownerPos = owner.Agent.transform.position;
+                Vector2 targetPos = owner.AttackTarget.transform.position;
+                // 방향
+                float fleeDistance = owner.EnemyStatus.FleeDistance;
+                float distance = Vector2.Distance(ownerPos, targetPos);
+                float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
+                float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
+
+                // 공격 타겟과의 거리가 fleeDistance보다 가까우면 타겟 반대방향으로 이동
+                if (distance < minDist)
                 {
-                    owner.Agent.ResetPath();
+                    Vector2 dir = (ownerPos - targetPos).normalized;
+                    Vector2 destination = targetPos + dir * fleeDistance;
+
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
+                    {
+                        owner.Agent.SetDestination(hit.position);
+                    }
+                }
+                // 공격 타겟과의 거리가 fleeDistance보다 멀면 타겟 방향으로 이동
+                else if (distance > maxDist)
+                {
+                    Vector2 dir = (targetPos - ownerPos).normalized;
+                    Vector2 destination = targetPos - dir * fleeDistance;
+                    
+                    NavMeshHit hit;
+                    if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
+                    {
+                        owner.Agent.SetDestination(hit.position);
+                    }
                 }
                 else
                 {
-                    owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    owner.Agent.ResetPath();
                 }
             }
         }
@@ -300,30 +350,62 @@ namespace  Enemystates
 
         public EnemyState CheckTransition(EnemyController owner)
         {
+            EnemyAttackType attackType = owner.EnemyStatus.enemySO.AttackType;
+            float dist = owner.AttackTarget == null ? float.MaxValue :
+                Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
+            float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
+            float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
+            
             if (owner.IsDead)
             {
                 return EnemyState.Dead;
             }
-            // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
-            {
-                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-                if (owner.ChaseTarget == null)
-                {
-                    return EnemyState.Idle;
-                }
-                return EnemyState.Chase;
-            }
             
-            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-            if (owner.ChaseTarget == null)
+            switch (attackType)
             {
-                return EnemyState.Idle;
-            }
-            // 플레이어가 공격 범위 내에 들어올 경우, Attack 모드로 전환.
-            if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
-            {
-                return EnemyState.Attack;
+                // (1) 공격하지 않는 몬스터
+                case EnemyAttackType.None:
+                    if (owner.AttackTarget == null) return EnemyState.Idle;
+                    return EnemyState.Chase; // 무조건 도망 유지
+
+                // (2) 중립 몬스터
+                case EnemyAttackType.Neutral:
+                    if (owner.AttackTarget == null || !owner.IsAttacked)
+                        return EnemyState.Idle;
+
+                    if (owner.IsAttackCooldown)
+                    {
+                        // 거리 변화가 없다면 상태 유지
+                        if (!owner.IsEnoughDistanceChange())
+                            return EnemyState.Idle;
+                        if (dist < minDist || dist > maxDist)
+                            return EnemyState.Idle;
+                        return EnemyState.Chase;
+                    }
+
+                    if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                        return EnemyState.Attack;
+
+                    return EnemyState.Chase;
+
+                // (3) 공격적 몬스터
+                case EnemyAttackType.Aggressive:
+                    if (owner.AttackTarget == null) return EnemyState.Idle;
+
+                    if (owner.IsAttackCooldown)
+                    {
+                        // 거리 변화가 없다면 상태 유지
+                        if (!owner.IsEnoughDistanceChange())
+                            return EnemyState.Idle;
+                        if (dist < minDist || dist > maxDist)
+                            return EnemyState.Idle;
+                        return EnemyState.Chase;
+                    }
+
+                    if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                        return EnemyState.Attack;
+
+                    return EnemyState.Chase;
             }
             return EnemyState.Chase;
         }
@@ -336,6 +418,7 @@ namespace  Enemystates
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetTrigger(isAttackHash);
+            owner.StartAttackCooldown(owner.EnemyStatus.AttackCooldown);
         }
 
         public void OnUpdate(EnemyController owner)

@@ -324,7 +324,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
 
             if (spike.TryGetComponent<ProjectileBase>(out var projectile))
             {
-                projectile.Init(Vector2.zero, AttackStat);
+                projectile.Init(Vector2.zero, AttackStat, gameObject);
             }
             spawnedSpikes.Add(spike);
         }
@@ -370,7 +370,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
 
         if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
         {
-            projectile.Init(dirTarget, AttackStat);
+            projectile.Init(dirTarget, AttackStat, gameObject);
         }
     }
 
@@ -447,7 +447,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
 
             if (leaf.TryGetComponent<ProjectileBase>(out var projectile))
             {
-                projectile.Init(Vector2.zero, AttackStat);
+                projectile.Init(Vector2.zero, AttackStat, gameObject);
             }
             leafSpells.Add(leaf);
             

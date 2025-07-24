@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 3_Cat
   m_EditorClassIdentifier: 
   EnemyID: 3
+  EnemyName: Cat
   AttackType: 1
   ProjectileID: 20
   EnemyStats:
@@ -52,7 +53,11 @@ MonoBehaviour:
   - StatType: 66
     ModifierType: 0
     Value: 0.5
+  - StatType: 67
+    ModifierType: 0
+    Value: 0.1
   DropItems:
   - itemSo: {fileID: 11400000, guid: d9f31350f4b94724289a6cd5fbe10d33, type: 2}
     amount: 1
     dropChance: 100
+  SpawnTerrain: 0

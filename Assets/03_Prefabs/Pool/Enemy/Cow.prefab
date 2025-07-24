@@ -56,10 +56,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senseRangeCollider: {fileID: 3750377607397033946}
   attackRangeCollider: {fileID: 2184833547782532290}
+  damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
+  damageTextCanvas: {fileID: 9055869960667158589, guid: 1728c7048a495a849aa72e7071090f1d, type: 3}
   projectileTransform: {fileID: 0}
   EnemyStatus: {fileID: 6591884905984836916}
-  ChaseTarget: {fileID: 0}
   AttackTarget: {fileID: 0}
+  reactiveHitAggro: 30
+  aggroSwitchThreshold: 5
+  targetStickTime: 1
+  IsAttacked: 0
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &6591884905984836916
 MonoBehaviour:

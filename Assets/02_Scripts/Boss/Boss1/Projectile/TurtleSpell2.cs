@@ -31,18 +31,20 @@ public class TurtleSpell2 : ProjectileBase
         canDealDamage = true;
     }
     
-    public override void Init(Vector2 dir, StatBase _damage, float _radius)
+    public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
         damage = _damage;
+        projectileHost =  _host;
     }
     
     
     protected override void OnTriggerStay2D(Collider2D other)
     {
         if (other.TryGetComponent<IDamageable>(out var target) 
-            && other.CompareTag("Player") && canDealDamage)
+            && canDealDamage && other.gameObject != projectileHost)
         {
-            target.TakeDamage(this,gameObject);
+            // 공격 호스트 정보를 target에게 전달(projectileHost)
+            target.TakeDamage(this,projectileHost);
             canDealDamage =  false;
         }
     }
