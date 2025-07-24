@@ -9,12 +9,13 @@ public enum StatType
     FinalAtk,
 
     // Player
-    MaxHunger =20,
+    MaxHunger = 20,
     CurrentHunger,
     MaxSlimeGauge,
     CurrentSlimeGauge,
     CriticalChance,
     CriticalMultiplier,
+    CurrentStamina,
     
     //Interact
     ActSpeed = 40,

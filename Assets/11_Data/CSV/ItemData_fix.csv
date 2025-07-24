@@ -7,9 +7,9 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 201,Copper Bar,?,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 202,Iron Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 203,Gold Bar,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
-301,Workbench,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
-302,Anvil,,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
-303,Cooking Pot,cooking pot,,Placeable,n,1,,,,,,,,,,,,,,,,,,,
+301,Workbench,,,64,n,1,,,,,,,,,,,,,,,,,,,
+302,Anvil,,,64,n,1,,,,,,,,,,,,,,,,,,,
+303,Cooking Pot,cooking pot,,64,n,1,,,,,,,,,,,,,,,,,,,
 401,Wood Axe,,,Tool,n,1,,Axe,1.5,0.1,70,,1,,,,,,,,,,,,
 402,Wood Pickaxe,,,Tool,n,1,,Pickaxe,1.5,0.1,70,,1,,,,,,,,,,,,
 403,Wood Shovel,,,Tool,n,1,,Shovel,1.5,0.1,70,,1,,,,,,,,,,,,
@@ -34,8 +34,8 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 436,Gold Breastplate,,,Equipable,n,1,,,,,300,Chest,,20,0,0,0,0,,,,,,,
 501,Stone Ring,Accessory,,Equipable,n,1,,,,,,Ring,   ,0,0,20,0,5,,,,,,,
 502,Glow Tulip Necklace,Accessory,,Equipable,n,1,,,,,,Amulet,,0,20,0,10,0,,,,,,,
-601,Wood Fence,Fence,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
-602,Wood Fence Gate,,,Placeable,y,99,,,,,,,,,,,,,,,,,,,Building
+601,Wood Fence,Fence,,64,y,99,,,,,,,,,,,,,,,,,,,Building
+602,Wood Fence Gate,,,64,y,99,,,,,,,,,,,,,,,,,,,Building
 701,Apple,,,Material|Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
 801,Cooked Meat,Restores health and fills you up.,cooked_meat,Eatable,y,40,,,,,,,,,,,,,20,15,5,0,y,100,
 802,Winter Dinner,Food,,Eatable,y,40,,,,,,,,,,,,,100,50,20,0,y,100,
