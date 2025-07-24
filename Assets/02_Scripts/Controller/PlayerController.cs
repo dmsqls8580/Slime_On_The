@@ -20,17 +20,18 @@ namespace PlayerStates
         [SerializeField] private UIDead uiDead;
         [SerializeField] private UIQuickSlot uiQuickSlot;
         [SerializeField] private PlaceMode placeMode;
-        public UIDead UiDead => uiDead;
         
         public Transform attackPivotRotate;
         public Transform attackPivot;
         public Transform AttackPivot => attackPivot;
-        
         public PlayerStatus PlayerStatus { get; private set; }
+        
         private ToolController toolController;
         private InputController inputController;
+        
         private PlayerAnimationController animationController;
         public PlayerAnimationController AnimationController => animationController;
+        
         private PlayerSkillMananger playerSkillMananger;
         public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
 
@@ -69,7 +70,7 @@ namespace PlayerStates
         
         public StatBase AttackStat { get; }
 
-        public IDamageable Target { get; private set; }
+        public IDamageable Target { get; }
 
         public bool IsDead { get; private set; }
         public bool CanRespawn { get; set; }
@@ -380,25 +381,19 @@ namespace PlayerStates
                     Logger.Log("AttackStat is null");
                 }
                 PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
-                
                 animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
+                
+                float damage = _attacker.AttackStat.GetCurrent();
+                var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
+                var damageText = textObj.GetComponent<DamageTextUI>();
+                damageText.Init(transform.position, damage, Color.red);
+                
                 if (PlayerStatus.CurrentHp <= 0)
                 {
                     Dead();
                 }
             }
-        }
-
-        public void ShowDamageText(float _damage, Vector3 _worldPos, Color _color)
-        {
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(_worldPos);
-
-            var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
-            textObj.transform.position = screenPos;
-
-            var damageText = textObj.GetComponent<DamageTextUI>();
-            damageText.Init(_damage, _color);
         }
 
         public void Dead()
@@ -407,7 +402,7 @@ namespace PlayerStates
             {
                 IsDead = true;
                 animationController.TriggerDead();
-                StartCoroutine(DelayDeathUi(3f, "아기 거북이"));
+                StartCoroutine(DelayDeathUI(3f, "아기 거북이"));
                 ChangeState(PlayerState.Dead);
             }
         }
@@ -417,15 +412,15 @@ namespace PlayerStates
             PlayerStatus.ConsumeHp(50f);
             IsDead = true;
             animationController.TriggerDead();
-            StartCoroutine(DelayDeathUi(3f, "행복사"));
+            StartCoroutine(DelayDeathUI(3f, "행복사"));
             ChangeState(PlayerState.Dead);
         }
         
         // 죽음 연출 후 UI 딜레이 호출
-        private IEnumerator DelayDeathUi(float _delay, string _reason)
+        private IEnumerator DelayDeathUI(float _delay, string _reason)
         {
             yield return new WaitForSeconds(_delay);
-            UiDead.TriggerDeath(1, _reason);
+            uiDead.TriggerDeath(1, _reason);
         }
 
         public void Respawn(Vector3 _spawnPos)

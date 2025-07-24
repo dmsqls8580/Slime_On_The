@@ -1,3 +1,4 @@
+using PlayerStates;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,12 +13,19 @@ public class DamageTextUI : MonoBehaviour
     private float moveMaxHeight = 80f;
     private float lifeTime = 1f;
     private float timer = 0f;
+    private float damage;
+    private Color textColor;
 
+    private Vector3 targetPos;
     private TextMeshProUGUI damageText;
     private RectTransform rectTransform;
 
-    public void Init(float _damage, Color _textColor)
+    public void Init(Vector3 _target, float _damage, Color _textColor)
     {
+        targetPos = _target;
+        damage = _damage;
+        textColor = _textColor;
+        
         if (damageText.IsUnityNull())
         {
             damageText = GetComponent<TextMeshProUGUI>();
@@ -28,12 +36,15 @@ public class DamageTextUI : MonoBehaviour
             rectTransform = GetComponent<RectTransform>();
         }
 
-        damageText.text = _damage.ToString("N1");
-        damageText.color = _textColor;
-        timer = 0f;
+        damageText.text = damage.ToString("N1");
+        damageText.color = textColor;
+        
+        Vector3 worldPos = targetPos;
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+        rectTransform.position = screenPos;
+        startScreenPos = screenPos;
 
-        startScreenPos = rectTransform.position;
-
+        Logger.Log("DamageText실핼");
         StartCoroutine(DamageTextAnim());
     }
 
