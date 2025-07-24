@@ -14,6 +14,8 @@ public class PlayerSkillMananger : MonoBehaviour
     [SerializeField]private PlayerSkillSO currentSkill0;
     [SerializeField]private PlayerSkillSO currentSkill1;
 
+    private float skillDamage;
+    
     // 인덱스로 SO 반환
     public void SetSkillSlot(PlayerSkillSO _attack0, PlayerSkillSO _attack1)
     {
@@ -40,8 +42,12 @@ public class PlayerSkillMananger : MonoBehaviour
         var _skill = GetSkillSlot(_index);
         if (_skill == null) return;
         if (!CanUseSkill(_index)) return;
-
-        _skill.Execute(_owner);
+        
+        skillDamage = _skill.damage;
+        _skill.Execute(_owner,skillDamage);
+        _owner.PlayerStatus.ConsumeSlimeGauge(_skill.useSlimeGauge);
+        Logger.Log($"남은 슬라임 게이지: {_owner.PlayerStatus.CurrentSlimeGauge}");
+        
         _skillCooldowns[_index] = _skill.cooldown;
     }
 

@@ -143,11 +143,6 @@ namespace PlayerStates
                 damageDelayTimer -= Time.deltaTime;
             }
 
-            if (Input.GetKey(KeyCode.K))
-            {
-                PlayerStatus.RecoverSlimeGauge(30);
-            }
-
             if (Input.GetKey(KeyCode.T))
             {
                 TestDeath();
@@ -166,11 +161,8 @@ namespace PlayerStates
                     return new DashState();
                 case PlayerState.Attack0:
                     return new Attack0State(0);
-
                 case PlayerState.Attack1:
                     return new Attack1State(1);
-                //todo: 스킬 구조 바꿔서 적용
-
                 case PlayerState.Dead:
                     return new DeadState();
                 case PlayerState.Gathering:
@@ -201,14 +193,16 @@ namespace PlayerStates
 
         private void Attack0(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject()||placeMode.CanPlace)
+            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+                PlayerStatus.CurrentSlimeGauge <= 0)
                 return;
             if (CanAttack)
                 attackQueued = true;
         }
         private void Attack1(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject()||placeMode.CanPlace)
+            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+                PlayerStatus.CurrentSlimeGauge <= 0) 
                 return;
             if (CanAttack)
                 attackQueued = true;
@@ -216,6 +210,10 @@ namespace PlayerStates
 
         private void OnDash(InputAction.CallbackContext _context)
         {
+            if (PlayerStatus.CurrentStamina <= 0)
+            {
+                return;
+            }
             dashTrigger = true;
         }
         

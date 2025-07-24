@@ -78,6 +78,7 @@ public class SkillSOGenerator : EditorWindow
             float.TryParse(GetSafe(cols, columnIndex, "range"), out asset.range);
             float.TryParse(GetSafe(cols, columnIndex, "cooldown"), out asset.cooldown);
             float.TryParse(GetSafe(cols, columnIndex, "actionDuration"), out asset.actionDuration);
+            float.TryParse(GetSafe(cols, columnIndex, "useSlimeGauge"), out asset.useSlimeGauge);
 
             string assetPath = $"{outputPath}{asset.skillName}.asset";
             AssetDatabase.CreateAsset(asset, assetPath);

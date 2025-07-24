@@ -61,7 +61,7 @@ public class CalculateStat : StatBase
 
 public class ResourceStat : StatBase
 {
-    public float CurrentValue { get; private set; }
+    public float CurrentValue { get; set; }
     public float MaxValue { get; private set; }
     
     public override float Value => CurrentValue;
@@ -95,6 +95,12 @@ public class ResourceStat : StatBase
     {
         float amount = MaxValue * _percent;
         CurrentValue = Mathf.Min(CurrentValue - amount, MaxValue);
+        OnValueChanged?.Invoke(CurrentValue);
+    }
+
+    public void SetCurrentValue(float _value)
+    {
+        CurrentValue = Mathf.Clamp(_value, 0, MaxValue);
         OnValueChanged?.Invoke(CurrentValue);
     }
 

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,8 +10,10 @@ public enum ItemType
     Tool = 1 << 1,
     Equipable = 1 << 2,
     Eatable = 1 << 3,
-    Placeable = 1 << 4,
-    BuffItem = 1 << 5
+    Cookable = 1 << 4,
+    Cooked = 1 << 5,
+    Placeable = 1 << 6,
+    BuffItem = 1 << 7,
 }
 
 public enum ToolType 
@@ -32,6 +35,17 @@ public enum EquipType
     Amulet = 3,
     Ring = 4,
     Core = 5,
+}
+
+public enum IngredientTag
+{
+    None = 0,
+    Meat = 1,
+    Fruit = 2,
+    Vegetable = 3,
+    Egg = 4,
+    Monster = 5,
+    Ice = 6,
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
@@ -57,6 +71,8 @@ public class ItemSO : ScriptableObject, ITool
     public ToolData toolData;
     public EquipableData equipableData;
     public EatableData eatableData;
+    public CookableData cookableData;
+    public CookedData cookedData;
     public PlaceableData placeableData;
 
     [Header("레시피")]
@@ -100,6 +116,28 @@ public class EatableData
     public float duration;
     public bool rottenable;
     public bool permanent;
+}
+
+[System.Serializable]
+public struct TagValuePair
+{
+    public IngredientTag tag;
+    public float value;
+}
+
+[System.Serializable]
+public class CookableData
+{
+    public List<TagValuePair> tags;
+    public float cookingTime;
+}
+
+[System.Serializable]
+public class CookedData
+{
+    public int priority;
+    public List<TagValuePair> requiredTags;
+    public List<TagValuePair> forbiddenTags;
 }
 
 [System.Serializable]

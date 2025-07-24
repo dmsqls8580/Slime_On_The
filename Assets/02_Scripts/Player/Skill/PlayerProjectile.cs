@@ -10,10 +10,8 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
     public StatBase AttackStat => damage;
     public IDamageable Target => null;
     private Rigidbody2D rigid;
-    private GameObject _attackHost;
     
     private float speed;
-    private float calcDamage; 
     private float range;
 
     private Vector3 direction;
@@ -42,24 +40,23 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         effectTable.CreateTable();
     }
 
-    public void Init(StatManager _statManager, Vector2 _dir, GameObject _host, float _speed, float _range)
+    public void Init(StatManager _statManager,float _damage, Vector2 _dir, float _speed, float _range)
     {
         statManager = _statManager;
         direction = _dir.normalized;
         speed = _speed;
         range = _range; 
         startAttackPos = transform.position;
-        _attackHost = _host;
 
         //크리티컬 계산식
-        float baseAtk = statManager.GetValue(StatType.Attack);
         float critChance = statManager.GetValue(StatType.CriticalChance); // 0~100
         float critMultiplier = statManager.GetValue(StatType.CriticalMultiplier);
 
-        isCritical = UnityEngine.Random.Range(0, 100) < critChance;
-        calcDamage = isCritical ? baseAtk * critMultiplier : baseAtk;
+        isCritical = Random.Range(0, 100) < critChance;
+        _damage = isCritical ? _damage * critMultiplier : _damage;
 
-        damage = new CalculateStat(StatType.Attack, calcDamage);
+        damage = new CalculateStat(StatType.Attack, _damage);
+        Logger.Log($"현재 스킬 대미지: {damage.GetCurrent()}");
 
         gameObject.SetActive(true);
     }
@@ -81,11 +78,6 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
             {
                 Logger.Log("Critical Hit");
             }
-            var player = FindObjectOfType<PlayerController>();
-            player.ShowDamageText(calcDamage, 
-                other.transform.position,
-                isCritical ? Color.yellow : Color.red);
-
 
             var effectData = effectTable.GetDataByID(1);
             if (!effectData.IsUnityNull())
@@ -100,7 +92,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
                 }
             }
             
-            target.TakeDamage(this, _attackHost);
+            target.TakeDamage(this, gameObject);
             ObjectPoolManager.Instance.ReturnObject(gameObject);
         }
     }
