@@ -15,30 +15,23 @@ public class EnemySenseRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            enemyController.ChaseTarget = other.gameObject;
+            float curAggroValue = 0f;
+            if (enemyController.AttackTargets.TryGetValue(other.gameObject, out curAggroValue))
+            {
+                enemyController.IsAttacked = true;
+            }
+            // 인식 범위에 들어가면 어그로 수치 +max(value, 10)
+            float aggroValue = Mathf.Max(10f, curAggroValue);
+            enemyController.SetAggro(other.gameObject, aggroValue);
+            enemyController.StartAggroCoroutine();
         }
     }
-
-    private void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            enemyController.ChaseTarget = other.gameObject;
-        }
-    }
-
+    
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            float distance = Vector3.Distance(enemyController.transform.position, other.transform.position);
-            
-            // 콜라이더가 겹치면 ChaseTarget이 null이 되는 오류
-            // 플레이어가 감지 범위보다 멀리 있어야 null이 되도록 수정
-            if (distance > enemyController.EnemyStatus.SenseRange)
-            {
-                enemyController.ChaseTarget = null;
-            }
+            enemyController.IsAttacked = false;
         }
     }
 
