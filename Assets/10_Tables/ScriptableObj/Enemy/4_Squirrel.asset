@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 4_Squirrel
   m_EditorClassIdentifier: 
   EnemyID: 4
+  EnemyName: Squirrel
   AttackType: 1
   ProjectileID: 21
   EnemyStats:
@@ -56,3 +57,4 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: ec75d4f127417a5479ce14c413d4b478, type: 2}
     amount: 2
     dropChance: 100
+  SpawnTerrain: 0

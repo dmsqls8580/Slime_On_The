@@ -25,14 +25,25 @@ public enum ProjectileName
     
 }
 
+public enum Terrain
+{
+    Grass,
+    Forest,
+    Rocky,
+    Desert,
+    Marsh
+}
+
 [CreateAssetMenu(fileName = "EnemySO", menuName = "ScriptableObjects/EnemySO", order = 1)]
 public class EnemySO : ScriptableObject, IStatProvider
 {
     public int EnemyID;                        // Enemy ID
+    public string EnemyName;
     public EnemyAttackType AttackType;         // Enemy 공격 타입
     public ProjectileName ProjectileID;  // Ranged 일때만 사용
     
     public List<StatData> EnemyStats;
     public List<StatData> Stats => EnemyStats;
     public List<DropItemData> DropItems;
+    public Terrain SpawnTerrain;
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 0_Cow
   m_EditorClassIdentifier: 
   EnemyID: 0
+  EnemyName: Cow
   AttackType: 0
   ProjectileID: 20
   EnemyStats:
@@ -59,3 +60,4 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: ec75d4f127417a5479ce14c413d4b478, type: 2}
     amount: 1
     dropChance: 50
+  SpawnTerrain: 0
