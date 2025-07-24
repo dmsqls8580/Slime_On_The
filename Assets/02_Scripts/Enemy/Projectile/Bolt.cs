@@ -6,7 +6,7 @@ public class Bolt : ProjectileBase
     {
         initialized = true;
         damage = _damage;
-        projectileHost =  _host;
+        projectileHost = _host;
         
         // 발사 방향 조절
         rigid.velocity = dir * speed;

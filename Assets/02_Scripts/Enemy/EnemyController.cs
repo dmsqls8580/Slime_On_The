@@ -11,6 +11,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 {
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
+    [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] private Canvas damageTextCanvas;
     
     public Transform projectileTransform;                  // 발사체 생성 Transform
     
@@ -104,10 +106,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 Dead();
             }
         }
-        else
-        {
-            Logger.Log("No attacker found");
-        }
+
     }
     
     // Enemy 사망 여부 판별
@@ -121,7 +120,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             DropItems(this.gameObject.transform);
                 
             // 오브젝트 풀 반환
-            // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
             ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
         }
         
