@@ -40,7 +40,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         effectTable.CreateTable();
     }
 
-    public void Init(StatManager _statManager,float _damage, Vector2 _dir, float _speed, float _range)
+    public void Init(StatManager _statManager,float _damage, GameObject  _host, Vector2 _dir, float _speed, float _range)
     {
         statManager = _statManager;
         direction = _dir.normalized;
