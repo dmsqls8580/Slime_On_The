@@ -5,29 +5,25 @@ using UnityEngine.UI;
 
 public class QuickSlot : SlotBase
 {
-    [SerializeField] private Image outLineImage;
     private UIQuickSlot owner;
     private int quickSlotIndex;
-
     private PlaceMode placeMode;
 
-    private void Awake()
-    {
-        placeMode = InventoryManager.Instance.placeMode;
-    }
+    protected override SlotPermissionFlags permissions => SlotPermissionFlags.CanClick | SlotPermissionFlags.CanUse;
 
-    public void Initialize(int _index, UIQuickSlot _ownerUI)
+    public override void Initialize(int index, ISlotContainer container)
     {
-        quickSlotIndex = _index;
-        owner = _ownerUI;
-        base.Initialize(_index);
+        base.Initialize(index, container);
+        quickSlotIndex = index;
+        owner = container as UIQuickSlot;
+        placeMode = InventoryManager.Instance.placeMode;
     }
 
     // ReSharper disable Unity.PerformanceAnalysis
     public override void OnSlotSelectedChanged(bool _isSelected)
     {
-        outLineImage.gameObject.SetActive(_isSelected);
-        outLineImage.color = _isSelected ? new Color32(242, 109, 91, 255) : Color.white;
+        outlineImage.gameObject.SetActive(_isSelected);
+        outlineImage.color = _isSelected ? new Color32(242, 109, 91, 255) : Color.white;
 
         if (_isSelected)
         {

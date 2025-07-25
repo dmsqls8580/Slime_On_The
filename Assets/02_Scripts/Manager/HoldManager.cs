@@ -1,13 +1,12 @@
 using UnityEngine;
 
-public class HoldManager : SceneOnlySingleton<HoldManager>
+public class HoldManager : SceneOnlySingleton<HoldManager>, ISlotContainer
 {
     [SerializeField] private HoldSlot holdSlot;
     [SerializeField] private Canvas holdCanvas;
     
     public ItemInstanceData HeldItem { get; private set; }
-    public SlotBase OriginSlot { get; set; }
-    
+    public int SlotCount => 1;
     public bool IsHolding => HeldItem != null && HeldItem.IsValid;
     
     private void Update()
@@ -24,35 +23,26 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
         holdSlot.SetPosition(localPoint);
     }
     
-    // 홀드슬롯에 아이템 추가
-    public int TryAddItem(ItemSO _itemData, int _amount)
+    // 들고있는 아이템 반환
+    public ItemInstanceData GetItem(int index)
     {
-        if (_itemData == null || _amount <= 0)
-            return 0;
-
-        if (!IsHolding)
-        {
-            int addAmount = Mathf.Clamp(_amount, 1, _itemData.maxStack);
-            HeldItem = new ItemInstanceData(_itemData, addAmount);
-            Refresh();
-            return addAmount;
-        }
-
-        if (HeldItem.ItemData != _itemData) return 0;
-
-        int space = _itemData.maxStack - HeldItem.Quantity;
-        int added = Mathf.Min(space, _amount);
-        HeldItem.Quantity += added;
-        Refresh();
-        return added;
+        return index == 0 ? HeldItem : null;
     }
-
-    // 홀드슬롯에서 아이템 제거
-    public void RemoveItem(int _amount)
+    
+    // 들고있는 아이템 설정
+    public void SetItem(int index, ItemInstanceData data)
     {
-        if (!IsHolding) return;
+        if (index != 0) return;
+        HeldItem = data;
+        Refresh();
+    }
+    
+    // 들고있는 아이템 수량 감소
+    public void RemoveItem(int index, int amount)
+    {
+        if (index != 0 || !IsHolding) return;
 
-        HeldItem.Quantity -= _amount;
+        HeldItem.Quantity -= amount;
         if (HeldItem.Quantity <= 0)
         {
             Clear();
@@ -63,31 +53,54 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
         }
     }
     
-    // 홀드슬롯 초기화
-    public void SetItem(ItemInstanceData _data, SlotBase _origin)
+    // 들고 있는 아이템을 제거
+    public void ClearItem(int index)
     {
-        HeldItem = _data;
-        OriginSlot = _origin;
-        Refresh();
+        if (index != 0) return;
+        Clear();
     }
     
-    // 홀드슬롯 비우기
     public void Clear()
     {
         HeldItem = null;
-        OriginSlot = null;
         Refresh();
     }
-
-    // 홀드 취소
-    public void ReturnToOrigin()
+    
+    // 아이템을 들기 시도 or 병합
+    public int TryAddItem(ItemSO itemData, int amount)
     {
-        if (!IsHolding || OriginSlot == null) return;
+        if (itemData == null || amount <= 0) return 0;
 
-        InventoryManager.Instance.TryAddItem(OriginSlot.SlotIndex, HeldItem.ItemData, HeldItem.Quantity);
-        OriginSlot.Refresh();
+        if (!IsHolding)
+        {
+            HeldItem = new ItemInstanceData(itemData, amount);
+            Refresh();
+            return amount;
+        }
+
+        if (HeldItem.ItemData != itemData) return 0;
+
+        HeldItem.Quantity += amount;
+        Refresh();
+        return amount;
+    }
+    
+    // 현재 들고 있는 아이템을 UI에 반영한다.
+    public void Refresh()
+    {
+        if (holdSlot != null)
+        {
+            holdSlot.Refresh();
+        }
+    }
+
+    // 들고 있는 아이템 드롭(미구현)
+    public void Drop()
+    {
+        // TODO: 아이템 드롭 구현
         Clear();
     }
+    
     
     // 장비타입 확인
     public bool IsHeldItemEquip()
@@ -97,21 +110,5 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     public EquipType? GetHeldEquipType()
     {
         return IsHeldItemEquip() ? (EquipType?)HeldItem.ItemData.equipableData.equipableType : null;
-    }
-    
-    // 아이템 갱신
-    public void Refresh()
-    {
-        if (holdSlot == null) return;
-
-        if (!IsHolding)
-        {
-            holdSlot.gameObject.SetActive(false);
-        }
-        else
-        {
-            holdSlot.SetItem(HeldItem);
-            holdSlot.gameObject.SetActive(true);
-        }
     }
 }
