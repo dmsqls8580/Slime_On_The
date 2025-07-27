@@ -1,31 +1,20 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class HeatwaveEffect : WeatherEffectBase
 {
     protected override int MaxLevel => 2;
 
     private readonly WeatherManager weatherManager;
-    private readonly Vignette vignette;
+    private readonly Volume volume;
 
     private Coroutine coroutine = null;
 
     public HeatwaveEffect(WeatherManager _weatherManager, Volume _volume)
     {
         weatherManager = _weatherManager;
-
-        if (_volume == null || _volume.profile == null)
-        {
-            Logger.LogError("Volume 또는 Volume Profile이 null입니다.");
-            return;
-        }
-
-        if (!_volume.profile.TryGet(out vignette))
-        {
-            Logger.LogError("Vignette를 찾을 수 없습니다.");
-        }
+        volume = _volume;
     }
 
     protected override void ApplyEffect()
@@ -36,8 +25,6 @@ public class HeatwaveEffect : WeatherEffectBase
                 Logger.Log("날씨: 폭염 켜짐");
                 if (coroutine == null)
                 {
-                    vignette.color.Override(Color.red);
-                    vignette.intensity.Override(0.2f);
                     coroutine = weatherManager.StartCoroutine(Loop());
                 }
                 break;
@@ -63,9 +50,6 @@ public class HeatwaveEffect : WeatherEffectBase
                 Logger.Log("날씨: 폭염 꺼짐");
                 if (coroutine != null)
                 {
-                    vignette.color.Override(Color.black);
-                    vignette.intensity.Override(0f);
-                    vignette.smoothness.Override(1f);
                     weatherManager.StopCoroutine(coroutine);
                     coroutine = null;
                 }
@@ -84,11 +68,11 @@ public class HeatwaveEffect : WeatherEffectBase
             timer += Time.deltaTime;
             float t = timer / duration;
 
-            float smooth = forward
-                ? Mathf.Lerp(0.01f, 1f, t)
-                : Mathf.Lerp(1f, 0.01f, t);
+            float weight = forward
+                ? Mathf.Lerp(0f, 1f, t)
+                : Mathf.Lerp(1f, 0f, t);
 
-            vignette.smoothness.Override(smooth);
+            volume.weight = weight;
 
             if (t >= 1f)
             {

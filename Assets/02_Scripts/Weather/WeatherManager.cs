@@ -13,8 +13,9 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private ParticleSystem rainParticle;
     [SerializeField] private ParticleSystem snowParticle;
 
-    [Header("비네트 참조")]
-    [SerializeField] private Volume volume;
+    [Header("볼륨 데이터")]
+    [SerializeField] private Volume fogVolume;
+    [SerializeField] private Volume HeatwaveVolume;
 
     // 모든 날씨 효과들의 저장소.
     private Dictionary<WeatherType, IWeatherEffect> weatherEffects;
@@ -29,8 +30,8 @@ public class WeatherManager : MonoBehaviour
         weatherEffects = new Dictionary<WeatherType, IWeatherEffect>
         {
             { WeatherType.Clear, new ClearEffect() },
-            { WeatherType.Fog, new FogEffect(this, volume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, volume) },
+            { WeatherType.Fog, new FogEffect(this, fogVolume) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
             { WeatherType.Rain, new RainEffect(this, rainParticle) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
             //{ WeatherType.Storm, new StormEffect() },
