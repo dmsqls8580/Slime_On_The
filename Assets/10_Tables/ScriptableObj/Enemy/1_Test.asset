@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 1_Test
   m_EditorClassIdentifier: 
   EnemyID: 1
+  EnemyName: Test
   AttackType: 2
   ProjectileID: 20
   EnemyStats:
@@ -52,4 +53,8 @@ MonoBehaviour:
   - StatType: 66
     ModifierType: 0
     Value: 1
+  - StatType: 67
+    ModifierType: 0
+    Value: 0.1
   DropItems: []
+  SpawnTerrain: 0

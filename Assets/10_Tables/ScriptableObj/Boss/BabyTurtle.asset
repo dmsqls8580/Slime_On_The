@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BabyTurtle
   m_EditorClassIdentifier: 
   BossID: 101
+  BossName: BabyTurtle
   ProjectileID: 28000000290000002a0000002b0000002c0000002d000000
   IdleDuration: 2
   Cast1Duration: 2
@@ -56,3 +57,4 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: d9f31350f4b94724289a6cd5fbe10d33, type: 2}
     amount: 5
     dropChance: 100
+  SpawnTerrain: 0

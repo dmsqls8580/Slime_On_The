@@ -7,6 +7,7 @@ using UnityEngine;
 public class BossSO : ScriptableObject, IStatProvider
 {
     public int BossID;
+    public string BossName;
     public List<ProjectileName> ProjectileID;
     public float IdleDuration;
     public float Cast1Duration;
@@ -16,4 +17,5 @@ public class BossSO : ScriptableObject, IStatProvider
     public List<StatData> BossStats;
     public List<StatData> Stats => BossStats;
     public List<DropItemData> DropItems;
+    public Terrain SpawnTerrain;
 }
