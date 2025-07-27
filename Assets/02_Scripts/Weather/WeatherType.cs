@@ -1,6 +1,10 @@
 public enum WeatherType
 {
     Clear,
+    Fog,
+    Heatwave,
     Rain,
-    Heatwave
+    Snow,
+    Storm,
+    Wind
 }

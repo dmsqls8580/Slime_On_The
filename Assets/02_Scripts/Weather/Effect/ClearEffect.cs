@@ -1,6 +1,7 @@
-public class ClearEffect : IWeatherEffect
+public class ClearEffect : WeatherEffectBase
 {
-    public void OnEnter() { }
-    public void OnUpdate() { }
-    public void OnExit() { }
+    protected override int MaxLevel => 0;
+    protected override void ApplyEffect() { }
+    protected override void UpdateEffect() { }
+    protected override void RemoveEffect() { }
 }
