@@ -1,30 +1,31 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class HPBarUpdater : MonoBehaviour
 {
     [SerializeField] private Image HPBar;
-    [SerializeField] private PlayerStatus playerStatus;
+    [FormerlySerializedAs("playerStatus")] [SerializeField] private PlayerStatusManager playerStatusManager;
 
     private void Start()
     {
-        if (playerStatus == null)
+        if (playerStatusManager == null)
         {
-            playerStatus = FindObjectOfType<PlayerStatus>();
+            playerStatusManager = FindObjectOfType<PlayerStatusManager>();
         }
         
-        if (playerStatus != null)
+        if (playerStatusManager != null)
         {
-            playerStatus.OnHpChanged += UpdateHPBar;
-            UpdateHPBar(playerStatus.MaxHp > 0 ? playerStatus.CurrentHp / playerStatus.MaxHp : 0f);
+            playerStatusManager.OnHpChanged += UpdateHPBar;
+            UpdateHPBar(playerStatusManager.MaxHp > 0 ? playerStatusManager.CurrentHp / playerStatusManager.MaxHp : 0f);
         }
     }
 
     private void OnDestroy()
     {
-        if (playerStatus != null)
+        if (playerStatusManager != null)
         {
-            playerStatus.OnHpChanged -= UpdateHPBar;
+            playerStatusManager.OnHpChanged -= UpdateHPBar;
         }
     }
 

@@ -31,7 +31,7 @@ public class SlimeTextDataManager : SceneOnlySingleton<SlimeTextDataManager>
         slimeTextDatas.Clear();
         var data = JsonUtility.FromJson<SlimeDataList>(_json.text);
         slimeTextDatas.AddRange(data.messages);
-        
+
         Logger.Log($"슬라임텍스트 데이터 로 - [{slimeTextDatas.Count}]개 항목");
     }
 
@@ -40,11 +40,12 @@ public class SlimeTextDataManager : SceneOnlySingleton<SlimeTextDataManager>
         List<SlimeTextData> textDatas = new();
         foreach (var data in slimeTextDatas)
         {
-            if (data.key == _key && _gauge >= data.slimeMinValue - 0.01f && _gauge <= data.slimeMaxValue+0.01f)
+            if (data.key == _key && _gauge >= data.slimeMinValue - 0.01f && _gauge <= data.slimeMaxValue + 0.01f)
             {
                 textDatas.Add(data);
             }
         }
+
         if (textDatas.Count == 0)
         {
             return string.Empty;
@@ -57,7 +58,7 @@ public class SlimeTextDataManager : SceneOnlySingleton<SlimeTextDataManager>
         }
 
         float random = Random.value * chance;
-        
+
         float sum = 0;
         foreach (var data in textDatas)
         {
@@ -69,5 +70,20 @@ public class SlimeTextDataManager : SceneOnlySingleton<SlimeTextDataManager>
         }
 
         return string.Empty;
+    }
+
+    public bool HasText(string _key, float _gauge)
+    {
+        foreach (var data in slimeTextDatas)
+        {
+            if (data.key == _key &&
+                _gauge >= data.slimeMinValue - 0.01f &&
+                _gauge <= data.slimeMaxValue + 0.01f)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

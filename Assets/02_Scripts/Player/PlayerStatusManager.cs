@@ -1,26 +1,22 @@
+using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerStatus : MonoBehaviour
+public class PlayerStatusManager : MonoBehaviour
 {
     [SerializeField] private Image slimeGaugeImage;
     [SerializeField] private Image craftSlimeGaugeImage;
     [SerializeField] private Image staminaGaugeImage;
     [SerializeField] private Image hungerGaugeImage;
-    
+
     private StatManager statManager;
     private ISlimeTextOut ISlimeTextOut;
-    
-    public UnityAction<float> OnHpChanged;
+    private Coroutine daySlimeRoutine;
 
-    private void Awake()
-    {
-        statManager = GetComponent<StatManager>();
-        ISlimeTextOut = GetComponent<SlimeTextController>();
-        statManager.OnStatChange += UpdateAllGaugeUI;
-    }
+    public UnityAction<float> OnHpChanged;
 
     public float CurrentHp => statManager.GetStat<ResourceStat>(StatType.CurrentHp) != null
         ? statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue
@@ -43,6 +39,19 @@ public class PlayerStatus : MonoBehaviour
     public float MaxStaminaByHunger => CurrentHunger;
 
     public float MoveSpeed => statManager.GetValue(StatType.MoveSpeed);
+
+
+    private void Awake()
+    {
+        statManager = GetComponent<StatManager>();
+        ISlimeTextOut = GetComponent<SlimeTextController>();
+        statManager.OnStatChange += UpdateAllGaugeUI;
+    }
+
+    private void Start()
+    {
+        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine());
+    }
 
     public void Init(IStatProvider _statProvider, IDamageable _owner = null)
     {
@@ -72,8 +81,30 @@ public class PlayerStatus : MonoBehaviour
         statManager.Recover(StatType.CurrentSlimeGauge, StatModifierType.Base, _amount);
 
         UpdateSlimeGaugeUI();
-    }   
-   
+    }
+
+    private IEnumerator DaySlimeGaugeRoutine()
+    {
+        float slimeConsumeAmount = 0.05f;
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+            Logger.Log("daySlimeGauge");
+            switch (TimeManager.Instance.CurrentTimeOfDay)
+            {
+                case TimeOfDay.Morning:
+                case TimeOfDay.Noon:
+                case TimeOfDay.Evening:
+                    ConsumeSlimeGauge(slimeConsumeAmount);
+                    break;
+                case TimeOfDay.Night:
+                case TimeOfDay.Dawn:
+                    RecoverSlimeGauge(slimeConsumeAmount);
+                    break;
+            }
+        }
+    }
+
     private void UpdateSlimeGaugeUI()
     {
         if (slimeGaugeImage.IsUnityNull())
@@ -88,9 +119,8 @@ public class PlayerStatus : MonoBehaviour
 
         if (!ISlimeTextOut.IsUnityNull())
         {
-            Vector3 textPos= new Vector3(transform.position.x + 1f,transform.position.y + 1.6f,transform.position.z);
-            ISlimeTextOut.OnSlimeGaugeChanged(cur,max,textPos);
-
+            Vector3 textPos = new Vector3(transform.position.x + 1f, transform.position.y + 1.6f, transform.position.z);
+            ISlimeTextOut.OnSlimeGaugeChanged(cur, max, textPos);
         }
     }
     //------------
@@ -107,7 +137,7 @@ public class PlayerStatus : MonoBehaviour
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
         NotifyHpChanged();
     }
-    
+
     private void UpdateStaminaGaugeUI()
     {
         if (staminaGaugeImage.IsUnityNull())
@@ -136,7 +166,7 @@ public class PlayerStatus : MonoBehaviour
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
     }
-    
+
     private void UpdateHungerGaugeUI()
     {
         if (hungerGaugeImage.IsUnityNull())
@@ -191,7 +221,8 @@ public class PlayerStatus : MonoBehaviour
             stamina.SetCurrentValue(hunger);
         }
 
-        UpdateAllGaugeUI();
+        UpdateHungerGaugeUI();
+        UpdateStaminaGaugeUI();
     }
     //----------------------
 
@@ -207,12 +238,11 @@ public class PlayerStatus : MonoBehaviour
         float ratio = MaxHp > 0 ? CurrentHp / MaxHp : 0f;
         OnHpChanged?.Invoke(ratio);
     }
-    
+
     public void TakeDamage(float _damage, StatModifierType _modifierType)
     {
         statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
         Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
         NotifyHpChanged();
     }
-
 }
