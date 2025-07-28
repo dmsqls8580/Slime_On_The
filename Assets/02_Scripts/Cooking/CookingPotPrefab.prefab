@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 607268570444082943}
   - component: {fileID: 5671554130124638564}
   - component: {fileID: 4713157424335962800}
-  - component: {fileID: -3151989466797956775}
+  - component: {fileID: -7479023644525115619}
   m_Layer: 30
   m_Name: CookingPotPrefab
   m_TagString: Untagged
@@ -144,7 +144,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-3151989466797956775
+--- !u!114 &-7479023644525115619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,12 +153,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3805954016894649699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d56829449e344054087d73a5e45947b9, type: 3}
+  m_Script: {fileID: 11500000, guid: c8f8b4df45bea354c8dc33cb97b2de08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookingPanel: {fileID: 4249829226621855102, guid: b382d0b22fea655469e9f3b932fb2939, type: 3}
-  dropItems: []
-  dropItemPrefab: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  cookIndex: -1
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
