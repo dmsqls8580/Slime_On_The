@@ -6,9 +6,14 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
 
-    public const int MaxSlotCount = 40;
+    public const int MaxSlotCount = 100000;
     public const int EquipSlotCount = 6;
-    [SerializeField] private int unlockedSlotCount = 20;
+    [SerializeField] private int unlockedSlotCount = 40;
+    
+    private const int MaxChestCount = 999;
+    private const int MaxCookPotCount = 999;
+    private bool[] chestSlotInUse = new bool[MaxChestCount];
+    private bool[] cookPotSlotInUse = new bool[MaxCookPotCount];
 
     public event Action<int> OnSlotChanged;
     public event Action<int> OnEquipSlotChanged;
@@ -234,5 +239,49 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public bool IsSlotLocked(int _index)
     {
         return _index >= unlockedSlotCount;
+    }
+    
+    // chest 설치
+    public int GetNextAvailableChestIndex()
+    {
+        for (int i = 0; i < MaxChestCount; i++)
+        {
+            if (!chestSlotInUse[i])
+            {
+                chestSlotInUse[i] = true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    // chest 파괴
+    public void ReleaseChestIndex(int index)
+    {
+        if (index >= 0 && index < chestSlotInUse.Length)
+        {
+            chestSlotInUse[index] = false;
+        }
+    }
+    
+    // CookPot 설치
+    public int GetNextAvailableCookIndex()
+    {
+        for (int i = 0; i < MaxCookPotCount; i++)
+        {
+            if (!cookPotSlotInUse[i])
+            {
+                cookPotSlotInUse[i] = true;
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    // CookPot 파괴
+    public void ReleaseCookIndex(int index)
+    {
+        if (index >= 0 && index < MaxCookPotCount)
+            cookPotSlotInUse[index] = false;
     }
 }
