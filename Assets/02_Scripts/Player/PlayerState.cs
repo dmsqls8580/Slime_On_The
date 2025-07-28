@@ -52,7 +52,6 @@ namespace PlayerStates
     public class MoveState : IState<PlayerController, PlayerState>
     {
 
-
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
