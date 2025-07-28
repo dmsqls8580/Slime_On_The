@@ -91,23 +91,37 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
             return;
         }
 
-        string     poolname   = iPoolObject.PoolID;
-        GameObject poolObject = iPoolObject.GameObject;
+        string poolId = iPoolObject.PoolID;
+        GameObject prefab = iPoolObject.GameObject;
 
-        Queue<IPoolObject> newPool   = new Queue<IPoolObject>();
-        GameObject         parentObj = new GameObject(poolname) { transform = { parent = transform } };
-        parentCache[poolname] = parentObj.transform;
+        Queue<IPoolObject> newPool = new Queue<IPoolObject>();
+
+        // 🔽 특정 ID는 캔버스 하위로 부모 설정
+        Transform parent;
+        if (poolId == "SlimeText")
+        {
+            var canvas = GameObject.Find("SlimeTextCanvas");
+            parent = canvas != null ? canvas.transform : transform;
+        }
+        else
+        {
+            GameObject parentObj = new GameObject(poolId);
+            parentObj.transform.SetParent(transform);
+            parent = parentObj.transform;
+        }
+
+        parentCache[poolId] = parent;
 
         for (int i = 0; i < poolSize; i++)
         {
-            GameObject obj = Instantiate(poolObject, parentObj.transform);
-            obj.name = poolname;
+            GameObject obj = Instantiate(prefab, parent);
+            obj.name = poolId;
             obj.SetActive(false);
             newPool.Enqueue(obj.GetComponent<IPoolObject>());
         }
 
-        poolObjects[poolname] = newPool;
-        registeredObj[poolname] = poolObject;
+        poolObjects[poolId] = newPool;
+        registeredObj[poolId] = prefab;
     }
 
     /// <summary>
