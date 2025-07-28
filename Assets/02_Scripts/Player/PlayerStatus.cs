@@ -9,12 +9,16 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private Image craftSlimeGaugeImage;
     [SerializeField] private Image staminaGaugeImage;
     [SerializeField] private Image hungerGaugeImage;
+    
     private StatManager statManager;
+    private ISlimeTextOut ISlimeTextOut;
+    
     public UnityAction<float> OnHpChanged;
 
     private void Awake()
     {
         statManager = GetComponent<StatManager>();
+        ISlimeTextOut = GetComponent<SlimeTextController>();
         statManager.OnStatChange += UpdateAllGaugeUI;
     }
 
@@ -68,15 +72,28 @@ public class PlayerStatus : MonoBehaviour
         statManager.Recover(StatType.CurrentSlimeGauge, StatModifierType.Base, _amount);
 
         UpdateSlimeGaugeUI();
+    }   
+   
+    private void UpdateSlimeGaugeUI()
+    {
+        if (slimeGaugeImage.IsUnityNull())
+        {
+            return;
+        }
+
+        float cur = CurrentSlimeGauge;
+        float max = MaxSlimeGauge;
+        slimeGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
+        craftSlimeGaugeImage.fillAmount = slimeGaugeImage.fillAmount;
+
+        if (!ISlimeTextOut.IsUnityNull())
+        {
+            Vector3 textPos= new Vector3(transform.position.x + 1f,transform.position.y + 1.6f,transform.position.z);
+            ISlimeTextOut.OnSlimeGaugeChanged(cur,max,textPos);
+
+        }
     }
     //------------
-
-    public void TakeDamage(float _damage, StatModifierType _modifierType)
-    {
-        statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
-        Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
-        NotifyHpChanged();
-    }
 
     //체력 스탯
     public void ConsumeHp(float _amount)
@@ -90,6 +107,19 @@ public class PlayerStatus : MonoBehaviour
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
         NotifyHpChanged();
     }
+    
+    private void UpdateStaminaGaugeUI()
+    {
+        if (staminaGaugeImage.IsUnityNull())
+        {
+            return;
+        }
+
+        float cur = CurrentStamina;
+        float max = MaxHunger;
+        staminaGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
+    }
+
     //---------------------
 
     //배고픔 스탯
@@ -106,6 +136,19 @@ public class PlayerStatus : MonoBehaviour
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
     }
+    
+    private void UpdateHungerGaugeUI()
+    {
+        if (hungerGaugeImage.IsUnityNull())
+        {
+            return;
+        }
+
+        float cur = CurrentHunger;
+        float max = MaxHunger;
+        hungerGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
+    }
+
     //----------------------
 
     //스테미나 스탯
@@ -142,12 +185,10 @@ public class PlayerStatus : MonoBehaviour
     {
         var stamina = statManager.GetStat<ResourceStat>(StatType.CurrentStamina);
         float hunger = CurrentHunger;
-        Logger.Log($"[ClampStamina] Before Clamp - CurrentStamina: {stamina.CurrentValue}, CurrentHunger: {hunger}");
 
         if (!stamina.IsUnityNull() && stamina.CurrentValue > hunger)
         {
             stamina.SetCurrentValue(hunger);
-            Logger.Log($"[ClampStamina] After Clamp - Stamina Clamped to: {stamina.CurrentValue}");
         }
 
         UpdateAllGaugeUI();
@@ -161,48 +202,17 @@ public class PlayerStatus : MonoBehaviour
         UpdateStaminaGaugeUI();
     }
 
-    private void UpdateSlimeGaugeUI()
-    {
-        if (slimeGaugeImage.IsUnityNull())
-        {
-            return;
-        }
-
-        float cur = CurrentSlimeGauge;
-        float max = MaxSlimeGauge;
-        slimeGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
-        craftSlimeGaugeImage.fillAmount = slimeGaugeImage.fillAmount;
-    }
-
-    private void UpdateStaminaGaugeUI()
-    {
-        if (staminaGaugeImage.IsUnityNull())
-        {
-            return;
-        }
-
-        float cur = CurrentStamina;
-        float max = MaxHunger;
-        Logger.Log(
-            $"[StaminaUI] CurrentStamina: {cur}, CurrentHunger (Max): {max}, FillAmount will be: {(max > 0f ? cur / max : 0f)}");
-        staminaGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
-    }
-
-    private void UpdateHungerGaugeUI()
-    {
-        if (hungerGaugeImage.IsUnityNull())
-        {
-            return;
-        }
-
-        float cur = CurrentHunger;
-        float max = MaxHunger;
-        hungerGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
-    }
-
     private void NotifyHpChanged()
     {
         float ratio = MaxHp > 0 ? CurrentHp / MaxHp : 0f;
         OnHpChanged?.Invoke(ratio);
     }
+    
+    public void TakeDamage(float _damage, StatModifierType _modifierType)
+    {
+        statManager.Consume(StatType.CurrentHp, _modifierType, _damage);
+        Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
+        NotifyHpChanged();
+    }
+
 }
