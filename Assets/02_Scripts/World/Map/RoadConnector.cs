@@ -20,7 +20,6 @@ public class RoadConnector : MonoBehaviour
         {
             foreach (var pos in GetLine(edge.from, edge.to))
             {
-                // 도로 폭 반영
                 for (int dx = -roadWidth; dx <= roadWidth; dx++)
                 {
                     for (int dy = -roadWidth; dy <= roadWidth; dy++)

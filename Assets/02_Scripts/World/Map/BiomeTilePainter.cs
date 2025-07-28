@@ -4,8 +4,8 @@ using UnityEngine.Tilemaps;
 
 public class BiomeTilePainter : MonoBehaviour
 {
-    private Tilemap _tilemap;
-    private Dictionary<BiomeType, TileBase> _biomeTiles;
+    private readonly Tilemap _tilemap;
+    private readonly Dictionary<BiomeType, TileBase> _biomeTiles;
 
     public BiomeTilePainter(Tilemap tilemap, Dictionary<BiomeType, TileBase> biomeTiles)
     {
@@ -15,15 +15,14 @@ public class BiomeTilePainter : MonoBehaviour
 
     public void PaintTiles(Dictionary<Vector3Int, int> tileToRegionMap, Dictionary<int, BiomeType> regionBiomes)
     {
+        _tilemap.ClearAllTiles();
+
         foreach (var kvp in tileToRegionMap)
         {
-            Vector3Int tilePos = kvp.Key;
-            int regionId = kvp.Value;
-
-            if (!regionBiomes.TryGetValue(regionId, out var biomeType)) continue;
+            if (!regionBiomes.TryGetValue(kvp.Value, out var biomeType)) continue;
             if (!_biomeTiles.TryGetValue(biomeType, out var tile)) continue;
 
-            _tilemap.SetTile(tilePos, tile);
+            _tilemap.SetTile(kvp.Key, tile);
         }
     }
 }

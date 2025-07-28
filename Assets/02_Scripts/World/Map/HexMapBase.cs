@@ -1,14 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class HexMapBase : MonoBehaviour
 {
-    [Header("타일맵 설정")]
-    public Tilemap tilemap;
-    public TileBase defaultTile;
-
-    [Header("맵 크기 설정")]
     public int minWidth = 100;
     public int maxWidth = 200;
     public int height = 170;
@@ -48,7 +42,6 @@ public class HexMapBase : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 Vector3Int pos = new Vector3Int(startX + x + centerOffset.x, y + centerOffset.y, 0);
-                tilemap.SetTile(pos, defaultTile);
                 GeneratedTiles.Add(pos);
             }
         }
