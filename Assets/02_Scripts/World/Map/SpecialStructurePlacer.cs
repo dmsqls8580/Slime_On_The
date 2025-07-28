@@ -22,6 +22,9 @@ public class SpecialStructurePlacer : MonoBehaviour
     public Tilemap groundTilemap;
     public Tilemap roadTilemap;
 
+    [Header("부모 오브젝트 (Hierarchy 정리용)")]
+    public GameObject structureParent;
+
     [Header("기본 설정")]
     public int seed = 12345;
 
@@ -79,7 +82,12 @@ public class SpecialStructurePlacer : MonoBehaviour
 
                     // 구조물 배치
                     GameObject prefab = structureData.prefabs[prng.Next(structureData.prefabs.Count)];
-                    Instantiate(prefab, worldPos, Quaternion.identity);
+                    GameObject instance = Instantiate(prefab, worldPos, Quaternion.identity);
+
+                    // 부모로 정리
+                    if (structureParent != null)
+                        instance.transform.SetParent(structureParent.transform);
+
                     placed.Add(worldPos);
                     placedSuccessfully = true;
                     break;
