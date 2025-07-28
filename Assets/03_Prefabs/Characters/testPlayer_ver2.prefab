@@ -878,7 +878,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1641d092c0d0d954e9b67694bab00973, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SlimeGaugeImage: {fileID: 0}
+  slimeGaugeImage: {fileID: 0}
+  craftSlimeGaugeImage: {fileID: 0}
+  staminaGaugeImage: {fileID: 0}
+  hungerGaugeImage: {fileID: 0}
 --- !u!114 &5372810898574895508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1409,8 +1412,8 @@ MonoBehaviour:
   playerAnimator: {fileID: 7676578801928857935}
   transformAnimTrigger: Transform
   zoomInSize: 1.5
-  zoomTime: 3
-  slowTimeScale: 0.6
+  zoomTime: 2
+  slowTimeScale: 0.3
   slowTimeDuration: 1
 --- !u!1 &9030049084307505322
 GameObject:
