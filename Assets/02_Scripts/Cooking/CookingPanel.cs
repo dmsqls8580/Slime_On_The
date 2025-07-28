@@ -8,11 +8,7 @@ public class CookingPanel : MonoBehaviour
     [SerializeField] private List<CookingSlot> cookingSlots;
     [SerializeField] private Button button;
 
-    private Dictionary<IngredientTag, float> tags = new Dictionary<IngredientTag, float>();
     private CookingPot cookingPot;
-
-    private float cookingTime = 0f;
-    public float CookingTime => cookingTime;
 
     private bool canCook = false;
 
@@ -24,20 +20,31 @@ public class CookingPanel : MonoBehaviour
     private void OnClickCookButton()
     {
         if (!canCook) { return; }
-        // dictionary와 cookingTime을 여기서 선언하고 넘겨주기 vs 지금처럼 필드에서 하고 초기화시키기
+
+        Dictionary<IngredientTag, float> tags = new Dictionary<IngredientTag, float>();
+        float cookingTime = 0f;
+
+        // 각 슬롯을 순회하며 태그와 시간을 계산.
         foreach (CookingSlot slot in cookingSlots)
         {
+            if (slot.Item == null || slot.Item.cookableData == null) continue;
+
+            // 태그 합산.
             List<TagValuePair> _tags = slot.Item.cookableData.tags;
-            foreach (TagValuePair pair in _tags) { tags[pair.tag] += pair.value; }
-            cookingTime += slot.Item.cookableData.cookingTime;
+            foreach (TagValuePair pair in _tags)
+            {
+                tags.TryGetValue(pair.tag, out float currentValue);
+                tags[pair.tag] = currentValue + pair.value;
+            }
+
+            // 시간 합산.
+            cookingTime += slot.Item.cookableData.contributionTime;
         }
-        cookingManager.FindMatchingRecipe(tags, cookingPot);
+        cookingManager.FindMatchingRecipe(tags, cookingTime, cookingPot);
     }
 
     public void Initialize()
     {
-        tags.Clear();
-        cookingTime = 0f;
         foreach (CookingSlot slot in cookingSlots)
         { slot.Initialize(); }
         gameObject.SetActive(false);

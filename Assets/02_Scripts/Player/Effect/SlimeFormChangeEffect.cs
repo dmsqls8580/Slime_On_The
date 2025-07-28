@@ -13,6 +13,7 @@ public class SlimeFormChangeEffect : MonoBehaviour
     [SerializeField] private RawImage playerRawImage; // RenderTexture 출력용 RawImage
     [SerializeField] private SpriteRenderer playerRenderer; 
     [SerializeField] private Animator playerAnimator;      
+    [SerializeField]private Material changeEffectMaterial;
 
     [Header("연출 파라미터")]
     [SerializeField] private string transformAnimTrigger = "Transform";
@@ -26,7 +27,8 @@ public class SlimeFormChangeEffect : MonoBehaviour
     private int mainCameraOriginalMask;
     private float mainCameraOriginalSize;
     private float blendAmountBackup;
-
+    
+    private Material originalMaterial;
     private void Awake()
     {
         mainCamera = Camera.main;
@@ -37,6 +39,9 @@ public class SlimeFormChangeEffect : MonoBehaviour
 
         if (playerRenderer != null && playerRenderer.material.HasProperty(BlendAmount))
             blendAmountBackup = playerRenderer.material.GetFloat(BlendAmount);
+        
+        if(!playerRenderer.IsUnityNull())
+            originalMaterial = playerRenderer.material;
     }
 
     private void Update()
@@ -54,12 +59,16 @@ public class SlimeFormChangeEffect : MonoBehaviour
 
     private IEnumerator AnimStart()
     {
-        inputController.PlayerActions.Disable();
+        inputController.PlayerActions.Disable();  
+        playerRenderer.material = changeEffectMaterial;
+        
         mainCameraOriginalMask = mainCamera.cullingMask;
         mainCamera.cullingMask &= ~(1 << playerLayer);
+        
         playerOnlyCamera.orthographicSize = mainCameraOriginalSize;
         playerOnlyCamera.gameObject.SetActive(true);
         playerRawImage.gameObject.SetActive(true);
+       
         var originUpdateMode = playerAnimator.updateMode;
         playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
         // 시간 느리게
@@ -104,7 +113,10 @@ public class SlimeFormChangeEffect : MonoBehaviour
         playerAnimator.updateMode = originUpdateMode;
         
         inputController.PlayerActions.Enable();
+        playerRenderer.material = originalMaterial;
+        
         mainCamera.cullingMask = mainCameraOriginalMask;
+        
         playerOnlyCamera.gameObject.SetActive(false);
         playerRawImage.gameObject.SetActive(false);
     }

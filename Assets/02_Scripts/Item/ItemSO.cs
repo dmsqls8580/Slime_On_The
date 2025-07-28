@@ -129,7 +129,7 @@ public struct TagValuePair
 public class CookableData
 {
     public List<TagValuePair> tags;
-    public float cookingTime;
+    public float contributionTime;
 }
 
 [System.Serializable]
