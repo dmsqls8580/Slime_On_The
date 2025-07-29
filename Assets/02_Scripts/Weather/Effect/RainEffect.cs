@@ -26,19 +26,18 @@ public class RainEffect : WeatherEffectBase
         {
             case 1:
                 // TODO: 슬라임 게이지 회복력 증가.
-                // 이전에 실행중인 코루틴이 있다면 중지 (안전장치).
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                // 파티클 켜기.
-                Logger.Log("날씨: 비 켜짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(true));
                 break;
             case 2:
                 // TODO: 플레이어 이동속도 감소.
                 break;
         }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log($"날씨: 비 {currentLevel}단계.");
+        coroutine = weatherManager.StartCoroutine(Fade(true));
     }
 
     protected override void UpdateEffect() { }
@@ -52,23 +51,35 @@ public class RainEffect : WeatherEffectBase
                 goto case 1;
             case 1:
                 // TODO: 슬라임 게이지 회복력 감소(되돌리기).
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                // 파티클 끄기.
-                Logger.Log("날씨: 비 꺼짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(false));
                 break;
         }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log("날씨: 비 꺼짐.");
+        coroutine = weatherManager.StartCoroutine(Fade(false));
     }
 
-    // 비를 서서히 내리거나 멈추게 하는 코루틴.
     private IEnumerator Fade(bool fadeIn)
     {
         var emission = particle.emission;
         float currentRate = emission.rateOverTime.constant;
-        float targetRate = fadeIn ? 100f : 0f;
+        float targetRate = 0f;
+
+        if (fadeIn)
+        {
+            switch (currentLevel)
+            {
+                case 1:
+                    targetRate = 100f;
+                    break;
+                case 2:
+                    targetRate = 400f;
+                    break;
+            }
+        }
 
         float timer = 0f;
         while (timer < transitionDuration)
