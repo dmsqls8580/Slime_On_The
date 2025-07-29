@@ -211,7 +211,7 @@ namespace PlayerStates
 
         private void OnDash(InputAction.CallbackContext _context)
         {
-            if (PlayerStatusManager.CurrentStamina <= 0)
+            if (PlayerStatusManager.CurrentStamina <50)
             {
                 return;
             }
@@ -250,7 +250,9 @@ namespace PlayerStates
         {
             placeMode.Place();
         }
+        
         //--------------------------------------------------------------
+        
         public void Attack()
         {
             attackQueued = false;
