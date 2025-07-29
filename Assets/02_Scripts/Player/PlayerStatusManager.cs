@@ -44,8 +44,12 @@ public class PlayerStatusManager : MonoBehaviour
     // 스테미나 최대치는 "배고픔 현재치"로 제한
     public float MaxStaminaByHunger => CurrentHunger;
 
-    public float MoveSpeed => statManager.GetValue(StatType.MoveSpeed);
-
+    public float MoveSpeed => statManager.GetValue(StatType.MoveSpeed) + additionalMoveSpeed;
+    private float additionalMoveSpeed = 0f;
+    public float UpdateMoveSpeed
+    {
+        set { additionalMoveSpeed += value; }
+    }
 
     private void Awake()
     {

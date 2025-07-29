@@ -17,6 +17,9 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private Volume fogVolume;
     [SerializeField] private Volume HeatwaveVolume;
 
+    [Header("스크립트 참조")]
+    [SerializeField] private PlayerStatusManager playerStatusManager;
+
     // 모든 날씨 효과들의 저장소.
     private Dictionary<WeatherType, IWeatherEffect> weatherEffects;
     // 작동중인 이펙트들.
@@ -32,7 +35,7 @@ public class WeatherManager : MonoBehaviour
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
             { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
-            { WeatherType.Rain, new RainEffect(this, rainParticle) },
+            { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
             //{ WeatherType.Storm, new StormEffect() },
             //{ WeatherType.Wind, new WindEffect() }
@@ -101,7 +104,7 @@ public class WeatherManager : MonoBehaviour
 
     private WeatherDataSO GetNextWeather()
     {
-        List<WeatherDataSO> selectableWeathers = new List<WeatherDataSO>();
+        List<WeatherDataSO> selectableWeathers = new();
 
         foreach (var weatherSO in weatherPatterns)
         {
