@@ -18,6 +18,7 @@ public class PlayerStatusManager : MonoBehaviour
     private PlayerController playerController;
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
+    private Coroutine staminaRecoverRoutine;
     private float slimeConsumeAmount = 0.05f;
     public float SlimeConsumeAmount => slimeConsumeAmount;
 
@@ -196,6 +197,13 @@ public class PlayerStatusManager : MonoBehaviour
         statManager.Consume(StatType.CurrentStamina, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateStaminaGaugeUI();
+
+        if (!staminaRecoverRoutine.IsUnityNull())
+        {
+            StopCoroutine(staminaRecoverRoutine);
+        }
+
+        staminaRecoverRoutine = StartCoroutine(StartDefaultStaminaRecover());
     }
 
     public void RecoverStamina(float _amount)
@@ -216,6 +224,29 @@ public class PlayerStatusManager : MonoBehaviour
         }
 
         UpdateStaminaGaugeUI();
+    }
+
+    private IEnumerator StartDefaultStaminaRecover()
+    {
+        yield return new WaitForSeconds(1f);
+
+        while (true)
+        {
+            float cur = CurrentStamina;
+            float max = MaxStaminaByHunger;
+
+            if (cur < max)
+            {
+                RecoverStamina(5f);
+            }
+
+            if (CurrentStamina >= max)
+            {
+                staminaRecoverRoutine = null;
+                yield break;
+            }
+            yield return new WaitForSeconds(0.5f);
+        }
     }
     
     private void UpdateStaminaGaugeUI()

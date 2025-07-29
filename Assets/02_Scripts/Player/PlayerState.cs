@@ -97,16 +97,16 @@ namespace PlayerStates
 
     public class DashState : IState<PlayerController, PlayerState>
     {
+        private const float consumeAmount = 50f;
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
-        private const float consumeAmount = 50f;
         private float timer;
         private Vector2 dashDirection;
         private Vector2 lookDir;
 
         public void OnEnter(PlayerController _owner)
         {
-            if (_owner.PlayerStatusManager.CurrentStamina <= 0)
+            if (_owner.PlayerStatusManager.CurrentStamina < 50)
             {
                 return;
             }
