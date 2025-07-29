@@ -7,15 +7,19 @@ public class RainEffect : WeatherEffectBase
 
     private readonly WeatherManager weatherManager;
     private readonly ParticleSystem particle;
+    private readonly PlayerStatusManager playerStatusManager;
     private Coroutine coroutine;
 
     // 비가 내리거나 시작할때 까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
+    // 날씨로 인한 이동속도 변화.
+    private readonly float moveSpeed = 2f;
 
-    public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle)
+    public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         particle = _particle;
+        playerStatusManager = _playerStatusManager;
     }
 
     protected override void ApplyEffect()
@@ -25,10 +29,9 @@ public class RainEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                // TODO: 슬라임 게이지 회복력 증가.
                 break;
             case 2:
-                // TODO: 플레이어 이동속도 감소.
+                playerStatusManager.UpdateMoveSpeed = -moveSpeed;
                 break;
         }
 
@@ -40,17 +43,27 @@ public class RainEffect : WeatherEffectBase
         coroutine = weatherManager.StartCoroutine(Fade(true));
     }
 
-    protected override void UpdateEffect() { }
+    protected override void UpdateEffect()
+    {
+        switch (currentLevel)
+        {
+            case 1:
+                playerStatusManager.RecoverSlimeGauge(1f);
+                break;
+            case 2:
+                playerStatusManager.RecoverSlimeGauge(4f);
+                break;
+        }
+    }
 
     protected override void RemoveEffect()
     {
         switch (currentLevel)
         {
             case 2:
-                // TODO: 플레이어 이동속도 증가(되돌리기).
+                playerStatusManager.UpdateMoveSpeed = moveSpeed;
                 goto case 1;
             case 1:
-                // TODO: 슬라임 게이지 회복력 감소(되돌리기).
                 break;
         }
 
