@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class StormEffect : WeatherEffectBase
 {
-    private float lightningTimer;
-
     protected override int MaxLevel => 1;
+
+    private float lightningTimer;
 
     // private GameObject lightningPrefab; // OnEnter에서 미리 로드
 
@@ -51,6 +51,5 @@ public class StormEffect : WeatherEffectBase
     protected override void RemoveEffect()
     {
         Debug.Log("번개 효과 종료.");
-        // AudioManger.Instance.StopSound("Storm_Loop");
     }
 }
