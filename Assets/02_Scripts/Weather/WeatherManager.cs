@@ -30,7 +30,7 @@ public class WeatherManager : MonoBehaviour
         weatherEffects = new Dictionary<WeatherType, IWeatherEffect>
         {
             { WeatherType.Clear, new ClearEffect() },
-            { WeatherType.Fog, new FogEffect(this, fogVolume) },
+            //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
             { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
             { WeatherType.Rain, new RainEffect(this, rainParticle) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
