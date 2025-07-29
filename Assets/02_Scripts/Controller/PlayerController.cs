@@ -72,7 +72,7 @@ namespace PlayerStates
 
         public IDamageable Target { get; }
 
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; set; }
         public bool CanRespawn { get; set; }
         public Collider2D Collider => GetComponent<Collider2D>();
 
@@ -380,7 +380,7 @@ namespace PlayerStates
                 {
                     Logger.Log("AttackStat is null");
                 }
-                PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
                 

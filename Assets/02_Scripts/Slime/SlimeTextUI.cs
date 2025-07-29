@@ -18,7 +18,6 @@ public class SlimeTextUI : MonoBehaviour, IPoolObject
     private Coroutine retrunCoroutine;
     private Action onReturnCallback;
 
-
     public void OnSpawnFromPool()
     {
         slimeText.text = "";

@@ -12,6 +12,9 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
 
     private float blockTime = 0.5f;
 
+    private float lastPrintTime = -999f;
+    private float textCooldown = 20f;
+
     private void Start()
     {
         SlimeTextDataManager.Instance.LoadFormJson(slimeTextJson);
@@ -19,6 +22,12 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
 
     public void TryShowSlimeText(string _key, float _gauge, Vector3 _worldPos)
     {
+        if (Time.time - lastPrintTime < textCooldown)
+        {
+            return;
+        }
+        lastPrintTime = Time.time;
+
         if (lastTime.TryGetValue(_key, out float value))
         {
             if (Time.time - value < blockTime)
@@ -43,7 +52,7 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
             {
                 activeTexts.Remove(_key);
             });
-            
+
             activeTexts[_key] = slimeTextUi;
         }
     }
@@ -52,13 +61,13 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
     {
         float per = (_curGauge / _maxGauge) * 100;
 
-        if (SlimeTextDataManager.Instance.HasText("maxWarning",per))
+        if (SlimeTextDataManager.Instance.HasText("maxWarning", per))
         {
             TryShowSlimeText("maxWarning", per, _worldPos);
         }
 
         Logger.Log("슬라임 텍스트 게이지 변경");
     }
-    
+
     //todo: 자연재해에 대한 enum&string 조건식으로 재해가 나올때마다 확률적으로 텍스트 출력
 }
