@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 607268570444082943}
   - component: {fileID: 5671554130124638564}
   - component: {fileID: 4713157424335962800}
-  - component: {fileID: -3151989466797956775}
+  - component: {fileID: -7479023644525115619}
   m_Layer: 30
   m_Name: CookingPotPrefab
   m_TagString: Untagged
@@ -28,7 +28,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3805954016894649699}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1.1662987}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -4.633381, y: -0.09999907}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &607268570444082943
@@ -87,7 +87,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 99
+  m_SortingOrder: 200
   m_Sprite: {fileID: 21300000, guid: e6b0ffe20aae42041a2f11f94d073232, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_FlipX: 0
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 1
+  m_SpriteSortPoint: 0
 --- !u!61 &4713157424335962800
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -131,10 +131,10 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: -0.5068304}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.25}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 2}
     newSize: {x: 2, y: 3}
     adaptiveTilingThreshold: 0.5
@@ -144,7 +144,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &-3151989466797956775
+--- !u!114 &-7479023644525115619
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,11 +153,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3805954016894649699}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d56829449e344054087d73a5e45947b9, type: 3}
+  m_Script: {fileID: 11500000, guid: c8f8b4df45bea354c8dc33cb97b2de08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItems: []
-  dropItemPrefab: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  cookIndex: -1
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
