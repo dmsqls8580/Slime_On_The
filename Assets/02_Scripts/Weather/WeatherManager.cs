@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -35,9 +34,9 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Snow, new SnowEffect(this, snowParticle) },
-            { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
             { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
+            { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
+            { WeatherType.Snow, new SnowEffect(this, snowParticle) },
             //{ WeatherType.Storm, new StormEffect() },
             //{ WeatherType.Wind, new WindEffect() }
         };
@@ -50,7 +49,6 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
-        Random.InitState((int)System.DateTime.Now.Ticks);
         StartCoroutine(WeatherLoop());
     }
 
@@ -106,7 +104,7 @@ public class WeatherManager : MonoBehaviour
 
     private WeatherDataSO GetNextWeather()
     {
-        List<WeatherDataSO> selectableWeathers = new List<WeatherDataSO>();
+        List<WeatherDataSO> selectableWeathers = new();
 
         foreach (var weatherSO in weatherPatterns)
         {
@@ -123,11 +121,8 @@ public class WeatherManager : MonoBehaviour
         }
 
         // 가능한 날씨 목록에서 랜덤 선택.
-        
         int index = Random.Range(0, selectableWeathers.Count);
-        Logger.Log($"선택된 인덱스: {index}\n날씨 리스트의 갯수: {selectableWeathers.Count}");
-        
-        return selectableWeathers[index]; 
+        return selectableWeathers[index];
     }
 
     // 인스턴스로부터 WeatherType을 역으로 찾기 위한 헬퍼 함수.

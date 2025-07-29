@@ -84,7 +84,6 @@ public class HeatwaveEffect : WeatherEffectBase
 
         volume.weight = target;
 
-        // Loop 시작
         coroutine = weatherManager.StartCoroutine(Loop());
     }
 
