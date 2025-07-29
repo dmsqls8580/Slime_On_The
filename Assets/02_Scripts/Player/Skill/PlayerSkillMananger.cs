@@ -45,8 +45,8 @@ public class PlayerSkillMananger : MonoBehaviour
         
         skillDamage = _skill.damage;
         _skill.Execute(_owner,skillDamage);
-        _owner.PlayerStatus.ConsumeSlimeGauge(_skill.useSlimeGauge);
-        Logger.Log($"남은 슬라임 게이지: {_owner.PlayerStatus.CurrentSlimeGauge}");
+        _owner.PlayerStatusManager.ConsumeSlimeGauge(_skill.useSlimeGauge);
+        Logger.Log($"남은 슬라임 게이지: {_owner.PlayerStatusManager.CurrentSlimeGauge}");
         
         _skillCooldowns[_index] = _skill.cooldown;
     }

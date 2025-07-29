@@ -106,11 +106,11 @@ namespace PlayerStates
 
         public void OnEnter(PlayerController _owner)
         {
-            if (_owner.PlayerStatus.CurrentStamina <= 0)
+            if (_owner.PlayerStatusManager.CurrentStamina <= 0)
             {
                 return;
             }
-            _owner.PlayerStatus.ConsumeStamina(consumeAmount);
+            _owner.PlayerStatusManager.ConsumeStamina(consumeAmount);
             lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
 

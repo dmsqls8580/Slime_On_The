@@ -16,6 +16,7 @@ public class StatManager : MonoBehaviour
         foreach (var stat in _statProvider.Stats)
         {
             Stats[stat.StatType] = BaseStatFactory(stat.StatType, stat.Value);
+            Logger.Log($"[StatManager] Added Stat: {stat.StatType} = {stat.Value}");
         }
         
         if (Stats.TryGetValue(StatType.MaxSlimeGauge, out var maxSlimeStat) && maxSlimeStat is CalculateStat calc)
