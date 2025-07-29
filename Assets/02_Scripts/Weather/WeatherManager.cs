@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -17,6 +18,9 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private Volume fogVolume;
     [SerializeField] private Volume HeatwaveVolume;
 
+    [Header("스크립트 참조")]
+    [SerializeField] private PlayerStatusManager playerStatusManager;
+
     // 모든 날씨 효과들의 저장소.
     private Dictionary<WeatherType, IWeatherEffect> weatherEffects;
     // 작동중인 이펙트들.
@@ -31,9 +35,9 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
-            { WeatherType.Rain, new RainEffect(this, rainParticle) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
+            { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
             //{ WeatherType.Storm, new StormEffect() },
             //{ WeatherType.Wind, new WindEffect() }
         };
@@ -46,6 +50,7 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
+        Random.InitState((int)System.DateTime.Now.Ticks);
         StartCoroutine(WeatherLoop());
     }
 
@@ -118,8 +123,11 @@ public class WeatherManager : MonoBehaviour
         }
 
         // 가능한 날씨 목록에서 랜덤 선택.
+        
         int index = Random.Range(0, selectableWeathers.Count);
-        return selectableWeathers[index];
+        Logger.Log($"선택된 인덱스: {index}\n날씨 리스트의 갯수: {selectableWeathers.Count}");
+        
+        return selectableWeathers[index]; 
     }
 
     // 인스턴스로부터 WeatherType을 역으로 찾기 위한 헬퍼 함수.

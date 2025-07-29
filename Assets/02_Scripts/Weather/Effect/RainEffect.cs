@@ -7,15 +7,19 @@ public class RainEffect : WeatherEffectBase
 
     private readonly WeatherManager weatherManager;
     private readonly ParticleSystem particle;
+    private readonly PlayerStatusManager playerStatusManager;
     private Coroutine coroutine;
 
     // 비가 내리거나 시작할때 까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
+    // 날씨로 인한 이동속도 변화.
+    private readonly float moveSpeed = 2f;
 
-    public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle)
+    public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         particle = _particle;
+        playerStatusManager = _playerStatusManager;
     }
 
     protected override void ApplyEffect()
@@ -25,50 +29,70 @@ public class RainEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                // TODO: 슬라임 게이지 회복력 증가.
-                // 이전에 실행중인 코루틴이 있다면 중지 (안전장치).
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                // 파티클 켜기.
-                Logger.Log("날씨: 비 켜짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(true));
                 break;
             case 2:
-                // TODO: 플레이어 이동속도 감소.
+                playerStatusManager.UpdateMoveSpeed = -moveSpeed;
+                break;
+        }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log($"날씨: 비 {currentLevel}단계.");
+        coroutine = weatherManager.StartCoroutine(Fade(true));
+    }
+
+    protected override void UpdateEffect()
+    {
+        switch (currentLevel)
+        {
+            case 1:
+                playerStatusManager.RecoverSlimeGauge(1f);
+                break;
+            case 2:
+                playerStatusManager.RecoverSlimeGauge(4f);
                 break;
         }
     }
-
-    protected override void UpdateEffect() { }
 
     protected override void RemoveEffect()
     {
         switch (currentLevel)
         {
             case 2:
-                // TODO: 플레이어 이동속도 증가(되돌리기).
+                playerStatusManager.UpdateMoveSpeed = moveSpeed;
                 goto case 1;
             case 1:
-                // TODO: 슬라임 게이지 회복력 감소(되돌리기).
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                // 파티클 끄기.
-                Logger.Log("날씨: 비 꺼짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(false));
                 break;
         }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log("날씨: 비 꺼짐.");
+        coroutine = weatherManager.StartCoroutine(Fade(false));
     }
 
-    // 비를 서서히 내리거나 멈추게 하는 코루틴.
     private IEnumerator Fade(bool fadeIn)
     {
         var emission = particle.emission;
         float currentRate = emission.rateOverTime.constant;
-        float targetRate = fadeIn ? 100f : 0f;
+        float targetRate = 0f;
+
+        if (fadeIn)
+        {
+            switch (currentLevel)
+            {
+                case 1:
+                    targetRate = 100f;
+                    break;
+                case 2:
+                    targetRate = 400f;
+                    break;
+            }
+        }
 
         float timer = 0f;
         while (timer < transitionDuration)

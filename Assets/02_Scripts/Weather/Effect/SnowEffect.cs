@@ -25,52 +25,62 @@ public class SnowEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                // 이전에 실행중인 코루틴이 있다면 중지 (안전장치).
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                Logger.Log("날씨: 눈 켜짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(true));
                 break;
             case 2:
-                Logger.Log("연속으로 눈이 내려 땅이 더 미끄러워집니다!");
                 // 플레이어 미끄러짐 효과 적용 (예: PlayerController의 friction 값 변경)
                 break;
         }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log($"날씨: 눈 {currentLevel}단계");
+        coroutine = weatherManager.StartCoroutine(Fade(true));
     }
 
     protected override void UpdateEffect()
     {
-        // 플레이어 체력 지속 감소 로직
         // player.TakeDamage(1 * Time.deltaTime);
     }
 
     protected override void RemoveEffect()
     {
-        // 플레이어 미끄러짐 효과 제거
         switch (currentLevel)
         {
             case 2:
-                // TODO: 플레이어 이동속도 증가(되돌리기).
+                // 플레이어 미끄러짐 효과 제거.
                 goto case 1;
             case 1:
-                if (coroutine != null)
-                {
-                    weatherManager.StopCoroutine(coroutine);
-                }
-                Logger.Log("날씨: 눈 꺼짐.");
-                coroutine = weatherManager.StartCoroutine(Fade(false));
                 break;
         }
+
+        if (coroutine != null)
+        {
+            weatherManager.StopCoroutine(coroutine);
+        }
+        Logger.Log("날씨: 눈 꺼짐.");
+        coroutine = weatherManager.StartCoroutine(Fade(false));
     }
 
-    // 비를 서서히 내리거나 멈추게 하는 코루틴.
     private IEnumerator Fade(bool fadeIn)
     {
         var emission = particle.emission;
         float currentRate = emission.rateOverTime.constant;
-        float targetRate = fadeIn ? 25f : 0f;
+        float targetRate = 0f;
+
+        if (fadeIn)
+        {
+            switch (currentLevel)
+            {
+                case 1:
+                    targetRate = 25f;
+                    break;
+                case 2:
+                    targetRate = 100f;
+                    break;
+            }
+        }
 
         float timer = 0f;
         while (timer < transitionDuration)
