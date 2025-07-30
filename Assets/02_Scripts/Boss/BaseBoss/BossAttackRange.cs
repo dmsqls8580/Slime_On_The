@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class BossAttackRange : MonoBehaviour
 {
-    private BossController bossController;
+    private IBossController iBossController;
     private CircleCollider2D circleCollider2D;
     
     private void Start()
     {
-        bossController = GetComponentInParent<BossController>();
+        iBossController = GetComponentInParent<IBossController>();
         circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     private void Update()
     {
-        if (bossController.IsPlayerInAttackRange)
+        if (iBossController.IsPlayerInAttackRange)
         {
             // Enemy 공격 범위 가시화
             circleCollider2D.enabled = true;
@@ -26,8 +26,8 @@ public class BossAttackRange : MonoBehaviour
     {
         if (other.CompareTag("Player") && other.TryGetComponent(out IDamageable iDamageable))
         {
-            bossController.SetPlayerInAttackRange(true);
-            bossController.AttackTarget = other.gameObject;
+            iBossController.SetPlayerInAttackRange(true);
+            iBossController.AttackTarget = other.gameObject;
         }
     }
 
@@ -35,8 +35,8 @@ public class BossAttackRange : MonoBehaviour
     {
         if (other.CompareTag("Player") && other.TryGetComponent(out IDamageable iDamageable))
         {
-            bossController.SetPlayerInAttackRange(false);
-            bossController.AttackTarget = null;
+            iBossController.SetPlayerInAttackRange(false);
+            iBossController.AttackTarget = null;
         }
     }
     
