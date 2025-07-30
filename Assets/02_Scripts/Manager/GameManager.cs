@@ -54,15 +54,6 @@ public class GameManager : Singleton<GameManager>
     //}
 
     /// <summary>
-    /// 현재 씬을 다시 로드합니다.
-    /// </summary>
-    public void RestartGame()
-    {
-        Time.timeScale = 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
-    /// <summary>
     /// 게임을 종료합니다.
     /// </summary>
     public void QuitGame()
