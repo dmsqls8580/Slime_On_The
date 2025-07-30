@@ -7,7 +7,7 @@ public enum TimeOfDay
     Dawn, Morning, Noon, Evening, Night
 }
 
-public class TimeManager : Singleton<TimeManager>
+public class TimeManager : MonoBehaviour
 {
     [Header("시간 설정")]
     private float secondsOfDay = 86400f;

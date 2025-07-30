@@ -10,10 +10,7 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
     private Dictionary<string, float> lastTime = new();
     private Dictionary<string, SlimeTextUI> activeTexts = new();
 
-    private float blockTime = 0.5f;
-
-    private float lastPrintTime = -999f;
-    private float textCooldown = 20f;
+    private float keyTextCooldown = 8f;
 
     private void Start()
     {
@@ -22,15 +19,9 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
 
     public void TryShowSlimeText(string _key, float _gauge, Vector3 _worldPos)
     {
-        if (Time.time - lastPrintTime < textCooldown)
-        {
-            return;
-        }
-        lastPrintTime = Time.time;
-
         if (lastTime.TryGetValue(_key, out float value))
         {
-            if (Time.time - value < blockTime)
+            if (Time.time - value < keyTextCooldown)
                 return;
         }
 

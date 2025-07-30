@@ -27,10 +27,12 @@ public class ProceduralWorldManager : MonoBehaviour
     public int seed = 12345;
     public int regionCount = 50;
 
-    void Start()
+    public void GenerateWorld(int _seed)
     {
+        seed = _seed;
+
         // Step 1: 기본 육각형 타일 맵 생성
-        hexMapBase.GenerateHexMap(); 
+        hexMapBase.GenerateHexMap();
 
         // Step 2: 지역 분할 (Voronoi 기반)
         regionGenerator.GenerateRegions(hexMapBase.GeneratedTiles, regionCount, seed);
@@ -57,7 +59,7 @@ public class ProceduralWorldManager : MonoBehaviour
         // Step 6.5: 특수 구조물 배치
         specialStructurePlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
 
-        // Step 6: 바이옴 기반 자원 배치
+        // Step 6: 자원 군집 배치
         setPiecePlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
 
         // Step 7: 외곽에 물 타일 생성

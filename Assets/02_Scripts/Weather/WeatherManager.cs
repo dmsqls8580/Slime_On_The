@@ -49,6 +49,7 @@ public class WeatherManager : MonoBehaviour
 
     private void Start()
     {
+        Random.InitState((int)System.DateTime.Now.Ticks);
         StartCoroutine(WeatherLoop());
     }
 
