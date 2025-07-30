@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Apple
+  m_Name: Cheese
   m_EditorClassIdentifier: 
-  idx: 701
-  itemName: Apple
-  description: 
-  icon: {fileID: 1541863557, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
-  itemTypes: 9
+  idx: 70
+  itemName: Cheese
+  description: 'Icon Number: 319
+
+    IngredientTag = None'
+  icon: {fileID: 1466577526, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  itemTypes: 24
   stackable: 1
   maxStack: 99
   materialData:
@@ -29,6 +31,7 @@ MonoBehaviour:
     actSpd: 0
   equipableData:
     equipableType: 0
+    formId: 0
     maxHealth: 0
     atk: 0
     def: 0
@@ -36,11 +39,18 @@ MonoBehaviour:
     crt: 0
   eatableData:
     recoverHP: 0
-    fullness: 10
+    fullness: 0
     slimeGauge: 0
     duration: 0
-    rottenable: 1
-    permanent: 1
+    rottenable: 0
+    permanent: 0
+  cookableData:
+    tags: []
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
   placeableData:
     placeableInfo: {fileID: 0}
   recipe: []
