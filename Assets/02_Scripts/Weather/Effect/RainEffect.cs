@@ -8,6 +8,7 @@ public class RainEffect : WeatherEffectBase
     private readonly WeatherManager weatherManager;
     private readonly ParticleSystem particle;
     private readonly PlayerStatusManager playerStatusManager;
+
     private Coroutine coroutine;
 
     // 비가 내리거나 시작할때 까지 걸리는 시간.
