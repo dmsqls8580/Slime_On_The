@@ -245,12 +245,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         
         // Todo : 나중에 삭제
-        string currentMessage = $"CurrentState = {CurrentState}";
-        if (currentMessage != lastLogMessage)
-        {
-            Logger.Log(currentMessage);
-            lastLogMessage = currentMessage;
-        }
+        // string currentMessage = $"CurrentState = {CurrentState}";
+        // if (currentMessage != lastLogMessage)
+        // {
+        //     Logger.Log(currentMessage);
+        //     lastLogMessage = currentMessage;
+        // }
     }
     
     protected override IState<EnemyController, EnemyState> GetState(EnemyState state)

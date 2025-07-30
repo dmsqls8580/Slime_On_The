@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26f1db26876b19f419a4c8cf25dbcc50, type: 3}
-  m_Name: 2_RangedTest
+  m_Name: 0_Test
   m_EditorClassIdentifier: 
-  EnemyID: 2
-  EnemyName: RangedTest
+  EnemyID: 0
+  EnemyName: Test
   AttackType: 2
-  ProjectileID: 21
+  ProjectileID: 20
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -25,7 +25,7 @@ MonoBehaviour:
     Value: 40
   - StatType: 2
     ModifierType: 0
-    Value: 1
+    Value: 0
   - StatType: 3
     ModifierType: 0
     Value: 10
@@ -46,12 +46,15 @@ MonoBehaviour:
     Value: 5
   - StatType: 64
     ModifierType: 0
-    Value: 10
+    Value: 7
   - StatType: 65
     ModifierType: 0
-    Value: 5
+    Value: 0.7
+  - StatType: 66
+    ModifierType: 0
+    Value: 1
   - StatType: 67
     ModifierType: 0
-    Value: 3
+    Value: 0.1
   DropItems: []
   SpawnTerrain: 0

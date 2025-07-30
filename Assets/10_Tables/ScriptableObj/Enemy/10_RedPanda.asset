@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26f1db26876b19f419a4c8cf25dbcc50, type: 3}
-  m_Name: 5_Swampling
+  m_Name: 10_RedPanda
   m_EditorClassIdentifier: 
-  EnemyID: 5
-  EnemyName: Swampling
-  AttackType: 1
+  EnemyID: 10
+  EnemyName: RedPanda
+  AttackType: 2
   ProjectileID: 20
   EnemyStats:
   - StatType: 0
@@ -22,42 +22,39 @@ MonoBehaviour:
     Value: 100
   - StatType: 1
     ModifierType: 0
-    Value: 100
+    Value: 40
   - StatType: 2
     ModifierType: 0
-    Value: 10
+    Value: 1
   - StatType: 3
     ModifierType: 0
     Value: 10
   - StatType: 4
     ModifierType: 0
-    Value: 2
+    Value: 5
   - StatType: 60
     ModifierType: 0
     Value: 2
   - StatType: 61
     ModifierType: 0
-    Value: 5
+    Value: 4
   - StatType: 62
     ModifierType: 0
-    Value: 2
+    Value: 3
   - StatType: 63
     ModifierType: 0
     Value: 5
   - StatType: 64
     ModifierType: 0
-    Value: 5
+    Value: 7
   - StatType: 65
     ModifierType: 0
-    Value: 0.5
+    Value: 0.7
   - StatType: 66
     ModifierType: 0
-    Value: 0.5
+    Value: 1
   - StatType: 67
     ModifierType: 0
     Value: 0.1
-  DropItems:
-  - itemSo: {fileID: 11400000, guid: 52fe170ff9deb7840a6a4a1bd79c529c, type: 2}
-    amount: 1
-    dropChance: 100
+  DropItems: []
   SpawnTerrain: 0

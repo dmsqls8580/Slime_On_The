@@ -14,6 +14,7 @@ public enum ProjectileName
     None = 20,
     Bolt,
     Spark,
+    Bubble,
     
     // Boss
     TurtleSpell0 = 40,
