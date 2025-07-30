@@ -36,7 +36,7 @@ public class WeatherManager : MonoBehaviour
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
             { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume) },
             { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
-            { WeatherType.Storm, new StormEffect(lightningPrefab, lightningMark, playerStatusManager) },
+            { WeatherType.Storm, new StormEffect(playerStatusManager, lightningPrefab, lightningMark) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
             //{ WeatherType.Wind, new WindEffect() }
         };

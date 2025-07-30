@@ -7,15 +7,15 @@ public class StormEffect : WeatherEffectBase
 
     private float lightningTimer;
 
-    private GameObject lightningPrefab;
-    private GameObject lightningMark;
     private readonly PlayerStatusManager playerStatusManager;
+    private readonly GameObject lightningPrefab;
+    private readonly GameObject lightningMark;
 
-    public StormEffect(GameObject _lightningPrefab, GameObject _lightningMark, PlayerStatusManager _playerStatusManager)
+    public StormEffect(PlayerStatusManager _playerStatusManager, GameObject _lightningPrefab, GameObject _lightningMark)
     {
+        playerStatusManager = _playerStatusManager;
         lightningPrefab = _lightningPrefab;
         lightningMark = _lightningMark;
-        playerStatusManager = _playerStatusManager;
     }
 
     protected override void ApplyEffect()
