@@ -7,15 +7,21 @@ public class SnowEffect : WeatherEffectBase
 
     private readonly WeatherManager weatherManager;
     private readonly ParticleSystem particle;
+    private readonly PlayerStatusManager playerStatusManager;
+
     private Coroutine coroutine;
 
     // 눈이 내리거나 멈출때까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
 
-    public SnowEffect(WeatherManager _weatherManager, ParticleSystem _particle)
+    private readonly float effectInterval = 5f;
+    private float effectTimer = 0f;
+
+    public SnowEffect(WeatherManager _weatherManager, ParticleSystem _particle, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         particle = _particle;
+        playerStatusManager = _playerStatusManager;
     }
 
     protected override void ApplyEffect()
@@ -27,7 +33,7 @@ public class SnowEffect : WeatherEffectBase
             case 1:
                 break;
             case 2:
-                // 플레이어 미끄러짐 효과 적용 (예: PlayerController의 friction 값 변경)
+                // TODO: 플레이어 미끄러짐 효과 적용. PlayerController.Movement();
                 break;
         }
 
@@ -41,7 +47,22 @@ public class SnowEffect : WeatherEffectBase
 
     protected override void UpdateEffect()
     {
-        // player.TakeDamage(1 * Time.deltaTime);
+        effectTimer += Time.deltaTime;
+
+        if (effectTimer >= effectInterval)
+        {
+            effectTimer = 0f;
+
+            switch (currentLevel)
+            {
+                case 1:
+                    playerStatusManager.ConsumeHp(3f);
+                    break;
+                case 2:
+                    playerStatusManager.ConsumeHp(10f);
+                    break;
+            }
+        }
     }
 
     protected override void RemoveEffect()
@@ -49,7 +70,7 @@ public class SnowEffect : WeatherEffectBase
         switch (currentLevel)
         {
             case 2:
-                // 플레이어 미끄러짐 효과 제거.
+                // TODO: 플레이어 미끄러짐 효과 제거.
                 goto case 1;
             case 1:
                 break;

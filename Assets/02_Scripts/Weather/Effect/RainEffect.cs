@@ -8,12 +8,16 @@ public class RainEffect : WeatherEffectBase
     private readonly WeatherManager weatherManager;
     private readonly ParticleSystem particle;
     private readonly PlayerStatusManager playerStatusManager;
+
     private Coroutine coroutine;
 
     // 비가 내리거나 시작할때 까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
     // 날씨로 인한 이동속도 변화.
     private readonly float moveSpeed = 2f;
+
+    private readonly float effectInterval = 1.5f;
+    private float effectTimer = 0f;
 
     public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle, PlayerStatusManager _playerStatusManager)
     {
@@ -45,14 +49,21 @@ public class RainEffect : WeatherEffectBase
 
     protected override void UpdateEffect()
     {
-        switch (currentLevel)
+        effectTimer += Time.deltaTime;
+
+        if (effectTimer >= effectInterval)
         {
-            case 1:
-                playerStatusManager.RecoverSlimeGauge(1f);
-                break;
-            case 2:
-                playerStatusManager.RecoverSlimeGauge(4f);
-                break;
+            effectTimer = 0f;
+
+            switch (currentLevel)
+            {
+                case 1:
+                    playerStatusManager.RecoverSlimeGauge(1f);
+                    break;
+                case 2:
+                    playerStatusManager.RecoverSlimeGauge(4f);
+                    break;
+            }
         }
     }
 
