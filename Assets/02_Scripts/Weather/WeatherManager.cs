@@ -9,13 +9,13 @@ public class WeatherManager : MonoBehaviour
     [Header("날씨 데이터")]
     [SerializeField] private List<WeatherDataSO> weatherPatterns;
 
-    [Header("파티클 데이터")]
+    [Header("이펙트 참조")]
     [SerializeField] private ParticleSystem rainParticle;
     [SerializeField] private ParticleSystem snowParticle;
-
-    [Header("볼륨 데이터")]
     [SerializeField] private Volume fogVolume;
-    [SerializeField] private Volume HeatwaveVolume;
+    [SerializeField] private Volume heatwaveVolume;
+    [SerializeField] private GameObject lightningPrefab;
+    [SerializeField] private GameObject lightningMark;
 
     [Header("스크립트 참조")]
     [SerializeField] private PlayerStatusManager playerStatusManager;
@@ -34,10 +34,10 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, HeatwaveVolume) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume) },
             { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
+            { WeatherType.Storm, new StormEffect(lightningPrefab, lightningMark, playerStatusManager) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle) },
-            //{ WeatherType.Storm, new StormEffect() },
             //{ WeatherType.Wind, new WindEffect() }
         };
 
@@ -66,8 +66,8 @@ public class WeatherManager : MonoBehaviour
             // 다음 날씨 상태 결정.
             WeatherDataSO nextWeatherSO = GetNextWeather();
             HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherSO.type };
-            //if (nextWeatherSO.type == WeatherType.Rain && Random.Range(0, 4) == 0)
-            //{ nextWeatherTypes.Add(WeatherType.Storm); }
+            if (nextWeatherSO.type == WeatherType.Rain && Random.Range(0, 4) == 0)
+            { nextWeatherTypes.Add(WeatherType.Storm); }
 
             HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);
             // 현재 상태 - 다음 상태 = 제거할 것들.
