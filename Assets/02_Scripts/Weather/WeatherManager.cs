@@ -34,10 +34,10 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, playerStatusManager) },
             { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
             { WeatherType.Storm, new StormEffect(playerStatusManager, lightningPrefab, lightningMark) },
-            { WeatherType.Snow, new SnowEffect(this, snowParticle) },
+            { WeatherType.Snow, new SnowEffect(this, snowParticle, playerStatusManager) },
             //{ WeatherType.Wind, new WindEffect() }
         };
 
