@@ -1,4 +1,4 @@
-using BossStates;
+using Boss1States;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,19 +6,13 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class BossController : BaseController<BossController, BossState>, IDamageable, IAttackable, IPoolObject
+public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDamageable, IAttackable, IPoolObject, IBossController
 {
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
     
-    public BossStatus BossStatus;
-    public GameObject ChaseTarget;                         // 인식된 플레이어, 추격
-    public GameObject AttackTarget;                        // 공격 대상, 보스의 경우 다음 패턴 진행을 위한 조건
-    
-    public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
-    public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
     public bool IsBerserked => BossStatus.CurrentHealth <= BossStatus.MaxHealth * 0.5f;
     public float IdleDuration => BossStatus.BossSO.IdleDuration;
     public float Cast1Duration => BossStatus.BossSO.Cast1Duration;
@@ -67,7 +61,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     {
         if (BossStatus.CurrentHealth <= 0)
         {
-            ChangeState(BossState.Dead);
+            ChangeState(Boss1State.Dead);
 
             // 오브젝트 풀 반환
             // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
@@ -129,7 +123,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         {
             SetupState();
         }
-        ChangeState(BossState.Idle);
+        ChangeState(Boss1State.Idle);
         
         transform.position = SpawnPos; // 혹은 원하는 위치
         if (Agent.isOnNavMesh)
@@ -141,6 +135,19 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     public void OnReturnToPool()
     {
         gameObject.SetActive(false);
+    }
+    
+    /************************ IBossController ***********************/
+    public BossStatus BossStatus { get; set; }
+    public Transform Transform { get; set; }
+    public GameObject ChaseTarget { get; set; }            // 인식된 플레이어, 추격
+    public GameObject AttackTarget{ get; set; }            // 공격 대상, 보스의 경우 다음 패턴 진행을 위한 조건
+    public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
+    public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
+    
+    public void SetPlayerInAttackRange(bool _inRange)
+    {
+        IsPlayerInAttackRange = _inRange;
     }
     
     /************************ BossController ***********************/
@@ -160,7 +167,7 @@ public class BossController : BaseController<BossController, BossState>, IDamage
     protected override void Start()
     {
         base.Start();
-        ChangeState(BossState.Idle);
+        ChangeState(Boss1State.Idle);
         
         // SpawnPos에 현재 위치 저장
         SpawnPos = transform.position;
@@ -204,17 +211,17 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         }
     }
     
-    protected override IState<BossController, BossState> GetState(BossState state)
+    protected override IState<Boss1Controller, Boss1State> GetState(Boss1State state)
     {
         return state switch
         {
-            BossState.Idle => new IdleState(),
-            BossState.Wander => new WanderState(),
-            BossState.Chase => new ChaseState(),
-            BossState.Pattern1 => new Pattern1State(),
-            BossState.Pattern2 => new Pattern2State(),
-            BossState.Pattern3 => new Pattern3State(),
-            BossState.Dead => new DeadState(),
+            Boss1State.Idle => new IdleState(),
+            Boss1State.Wander => new WanderState(),
+            Boss1State.Chase => new ChaseState(),
+            Boss1State.Pattern1 => new Pattern1State(),
+            Boss1State.Pattern2 => new Pattern2State(),
+            Boss1State.Pattern3 => new Pattern3State(),
+            Boss1State.Dead => new DeadState(),
             _ => null
         };
     }
@@ -224,16 +231,11 @@ public class BossController : BaseController<BossController, BossState>, IDamage
         
     }
     
-    public void SetPlayerInAttackRange(bool _inRange)
-    {
-        IsPlayerInAttackRange = _inRange;
-    }
-    
-    public BossState EnterRandomPattern()
+    public Boss1State EnterRandomPattern()
     {
         // Pattern1, Pattern2, Pattern3 중 랜덤 선택
-        BossState[] patterns = { BossState.Pattern1, BossState.Pattern2, BossState.Pattern3 };
-        BossState nextPattern = patterns[Random.Range(0, patterns.Length)];
+        Boss1State[] patterns = { Boss1State.Pattern1, Boss1State.Pattern2, Boss1State.Pattern3 };
+        Boss1State nextPattern = patterns[Random.Range(0, patterns.Length)];
         ChangeState(nextPattern);
         return nextPattern;
     }
