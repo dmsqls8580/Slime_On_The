@@ -97,11 +97,21 @@ public class PlayerStatusManager : MonoBehaviour
     private IEnumerator DaySlimeGaugeRoutine(float _amount)
     {
         _amount = slimeConsumeAmount;
+
         while (true)
         {
             yield return new WaitForSeconds(1f);
             Logger.Log("daySlimeGauge");
-            switch (TimeManager.Instance.CurrentTimeOfDay)
+
+            var timeManager = GameManager.Instance?.timeManager;
+
+            if (timeManager == null)
+            {
+                Debug.LogWarning("[PlayerStatusManager] TimeManager에 접근할 수 없습니다.");
+                continue;
+            }
+
+            switch (timeManager.CurrentTimeOfDay)
             {
                 case TimeOfDay.Morning:
                 case TimeOfDay.Noon:
