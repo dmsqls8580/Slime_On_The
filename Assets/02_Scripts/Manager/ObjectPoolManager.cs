@@ -7,7 +7,7 @@ using UnityEngine.Events;
 [CustomEditor(typeof(ObjectPoolManager))]
 public class ObjectPoolEditor : Editor
 {
-    public override void OnInspectorGUI()
+    public override void OnInspectorGUI()   
     {
         DrawDefaultInspector();
 

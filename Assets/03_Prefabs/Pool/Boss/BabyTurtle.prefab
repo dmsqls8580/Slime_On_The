@@ -134,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7146008617771029887
 Transform:
   m_ObjectHideFlags: 0
@@ -167,10 +167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senseRangeCollider: {fileID: 573857962002313663}
   attackRangeCollider: {fileID: 3981034747902621903}
-  BossStatus: {fileID: 6197161597795217073}
-  ChaseTarget: {fileID: 0}
-  AttackTarget: {fileID: 0}
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  bossStatus: {fileID: 6197161597795217073}
 --- !u!114 &6197161597795217073
 MonoBehaviour:
   m_ObjectHideFlags: 0
