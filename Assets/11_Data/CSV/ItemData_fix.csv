@@ -1,5 +1,6 @@
 idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,power,luck,durability,equipableType,actSpd,maxHealth,atk,def,spd,crt,recoverHP,fullness,slimeGauge,duration,eatableRottable,freshness,placeType
-0,TestFormChange,,,Equipable,n,1,N,,,,,Core,,0,0,0,0,0,,,,,,,
+0,Water Melon,Icon Number: 189
+,,Eatable|Cookable,n,0,N,,,,,Core,,0,0,0,0,0,0,0,0,0,n,,
 2,Plank,판자,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 101,Copper Ore,광석,,Material,y,99,N,,,,,,,,,,,,,,,,,,
 102,Iron Ore,,,Material,y,99,N,,,,,,,,,,,,,,,,,,
@@ -36,6 +37,7 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 502,Glow Tulip Necklace,Accessory,,Equipable,n,1,,,,,,Amulet,,0,20,0,10,0,,,,,,,
 601,Wood Fence,Fence,,64,y,99,,,,,,,,,,,,,,,,,,,Building
 602,Wood Fence Gate,,,64,y,99,,,,,,,,,,,,,,,,,,,Building
-701,Apple,,,Material|Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
+701,Apple,Icon Number: 29
+IngredientTag = 2,,Material|Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
 801,Cooked Meat,Restores health and fills you up.,cooked_meat,Eatable,y,40,,,,,,,,,,,,,20,15,5,0,y,100,
 802,Winter Dinner,Food,,Eatable,y,40,,,,,,,,,,,,,100,50,20,0,y,100,

@@ -1,4 +1,3 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,7 @@ public enum ItemType
     BuffItem = 1 << 7,
 }
 
-public enum ToolType 
+public enum ToolType
 { 
     None = 0,
     Axe = 1, 
