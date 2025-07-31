@@ -218,15 +218,6 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             Logger.Log(currentMessage);
             lastLogMessage = currentMessage;
         }
-
-        if (BossStatus == null)
-        {
-            Logger.Log("BossStatus is null");
-        }
-        else
-        {
-            Logger.Log("BossStaus is not null");
-        }
     }
     
     protected override IState<Boss1Controller, Boss1State> GetState(Boss1State state)

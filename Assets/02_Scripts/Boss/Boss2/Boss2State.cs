@@ -200,6 +200,20 @@ namespace Boss2States
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
+            if (owner.IsDead)
+            {
+                return Boss2State.Dead;
+            }
+            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+            if (owner.ChaseTarget == null)
+            {
+                return Boss2State.Idle;
+            }
+            // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
+            if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
+            {
+                // Todo : 패턴 결정
+            }
             return Boss2State.Chase;
         }
     }
