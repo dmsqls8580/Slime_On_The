@@ -97,20 +97,20 @@ namespace PlayerStates
 
     public class DashState : IState<PlayerController, PlayerState>
     {
+        private const float consumeAmount = 50f;
         private float dashDuration = 0.2f;
         private float dashSpeed = 15f;
-        private const float consumeAmount = 50f;
         private float timer;
         private Vector2 dashDirection;
         private Vector2 lookDir;
 
         public void OnEnter(PlayerController _owner)
         {
-            if (_owner.PlayerStatus.CurrentStamina <= 0)
+            if (_owner.PlayerStatusManager.CurrentStamina < 50)
             {
                 return;
             }
-            _owner.PlayerStatus.ConsumeStamina(consumeAmount);
+            _owner.PlayerStatusManager.ConsumeStamina(consumeAmount);
             lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
 

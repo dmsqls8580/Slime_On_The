@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [System.Serializable]
+public class WorldObjectData
+{
+    public string prefabName;
+    public Vector3 position;
+    // public string biomeType;
+}
+
+[System.Serializable]
 public class SetPiece
 {
     public string name;
@@ -11,7 +19,6 @@ public class SetPiece
     public float radius = 5f;
     public int count = 10;
     public float jitter = 1.5f;
-    public float minSpacing = 1.5f; // 자원 간 최소 거리
 }
 
 [System.Serializable]
@@ -23,6 +30,8 @@ public class SetPieceData
 
 public class SetPiecePlacer : MonoBehaviour
 {
+    public List<WorldObjectData> PlacedResources { get; private set; } = new();
+
     [Header("세트 피스 설정")]
     public List<SetPieceData> biomeSetPieces;
 
@@ -30,12 +39,12 @@ public class SetPiecePlacer : MonoBehaviour
     public Tilemap groundTilemap;
     public Tilemap roadTilemap;
 
+    [Header("부모 오브젝트")]
+    public Transform resourceParent;
+
     [Header("기타 설정")]
     public int setPieceAttempts = 300;
     public int seed = 12345;
-
-    [Header("부모 오브젝트 (Hierarchy 정리용)")]
-    public GameObject resourcesParent;
 
     private System.Random prng;
 
@@ -50,10 +59,11 @@ public class SetPiecePlacer : MonoBehaviour
         for (int i = 0; i < setPieceAttempts; i++)
         {
             Vector3Int center = validTiles[prng.Next(validTiles.Count)];
-
-            if (!tileToRegion.TryGetValue(center, out int regionId)) continue;
-            if (!regionBiomes.TryGetValue(regionId, out BiomeType biome)) continue;
+            if (!tileToRegion.ContainsKey(center)) continue;
             if (roadTilemap.HasTile(center)) continue;
+
+            int regionId = tileToRegion[center];
+            BiomeType biome = regionBiomes[regionId];
 
             var biomeData = biomeSetPieces.FirstOrDefault(b => b.biome == biome);
             if (biomeData == null || biomeData.setPieces.Count == 0) continue;
@@ -68,23 +78,33 @@ public class SetPiecePlacer : MonoBehaviour
                     Random.Range(-selected.jitter, selected.jitter)
                 );
 
-                Vector3 worldPos = groundTilemap.CellToWorld(center) + (Vector3)offset;
+                Vector3 spawnPos = groundTilemap.CellToWorld(center) + (Vector3)offset;
+                Vector3Int spawnCell = groundTilemap.WorldToCell(spawnPos);
 
-                // 자원 간 거리 검사
-                if (placedPositions.Any(p => Vector3.Distance(p, worldPos) < selected.minSpacing)) continue;
+                // 1. 바이옴 범위 외 타일인지 확인
+                if (!tileToRegion.TryGetValue(spawnCell, out int spawnRegionId)) continue;
+                if (!regionBiomes.TryGetValue(spawnRegionId, out BiomeType spawnBiome)) continue;
+                if (spawnBiome != biome) continue;
 
-                // 콜라이더 피하기
-                if (Physics2D.OverlapCircleAll(worldPos, 0.4f).Length > 0) continue;
+                // 2. 거리 및 충돌 검사
+                if (placedPositions.Any(p => Vector3.Distance(p, spawnPos) < 1f)) continue;
+                if (Physics2D.OverlapCircleAll(spawnPos, 0.5f).Length > 0) continue;
 
+                // 3. 프리팹 생성
                 GameObject prefab = selected.prefabs[prng.Next(selected.prefabs.Count)];
-                GameObject instance = Instantiate(prefab, worldPos, Quaternion.identity);
+                GameObject instance = Instantiate(prefab, spawnPos, Quaternion.identity, resourceParent);
+                placedPositions.Add(spawnPos);
 
-                // 인스펙터에서 연결된 부모로 설정
-                if (resourcesParent != null)
-                    instance.transform.SetParent(resourcesParent.transform);
+                // 데이터 저장
+                PlacedResources.Add(new WorldObjectData
+                {
+                    prefabName = prefab.name,
+                    position = spawnPos,
+                    // biomeType = biome.ToString()
+                });
 
-                placedPositions.Add(worldPos);
             }
         }
     }
 }
+

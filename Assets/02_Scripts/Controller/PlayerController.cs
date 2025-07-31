@@ -12,7 +12,7 @@ namespace PlayerStates
     [RequireComponent(typeof(PlayerAnimationController))]
     [RequireComponent(typeof(Rigidbody2D))]
     [RequireComponent(typeof(Collider2D))]
-    [RequireComponent(typeof(PlayerStatus))]
+    [RequireComponent(typeof(PlayerStatusManager))]
     public class PlayerController : BaseController<PlayerController, PlayerState>, IAttackable, IDamageable
     {
         [SerializeField] private GameObject damageTextPrefab;
@@ -24,7 +24,7 @@ namespace PlayerStates
         public Transform attackPivotRotate;
         public Transform attackPivot;
         public Transform AttackPivot => attackPivot;
-        public PlayerStatus PlayerStatus { get; private set; }
+        public PlayerStatusManager PlayerStatusManager { get; private set; }
         
         private ToolController toolController;
         private InputController inputController;
@@ -72,7 +72,7 @@ namespace PlayerStates
 
         public IDamageable Target { get; }
 
-        public bool IsDead { get; private set; }
+        public bool IsDead { get; set; }
         public bool CanRespawn { get; set; }
         public Collider2D Collider => GetComponent<Collider2D>();
 
@@ -80,7 +80,7 @@ namespace PlayerStates
         {
             base.Awake();
             inputController = GetComponent<InputController>();
-            PlayerStatus = GetComponent<PlayerStatus>();
+            PlayerStatusManager = GetComponent<PlayerStatusManager>();
             playerSkillMananger = GetComponent<PlayerSkillMananger>();
             animationController = GetComponent<PlayerAnimationController>();
             toolController = GetComponent<ToolController>();
@@ -96,7 +96,7 @@ namespace PlayerStates
             PlayerTable playerTable = TableManager.Instance.GetTable<PlayerTable>();
             PlayerSO playerData = playerTable.GetDataByID(0);
 
-            PlayerStatus.Init(playerData);
+            PlayerStatusManager.Init(playerData);
             StatManager.Init(playerData);
 
             var action = inputController.PlayerActions;
@@ -195,7 +195,7 @@ namespace PlayerStates
         private void Attack0(InputAction.CallbackContext _context)
         {
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
-                PlayerStatus.CurrentSlimeGauge <= 0)
+                PlayerStatusManager.CurrentSlimeGauge <= 0)
                 return;
             if (CanAttack)
                 attackQueued = true;
@@ -203,7 +203,7 @@ namespace PlayerStates
         private void Attack1(InputAction.CallbackContext _context)
         {
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
-                PlayerStatus.CurrentSlimeGauge <= 0) 
+                PlayerStatusManager.CurrentSlimeGauge <= 0) 
                 return;
             if (CanAttack)
                 attackQueued = true;
@@ -211,7 +211,7 @@ namespace PlayerStates
 
         private void OnDash(InputAction.CallbackContext _context)
         {
-            if (PlayerStatus.CurrentStamina <= 0)
+            if (PlayerStatusManager.CurrentStamina <50)
             {
                 return;
             }
@@ -250,7 +250,9 @@ namespace PlayerStates
         {
             placeMode.Place();
         }
+        
         //--------------------------------------------------------------
+        
         public void Attack()
         {
             attackQueued = false;
@@ -269,7 +271,7 @@ namespace PlayerStates
         {
             base.Movement();
             
-            float speed = PlayerStatus.MoveSpeed;
+            float speed = PlayerStatusManager.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
 
@@ -371,7 +373,7 @@ namespace PlayerStates
             if (_attacker != null)
             {
                 // 피격
-                if (PlayerStatus == null)
+                if (PlayerStatusManager == null)
                 {
                     Logger.Log("EnemyStatus is null");
                 }
@@ -380,7 +382,7 @@ namespace PlayerStates
                 {
                     Logger.Log("AttackStat is null");
                 }
-                PlayerStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
+                PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;
                 
@@ -389,7 +391,7 @@ namespace PlayerStates
                 var damageText = textObj.GetComponent<DamageTextUI>();
                 damageText.Init(transform.position, damage, Color.red);
                 
-                if (PlayerStatus.CurrentHp <= 0)
+                if (PlayerStatusManager.CurrentHp <= 0)
                 {
                     Dead();
                 }
@@ -398,7 +400,7 @@ namespace PlayerStates
 
         public void Dead()
         {
-            if (PlayerStatus.CurrentHp <= 0)
+            if (PlayerStatusManager.CurrentHp <= 0)
             {
                 IsDead = true;
                 animationController.TriggerDead();
@@ -409,7 +411,7 @@ namespace PlayerStates
 
         public void TestDeath()
         {
-            PlayerStatus.ConsumeHp(50f);
+            PlayerStatusManager.ConsumeHp(50f);
             IsDead = true;
             animationController.TriggerDead();
             StartCoroutine(DelayDeathUI(3f, "행복사"));
