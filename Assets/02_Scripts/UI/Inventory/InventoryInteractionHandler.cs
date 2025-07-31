@@ -107,6 +107,8 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         var held = holdManager.HeldItem;
         if (held == null || !held.IsValid) return;
 
+        if (!_slot.IsItemAllowed(held)) return;
+        
         var slotData = _slot.GetData();
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
@@ -130,6 +132,8 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         var targetData = _slot.GetData();
         var heldData = holdManager.HeldItem;
         if (heldData == null || !heldData.IsValid) return;
+        
+        if (!_slot.IsItemAllowed(heldData)) return;
 
         if (targetData == null || !targetData.IsValid)
         {

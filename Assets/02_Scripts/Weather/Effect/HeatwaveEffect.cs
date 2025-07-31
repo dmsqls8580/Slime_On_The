@@ -8,14 +8,21 @@ public class HeatwaveEffect : WeatherEffectBase
 
     private readonly WeatherManager weatherManager;
     private readonly Volume volume;
+    private readonly PlayerStatusManager playerStatusManager;
 
     private Coroutine coroutine = null;
     private bool shouldStop = false;
 
-    public HeatwaveEffect(WeatherManager _weatherManager, Volume _volume)
+    private readonly float moveSpeed = 2f;
+
+    private readonly float effectInterval = 5f;
+    private float effectTimer = 0f;
+
+    public HeatwaveEffect(WeatherManager _weatherManager, Volume _volume, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         volume = _volume;
+        playerStatusManager = _playerStatusManager;
     }
 
     protected override void ApplyEffect()
@@ -27,14 +34,29 @@ public class HeatwaveEffect : WeatherEffectBase
                 StartHeatwave();
                 break;
             case 2:
-                // 플레이어 이동속도 감소.
+                playerStatusManager.UpdateMoveSpeed = -moveSpeed;
                 break;
         }
     }
 
     protected override void UpdateEffect()
     {
-        // 서서히 체력 감소.
+        effectTimer += Time.deltaTime;
+
+        if (effectTimer >= effectInterval)
+        {
+            effectTimer = 0f;
+
+            switch (currentLevel)
+            {
+                case 1:
+                    playerStatusManager.ConsumeHp(3f);
+                    break;
+                case 2:
+                    playerStatusManager.ConsumeHp(10f);
+                    break;
+            }
+        }
     }
 
     protected override void RemoveEffect()
@@ -42,7 +64,7 @@ public class HeatwaveEffect : WeatherEffectBase
         switch (currentLevel)
         {
             case 2:
-                // 플레이어 이동속도 되돌리기.
+                playerStatusManager.UpdateMoveSpeed = moveSpeed;
                 goto case 1;
             case 1:
                 Logger.Log("날씨: 폭염 꺼짐");
@@ -84,7 +106,6 @@ public class HeatwaveEffect : WeatherEffectBase
 
         volume.weight = target;
 
-        // Loop 시작
         coroutine = weatherManager.StartCoroutine(Loop());
     }
 

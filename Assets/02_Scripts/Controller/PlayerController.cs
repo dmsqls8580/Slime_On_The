@@ -195,7 +195,7 @@ namespace PlayerStates
         private void Attack0(InputAction.CallbackContext _context)
         {
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
-                PlayerStatusManager.CurrentSlimeGauge <= 0)
+                PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
             if (CanAttack)
                 attackQueued = true;
@@ -203,7 +203,7 @@ namespace PlayerStates
         private void Attack1(InputAction.CallbackContext _context)
         {
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
-                PlayerStatusManager.CurrentSlimeGauge <= 0) 
+                PlayerStatusManager.CurrentSlimeGauge < 5) 
                 return;
             if (CanAttack)
                 attackQueued = true;
