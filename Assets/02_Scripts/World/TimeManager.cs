@@ -11,7 +11,7 @@ public class TimeManager : MonoBehaviour
 {
     [Header("시간 설정")]
     private float secondsOfDay = 86400f;
-    [SerializeField] private float timeScale = 60f;
+    [SerializeField] private float timeScale = 180f;
 
     [Header("조명 설정")]
     [SerializeField] private Color dayLightColor;

@@ -4,6 +4,15 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [System.Serializable]
+public class SavedSpecialStructure
+{
+    public string prefabName;
+    public Vector3 position;
+    // public BiomeType biome;
+}
+
+
+[System.Serializable]
 public class SpecialStructureData
 {
     public BiomeType biome;
@@ -30,10 +39,14 @@ public class SpecialStructurePlacer : MonoBehaviour
 
     private System.Random prng;
 
+    public List<SavedSpecialStructure> PlacedStructures { get; private set; } = new();
+
     public void Place(Dictionary<Vector3Int, int> tileToRegionMap, Dictionary<int, BiomeType> regionBiomes)
     {
         prng = new System.Random(seed);
         UnityEngine.Random.InitState(seed);
+
+        PlacedStructures.Clear(); // 저장 목록 초기화
 
         // 1. 바이옴별 타일 수집
         Dictionary<BiomeType, List<Vector3Int>> biomeTiles = new();
@@ -59,6 +72,9 @@ public class SpecialStructurePlacer : MonoBehaviour
                 int tries = 0;
                 bool success = false;
 
+                GameObject selectedPrefab = null;
+                Vector3 selectedWorldPos = Vector3.zero;
+
                 while (tries++ < 100)
                 {
                     Vector3Int cellPos = candidateTiles[prng.Next(candidateTiles.Count)];
@@ -77,6 +93,9 @@ public class SpecialStructurePlacer : MonoBehaviour
                     if (structureParent != null)
                         instance.transform.SetParent(structureParent.transform);
 
+                    selectedPrefab = prefab;
+                    selectedWorldPos = worldPos;
+
                     placedPositions.Add(worldPos);
                     success = true;
                     break;
@@ -84,15 +103,22 @@ public class SpecialStructurePlacer : MonoBehaviour
 
                 if (!success)
                 {
-                    Debug.LogWarning($"[{structureData.biome}] 구조물 배치 실패 (충돌 또는 거리 조건 불만족)");
+                    Logger.Log($"[{structureData.biome}] 구조물 배치 실패");
+                }
+                else
+                {
+                    PlacedStructures.Add(new SavedSpecialStructure
+                    {
+                        prefabName = selectedPrefab.name,
+                        position = selectedWorldPos,
+                        // biome = structureData.biome
+                    });
                 }
             }
         }
     }
 
-    /// <summary>
-    /// 프리팹이 월드 위치 기준으로 길 타일과 겹치지 않는지 확인
-    /// </summary>
+    // 프리팹이 월드 위치 기준으로 길 타일과 겹치지 않는지 확인
     private bool CanPlaceWithoutOverlap(GameObject prefab, Vector3 worldPos)
     {
         if (prefab.TryGetComponent<Collider2D>(out var collider))
@@ -114,9 +140,7 @@ public class SpecialStructurePlacer : MonoBehaviour
         return true;
     }
 
-    /// <summary>
-    /// 바운드 안의 셀 좌표를 계산
-    /// </summary>
+    // 바운드 안의 셀 좌표를 계산
     private IEnumerable<Vector3Int> GetOverlappingCells(Bounds bounds)
     {
         int minX = Mathf.FloorToInt(bounds.min.x);

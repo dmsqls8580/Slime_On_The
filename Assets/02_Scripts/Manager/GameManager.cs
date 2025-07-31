@@ -54,7 +54,7 @@ public class GameManager : Singleton<GameManager>
     //}
 
     /// <summary>
-    /// 게임을 종료합니다.
+    /// 게임 종료
     /// </summary>
     public void QuitGame()
     {
