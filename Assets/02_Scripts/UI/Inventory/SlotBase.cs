@@ -49,6 +49,11 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
         Refresh();
     }
     
+    public virtual bool IsItemAllowed(ItemInstanceData data)
+    {
+        return true;
+    }
+    
     public virtual void OnSlotSelectedChanged(bool _isSelected)
     {
         
