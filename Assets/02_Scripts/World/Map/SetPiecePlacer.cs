@@ -4,6 +4,14 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 
 [System.Serializable]
+public class WorldObjectData
+{
+    public string prefabName;
+    public Vector3 position;
+    // public string biomeType;
+}
+
+[System.Serializable]
 public class SetPiece
 {
     public string name;
@@ -22,6 +30,8 @@ public class SetPieceData
 
 public class SetPiecePlacer : MonoBehaviour
 {
+    public List<WorldObjectData> PlacedResources { get; private set; } = new();
+
     [Header("세트 피스 설정")]
     public List<SetPieceData> biomeSetPieces;
 
@@ -82,8 +92,17 @@ public class SetPiecePlacer : MonoBehaviour
 
                 // 3. 프리팹 생성
                 GameObject prefab = selected.prefabs[prng.Next(selected.prefabs.Count)];
-                Instantiate(prefab, spawnPos, Quaternion.identity, resourceParent);
+                GameObject instance = Instantiate(prefab, spawnPos, Quaternion.identity, resourceParent);
                 placedPositions.Add(spawnPos);
+
+                // 데이터 저장
+                PlacedResources.Add(new WorldObjectData
+                {
+                    prefabName = prefab.name,
+                    position = spawnPos,
+                    // biomeType = biome.ToString()
+                });
+
             }
         }
     }

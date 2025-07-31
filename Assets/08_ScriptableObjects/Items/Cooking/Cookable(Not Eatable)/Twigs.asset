@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: CookedCake
+  m_Name: Twigs
   m_EditorClassIdentifier: 
-  idx: 801
-  itemName: Meat
-  description: eat
-  icon: {fileID: 0}
-  itemTypes: 8
-  stackable: 0
+  idx: 70
+  itemName: Twigs
+  description: 'Icon Number: 222'
+  icon: {fileID: -1625786892, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  itemTypes: 17
+  stackable: 1
   maxStack: 99
   materialData:
     rottenable: 0
@@ -29,6 +29,7 @@ MonoBehaviour:
     actSpd: 0
   equipableData:
     equipableType: 0
+    formId: 0
     maxHealth: 0
     atk: 0
     def: 0
@@ -36,20 +37,18 @@ MonoBehaviour:
     crt: 0
   eatableData:
     recoverHP: 0
-    fullness: 0
+    fullness: 10
     slimeGauge: 0
     duration: 0
-    rottenable: 0
-    permanent: 0
+    rottenable: 1
+    permanent: 1
   cookableData:
     tags: []
-    cookingTime: 0
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
   placeableData:
     placeableInfo: {fileID: 0}
-  recipe:
-  - item: {fileID: 11400000, guid: 86d6d2c6653257945890ec0bcbf06ceb, type: 2}
-    amount: 1
-  - item: {fileID: 11400000, guid: e5a953595735cce4580820184da5319f, type: 2}
-    amount: 1
-  - item: {fileID: 11400000, guid: 083c6cb90a9187644bd77974dc3f9e6a, type: 2}
-    amount: 1
+  recipe: []

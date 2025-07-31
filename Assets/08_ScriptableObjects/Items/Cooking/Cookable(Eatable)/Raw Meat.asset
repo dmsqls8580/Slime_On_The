@@ -10,15 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Ingredient2
+  m_Name: Raw Meat
   m_EditorClassIdentifier: 
-  idx: 255
-  itemName: 
-  description: 
-  icon: {fileID: 0}
-  itemTypes: 24
-  stackable: 0
-  maxStack: 99
+  idx: 702
+  itemName: Raw Meat
+  description: 'Icon Number: 31
+
+    IngredientTag = Meat'
+  icon: {fileID: -83556950, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
+  itemTypes: 8
+  stackable: 1
+  maxStack: 40
   materialData:
     rottenable: 0
   toolData:
@@ -29,21 +31,26 @@ MonoBehaviour:
     actSpd: 0
   equipableData:
     equipableType: 0
+    formId: 0
     maxHealth: 0
     atk: 0
     def: 0
     spd: 0
     crt: 0
   eatableData:
-    recoverHP: 0
-    fullness: 0
+    recoverHP: -10
+    fullness: 20
     slimeGauge: 0
     duration: 0
-    rottenable: 0
-    permanent: 0
+    rottenable: 1
+    permanent: 1
   cookableData:
     tags: []
-    cookingTime: 0
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
   placeableData:
     placeableInfo: {fileID: 0}
   recipe: []
