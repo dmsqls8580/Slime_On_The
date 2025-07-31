@@ -22,6 +22,9 @@ public class SoundManager : Singleton<SoundManager>
     [Header("SFX")]
     [SerializeField] private AudioSource SFXSource;
     [SerializeField] private List<AudioClip> SFXClips;
+    
+    public float GetBGMVolume() => BGMSource.volume;
+    public float GetSFXVolume() => SFXSource.volume;
 
 
     protected override void Awake()
@@ -38,7 +41,8 @@ public class SoundManager : Singleton<SoundManager>
 
     public void PlaySFX(SFX sfx)
     {
-        SFXSource.PlayOneShot(SFXClips[(int)sfx]);
+        float volumeScale = GetSFXVolumeScale(sfx);
+        SFXSource.PlayOneShot(SFXClips[(int)sfx], volumeScale);
     }
 
     public void ChangeBGMVolume(float volume)
@@ -49,5 +53,15 @@ public class SoundManager : Singleton<SoundManager>
     public void ChangeSFXVolume(float volume)
     {
         SFXSource.volume = volume;
+    }
+    
+    private float GetSFXVolumeScale(SFX sfx)
+    {
+        switch (sfx)
+        {
+            case SFX.SlimeNormalAttack: return 0.1f;
+            case SFX.Grount: return 1.0f;
+            default: return 1.0f;
+        }
     }
 }
