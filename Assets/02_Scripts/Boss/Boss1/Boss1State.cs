@@ -103,7 +103,7 @@ namespace Boss1States
             // 랜덤 방향으로 이동.
             OnMoveRandom(owner);
         }
-
+        
         public void OnUpdate(Boss1Controller owner)
         {
             

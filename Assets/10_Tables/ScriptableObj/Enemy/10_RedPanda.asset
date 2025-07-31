@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 10
   EnemyName: RedPanda
-  AttackType: 2
+  AttackType: 1
   ProjectileID: 20
+  SpawnTerrain: 1
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -57,4 +58,3 @@ MonoBehaviour:
     ModifierType: 0
     Value: 0.1
   DropItems: []
-  SpawnTerrain: 0

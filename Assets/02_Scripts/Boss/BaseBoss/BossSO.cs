@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-
 [CreateAssetMenu(fileName = "EnemySO", menuName = "ScriptableObjects/BossSO", order = 2)]
 public class BossSO : ScriptableObject, IStatProvider
 {

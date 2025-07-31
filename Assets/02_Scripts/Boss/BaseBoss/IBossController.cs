@@ -2,7 +2,7 @@ using UnityEngine;
 
 public interface IBossController
 {
-    public BossStatus BossStatus { get; }
+    public BossStatus BossStatus { get; set; }
     public Transform Transform { get; }
     public GameObject ChaseTarget { get; set; }
     public GameObject AttackTarget { get; set; }

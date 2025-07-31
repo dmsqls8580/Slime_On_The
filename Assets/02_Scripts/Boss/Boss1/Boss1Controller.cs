@@ -110,8 +110,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 
     /************************ IPoolObject ***********************/
     public GameObject GameObject => this.gameObject;
-    public string PoolID => BossStatus.BossSO != null
-        ? BossStatus.BossSO.BossID.ToString() :  "Invalid";
+    public string PoolID => BossStatus != null
+        ? BossStatus.BossSO.BossID.ToString() : "Invalid";
 
     public int PoolSize { get; } = 1;
     public void OnSpawnFromPool()
@@ -131,14 +131,19 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             Agent.Warp(transform.position);
         }
     }
-
+    
     public void OnReturnToPool()
     {
         gameObject.SetActive(false);
     }
     
     /************************ IBossController ***********************/
-    public BossStatus BossStatus { get; set; }
+    [SerializeField] private BossStatus bossStatus;
+    public BossStatus BossStatus
+    {
+        get => bossStatus;
+        set => bossStatus = value;
+    }
     public Transform Transform { get; set; }
     public GameObject ChaseTarget { get; set; }            // 인식된 플레이어, 추격
     public GameObject AttackTarget{ get; set; }            // 공격 대상, 보스의 경우 다음 패턴 진행을 위한 조건
@@ -161,6 +166,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         Animator = GetComponent<Animator>();
         spriteRenderer =  GetComponent<SpriteRenderer>();
         BossStatus = GetComponent<BossStatus>();
+        if (BossStatus == null)
+        {
+            Logger.Log("BossStatus is null");
+        }
         statManager = GetComponent<StatManager>();
     }
     
@@ -208,6 +217,15 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         {
             Logger.Log(currentMessage);
             lastLogMessage = currentMessage;
+        }
+
+        if (BossStatus == null)
+        {
+            Logger.Log("BossStatus is null");
+        }
+        else
+        {
+            Logger.Log("BossStaus is not null");
         }
     }
     

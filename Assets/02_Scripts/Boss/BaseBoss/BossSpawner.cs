@@ -27,15 +27,16 @@ public class BossSpawner : MonoBehaviour
 {
     [Header("스폰 몬스터 설정")]
     public float SpawnRadius = 10f;
-    public int BossTableIDX = 0;     // 스포너에 따라 다른 IDX로 몬스터 스폰
-
+    public BossSO BossSO;
+    // public int BossTableIDX = 0;     // 스포너에 따라 다른 IDX로 몬스터 스폰
+    
     private BossTable bossTable;
     private List<GameObject> spawnedboss = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
 
     private void Awake()
     {
-        bossTable = TableManager.Instance.GetTable<BossTable>();
+        // bossTable = TableManager.Instance.GetTable<BossTable>();
         circleCollider2D = GetComponent<CircleCollider2D>();
     }
     
@@ -46,20 +47,13 @@ public class BossSpawner : MonoBehaviour
 
     public void SpawnBoss()
     {
-        if (bossTable == null)
-        {
-            Logger.Log("BossTable == null");
-            return;
-        }
-
-        BossSO bossSO = bossTable.GetDataByID(BossTableIDX);
-        if (bossSO == null)
-        {
-            Logger.Log($"BossSO == null, IDX: {BossTableIDX}");
-            return;
-        }
+        // if (bossTable == null)
+        // {
+        //     Logger.Log("BossTable == null");
+        //     return;
+        // }
         
-        string poolID = bossSO.BossID.ToString();
+        string poolID = BossSO.BossID.ToString();
 
         Vector3 spawnPos = transform.position;
         GameObject boss = ObjectPoolManager.Instance.GetObject(poolID);
@@ -72,14 +66,15 @@ public class BossSpawner : MonoBehaviour
         boss.transform.position = spawnPos;
         boss.transform.rotation = Quaternion.identity;
 
-        if (boss.TryGetComponent<BossController>(out var controller))
+        if (boss.TryGetComponent<IBossController>(out var controller)
+            && boss.TryGetComponent<IPoolObject>(out var poolObj))
         {
             controller.SpawnPos = spawnPos;
-            controller.OnSpawnFromPool();
+            poolObj.OnSpawnFromPool();
         }
         else
         {
-            Debug.LogError($"Pool에서 Boss를 가져올 수 없습니다. PoolID: {bossSO.BossID.ToString()}");
+            Debug.LogError($"Pool에서 Boss를 가져올 수 없습니다. PoolID: {BossSO.BossID.ToString()}");
         }
         spawnedboss.Add(boss);
     }
