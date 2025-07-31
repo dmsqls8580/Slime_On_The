@@ -10,8 +10,8 @@ public class UIStartGame : UIBase
 
     public void OnClickCreateSave()
     {
-        //UIManager.Instance.Toggle<UICreateSave>();
-        SceneManager.LoadScene("MVP_Play_Test_Scene");
+        UIManager.Instance.Toggle<UIWorldSetting>();
+        //SceneManager.LoadScene("MVP_Play_Test_Scene");
     }
 
     public void OnClickCancel()

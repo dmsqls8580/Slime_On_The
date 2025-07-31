@@ -20,12 +20,15 @@ public class UISettings : UIBase
 
     public void OnInputMenuButton(int direction)
     {
-        int state = (nowState + direction) % 5;
+        int state = (nowState + direction) % menuBtnImage.Length;
+        if(state == -1) state = menuBtnImage.Length - 1;
         OnClickMenuButton(state);
     }
 
     public void OnClickMenuButton(int state)
     {
+        if(state == nowState) return;
+        
         for (int i = 0; i < menuBtnImage.Length; i++)
         {
             int index = i;
@@ -90,6 +93,7 @@ public class UISettings : UIBase
     
     public override void Close()
     {
+        nowState = -2;
         base.Close();
     }
 }
