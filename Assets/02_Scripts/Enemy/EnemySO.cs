@@ -14,6 +14,7 @@ public enum ProjectileName
     None = 20,
     Bolt,
     Spark,
+    Bubble,
     
     // Boss
     TurtleSpell0 = 40,
@@ -27,6 +28,7 @@ public enum ProjectileName
 
 public enum Terrain
 {
+    Test,
     Grass,
     Forest,
     Rocky,
@@ -41,9 +43,9 @@ public class EnemySO : ScriptableObject, IStatProvider
     public string EnemyName;
     public EnemyAttackType AttackType;         // Enemy 공격 타입
     public ProjectileName ProjectileID;  // Ranged 일때만 사용
+    public Terrain SpawnTerrain;
     
     public List<StatData> EnemyStats;
     public List<StatData> Stats => EnemyStats;
     public List<DropItemData> DropItems;
-    public Terrain SpawnTerrain;
 }
