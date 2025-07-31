@@ -25,16 +25,49 @@ public class EnemySpawnerEditor : Editor
     }
 }
 
+/*
+EnemyIDX
+
+Test
+0. 테스트
+1. 원거리테스트
+2. 소
+3. 다람쥐
+
+Grass
+10. 랫서판다
+11. 찐따벌
+
+Forest
+20. 촘 봄
+21. 당근이
+
+Rocky
+30. 패럿
+31. 블랙푸딩
+32. 고양이
+
+Desert
+40. 토끼
+41. 재카로프
+42. 쓰레기
+
+Marsh
+50, 어인
+51. 어인전사
+
+ */
+
 public class EnemySpawner : MonoBehaviour
 {
     [Header("스폰 몬스터 설정")]
     public int SpawnCount = 5;
     public float SpawnRadius = 10f;
-    public int EnemyTableIDX = 0;     // 스포너에 따라 다른 IDX로 몬스터 스폰
+    public EnemySO EnemySO;
 
-    private EnemyTable enemyTable;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
+    // private EnemyTable enemyTable;
 
     private void Awake()
     {
@@ -43,25 +76,18 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        enemyTable = TableManager.Instance.GetTable<EnemyTable>();
+        // enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         InitCollider();
     }
 
     public void SpawnEnemies()
     {
-        if (enemyTable.IsUnityNull())
-        {
-            enemyTable = TableManager.Instance.GetTable<EnemyTable>();
-        }
+        // if (enemyTable.IsUnityNull())
+        // {
+        //     enemyTable = TableManager.Instance.GetTable<EnemyTable>();
+        // }
         
-        EnemySO enemySO = enemyTable.GetDataByID(EnemyTableIDX);
-        if (enemySO == null)
-        {
-            Debug.LogError($"EnemySO == null, IDX: {EnemyTableIDX}");
-            return;
-        }
-        
-        string poolID = enemySO.EnemyID.ToString();
+        string poolID = EnemySO.EnemyID.ToString();
 
         for (int i = 0; i < SpawnCount; i++)
         {
@@ -87,7 +113,7 @@ public class EnemySpawner : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {enemySO.EnemyID.ToString()}");
+                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {EnemySO.EnemyID.ToString()}");
             }
             
             spawnedEnemies.Add(enemy); // 생성된 적 리스트에 추가
