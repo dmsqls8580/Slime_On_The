@@ -45,17 +45,6 @@ namespace Boss1States
         public void OnUpdate(Boss1Controller owner)
         {
             idleTimer += Time.deltaTime;
-            
-            // 플레이어가 너무 가까이 있을 경우 감지
-            GameObject player = owner.ChaseTarget;
-            if (player != null)
-            {
-                float distance = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (distance <= owner.BossStatus.AttackRange)
-                {
-                    owner.ChaseTarget = player;
-                }
-            }
         }
 
         public void OnFixedUpdate(Boss1Controller owner)
@@ -76,7 +65,7 @@ namespace Boss1States
                 return Boss1State.Dead;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return Boss1State.Chase;
             }
@@ -126,7 +115,7 @@ namespace Boss1States
                 return Boss1State.Dead;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return Boss1State.Chase;
             }
@@ -174,7 +163,7 @@ namespace Boss1States
         public void OnUpdate(Boss1Controller owner)
         {
             // Target의 위치를 추적해 이동.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 if (owner.IsPlayerInAttackRange)
                 {
@@ -182,7 +171,7 @@ namespace Boss1States
                 }
                 else
                 {
-                    owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                 }
             }
         }
@@ -205,12 +194,12 @@ namespace Boss1States
                 return Boss1State.Dead;
             }
             // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-            if (owner.ChaseTarget == null)
+            if (owner.AttackTarget == null)
             {
                 return Boss1State.Idle;
             }
             // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
-            if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
             {
                 return owner.EnterRandomPattern();
             }
@@ -260,7 +249,7 @@ namespace Boss1States
                     }
                     break;
                 case 1:
-                    if (owner.ChaseTarget != null &&  owner.IsPlayerInAttackRange)
+                    if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
                     {
                         // 이동 정지
                         owner.Agent.isStopped = true;
@@ -274,10 +263,10 @@ namespace Boss1States
                         
                         // Todo : Stomp 시 주변에 데미지
                     }
-                    else if (owner.ChaseTarget != null)
+                    else if (owner.AttackTarget != null)
                     {
                         // Chase
-                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                        owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                     }
                     break;
                 case 2:
@@ -314,7 +303,7 @@ namespace Boss1States
             {
                 return Boss1State.Dead;
             }
-            if (owner.ChaseTarget == null)
+            if (owner.AttackTarget == null)
             {
                 return Boss1State.Idle;
             }
@@ -364,7 +353,7 @@ namespace Boss1States
                     }
                     break;
                 case 1: // Stomp
-                    if (owner.ChaseTarget != null && owner.IsPlayerInAttackRange)
+                    if (owner.AttackTarget != null && owner.IsPlayerInAttackRange)
                     {
                         // 이동 정지
                         owner.Agent.isStopped = true;
@@ -375,9 +364,9 @@ namespace Boss1States
                         timer = 0f;
                         patternPhase = 2;
                     }
-                    else if (owner.ChaseTarget != null)
+                    else if (owner.AttackTarget != null)
                     {
-                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                        owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                     }
                     break;
                 case 2: // Chase
@@ -415,7 +404,7 @@ namespace Boss1States
             {
                 return Boss1State.Dead;
             }
-            if (owner.ChaseTarget == null)
+            if (owner.AttackTarget == null)
             {
                 return Boss1State.Idle;
             }
@@ -466,7 +455,7 @@ namespace Boss1States
                     }
                     break;
                 case 1: // Cast2
-                    if (owner.ChaseTarget != null)
+                    if (owner.AttackTarget != null)
                     {
                         // 이동 정지
                         owner.Agent.isStopped = true;
@@ -477,9 +466,9 @@ namespace Boss1States
                         timer = 0f;
                         patternPhase = 2;
                     }
-                    else if (owner.ChaseTarget != null)
+                    else if (owner.AttackTarget != null)
                     {
-                        owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                        owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                     }
                     break;
                 case 2: // Chase
@@ -516,7 +505,7 @@ namespace Boss1States
             {
                 return Boss1State.Dead;
             }
-            if (owner.ChaseTarget == null)
+            if (owner.AttackTarget == null)
             {
                 return Boss1State.Idle;
             }

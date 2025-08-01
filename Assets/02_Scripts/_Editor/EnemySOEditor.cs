@@ -11,22 +11,22 @@ public class EnemySOEditor : EditorWindow
     private EnemySO editingSO;
     private SerializedObject soObject;
     // -1은 아직 선택되지 않음을 의미(enum 값에 정의 되지 않은 값)
-    private EnemyAttackType prevAttackType = (EnemyAttackType)(-1);
+    private AttackType prevAttackType = (AttackType)(-1);
 
     // AttackType에 따라 자동으로 배열되는 스탯 딕셔너리
-    private static readonly Dictionary<EnemyAttackType, StatType[]> StatTemplates = new()
+    private static readonly Dictionary<AttackType, StatType[]> StatTemplates = new()
     {
-        { EnemyAttackType.None, new[] {
+        { AttackType.None, new[] {
             StatType.MaxHp, StatType.CurrentHp, StatType.Attack, StatType.Defense, StatType.MoveSpeed,
             StatType.AttackCooldown, StatType.MaxMoveDelay, StatType.MinMoveDelay, StatType.WanderRadius,
             StatType.SenseRange, StatType.AttackRange, StatType.FleeDistance
         }},
-        { EnemyAttackType.Neutral, new[] {
+        { AttackType.Neutral, new[] {
             StatType.MaxHp, StatType.CurrentHp, StatType.Attack, StatType.Defense, StatType.MoveSpeed,
             StatType.AttackCooldown, StatType.MaxMoveDelay, StatType.MinMoveDelay, StatType.WanderRadius,
             StatType.SenseRange, StatType.AttackRange, StatType.AttackRadius
         }},
-        { EnemyAttackType.Aggressive, new[] {
+        { AttackType.Aggressive, new[] {
             StatType.MaxHp, StatType.CurrentHp, StatType.Attack, StatType.Defense, StatType.MoveSpeed,
             StatType.AttackCooldown, StatType.MaxMoveDelay, StatType.MinMoveDelay, StatType.WanderRadius,
             StatType.SenseRange, StatType.AttackRange, StatType.AttackRadius
@@ -60,7 +60,7 @@ public class EnemySOEditor : EditorWindow
         if (soObject == null || soObject.targetObject != editingSO)
         {
             soObject = new SerializedObject(editingSO);
-            prevAttackType = (EnemyAttackType)soObject.FindProperty("AttackType").enumValueIndex;
+            prevAttackType = (AttackType)soObject.FindProperty("AttackType").enumValueIndex;
         }
 
         soObject.Update();
@@ -71,7 +71,7 @@ public class EnemySOEditor : EditorWindow
 
         // AttackType 변경 감지
         var attackTypeProp = soObject.FindProperty("AttackType");
-        var attackType = (EnemyAttackType)attackTypeProp.enumValueIndex;
+        var attackType = (AttackType)attackTypeProp.enumValueIndex;
         if (attackType != prevAttackType)
         {
             // 자동 스탯 세팅
@@ -95,7 +95,7 @@ public class EnemySOEditor : EditorWindow
             soObject.Update();
         }
 
-        if (attackType != EnemyAttackType.None)
+        if (attackType != AttackType.None)
         {
             EditorGUILayout.PropertyField(soObject.FindProperty("ProjectileID"), GUILayout.Width(400));
         }

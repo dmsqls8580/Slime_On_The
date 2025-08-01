@@ -13,6 +13,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     
+    public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
     private CameraController cameraController => AttackTarget != null
         ? AttackTarget.GetComponent<CameraController>() : null;
     private StatManager statManager;
@@ -22,6 +23,17 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private List<GameObject> leafSpells = new List<GameObject>();
     private string lastLogMessage = ""; // Todo : 나중에 삭제 
+    
+    /************************ AggroSystem ***********************/
+    
+    [Header("Aggro Settings")] 
+    public AggroSystem Aggro;
+    [SerializeField] private float stickTime = 1f;             // 타겟 최소 유지 시간
+    [SerializeField] private float decreaseDelayValue = 2f;    // 초당 감소하는 어그로 수치
+    [SerializeField] private float decreaseDelayTime = 1f;     // 어그로 수치 감소 사이 시간
+    [SerializeField] private float hitAggroValue = 30f;        // 피격 시 추가 어그로 (플레이어/몬스터 공통)
+    
+    public Coroutine aggroCoroutine;
     
     /************************ Item Drop ***********************/
     [Header("Drop Item Prefab")]
@@ -139,7 +151,6 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         set => bossStatus = value;
     }
     public Transform Transform { get; set; }
-    public GameObject ChaseTarget { get; set; }            // 인식된 플레이어, 추격
     public GameObject AttackTarget{ get; set; }            // 공격 대상, 보스의 경우 다음 패턴 진행을 위한 조건
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
@@ -149,7 +160,10 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         IsPlayerInAttackRange = _inRange;
     }
 
-    
+    public void SetPlayerInSenseRange(bool _inRange)
+    {
+        IsPlayerInSenseRange = _inRange;
+    }
     
     /************************ BossController ***********************/
 
@@ -163,6 +177,9 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         spriteRenderer =  GetComponent<SpriteRenderer>();
         BossStatus = GetComponent<BossStatus>();
         statManager = GetComponent<StatManager>();
+        Aggro = new AggroSystem(BossStatus.BossSO.AttackType,
+            target => IsPlayerInSenseRange,stickTime);
+        Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
     
     protected override void Start()
@@ -196,7 +213,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
         if (AttackTarget != null)
         {
-            Vector2 targetDir = ChaseTarget.transform.position - transform.position;
+            Vector2 targetDir = AttackTarget.transform.position - transform.position;
             lastFlipX = targetDir.x < 0;
         }
         
@@ -237,7 +254,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
-        Transform itemTarget = ChaseTarget.transform;
+        Transform itemTarget = AttackTarget.transform;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -265,5 +282,26 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
                 itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce); 
             } 
         }
+    }
+    
+    // 1초에 어그로 수치 2씩 감소 
+    public IEnumerator DecreaseAggroValue()
+    {
+        while (true)
+        {
+            Aggro.DecreaseAllAggro(decreaseDelayValue);
+            // 만약 타겟이 전부 사라지면 코루틴 종료
+            if (Aggro.IsEmpty)
+            {
+                aggroCoroutine = null;
+                yield break;
+            }
+            yield return new WaitForSeconds(decreaseDelayTime);
+        }
+    }
+    
+    private void OnAggroTargetChanged(GameObject newtarget, float newvalue)
+    {
+        AttackTarget = newtarget;
     }
 }
