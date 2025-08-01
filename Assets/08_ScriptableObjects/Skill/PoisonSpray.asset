@@ -10,13 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a716a806bdcc2b94fbc1e7a5cb918802, type: 3}
-  m_Name: FireBall
+  m_Name: PoisonSpray
   m_EditorClassIdentifier: 
   skillIndex: 1
-  skillName: FireBall
-  damage: 200
+  skillName: PoisonSpray
+  damage: 0.2
   speed: 5
   range: 5
-  cooldown: 10
+  cooldown: 0
   actionDuration: 0.5
-  useSlimeGauge: 50
+  useSlimeGauge: 2
+  sprayInterval: 0.05
+  sprayAngle: 30
+  bulletCount: 3

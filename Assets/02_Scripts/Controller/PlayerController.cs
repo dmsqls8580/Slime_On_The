@@ -265,6 +265,23 @@ namespace PlayerStates
             attackCooldown = _coolDown;
         }
 
+        /// <summary>
+        /// 일반공격버튼이 눌리고있는지 확인하는 bool메서드
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMouse01Pressed()
+        {
+            return inputController.PlayerActions.Attack0.IsPressed();
+        }
+        /// <summary>
+        /// 특수공격버튼이 눌리고있는지 확인하는 bool메서드
+        /// </summary>
+        /// <returns></returns>
+        public bool IsMouse02Pressed()
+        {
+            return inputController.PlayerActions.Attack1.IsPressed();
+        }
+        
         public void ResetAttackTrigger() => attackQueued = false;
 
         public override void Movement()
@@ -320,14 +337,21 @@ namespace PlayerStates
                 return false;
             }
             
-            if (!target.TryGetComponent(out DestroyableObject resource) || resource == null)
+            if (!target.TryGetComponent(out BaseInteractableObject resource) || resource == null)
             {
                 return false;
             }
+            if(resource.IsInteracted)
+                return false;
             
             ToolType toolType = selectedSlot.GetToolType();
             ToolType requiredToolType = resource.GetRequiredToolType();
             
+            if (requiredToolType == ToolType.None)
+            {
+                // 맨손 상호작용을 허용 (ex: Berry)
+                return true;
+            }
             return toolType == requiredToolType;
         }
 
