@@ -14,10 +14,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public bool IsBerserked => BossStatus.CurrentHealth <= BossStatus.MaxHealth * 0.5f;
-    public float IdleDuration => BossStatus.BossSO.IdleDuration;
-    public float Cast1Duration => BossStatus.BossSO.Cast1Duration;
-    public float Cast2Duration  => BossStatus.BossSO.Cast2Duration;
-    public float StompDuration  => BossStatus.BossSO.StompDuration;
+    public float IdleDuration = 2f;
+    public float Cast1Duration = 2f;
+    public float Cast2Duration = 2f;
+    public float StompDuration = 2f;
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
     
     private CameraController cameraController => AttackTarget != null

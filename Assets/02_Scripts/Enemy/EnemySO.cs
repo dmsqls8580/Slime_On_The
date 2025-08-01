@@ -15,6 +15,7 @@ public enum ProjectileName
     Bolt,
     Spark,
     Bubble,
+    BigBubble,
     
     // Boss
     TurtleSpell0 = 40,

@@ -9,11 +9,10 @@ public class ProceduralWorldManager : MonoBehaviour
     public RegionVoronoiGenerator regionGenerator;
     public BiomeAssigner biomeAssigner;
     public RoadConnector roadConnector;
-    public SetPiecePlacer setPiecePlacer;
-    public WaterRingApplier waterRingApplier;
-
-    [Header("특수 구조물")]
     public SpecialStructurePlacer specialStructurePlacer;
+    public SetPiecePlacer setPiecePlacer;
+    public BiomeDecorationPlacer biomeDecorationPlacer;
+    public EnemySpawnerPlacer enemySpawnerPlacer;
 
     [Header("타일 설정")]
     public Tilemap groundTilemap;
@@ -62,7 +61,10 @@ public class ProceduralWorldManager : MonoBehaviour
         // Step 6: 자원 군집 배치
         setPiecePlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
 
-        // Step 7: 외곽에 물 타일 생성
-        waterRingApplier.Apply(hexMapBase.GeneratedTiles, regionGenerator.TileToRegionMap);
+        // Step 7: 바이옴에 데코 타일 생성
+        biomeDecorationPlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
+
+        // Step 8: 몬스터 스포너 배치
+        enemySpawnerPlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
     }
 }
