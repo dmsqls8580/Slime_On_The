@@ -56,7 +56,7 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
     private void Awake()
     {
         // Todo : 게임 매니저에서 할당
-        Init();
+        // Init();
     }
     
     private void Start()
