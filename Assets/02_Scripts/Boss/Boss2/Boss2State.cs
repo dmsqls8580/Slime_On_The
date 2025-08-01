@@ -19,7 +19,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -36,7 +36,7 @@ namespace Boss2States
             
             owner.Animator.SetBool(isWanderingHash, false);
             owner.Animator.SetBool(isChasingHash, false);
-            owner.Animator.SetBool(isMeleeHash, false);
+            owner.Animator.SetBool(isBubbleMeleeHash, false);
             owner.Animator.SetBool(isBubble1Hash, false);
             owner.Animator.SetBool(isBubble2Hash, false);
         }
@@ -81,7 +81,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -151,7 +151,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -207,11 +207,11 @@ namespace Boss2States
         }
     }
     
-    public class MeleeState :  IState<Boss2Controller, Boss2State>
+    public class BubbleMeleeState :  IState<Boss2Controller, Boss2State>
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -245,7 +245,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -279,7 +279,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
