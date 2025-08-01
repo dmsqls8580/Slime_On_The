@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ToolController : MonoBehaviour
@@ -10,7 +11,7 @@ public class ToolController : MonoBehaviour
 
     public void EquipTool(ITool _tool)
     {
-        if(equippedTool==_tool)
+        if(equippedTool==_tool&&!_tool.IsUnityNull())
             return;
         
         equippedTool = _tool;
