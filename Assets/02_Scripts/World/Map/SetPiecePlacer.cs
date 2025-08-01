@@ -86,6 +86,9 @@ public class SetPiecePlacer : MonoBehaviour
                 if (!regionBiomes.TryGetValue(spawnRegionId, out BiomeType spawnBiome)) continue;
                 if (spawnBiome != biome) continue;
 
+                // ✅ 길 타일 위인지 확인
+                if (roadTilemap.HasTile(spawnCell)) continue;
+
                 // 2. 거리 및 충돌 검사
                 if (placedPositions.Any(p => Vector3.Distance(p, spawnPos) < 1f)) continue;
                 if (Physics2D.OverlapCircleAll(spawnPos, 0.5f).Length > 0) continue;

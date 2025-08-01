@@ -8,9 +8,7 @@ public class SavedSpecialStructure
 {
     public string prefabName;
     public Vector3 position;
-    // public BiomeType biome;
 }
-
 
 [System.Serializable]
 public class SpecialStructureData
@@ -31,22 +29,22 @@ public class SpecialStructurePlacer : MonoBehaviour
     public Tilemap groundTilemap;
     public Tilemap roadTilemap;
 
-    [Header("부모 오브젝트 (Hierarchy 정리용)")]
+    [Header("부모 오브젝트")]
     public GameObject structureParent;
 
     [Header("기본 설정")]
     public int seed = 12345;
 
-    private System.Random prng;
-
     public List<SavedSpecialStructure> PlacedStructures { get; private set; } = new();
+
+    private System.Random prng;
 
     public void Place(Dictionary<Vector3Int, int> tileToRegionMap, Dictionary<int, BiomeType> regionBiomes)
     {
         prng = new System.Random(seed);
         UnityEngine.Random.InitState(seed);
 
-        PlacedStructures.Clear(); // 저장 목록 초기화
+        PlacedStructures.Clear();
 
         // 1. 바이옴별 타일 수집
         Dictionary<BiomeType, List<Vector3Int>> biomeTiles = new();
@@ -55,7 +53,9 @@ public class SpecialStructurePlacer : MonoBehaviour
             int regionId = kvp.Value;
             if (!regionBiomes.TryGetValue(regionId, out var biome)) continue;
 
-            if (!biomeTiles.ContainsKey(biome)) biomeTiles[biome] = new();
+            if (!biomeTiles.ContainsKey(biome))
+                biomeTiles[biome] = new();
+
             biomeTiles[biome].Add(kvp.Key);
         }
 
@@ -81,12 +81,16 @@ public class SpecialStructurePlacer : MonoBehaviour
                     if (!tileToRegionMap.TryGetValue(cellPos, out int regionId)) continue;
                     if (!regionBiomes.TryGetValue(regionId, out var biome) || biome != structureData.biome) continue;
 
-                    Vector3 worldPos = groundTilemap.CellToWorld(cellPos) + new Vector3(0.5f, 0.5f, 0);
+                    // 위치 보정: 중심 정렬
+                    Vector3 worldPos = groundTilemap.CellToWorld(cellPos);
+                    worldPos.x = Mathf.Round(worldPos.x);
+                    worldPos.y = Mathf.Round(worldPos.y);
+
                     if (placedPositions.Any(p => Vector3.Distance(p, worldPos) < structureData.minSpacing)) continue;
 
                     GameObject prefab = structureData.prefabs[prng.Next(structureData.prefabs.Count)];
 
-                    // 바운딩 박스 검사
+                    // 충돌 검사
                     if (!CanPlaceWithoutOverlap(prefab, worldPos)) continue;
 
                     GameObject instance = Instantiate(prefab, worldPos, Quaternion.identity);
@@ -110,50 +114,42 @@ public class SpecialStructurePlacer : MonoBehaviour
                     PlacedStructures.Add(new SavedSpecialStructure
                     {
                         prefabName = selectedPrefab.name,
-                        position = selectedWorldPos,
-                        // biome = structureData.biome
+                        position = selectedWorldPos
                     });
                 }
             }
         }
     }
 
-    // 프리팹이 월드 위치 기준으로 길 타일과 겹치지 않는지 확인
+    // 구조물 프리팹이 길 타일과 겹치는지 확인
     private bool CanPlaceWithoutOverlap(GameObject prefab, Vector3 worldPos)
     {
-        if (prefab.TryGetComponent<Collider2D>(out var collider))
+        // 임시 인스턴스 생성 (HideFlags로 비표시)
+        GameObject temp = Instantiate(prefab, worldPos, Quaternion.identity);
+        temp.hideFlags = HideFlags.HideAndDontSave;
+
+        var tilemap = temp.GetComponentInChildren<Tilemap>();
+        var tileCollider = temp.GetComponentInChildren<TilemapCollider2D>();
+
+        bool overlaps = false;
+
+        if (tilemap != null && tileCollider != null)
         {
-            Vector3 size = collider.bounds.size;
-            Bounds bounds = new(worldPos, size);
-
-            // 길 타일 체크
-            foreach (Vector3Int cell in GetOverlappingCells(bounds))
+            BoundsInt bounds = tilemap.cellBounds;
+            foreach (var pos in bounds.allPositionsWithin)
             {
-                if (roadTilemap.HasTile(cell)) return false;
-            }
+                if (!tilemap.HasTile(pos)) continue;
 
-            // 일반 충돌 체크
-            if (Physics2D.OverlapBox(worldPos, size, 0f) != null)
-                return false;
-        }
-
-        return true;
-    }
-
-    // 바운드 안의 셀 좌표를 계산
-    private IEnumerable<Vector3Int> GetOverlappingCells(Bounds bounds)
-    {
-        int minX = Mathf.FloorToInt(bounds.min.x);
-        int maxX = Mathf.CeilToInt(bounds.max.x);
-        int minY = Mathf.FloorToInt(bounds.min.y);
-        int maxY = Mathf.CeilToInt(bounds.max.y);
-
-        for (int x = minX; x <= maxX; x++)
-        {
-            for (int y = minY; y <= maxY; y++)
-            {
-                yield return groundTilemap.WorldToCell(new Vector3(x, y, 0));
+                Vector3Int worldCell = roadTilemap.WorldToCell(tilemap.CellToWorld(pos) + (worldPos - tilemap.transform.position));
+                if (roadTilemap.HasTile(worldCell))
+                {
+                    overlaps = true;
+                    break;
+                }
             }
         }
+
+        DestroyImmediate(temp);
+        return !overlaps;
     }
 }
