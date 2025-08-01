@@ -19,6 +19,9 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private AnimationCurve lightCurve;
     [SerializeField] private Light2D globalLight;
 
+    [Header("스크립트 참조")]
+    [SerializeField] private WeatherManager weatherManager;
+
     [Header("디버그/테스트용")]
     [SerializeField] private float time = 21600f; // 오전 6시 시작
     [SerializeField] private int days = 0;
@@ -54,16 +57,21 @@ public class TimeManager : MonoBehaviour
 #if UNITY_EDITOR
         if (!Application.isPlaying) return;
 #endif
-        float t = time;
+        TimeOfDay previousTimeOfDay = GetCurrentTimeOfDay();
 
-        if (t < dawnEnd)
-            currentTimeOfDay = TimeOfDay.Dawn;
-        else if (t < dayEnd)
-            currentTimeOfDay = TimeOfDay.Day;
-        else if (t < eveningEnd)
-            currentTimeOfDay = TimeOfDay.Evening;
-        else
-            currentTimeOfDay = TimeOfDay.Night;
+        if (previousTimeOfDay != currentTimeOfDay)
+        {
+            currentTimeOfDay = previousTimeOfDay;
+            weatherManager.UpdateDayCount();
+        }
+    }
+
+    private TimeOfDay GetCurrentTimeOfDay()
+    {
+        if (time < dawnEnd) return TimeOfDay.Dawn;
+        if (time < dayEnd) return TimeOfDay.Day;
+        if (time < eveningEnd) return TimeOfDay.Evening;
+        return TimeOfDay.Night;
     }
 
     IEnumerator NextDay()
