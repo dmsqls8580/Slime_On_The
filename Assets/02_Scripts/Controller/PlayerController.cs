@@ -320,7 +320,7 @@ namespace PlayerStates
                 return false;
             }
             
-            if (!target.TryGetComponent(out Resource resource) || resource == null)
+            if (!target.TryGetComponent(out DestroyableObject resource) || resource == null)
             {
                 return false;
             }
