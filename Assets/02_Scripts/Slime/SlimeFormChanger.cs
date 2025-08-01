@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using System.Collections;
 
 [System.Serializable]
 public class FormData
@@ -18,7 +19,9 @@ public class FormData
 public class SlimeFormChanger : MonoBehaviour
 {
     [SerializeField] private List<FormData> formDataList;
+    [SerializeField] private GameObject uiBlockerPanel;
     [SerializeField] private int defaultFormId = 0;
+    [SerializeField] private float changeCooldown;
     
     private PlayerSkillMananger playerSkillManager;
     private SlimeFormChangeEffect changeEffect;
@@ -26,7 +29,7 @@ public class SlimeFormChanger : MonoBehaviour
     private Animator animator;
     
     private Dictionary<int, FormData> formDataDic;
-    
+
     public event Action<FormData> OnFormChanged;
     
     private void Awake()
@@ -49,15 +52,23 @@ public class SlimeFormChanger : MonoBehaviour
     {
         if (!changeEffect.IsUnityNull())
         {
+            uiBlockerPanel.SetActive(true);
             changeEffect.StartFormChangeEffect(() =>
             {
                 ChangeForm(_formId);
+                StartCoroutine(UnblockUIAfterCooldown());
             });
         }
         else
         {
             ChangeForm(_formId);
         }
+    }
+
+    private IEnumerator UnblockUIAfterCooldown()
+    {
+        yield return new WaitForSeconds(changeCooldown);
+        uiBlockerPanel.SetActive(false);
     }
 
     public void ChangeForm(int _formId)
