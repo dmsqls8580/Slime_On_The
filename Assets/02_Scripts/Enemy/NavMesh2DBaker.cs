@@ -14,8 +14,8 @@ public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
         Surface2D = GetComponent<NavMeshSurface>();
         
         // Todo : 게임매니저에서 할당
-        Surface2D.BuildNavMesh();
-        StartCoroutine(TickUpdate());
+        // Surface2D.BuildNavMesh();
+        // StartCoroutine(TickUpdate());
     }
 
     // 외부에서 사용할 수 있도록 public으로 제작한 메서드
@@ -28,6 +28,7 @@ public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
     private IEnumerator DelayBakeNavMesh()
     {
         yield return null;
+        Logger.Log("Baking NavMesh");
         Surface2D.BuildNavMesh();
         StartCoroutine(TickUpdate());
     }

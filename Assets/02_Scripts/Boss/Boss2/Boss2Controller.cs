@@ -21,7 +21,6 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
-    private List<GameObject> leafSpells = new List<GameObject>();
     private string lastLogMessage = ""; // Todo : 나중에 삭제 
     
     /************************ AggroSystem ***********************/
@@ -249,6 +248,24 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         
     }
     
+    // Melee 상태에서 호출할 공격 패턴
+    public void Melee()
+    {
+        
+    }
+    
+    // Bubble1 상태에서 호출할 공격 패턴
+    public void Bubble1()
+    {
+        
+    }
+    
+    
+    // Bubble2 상태에서 호출할 공격 패턴
+    public void Bubble2()
+    {
+        
+    }
     
     
     private void DropItems(Transform transform)
