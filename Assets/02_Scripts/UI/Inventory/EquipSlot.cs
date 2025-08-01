@@ -65,7 +65,7 @@ public class EquipSlot : SlotBase
             var formChanger = FindObjectOfType<SlimeFormChanger>();
             if (_apply)
             {
-                formChanger.ChangeForm(equipData.formId);
+                formChanger.RequestFormChange(equipData.formId);
             }
             else
                 formChanger.ResetForm();

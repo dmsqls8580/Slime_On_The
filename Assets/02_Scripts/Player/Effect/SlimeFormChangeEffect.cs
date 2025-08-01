@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,11 +10,9 @@ public class SlimeFormChangeEffect : MonoBehaviour
 
     [Header("연출용 오브젝트")]
     [SerializeField] private InputController inputController;
-    [SerializeField] private Camera playerOnlyCamera; // 플레이어만 찍는 카메라
-    [SerializeField] private RawImage playerRawImage; // RenderTexture 출력용 RawImage
     [SerializeField] private SpriteRenderer playerRenderer; 
     [SerializeField] private Animator playerAnimator;      
-    [SerializeField]private Material changeEffectMaterial;
+    [SerializeField] private Material changeEffectMaterial;
 
     [Header("연출 파라미터")]
     [SerializeField] private string transformAnimTrigger = "Transform";
@@ -22,103 +21,87 @@ public class SlimeFormChangeEffect : MonoBehaviour
     [SerializeField] private float slowTimeScale = 0.3f;
     [SerializeField] private float slowTimeDuration = 1.0f;
 
-    private Camera mainCamera;
-    private int playerLayer;
-    private int mainCameraOriginalMask;
     private float mainCameraOriginalSize;
     private float blendAmountBackup;
-    
+    private Camera mainCamera;
     private Material originalMaterial;
+
     private void Awake()
     {
         mainCamera = Camera.main;
-        playerLayer = LayerMask.NameToLayer("Player");
 
         if (mainCamera != null)
             mainCameraOriginalSize = mainCamera.orthographicSize;
 
         if (playerRenderer != null && playerRenderer.material.HasProperty(BlendAmount))
             blendAmountBackup = playerRenderer.material.GetFloat(BlendAmount);
-        
-        if(!playerRenderer.IsUnityNull())
+
+        if (!playerRenderer.IsUnityNull())
             originalMaterial = playerRenderer.material;
     }
 
-    private void Update()
+    public void StartFormChangeEffect(Action _onChange)
     {
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            StartFormChangeEffect();
-        }
+        StartCoroutine(AnimStart(_onChange));
     }
 
-    public void StartFormChangeEffect()
+    private IEnumerator AnimStart(Action _onChange)
     {
-        StartCoroutine(AnimStart());
-    }
-
-    private IEnumerator AnimStart()
-    {
-        inputController.PlayerActions.Disable();  
+        // 입력 비활성화
+        inputController.PlayerActions.Disable();
+        // 임시 연출 머테리얼 적용
         playerRenderer.material = changeEffectMaterial;
-        
-        mainCameraOriginalMask = mainCamera.cullingMask;
-        mainCamera.cullingMask &= ~(1 << playerLayer);
-        
-        playerOnlyCamera.orthographicSize = mainCameraOriginalSize;
-        playerOnlyCamera.gameObject.SetActive(true);
-        playerRawImage.gameObject.SetActive(true);
-       
+
+        // 애니메이터 시간 독립
         var originUpdateMode = playerAnimator.updateMode;
         playerAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
         // 시간 느리게
         Time.timeScale = slowTimeScale;
 
         // 카메라 줌인
         float t = 0f;
-        
+        float startSize = mainCamera.orthographicSize;
         while (t < zoomTime)
         {
             t += Time.unscaledDeltaTime;
             float lerp = Mathf.Clamp01(t / zoomTime);
-            playerOnlyCamera.orthographicSize = Mathf.Lerp(mainCameraOriginalSize, zoomInSize, lerp);
+            mainCamera.orthographicSize = Mathf.Lerp(mainCameraOriginalSize, zoomInSize, lerp);
             yield return null;
         }
+        mainCamera.orthographicSize = zoomInSize;
 
         // 플레이어 하얗게 (BlendAmount 1로)
         yield return StartCoroutine(BlendAmountLerp(blendAmountBackup, 1f, 0.3f));
 
         // 변신 애니메이션 
         playerAnimator.SetTrigger(transformAnimTrigger);
-        
+
+        // 애니메이션/슬로우 지속시간
         yield return new WaitForSecondsRealtime(slowTimeDuration);
 
+        _onChange?.Invoke();
         // BlendAmount 복구
         yield return StartCoroutine(BlendAmountLerp(1f, blendAmountBackup, 0.3f));
 
-        // 카메라줌아웃
+        // 카메라 줌아웃 복구
         t = 0f;
         while (t < zoomTime)
         {
             t += Time.unscaledDeltaTime;
             float lerp = Mathf.Clamp01(t / zoomTime);
-            playerOnlyCamera.orthographicSize = Mathf.Lerp(zoomInSize, mainCameraOriginalSize, lerp);
+            mainCamera.orthographicSize = Mathf.Lerp(zoomInSize, mainCameraOriginalSize, lerp);
             yield return null;
         }
-        playerOnlyCamera.orthographicSize = mainCameraOriginalSize;
+        mainCamera.orthographicSize = mainCameraOriginalSize;
 
-        // 시간원래대로
+        // 시간 원복
         Time.timeScale = 1f;
-
         playerAnimator.updateMode = originUpdateMode;
-        
+
+        // 입력/머테리얼 원복
         inputController.PlayerActions.Enable();
         playerRenderer.material = originalMaterial;
-        
-        mainCamera.cullingMask = mainCameraOriginalMask;
-        
-        playerOnlyCamera.gameObject.SetActive(false);
-        playerRawImage.gameObject.SetActive(false);
     }
 
     private IEnumerator BlendAmountLerp(float _from, float _to, float _duration)

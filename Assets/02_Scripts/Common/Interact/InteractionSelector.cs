@@ -121,7 +121,7 @@ public class InteractionSelector : MonoBehaviour
     private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D _collider)
     {
 
-        if (_collider.TryGetComponent(out Resource resource))
+        if (_collider.TryGetComponent(out DestroyableObject resource))
         {
             var selectedSlot = uiQuickSlot?.GetSelectedSlot();
             

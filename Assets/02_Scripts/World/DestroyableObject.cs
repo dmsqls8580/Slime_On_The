@@ -1,15 +1,17 @@
+using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
-public enum ResourceType
+public enum ObjectType
 {
     Tree,
     Ore ,
-    
+    Placed
 }
 
 [System.Serializable]
@@ -20,11 +22,11 @@ public class DropItemData
     [Range(0f, 100f)] public float dropChance = 100f; //아이템 드랍확률 100%
 }
 
-public class Resource : MonoBehaviour, IInteractable
+public class DestroyableObject : MonoBehaviour, IInteractable
 {
     [Header("Drop Item Data Info(SO, 개수, 확률)")]
     [SerializeField] private List<DropItemData> dropItems;
-    [SerializeField] private ResourceType resourceType;
+    [FormerlySerializedAs("resourceType")] [SerializeField] private ObjectType objectType;
 
     [SerializeField] private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
 
@@ -82,6 +84,9 @@ public class Resource : MonoBehaviour, IInteractable
         float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
         TakeInteraction(toolPower);
 
+        if (_type == InteractionCommandType.F)
+            UIManager.Instance.Toggle<UICrafting>();
+        
         if (currentHealth <= 0)
         {
             DropItems(_playerController.transform);
@@ -90,18 +95,20 @@ public class Resource : MonoBehaviour, IInteractable
     }
     public ToolType GetRequiredToolType()
     {
-        switch (resourceType)
+        switch (objectType)
         {
-            case ResourceType.Tree:
+            case ObjectType.Tree:
                 return ToolType.Axe;
-            case ResourceType.Ore:
+            case ObjectType.Ore:
                 return ToolType.Pickaxe;
+            case ObjectType.Placed:
+                return ToolType.Shovel;
             default:
                 return ToolType.None;
         }
     }
 
-    public void TakeInteraction(float _damage)
+    private void TakeInteraction(float _damage)
     {
         currentHealth -= _damage;
         Logger.Log($"{currentHealth}");

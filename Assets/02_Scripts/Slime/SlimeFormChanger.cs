@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using System;
+using System.Collections;
 
 [System.Serializable]
 public class FormData
@@ -16,33 +18,65 @@ public class FormData
 
 public class SlimeFormChanger : MonoBehaviour
 {
+    [SerializeField] private List<FormData> formDataList;
+    [SerializeField] private GameObject uiBlockerPanel;
+    [SerializeField] private int defaultFormId = 0;
+    [SerializeField] private float changeCooldown;
+    
     private PlayerSkillMananger playerSkillManager;
+    private SlimeFormChangeEffect changeEffect;
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     
-    [SerializeField] private List<FormData> formDataList;
-    [SerializeField] private int defaultFormId = 0;
+    private Dictionary<int, FormData> formDataDic;
 
+    public event Action<FormData> OnFormChanged;
+    
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>(); 
+        changeEffect = GetComponentInChildren<SlimeFormChangeEffect>();
         animator = GetComponent<Animator>();
         playerSkillManager = GetComponent<PlayerSkillMananger>();
-        ResetForm();
-    }
-    
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.U))
+        
+        formDataDic = new Dictionary<int, FormData>();
+        foreach (FormData formData in formDataList)
         {
-            TestFormChange();
+            formDataDic[formData.formId] = formData;
         }
+        
+        ChangeForm(defaultFormId);
+    }
+
+    public void RequestFormChange(int _formId)
+    {
+        if (!changeEffect.IsUnityNull())
+        {
+            uiBlockerPanel.SetActive(true);
+            changeEffect.StartFormChangeEffect(() =>
+            {
+                ChangeForm(_formId);
+                StartCoroutine(UnblockUIAfterCooldown());
+            });
+        }
+        else
+        {
+            ChangeForm(_formId);
+        }
+    }
+
+    private IEnumerator UnblockUIAfterCooldown()
+    {
+        yield return new WaitForSeconds(changeCooldown);
+        uiBlockerPanel.SetActive(false);
     }
 
     public void ChangeForm(int _formId)
     {
-        var formData = formDataList.Find(x => x.formId == _formId);
-        if(formData.IsUnityNull()) return;
+        if (!formDataDic.TryGetValue(_formId, out var formData))
+        {
+            return;
+        }
         
         animator.runtimeAnimatorController = formData.animator;
         spriteRenderer.color = formData.color;
@@ -52,15 +86,10 @@ public class SlimeFormChanger : MonoBehaviour
         }
         
         playerSkillManager.SetSkillSlot(formData.attack0Slot,formData.attack1Slot);
+        OnFormChanged?.Invoke(formData);
     }
-
-    private void TestFormChange()
-    {
-        ChangeForm(1);
-    }
-    
     public void ResetForm()
     {      
-        ChangeForm(defaultFormId);
+        RequestFormChange(defaultFormId);
     }
 }
