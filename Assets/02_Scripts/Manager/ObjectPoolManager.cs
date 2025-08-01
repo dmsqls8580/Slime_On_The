@@ -53,7 +53,20 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         UnityEditor.EditorUtility.SetDirty(this);
     }
 #endif
-    protected override void Awake()
+    private void Start()
+    {
+        PrintPoolIDs();
+    }
+    
+    
+    // 외부에서 사용할 수 있도록 public으로 제작한 메서드
+    public void InitializePools()
+    {
+        StartCoroutine(DelayInitPools());
+    }
+    
+    // 오브젝트 풀링 초기화 메서드
+    public void Init()
     {
         foreach (var obj in poolObjectList)
         {
@@ -72,10 +85,14 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
             CreatePool(pool, pool.PoolSize);
         }
     }
-
-    private void Start()
+    
+    // 네브매쉬 베이크와 타이밍을 맞추기 위해 두 프레임 늦춤
+    private IEnumerator DelayInitPools()
     {
-        PrintPoolIDs();
+        yield return null;
+        yield return null;
+        Init();
+
     }
 
     /// <summary>
