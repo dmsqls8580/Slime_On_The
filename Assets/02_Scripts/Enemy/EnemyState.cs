@@ -43,17 +43,6 @@ namespace  Enemystates
         public void OnUpdate(EnemyController owner)
         {
             idleTimer += Time.deltaTime;
-            
-            // 플레이어가 너무 가까이 있을 경우 감지
-            GameObject player = owner.AttackTarget;
-            if (player != null)
-            {
-                float distance = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (distance <= owner.EnemyStatus.AttackRange)
-                {
-                    owner.AttackTarget = player;
-                }
-            }
         }
 
         public void OnFixedUpdate(EnemyController owner)
@@ -68,7 +57,7 @@ namespace  Enemystates
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            EnemyAttackType attackType = owner.EnemyStatus.enemySO.AttackType;
+            AttackType attackType = owner.EnemyStatus.enemySO.AttackType;
             float dist = owner.AttackTarget == null ? float.MaxValue :
                 Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
             float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
@@ -83,7 +72,7 @@ namespace  Enemystates
             switch (attackType)
             {
                 // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
-                case EnemyAttackType.None:
+                case AttackType.None:
                     // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
                     if (owner.AttackTarget != null)
                         return EnemyState.Chase;
@@ -93,10 +82,10 @@ namespace  Enemystates
                     // 배회모드로 전환되지 않았을 시 idle모드.
                     return EnemyState.Idle;
                 
-                case EnemyAttackType.Neutral:
+                case AttackType.Neutral:
                     // AttackType이 Neutral이고, 공격받은 경우, IsAttackCooldown이 true인 동안은
                     // idle이나 Chase 상태만 가능, 거리가 가까우면 멀어지고, 멀면 가까워지도록 설정
-                    if (owner.AttackTarget != null && owner.IsAttacked)
+                    if (owner.AttackTarget != null)
                     {
                         // 쿨타임 중
                         if (owner.IsAttackCooldown)
@@ -112,7 +101,7 @@ namespace  Enemystates
                         }
 
                         // 쿨타임이 끝나면 공격 가능 여부 체크
-                        if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                        if (!owner.IsAttackCooldown && owner.IsIDamageableInAttackRange)
                             return EnemyState.Attack;
 
                         // 범위 밖 → Chase
@@ -126,7 +115,7 @@ namespace  Enemystates
                     return EnemyState.Idle;
                 
                 // AttackType이 Aggressive일 경우, 플레이어가 인식되면 바로 공격
-                case EnemyAttackType.Aggressive:
+                case AttackType.Aggressive:
                     if (owner.AttackTarget != null)
                     {
                         if (owner.IsAttackCooldown)
@@ -141,7 +130,7 @@ namespace  Enemystates
                         }
 
                         // 공격 가능
-                        if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                        if (!owner.IsAttackCooldown && owner.IsIDamageableInAttackRange)
                             return EnemyState.Attack;
 
                         return EnemyState.Chase;
@@ -196,7 +185,7 @@ namespace  Enemystates
             }
             
             // AttackType이 None일 경우 Idle, Wander, Chase(Run) State만 순환
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            if (owner.EnemyStatus.enemySO.AttackType == AttackType.None)
             {
                 // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
                 if (owner.AttackTarget != null)
@@ -212,8 +201,7 @@ namespace  Enemystates
             }
             
             // AttackType이 Neutral인 경우, Idle, Wander State만 순환
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral
-                && !owner.IsAttacked)
+            if (owner.EnemyStatus.enemySO.AttackType == AttackType.Neutral)
             {
                 // 목적지로 이동이 끝나면 idle 모드로 전환.
                 if (ReachedDesination(owner))
@@ -224,7 +212,7 @@ namespace  Enemystates
             }
             
             // 공격 범위 내에 있을 시 Attack 모드로 전환
-            if (owner.AttackTarget != null && owner.IsPlayerInAttackRange)
+            if (owner.AttackTarget != null && owner.IsIDamageableInAttackRange)
             {
                 return EnemyState.Attack;
             }
@@ -275,7 +263,7 @@ namespace  Enemystates
         public void OnUpdate(EnemyController owner)
         {
             // AttackType이 None일 경우 Chase State에서 플레이어에게서 도망
-            if (owner.EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+            if (owner.EnemyStatus.enemySO.AttackType == AttackType.None)
             {
                 if (owner.AttackTarget != null)
                 {
@@ -350,7 +338,7 @@ namespace  Enemystates
 
         public EnemyState CheckTransition(EnemyController owner)
         {
-            EnemyAttackType attackType = owner.EnemyStatus.enemySO.AttackType;
+            AttackType attackType = owner.EnemyStatus.enemySO.AttackType;
             float dist = owner.AttackTarget == null ? float.MaxValue :
                 Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
             float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
@@ -364,13 +352,16 @@ namespace  Enemystates
             switch (attackType)
             {
                 // (1) 공격하지 않는 몬스터
-                case EnemyAttackType.None:
-                    if (owner.AttackTarget == null) return EnemyState.Idle;
+                case AttackType.None:
+                    if (owner.AttackTarget == null)
+                    {
+                        return EnemyState.Idle;
+                    }
                     return EnemyState.Chase; // 무조건 도망 유지
 
                 // (2) 중립 몬스터
-                case EnemyAttackType.Neutral:
-                    if (owner.AttackTarget == null || !owner.IsAttacked)
+                case AttackType.Neutral:
+                    if (owner.AttackTarget == null)
                         return EnemyState.Idle;
 
                     if (owner.IsAttackCooldown)
@@ -383,13 +374,13 @@ namespace  Enemystates
                         return EnemyState.Chase;
                     }
 
-                    if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                    if (!owner.IsAttackCooldown && owner.IsIDamageableInAttackRange)
                         return EnemyState.Attack;
 
                     return EnemyState.Chase;
 
                 // (3) 공격적 몬스터
-                case EnemyAttackType.Aggressive:
+                case AttackType.Aggressive:
                     if (owner.AttackTarget == null) return EnemyState.Idle;
 
                     if (owner.IsAttackCooldown)
@@ -402,7 +393,7 @@ namespace  Enemystates
                         return EnemyState.Chase;
                     }
 
-                    if (!owner.IsAttackCooldown && owner.IsPlayerInAttackRange)
+                    if (!owner.IsAttackCooldown && owner.IsIDamageableInAttackRange)
                         return EnemyState.Attack;
 
                     return EnemyState.Chase;

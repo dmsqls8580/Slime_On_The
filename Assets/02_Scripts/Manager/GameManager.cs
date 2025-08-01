@@ -22,6 +22,11 @@ public class GameManager : Singleton<GameManager>
         {
             Debug.LogWarning("WorldManager가 GameManager에 할당되지 않았습니다.");
         }
+        
+        // 네비게이션메쉬 베이크
+        // NavMesh2DManager.Instance.BakeNavMesh();
+        
+        // ObjectPoolManager.Instance.InitializePools();
     }
 
     ///// <summary>

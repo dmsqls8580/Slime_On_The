@@ -15,7 +15,7 @@ public class EnemyAttackRange : MonoBehaviour
 
     private void Update()
     {
-        if (enemyController.IsPlayerInAttackRange)
+        if (enemyController.IsIDamageableInAttackRange)
         {
             // Enemy 공격 범위 활성화
             circleCollider2D.enabled = true;
@@ -26,7 +26,7 @@ public class EnemyAttackRange : MonoBehaviour
     {
         if (other.TryGetComponent(out IDamageable iDamageable))
         {
-            enemyController.SetPlayerInAttackRange(true);
+            enemyController.SetIDamageableInAttackRange(true);
         }
     }
 
@@ -34,7 +34,7 @@ public class EnemyAttackRange : MonoBehaviour
     {
         if (other.TryGetComponent(out IDamageable iDamageable))
         {
-            enemyController.SetPlayerInAttackRange(false);
+            enemyController.SetIDamageableInAttackRange(false);
         }
     }
     

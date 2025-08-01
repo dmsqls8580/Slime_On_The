@@ -6,7 +6,7 @@ using UnityEngine.Rendering.Universal;
 public class FogEffect : WeatherEffectBase
 {
     protected override int MaxLevel => 2;
-    private readonly float transitionDuration = 3f;
+    private readonly float transitionDuration = 4f;
 
     private readonly WeatherManager weatherManager;
     private readonly Vignette vignette;
@@ -44,13 +44,13 @@ public class FogEffect : WeatherEffectBase
         {
             case 1:
                 Logger.Log("날씨: 안개 1단계");
-                targetIntensity = 0.5f;
-                targetContrast = -25f;
+                targetIntensity = 0.45f;
+                targetContrast = 0f;
                 break;
             case 2:
                 Logger.Log("날씨: 안개 2단계");
-                targetIntensity = 0.75f;
-                targetContrast = -50f;
+                targetIntensity = 0.45f;
+                targetContrast = -25f;
                 break;
         }
 

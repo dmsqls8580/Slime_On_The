@@ -25,11 +25,11 @@ public class LightningStrike : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D other)
     {
-        if (canDealDamage && !hasDealtDamage && other.CompareTag("Player") &&
+        if (canDealDamage && !hasDealtDamage &&
             other.TryGetComponent(out PlayerStatusManager playerStatusManager))
         {
             Logger.Log("날씨: 전기맞음");
-            playerStatusManager.ConsumeHp(lightningDamage);
+            playerStatusManager.TakeDamage(lightningDamage);
             hasDealtDamage = true;
             return;
         }

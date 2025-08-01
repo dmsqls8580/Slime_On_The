@@ -44,17 +44,6 @@ namespace Boss2States
         public void OnUpdate(Boss2Controller owner)
         {
             idleTimer += Time.deltaTime;
-            
-            // 플레이어가 너무 가까이 있을 경우 감지
-            GameObject player = owner.ChaseTarget;
-            if (player != null)
-            {
-                float distance = Vector2.Distance(owner.transform.position, player.transform.position);
-                if (distance <= owner.BossStatus.AttackRange)
-                {
-                    owner.ChaseTarget = player;
-                }
-            }
         }
 
         public void OnFixedUpdate(Boss2Controller owner)
@@ -75,7 +64,7 @@ namespace Boss2States
                 return Boss2State.Dead;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return Boss2State.Chase;
             }
@@ -125,7 +114,7 @@ namespace Boss2States
                 return Boss2State.Dead;
             }
             // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 return Boss2State.Chase;
             }
@@ -174,7 +163,7 @@ namespace Boss2States
         public void OnUpdate(Boss2Controller owner)
         {
             // Target의 위치를 추적해 이동.
-            if (owner.ChaseTarget != null)
+            if (owner.AttackTarget != null)
             {
                 if (owner.IsPlayerInAttackRange)
                 {
@@ -182,7 +171,7 @@ namespace Boss2States
                 }
                 else
                 {
-                    owner.Agent.SetDestination(owner.ChaseTarget.transform.position);
+                    owner.Agent.SetDestination(owner.AttackTarget.transform.position);
                 }
             }
         }
@@ -200,6 +189,20 @@ namespace Boss2States
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
+            if (owner.IsDead)
+            {
+                return Boss2State.Dead;
+            }
+            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+            if (owner.AttackTarget == null)
+            {
+                return Boss2State.Idle;
+            }
+            // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
+            if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
+            {
+                // Todo : 패턴 결정
+            }
             return Boss2State.Chase;
         }
     }
