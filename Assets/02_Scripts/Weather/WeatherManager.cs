@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,9 +5,6 @@ using UnityEngine.Rendering;
 
 public class WeatherManager : MonoBehaviour
 {
-    [Header("날씨 데이터")]
-    [SerializeField] private List<WeatherDataSO> weatherPatterns;
-
     [Header("이펙트 참조")]
     [SerializeField] private ParticleSystem rainParticle;
     [SerializeField] private ParticleSystem snowParticle;
@@ -20,12 +16,24 @@ public class WeatherManager : MonoBehaviour
     [Header("스크립트 참조")]
     [SerializeField] private PlayerStatusManager playerStatusManager;
 
-    // 모든 날씨 효과들의 저장소.
+    private int dayCount = 0;
+    private int maxDayCount = 10;
+    private WeatherType currentWeatherType = WeatherType.Clear;
+    private HashSet<WeatherType> currentWeatherTypes = new() { WeatherType.Clear };
+
+    // 나올 수 있는 이펙트들.
+    private readonly List<WeatherType> weatherPatterns = new()
+    {
+        WeatherType.Clear,
+        WeatherType.Heatwave,
+        WeatherType.Rain,
+        WeatherType.Snow,
+        WeatherType.Storm
+    };
+    // 날씨 이펙트 저장소.
     private Dictionary<WeatherType, IWeatherEffect> weatherEffects;
     // 작동중인 이펙트들.
-    private List<IWeatherEffect> activeEffects = new List<IWeatherEffect>();
-    private WeatherType currentWeatherType = WeatherType.Clear;
-    private HashSet<WeatherType> currentWeatherTypes = new HashSet<WeatherType>() { WeatherType.Clear };
+    private List<IWeatherEffect> activeEffects = new();
 
     private void Awake()
     {
@@ -43,82 +51,88 @@ public class WeatherManager : MonoBehaviour
 
         // 초기 날씨 설정.
         IWeatherEffect clearEffect = weatherEffects[WeatherType.Clear];
-        clearEffect.OnEnter();
         activeEffects.Add(clearEffect);
+        clearEffect.OnEnter();
     }
 
     private void Start()
     {
         Random.InitState((int)System.DateTime.Now.Ticks);
-        StartCoroutine(WeatherLoop());
     }
 
     private void Update()
     {
+        UpdateWeather();
+    }
+
+    private void UpdateWeather()
+    {
+        // 날씨 변경.
+        if (dayCount >= maxDayCount)
+        {
+            dayCount = 0;
+            maxDayCount = Random.Range(1, 11);
+            ChangeWeather();
+        }
+
         // 현재 활성화된 모든 효과의 Update를 실행.
         foreach (IWeatherEffect effect in activeEffects)
         { effect.OnUpdate(); }
     }
 
-    private IEnumerator WeatherLoop()
+    private void ChangeWeather()
     {
-        while (true)
+        // 다음 날씨 상태 결정.
+        WeatherType nextWeatherType = GetNextWeatherType();
+        HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherType };
+        if (nextWeatherType == WeatherType.Rain && Random.Range(0, 4) == 0)
+        { nextWeatherTypes.Add(WeatherType.Storm); }
+
+        HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);
+        // 현재 상태 - 다음 상태 = 제거할 것들.
+        typesToRemove.ExceptWith(nextWeatherTypes);
+
+        // 제거.
+        if (typesToRemove.Count > 0)
         {
-            // 다음 날씨 상태 결정.
-            WeatherDataSO nextWeatherSO = GetNextWeather();
-            HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherSO.type };
-            if (nextWeatherSO.type == WeatherType.Rain && Random.Range(0, 4) == 0)
-            { nextWeatherTypes.Add(WeatherType.Storm); }
+            // 제거해야 할 효과들의 OnExit() 호출 및 리스트에서 제거.
+            List<IWeatherEffect> effectsToRemove = activeEffects
+                .Where(effect => typesToRemove.Contains(GetEffectType(effect))).ToList();
 
-            HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);
-            // 현재 상태 - 다음 상태 = 제거할 것들.
-            typesToRemove.ExceptWith(nextWeatherTypes);
-
-            // 제거.
-            if (typesToRemove.Count > 0)
+            foreach (IWeatherEffect effect in effectsToRemove)
             {
-                // 제거해야 할 효과들의 OnExit() 호출 및 리스트에서 제거.
-                List<IWeatherEffect> effectsToRemove = activeEffects
-                    .Where(effect => typesToRemove.Contains(GetEffectType(effect))).ToList();
-
-                foreach (IWeatherEffect effect in effectsToRemove)
-                {
-                    effect.OnExit();
-                    activeEffects.Remove(effect);
-                }
+                effect.OnExit();
+                activeEffects.Remove(effect);
             }
-            activeEffects.Clear();
+        }
+        activeEffects.Clear();
 
-            currentWeatherType = nextWeatherSO.type;
-            currentWeatherTypes = nextWeatherTypes;
-            foreach (var type in currentWeatherTypes)
-            {
-                IWeatherEffect newEffect = weatherEffects[type];
-                newEffect.OnEnter();
-                activeEffects.Add(newEffect);
-            }
-
-            float duration = Random.Range(nextWeatherSO.durationMin, nextWeatherSO.durationMax);
-            yield return new WaitForSeconds(duration);
+        currentWeatherType = nextWeatherType;
+        currentWeatherTypes = nextWeatherTypes;
+        foreach (var type in currentWeatherTypes)
+        {
+            IWeatherEffect newEffect = weatherEffects[type];
+            newEffect.OnEnter();
+            activeEffects.Add(newEffect);
         }
     }
 
-    private WeatherDataSO GetNextWeather()
+    private WeatherType GetNextWeatherType()
     {
-        List<WeatherDataSO> selectableWeathers = new();
+        List<WeatherType> selectableWeathers = new();
 
-        foreach (var weatherSO in weatherPatterns)
+        foreach (WeatherType type in weatherPatterns)
         {
             // 현재 날씨가 Rain 또는 Heatwave일 때, 다음 날씨로 Snow는 불가능.
-            if ((currentWeatherType == WeatherType.Rain || currentWeatherType == WeatherType.Heatwave) && weatherSO.type == WeatherType.Snow)
+            if ((currentWeatherType == WeatherType.Rain || currentWeatherType == WeatherType.Heatwave) && type == WeatherType.Snow)
             { continue; }
             // 현재 날씨가 Snow일 때, 다음 날씨로 Rain 또는 Heatwave는 불가능.
-            if (currentWeatherType == WeatherType.Snow && (weatherSO.type == WeatherType.Rain || weatherSO.type == WeatherType.Heatwave))
+            if (currentWeatherType == WeatherType.Snow && (type == WeatherType.Rain || type == WeatherType.Heatwave))
             { continue; }
             // Storm은 단독으로 선택되지 않도록 제외.
-            if (weatherSO.type == WeatherType.Storm)
+            if (type == WeatherType.Storm)
             { continue; }
-            selectableWeathers.Add(weatherSO);
+            selectableWeathers.Add(type);
         }
 
         // 가능한 날씨 목록에서 랜덤 선택.
@@ -131,5 +145,10 @@ public class WeatherManager : MonoBehaviour
     {
         // Dictionary를 순회하며 해당 인스턴스와 일치하는 키(WeatherType)를 반환.
         return weatherEffects.FirstOrDefault(x => x.Value == effect).Key;
+    }
+
+    public void UpdateDayCount()
+    {
+        dayCount++;
     }
 }
