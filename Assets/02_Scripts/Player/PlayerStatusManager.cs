@@ -113,13 +113,10 @@ public class PlayerStatusManager : MonoBehaviour
 
             switch (timeManager.CurrentTimeOfDay)
             {
-                case TimeOfDay.Morning:
-                case TimeOfDay.Noon:
-                case TimeOfDay.Evening:
+                case TimeOfDay.Day:
                     ConsumeSlimeGauge(_amount);
                     break;
                 case TimeOfDay.Night:
-                case TimeOfDay.Dawn:
                     RecoverSlimeGauge(_amount);
                     break;
             }

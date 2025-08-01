@@ -29,20 +29,7 @@ public class ItemDrop : MonoBehaviour
 
     private void Update()
     {
-        if (playerTransform.IsUnityNull() || !canItemToPlayer) return;
-
-        float distance = Vector3.Distance(transform.position, playerTransform.position);
-        
-        if (distance < attractDistance)
-        {
-            float t= 1f-(distance/attractDistance);
-            float itemMoveSpeed= Mathf.Lerp(1f,attractSpeed,t);
-            
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                playerTransform.position,
-                itemMoveSpeed * Time.deltaTime);
-        }
+        StartItemToPlayer();
     }
 
     public void DropAnimation(Rigidbody2D _rigid, float _dropAngleRange, float _dropUpForce, float _dropSideForce)
@@ -62,9 +49,27 @@ public class ItemDrop : MonoBehaviour
         }
     }
 
+    private void StartItemToPlayer()
+    {
+        if (playerTransform.IsUnityNull() || !canItemToPlayer) return;
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+        
+        if (distance < attractDistance)
+        {
+            float t= 1f-(distance/attractDistance);
+            float itemMoveSpeed= Mathf.Lerp(1f,attractSpeed,t);
+            
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                playerTransform.position,
+                itemMoveSpeed * Time.deltaTime);
+        }
+    }
+
     private IEnumerator StopDropAnim(Rigidbody2D _rigid)
     {
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.4f);
         if (_rigid != null)
         {
             _rigid.gravityScale = 0f;
@@ -73,7 +78,7 @@ public class ItemDrop : MonoBehaviour
             _rigid.isKinematic = true;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(0.8f);
         canItemToPlayer = true;
     }
     private void OnTriggerEnter2D(Collider2D _other)
