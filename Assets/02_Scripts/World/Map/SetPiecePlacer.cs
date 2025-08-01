@@ -86,7 +86,7 @@ public class SetPiecePlacer : MonoBehaviour
                 if (!regionBiomes.TryGetValue(spawnRegionId, out BiomeType spawnBiome)) continue;
                 if (spawnBiome != biome) continue;
 
-                // ✅ 길 타일 위인지 확인
+                // 길 타일 위인지 확인
                 if (roadTilemap.HasTile(spawnCell)) continue;
 
                 // 2. 거리 및 충돌 검사
@@ -105,7 +105,6 @@ public class SetPiecePlacer : MonoBehaviour
                     position = spawnPos,
                     // biomeType = biome.ToString()
                 });
-
             }
         }
     }
