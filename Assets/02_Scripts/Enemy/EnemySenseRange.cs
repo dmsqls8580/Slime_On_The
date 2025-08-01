@@ -15,15 +15,17 @@ public class EnemySenseRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            float curAggroValue = 0f;
-            if (enemyController.AttackTargets.TryGetValue(other.gameObject, out curAggroValue))
-            {
-                enemyController.IsAttacked = true;
-            }
             // 인식 범위에 들어가면 어그로 수치 +max(value, 10)
-            float aggroValue = Mathf.Max(10f, curAggroValue);
-            enemyController.SetAggro(other.gameObject, aggroValue);
-            enemyController.StartAggroCoroutine();
+            float curAggro = 0f;
+            enemyController.Aggro.attackTargetsList.TryGetValue(other.gameObject, out curAggro);
+            float newAggro = Mathf.Max(curAggro, 20f);
+            
+            enemyController.Aggro.SetAggro(other.gameObject, newAggro);
+            if (enemyController.aggroCoroutine == null)
+            {
+                enemyController.aggroCoroutine = StartCoroutine(enemyController.DecreaseAggroValue());
+            }
+            enemyController.SetPlayerInSenseRange(true);
         }
     }
     
@@ -31,7 +33,7 @@ public class EnemySenseRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            enemyController.IsAttacked = false;
+            enemyController.SetPlayerInSenseRange(false);
         }
     }
 

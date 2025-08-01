@@ -17,13 +17,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public Transform projectileTransform;                  // 발사체 생성 Transform
     
     public EnemyStatus EnemyStatus;                        // EnemyStatus
-    
-    public GameObject AttackTarget;                        // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
+   
+    private GameObject attackTarget;
+    public GameObject AttackTarget                         // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
+    {
+        get => attackTarget;
+        private set => attackTarget = value;  // 내부에서만 설정 가능 (혹은 protected)
+    } 
     public EnemyState PreviousState      { get; set; }     // 이전 State
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
-    public bool IsPlayerInAttackRange {get; private set; } // 플레이어 공격 범위 내 존재 여부
+    public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
+    public bool IsIDamageableInAttackRange {get; private set; } // 공격 대상 공격 범위 내 존재 여부
     
     private bool isAttackCooldown = false;
     public bool IsAttackCooldown => isAttackCooldown;
@@ -39,20 +45,17 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private float lastDistanceToTarget = float.MaxValue;
     private float distanceChangeThreshold = 0.3f;          // 최소 변화 거리
-    
-    [Header("Aggro Settings")]
-    [SerializeField] private float reactiveHitAggro = 30f;        // 피격 시 추가 어그로 (플레이어/몬스터 공통)
-    [SerializeField] private float aggroSwitchThreshold = 5f;     // 새 후보가 기존보다 이 이상 커야 전환
-    [SerializeField] private float targetStickTime = 1.0f;        // 타겟 변경 후 유지 최소 시간(초)
 
-    public bool IsAttacked = false;  // 중립 몬스터가 공격받았는지 여부
+    /************************ AggroSystem ***********************/
     
-    private float lastTargetChangeTime = -999f;
-    private GameObject currentTarget;
-    private float currentTargetValue = 0f;
-    private Coroutine aggroCoroutine;
+    [Header("Aggro Settings")] 
+    public AggroSystem Aggro;
+    [SerializeField] private float stickTime = 1f;             // 타겟 최소 유지 시간
+    [SerializeField] private float decreaseDelayValue = 2f;    // 초당 감소하는 어그로 수치
+    [SerializeField] private float decreaseDelayTime = 1f;     // 어그로 수치 감소 사이 시간
+    [SerializeField] private float hitAggroValue = 30f;        // 피격 시 추가 어그로 (플레이어/몬스터 공통)
     
-    public Dictionary<GameObject, float> AttackTargets = new Dictionary<GameObject, float>();
+    public Coroutine aggroCoroutine;
     
     /************************ Item Drop ***********************/
     [Header("Drop Item Prefab")]
@@ -91,14 +94,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             // 어그로 수치 증가, 피격 시 30 증가
             if (_attackerObj != null)
             {
-                ModifyAggro(_attackerObj, reactiveHitAggro);
-                // 어그로 코루틴 시작
-                StartAggroCoroutine();
-            }
-            
-            if (EnemyStatus.enemySO.AttackType == EnemyAttackType.Neutral)
-            {
-                IsAttacked = true;
+                Aggro.ModifyAggro(_attackerObj, hitAggroValue);
+                // 코루틴이 없을 때만 시작 (중복 실행 방지)
+                if (aggroCoroutine == null)
+                {
+                    aggroCoroutine = StartCoroutine(DecreaseAggroValue());
+                }
             }
             
             if (EnemyStatus.CurrentHealth <= 0)
@@ -144,7 +145,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     public void Attack()
     {
-        if (Target != null && !Target.IsDead && IsPlayerInAttackRange)
+        if (Target != null && !Target.IsDead && IsIDamageableInAttackRange)
         {
             Target.TakeDamage(this, this.gameObject);
             float cooldown = StatManager.Stats[StatType.AttackCooldown].GetCurrent();
@@ -180,12 +181,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     private void ResetAttackState()
     {
-        AttackTargets.Clear();
-        currentTarget = null;
-        currentTargetValue = 0f;
+        Aggro.Clear();
         AttackTarget = null;
-        IsAttacked = false;
-        IsPlayerInAttackRange = false;
+        IsIDamageableInAttackRange = false;
         isAttackCooldown = false;
         attackCooldownTimer = 0f;
         if (aggroCoroutine != null)
@@ -202,7 +200,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     /************************ EnemyController ***********************/
     
-    
     protected override void Awake()
     {
         base.Awake();
@@ -213,6 +210,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         spriteRenderer =  GetComponent<SpriteRenderer>();
         EnemyStatus = GetComponent<EnemyStatus>();
         statManager = GetComponent<StatManager>();
+        Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
+            target => IsPlayerInSenseRange,stickTime);
+        Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
 
     protected override void Start()
@@ -287,14 +287,15 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
         // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != EnemyAttackType.Neutral)
+        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.Neutral)
         {
             Vector2 targetDir = AttackTarget.transform.position - transform.position;
             lastFlipX = targetDir.x < 0;
         }
         
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX, AttackType이 None인 경우 반대로 flip
-        if (EnemyStatus.enemySO.AttackType == EnemyAttackType.None)
+        // Enemy의 이동 방향에 따라 SpriteRenderer flipX, AttackType이 None인 경우, ChaseState를 제외하고 반대로 flip
+        if (EnemyStatus.enemySO.AttackType == AttackType.None
+            && CurrentState != EnemyState.Chase)
         {
             spriteRenderer.flipX = !lastFlipX; 
         }
@@ -321,10 +322,18 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         attackCooldownTimer = cooldown;
     }
     
-    // 플레이어가 Enemy 공격 범위 진입 여부 메서드 추가
-    public void SetPlayerInAttackRange(bool _inRange)
+    // 공격 대상이 Enemy 공격 범위 진입 여부 메서드
+    // 플레이어뿐만 아니라 몬스터도 공격 대상이 될 수 있음
+    public void SetIDamageableInAttackRange(bool _inRange)
     {
-        IsPlayerInAttackRange = _inRange;
+        IsIDamageableInAttackRange = _inRange;
+    }
+    
+    // 플레이어가 Enemy 인식 범위 진입 여부 메서드
+    // 인식 범위 진입 여부는 플레이어만 판별
+    public void SetPlayerInSenseRange(bool _inRange)
+    {
+        IsPlayerInSenseRange = _inRange;
     }
     
     // 애니메이션 이벤트로 호출
@@ -384,163 +393,26 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
     
-    // 몬스터 어그로 코루틴 시작
-    public void StartAggroCoroutine()
-    {
-        if (aggroCoroutine != null)
-        {
-            StopCoroutine(aggroCoroutine);
-        }
-
-        aggroCoroutine = StartCoroutine(DecreaseAggroValue());
-    }
-    
     // 1초에 어그로 수치 2씩 감소 
-    private IEnumerator DecreaseAggroValue()
+    public IEnumerator DecreaseAggroValue()
     {
         while (true)
         {
-            var keys = new List<GameObject>(AttackTargets.Keys);
-            foreach (var key in keys)
+            Aggro.DecreaseAllAggro(decreaseDelayValue);
+            // 만약 타겟이 전부 사라지면 코루틴 종료
+            if (Aggro.IsEmpty)
             {
-                if (key != null && AttackTargets.ContainsKey(key))
-                {
-                    ModifyAggro(key, -2f);
-                    float afterAggro = 0f;
-                    if (AttackTargets.TryGetValue(key, out afterAggro))
-                    {
-                        Logger.Log(afterAggro.ToString());
-                    }
-                }
+                aggroCoroutine = null;
+                yield break;
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(decreaseDelayTime);
         }
     }
-    
-    // 어그로 계산 메서드
-    public void ModifyAggro(GameObject aggroObject, float value)
+
+    private void OnAggroTargetChanged(GameObject newtarget, float newvalue)
     {
-        if (aggroObject == null)
-        {
-            return;
-        }
-        
-        if (AttackTargets.ContainsKey(aggroObject))
-        {
-            AttackTargets[aggroObject] += value;
-        }
-        else
-        {
-            AttackTargets[aggroObject] = value;
-        }
-        
-        AttackTargets[aggroObject] = Mathf.Clamp(AttackTargets[aggroObject], 0f, 100f);
-
-        if (AttackTargets[aggroObject] <= 0f)
-        {
-            AttackTargets.Remove(aggroObject);
-        }
-        
-        UpdateAggro();
+        AttackTarget = newtarget;
     }
-
-    public void SetAggro(GameObject aggroObject, float value)
-    {
-        if (aggroObject == null)
-        {
-            return;
-        }
-        
-        AttackTargets[aggroObject] = Mathf.Clamp(value, 0f, 100f);
-
-        if (AttackTargets[aggroObject] <= 0f)
-        {
-            AttackTargets.Remove(aggroObject);
-        }
-        UpdateAggro();
-    }
-    
-    // 공격 타겟 업데이트
-    // 딕셔너리 내 가장 높은 어그로 수치를 가진 오브젝트를 AttackTarget으로 설정
-    private void UpdateAggro()
-    {
-        // 가장 큰 aggro 값 찾기
-        GameObject maxValueTarget = null;
-        float maxvalue = 0f;
-        
-        toRemove.Clear();
-    
-        foreach (var target in AttackTargets)
-        {
-            if (target.Key == null)
-            {
-                toRemove.Add(target.Key);
-                continue;
-            }
-
-            // 사망한 대상 제거
-            if (target.Key.TryGetComponent<IDamageable>(out var damageable))
-            {
-                if (damageable.IsDead)
-                {
-                    toRemove.Add(target.Key);
-                    continue;
-                }
-            }
-
-            if (target.Value >= maxvalue)
-            {
-                maxValueTarget = target.Key;
-                maxvalue = target.Value;
-            }
-        }
-
-        // 사망 또는 null인 대상 제거
-        for (int i = 0; i < toRemove.Count; i++)
-        {
-            AttackTargets.Remove(toRemove[i]);
-        }
-
-        if (maxValueTarget == null || maxvalue <= 0)
-        {
-            currentTarget = null;
-            AttackTarget = null;
-            currentTargetValue = 0f;
-            IsAttacked = false;
-            return;
-        }
-        
-        // 전환 여부 판단 
-        float timeSinceLastSwitch = Time.time - lastTargetChangeTime;
-        bool shouldSwitch =
-            currentTarget == null
-            || currentTarget == maxValueTarget
-            || (timeSinceLastSwitch >= targetStickTime && maxvalue >= currentTargetValue + aggroSwitchThreshold);
-        
-        if (shouldSwitch)
-        {
-            currentTarget = maxValueTarget;
-            currentTargetValue = maxvalue;
-            AttackTarget = maxValueTarget; // Inspector 확인용
-            lastTargetChangeTime = Time.time;
-        }
-        else
-        {
-            // 유지: 값 동기화
-            if (currentTarget != null && AttackTargets.TryGetValue(currentTarget, out var curVal))
-                currentTargetValue = curVal;
-            else
-            {
-                // 기존 타겟이 사라졌다면 어쩔 수 없이 후보로 전환
-                currentTarget = maxValueTarget;
-                currentTargetValue = maxvalue;
-                AttackTarget = maxValueTarget;
-                lastTargetChangeTime = Time.time;
-            }
-        }
-    }
-    
-    private readonly List<GameObject> toRemove = new List<GameObject>();
     
     
 }

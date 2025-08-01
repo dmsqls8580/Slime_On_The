@@ -24,9 +24,9 @@ public class GameManager : Singleton<GameManager>
         }
         
         // 네비게이션메쉬 베이크
-        NavMesh2DManager.Instance.BakeNavMesh();
+        // NavMesh2DManager.Instance.BakeNavMesh();
         
-        ObjectPoolManager.Instance.InitializePools();
+        // ObjectPoolManager.Instance.InitializePools();
     }
 
     ///// <summary>

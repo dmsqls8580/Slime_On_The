@@ -53,6 +53,12 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         UnityEditor.EditorUtility.SetDirty(this);
     }
 #endif
+    private void Awake()
+    {
+        // Todo : 게임 매니저에서 할당
+        Init();
+    }
+    
     private void Start()
     {
         PrintPoolIDs();
