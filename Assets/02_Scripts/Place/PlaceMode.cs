@@ -126,6 +126,7 @@ public class PlaceMode : MonoBehaviour
         foreach (PreviewTile tile in previewTiles)
             Destroy(tile.gameObject);
         previewTiles.Clear();
+        canPlace = false;
         gameObject.SetActive(false);
     }
 }

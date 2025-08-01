@@ -34,10 +34,10 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, playerStatusManager) },
+            //{ WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, playerStatusManager) },
             { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
             { WeatherType.Storm, new StormEffect(playerStatusManager, lightningPrefab, lightningMark) },
-            { WeatherType.Snow, new SnowEffect(this, snowParticle, playerStatusManager) },
+            //{ WeatherType.Snow, new SnowEffect(this, snowParticle, playerStatusManager) },
             //{ WeatherType.Wind, new WindEffect() }
         };
 
@@ -67,7 +67,7 @@ public class WeatherManager : MonoBehaviour
             // 다음 날씨 상태 결정.
             WeatherDataSO nextWeatherSO = GetNextWeather();
             HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherSO.type };
-            if (nextWeatherSO.type == WeatherType.Rain && Random.Range(0, 4) == 0)
+            if (nextWeatherSO.type == WeatherType.Rain && Random.Range(0, 0) == 0)
             { nextWeatherTypes.Add(WeatherType.Storm); }
 
             HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);
