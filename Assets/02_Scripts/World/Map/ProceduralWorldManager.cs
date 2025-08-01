@@ -9,11 +9,10 @@ public class ProceduralWorldManager : MonoBehaviour
     public RegionVoronoiGenerator regionGenerator;
     public BiomeAssigner biomeAssigner;
     public RoadConnector roadConnector;
+    public SpecialStructurePlacer specialStructurePlacer;
     public SetPiecePlacer setPiecePlacer;
     public BiomeDecorationPlacer biomeDecorationPlacer;
-
-    [Header("특수 구조물")]
-    public SpecialStructurePlacer specialStructurePlacer;
+    public EnemySpawnerPlacer enemySpawnerPlacer;
 
     [Header("타일 설정")]
     public Tilemap groundTilemap;
@@ -64,5 +63,8 @@ public class ProceduralWorldManager : MonoBehaviour
 
         // Step 7: 바이옴에 데코 타일 생성
         biomeDecorationPlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
+
+        // Step 8: 몬스터 스포너 배치
+        enemySpawnerPlacer.Place(regionGenerator.TileToRegionMap, biomeAssigner.RegionBiomes);
     }
 }
