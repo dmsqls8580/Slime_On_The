@@ -41,18 +41,21 @@ public class UIQuickSlot : MonoBehaviour
             return;
 
         selectedIndex = index;
-
         UpdateSelectedVisual();
+
         var selectedSlot = slots[selectedIndex];
+        selectedSlot.EquipToolToController(toolController); // 항상 장착은 수행
+
         var interactionSelector = FindObjectOfType<InteractionSelector>();
+    
         if (!interactionSelector.IsUnityNull() &&
             interactionSelector.GetObjectTypeOfInteractable() == ObjectType.UnDestroyed)
         {
-            toolController.EquipTool(null); // None으로 세팅
-            return;
+            // UnDestroyed 대상일 때는 애니메이션만 None으로 설정
+            playerAnimationController.SetToolType(ToolType.None);
         }
-        selectedSlot.EquipToolToController(toolController);
     }
+
 
     public QuickSlot GetSelectedSlot()
     {
