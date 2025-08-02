@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1712299482540602903}
   - component: {fileID: 32907281201083024}
   - component: {fileID: -4866479756931554445}
+  - component: {fileID: -4540154278191778278}
   m_Layer: 31
   m_Name: copper (2)
   m_TagString: Untagged
@@ -147,7 +148,7 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
     amount: 1
     dropChance: 80
-  objectType: 1
+  objectType: -1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
@@ -169,3 +170,15 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &-4540154278191778278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4347399458227372060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55aa12a90e80db4f9fb94f8ddfee639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
