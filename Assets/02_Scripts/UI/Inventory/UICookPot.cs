@@ -16,7 +16,7 @@ public class UICookPot : UIBase
             inputSlots[i].Initialize(inputStart + i);
         }
 
-        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookPotIndex);
+        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookPotIndex); 
         resultSlot.Initialize(resultIndex);
     }
 

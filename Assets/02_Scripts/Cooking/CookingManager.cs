@@ -4,17 +4,17 @@ using UnityEngine;
 public class CookingManager : MonoBehaviour
 {
     [SerializeField] private RecipeDatabase database;
-    [SerializeField] private CookingPanel cookingPanel;
+    //[SerializeField] private CookingPanel cookingPanel;
 
-    public void FindMatchingRecipe(Dictionary<IngredientTag, float> _tags, float _cookingTime, CookingPot _cookingPot)
+    public void FindMatchingRecipe(Dictionary<IngredientTag, float> _tags, float _cookingTime, CookPotObject _cookPot)
     {
         List<ItemSO> items = database.Items;
         foreach (ItemSO item in items)
         {
             if (IsMatched(_tags, item.cookedData))
             {
-                _cookingPot.Cook(item, _cookingTime);
-                cookingPanel.Initialize();
+                //_cookPot.Cook(item, _cookingTime);
+                //cookingPanel.Initialize();
                 return;
             }
         }
