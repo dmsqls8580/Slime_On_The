@@ -76,10 +76,24 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     // 한 슬롯에서 아이템 제거시도
     public void RemoveItem(int _index, int _amount)
     {
-        if (_index < 0 || _index >= MaxSlotCount || _amount <= 0) return;
+        Debug.Log($"[RemoveItem] index: {_index}, amount: {_amount}");
+        if (_index < 0 || _index >= MaxSlotCount || _amount <= 0)
+        {
+            Debug.LogWarning("Invalid index or amount.");
+            return;
+        }
 
         var current = inventorySlots[_index];
-        if (current == null || !current.IsValid) return;
+        if (current == null)
+        {
+            Debug.LogWarning("Current is null.");
+            return;
+        }
+        if (!current.IsValid)
+        {
+            Debug.LogWarning($"Current is not valid. ItemData: {current.ItemData}, Quantity: {current.Quantity}");
+            return;
+        }
 
         current.Quantity -= _amount;
         if (current.Quantity <= 0)
@@ -87,6 +101,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             inventorySlots[_index] = null;
         }
 
+        Debug.Log($"New quantity: {current?.Quantity}");
         OnSlotChanged?.Invoke(_index);
     }
 

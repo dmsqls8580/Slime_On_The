@@ -60,6 +60,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Use",
+                    "type": "Button",
+                    "id": "23d8058c-6bd7-4203-9922-6d2c9155766b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Settings",
                     "type": "Button",
                     "id": "36a75069-2a3d-4848-8277-ace0f68f4fe7",
@@ -288,6 +297,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Attack1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "92bb1cd5-e779-4a4e-b5a0-ea113c2ee76e",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Use",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -143,4 +143,13 @@ public class InteractionSelector : MonoBehaviour
 
         return false;
     }
+
+    public ObjectType GetObjectTypeOfInteractable()
+    {
+        if (!spaceInteractable.IsUnityNull() && spaceInteractable.TryGetComponent(out BaseInteractableObject obj))
+        {
+            return obj.ObjectType;
+        }
+        return ObjectType.UnDestroyed;
+    }
 }

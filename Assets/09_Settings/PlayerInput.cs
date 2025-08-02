@@ -82,6 +82,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""23d8058c-6bd7-4203-9922-6d2c9155766b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Settings"",
                     ""type"": ""Button"",
                     ""id"": ""36a75069-2a3d-4848-8277-ace0f68f4fe7"",
@@ -312,6 +321,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Attack1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""92bb1cd5-e779-4a4e-b5a0-ea113c2ee76e"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -326,6 +346,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Crafting = m_Player.FindAction("Crafting", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_Gathering = m_Player.FindAction("Gathering", throwIfNotFound: true);
+        m_Player_Use = m_Player.FindAction("Use", throwIfNotFound: true);
         m_Player_Settings = m_Player.FindAction("Settings", throwIfNotFound: true);
         m_Player_Attack0 = m_Player.FindAction("Attack0", throwIfNotFound: true);
         m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
@@ -399,6 +420,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Crafting;
     private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_Gathering;
+    private readonly InputAction m_Player_Use;
     private readonly InputAction m_Player_Settings;
     private readonly InputAction m_Player_Attack0;
     private readonly InputAction m_Player_Attack1;
@@ -415,6 +437,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Crafting => m_Wrapper.m_Player_Crafting;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @Gathering => m_Wrapper.m_Player_Gathering;
+        public InputAction @Use => m_Wrapper.m_Player_Use;
         public InputAction @Settings => m_Wrapper.m_Player_Settings;
         public InputAction @Attack0 => m_Wrapper.m_Player_Attack0;
         public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
@@ -448,6 +471,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Gathering.started += instance.OnGathering;
             @Gathering.performed += instance.OnGathering;
             @Gathering.canceled += instance.OnGathering;
+            @Use.started += instance.OnUse;
+            @Use.performed += instance.OnUse;
+            @Use.canceled += instance.OnUse;
             @Settings.started += instance.OnSettings;
             @Settings.performed += instance.OnSettings;
             @Settings.canceled += instance.OnSettings;
@@ -488,6 +514,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Gathering.started -= instance.OnGathering;
             @Gathering.performed -= instance.OnGathering;
             @Gathering.canceled -= instance.OnGathering;
+            @Use.started -= instance.OnUse;
+            @Use.performed -= instance.OnUse;
+            @Use.canceled -= instance.OnUse;
             @Settings.started -= instance.OnSettings;
             @Settings.performed -= instance.OnSettings;
             @Settings.canceled -= instance.OnSettings;
@@ -531,6 +560,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnCrafting(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnGathering(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
         void OnSettings(InputAction.CallbackContext context);
         void OnAttack0(InputAction.CallbackContext context);
         void OnAttack1(InputAction.CallbackContext context);
