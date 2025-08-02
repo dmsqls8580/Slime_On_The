@@ -8,7 +8,7 @@ public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
 {
     public NavMeshSurface Surface2D;
     [SerializeField] private float tickInterval;
-
+    
     private void Start()
     {
         Surface2D = GetComponent<NavMeshSurface>();
