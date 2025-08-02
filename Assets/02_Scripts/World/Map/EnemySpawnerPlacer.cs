@@ -25,15 +25,15 @@ public class BiomeSpawnerSet
     public List<SpawnerPrefabWithDensity> spawnerEntries;
 }
 
+
 public class EnemySpawnerPlacer : MonoBehaviour
 {
     public List<BiomeSpawnerSet> biomeSpawners;
     public Tilemap groundTilemap;
     public Transform spawnerParent;
-    public Transform playerStart; // 플레이어 시작 위치 참조
 
-    public float minSpawnerDistance = 5f;
-    public float safeDistanceFromPlayer = 10f;
+    public float minSpawnerDistance = 50;
+    public float safeDistanceFromPlayer = 80;
 
     public int seed = 12345;
 
@@ -63,8 +63,8 @@ public class EnemySpawnerPlacer : MonoBehaviour
                 GameObject prefab = entry.prefab;
                 Vector3 centerWorldPos = groundTilemap.GetCellCenterWorld(tilePos);
 
-                // 플레이어와 거리 확인
-                if (playerStart != null && Vector3.Distance(centerWorldPos, playerStart.position) < safeDistanceFromPlayer)
+                // (0,0,0) 위치 기준으로 플레이어와 거리 확인
+                if (Vector3.Distance(centerWorldPos, Vector3.zero) < safeDistanceFromPlayer)
                     continue;
 
                 // 기존 스포너들과 거리 확인
@@ -90,8 +90,6 @@ public class EnemySpawnerPlacer : MonoBehaviour
 
                 instance.transform.SetParent(spawnerParent);
                 placedSpawnerPositions.Add(centerWorldPos);
-
-                Debug.Log($"[EnemySpawnerPlacer] Spawner 생성됨: {prefab.name} @ {centerWorldPos} (biome: {biome}, density: {entry.density})");
             }
         }
     }

@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public class PlacedObject : MonoBehaviour, IStationType
+// 모든 건물 프리팹이 갖고있어야 함.
+public class PlacedObject : MonoBehaviour
 {
-    public CraftingStation GetStationType() => CraftingStation.Workbench;
+    [SerializeField] private ItemSO itemSO;
+    public ItemSO ItemSO => itemSO;
+    //public CraftingStation GetStationType() => CraftingStation.Workbench;
 }
