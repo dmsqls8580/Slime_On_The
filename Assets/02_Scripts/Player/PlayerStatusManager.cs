@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class PlayerStatusManager : MonoBehaviour
+public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 {
     [SerializeField] private Image hpGaugeImage;
     [SerializeField] private Image slimeGaugeImage;

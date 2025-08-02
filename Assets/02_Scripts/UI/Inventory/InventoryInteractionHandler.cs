@@ -181,7 +181,9 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     public void TryConsume(ItemInstanceData _item, SlotBase _originSlot)
     {
         // 사용효과 넣기
-        
+        PlayerStatusManager.Instance.RecoverHp(_item.ItemData.eatableData.recoverHP);
+        PlayerStatusManager.Instance.RecoverHunger(_item.ItemData.eatableData.fullness);
+        PlayerStatusManager.Instance.RecoverSlimeGauge(_item.ItemData.eatableData.slimeGauge);
         
         _originSlot.Clear(1);
     }
