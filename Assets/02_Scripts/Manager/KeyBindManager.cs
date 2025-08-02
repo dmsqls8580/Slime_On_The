@@ -21,13 +21,12 @@ public class KeyBindManager : Singleton<KeyBindManager>
     // 지원 액션 리스트
     private readonly Dictionary<string, InputAction> rebindableActions = new();
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         LoadRebinds();
-        
+
         var inputActions = InputController.Instance.PlayerInputs.asset;
-        
+
         // 허용된 액션 등록
         foreach (var map in inputActions.actionMaps)
         {
@@ -46,6 +45,11 @@ public class KeyBindManager : Singleton<KeyBindManager>
                 }
             }
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
     }
     
     // 외부에서 리바인딩 요청

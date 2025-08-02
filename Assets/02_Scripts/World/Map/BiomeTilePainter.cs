@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class BiomeTilePainter : MonoBehaviour
+public class BiomeTilePainter
 {
     private readonly Tilemap _tilemap;
     private readonly Dictionary<BiomeType, TileBase> _biomeTiles;
