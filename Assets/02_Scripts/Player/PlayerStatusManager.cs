@@ -186,6 +186,13 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
+        
+        if (!staminaRecoverRoutine.IsUnityNull())
+        {
+            StopCoroutine(staminaRecoverRoutine);
+        }
+
+        staminaRecoverRoutine = StartCoroutine(StartDefaultStaminaRecover());
     }
 
     private void UpdateHungerGaugeUI()

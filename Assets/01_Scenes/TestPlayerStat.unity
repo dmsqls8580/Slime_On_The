@@ -693,7 +693,6 @@ MonoBehaviour:
   heatwaveVolume: {fileID: 1498964076}
   lightningPrefab: {fileID: 4782630306983444251, guid: be217baa81af74541af70dc5459a7821, type: 3}
   lightningMark: {fileID: 1994173894490680667, guid: 8c299e19fb9aca84da6cef0fe4112442, type: 3}
-  playerStatusManager: {fileID: 480009176074898562}
 --- !u!1001 &456764275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2151,7 +2150,7 @@ MonoBehaviour:
   clampArea: {fileID: 866466037}
   playerTransform: {fileID: 480009176074898563}
   previewTilePrefab: {fileID: 3391041295654164922, guid: 85183bfce98b8a84cb0fc923684c7d54, type: 3}
-  tilemap: {fileID: 0}
+  tilemap: {fileID: 2104579415}
   placedObjectManager: {fileID: 0}
 --- !u!4 &866466039
 Transform:
@@ -4608,6 +4607,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8892080693557243111, guid: e12916362d947ee459ba9336fa68a1ab, type: 3}
+      propertyPath: uiInventory
+      value: 
+      objectReference: {fileID: 1383197565}
+    - target: {fileID: 8892080693557243111, guid: e12916362d947ee459ba9336fa68a1ab, type: 3}
       propertyPath: toolController
       value: 
       objectReference: {fileID: 480009176074898568}
@@ -5156,6 +5159,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1383197565 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8202319257207675752, guid: 3750cc51311e0044eaa148eb7be11547, type: 3}
+  m_PrefabInstance: {fileID: 1007484833}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07a682ed8f7f1094abdfe880c9c9bc22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1401489336
@@ -7087,6 +7101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a87929d6add280b488285fd07cae1f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1839735485 &2104579415 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 8068515201003153694, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+  m_PrefabInstance: {fileID: 2956151449429015115}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2114697980 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6463889492729916042, guid: e12916362d947ee459ba9336fa68a1ab, type: 3}
