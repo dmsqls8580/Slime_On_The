@@ -13,9 +13,6 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private GameObject lightningPrefab;
     [SerializeField] private GameObject lightningMark;
 
-    [Header("스크립트 참조")]
-    [SerializeField] private PlayerStatusManager playerStatusManager;
-
     private int dayCount = 0;
     private int maxDayCount = 10;
     private WeatherType currentWeatherType = WeatherType.Clear;
@@ -42,10 +39,10 @@ public class WeatherManager : MonoBehaviour
         {
             { WeatherType.Clear, new ClearEffect() },
             //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, playerStatusManager) },
-            { WeatherType.Rain, new RainEffect(this, rainParticle, playerStatusManager) },
-            { WeatherType.Storm, new StormEffect(playerStatusManager, lightningPrefab, lightningMark) },
-            { WeatherType.Snow, new SnowEffect(this, snowParticle, playerStatusManager) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, PlayerStatusManager.Instance) },
+            { WeatherType.Rain, new RainEffect(this, rainParticle, PlayerStatusManager.Instance) },
+            { WeatherType.Storm, new StormEffect(PlayerStatusManager.Instance, lightningPrefab, lightningMark) },
+            { WeatherType.Snow, new SnowEffect(this, snowParticle, PlayerStatusManager.Instance) },
             //{ WeatherType.Wind, new WindEffect() }
         };
 

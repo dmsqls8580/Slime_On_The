@@ -91,6 +91,9 @@ public class QuickSlot : SlotBase
         var data = GetData();
         if(data.IsUnityNull()||data.ItemData.IsUnityNull()) 
             return ToolType.None;
+        
+            
+        
         if(data.ItemData.itemTypes!=ItemType.Tool)
             return ToolType.None;
         

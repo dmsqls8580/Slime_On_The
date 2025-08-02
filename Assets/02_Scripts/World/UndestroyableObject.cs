@@ -14,7 +14,7 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
 
-        if (objectType == ObjectType.Berry)
+        if (objectType == ObjectType.UnDestroyed)
         {
             DropItems(_playerController.transform);
         }
