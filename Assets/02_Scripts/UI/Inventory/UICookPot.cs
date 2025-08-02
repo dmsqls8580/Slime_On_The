@@ -7,9 +7,14 @@ public class UICookPot : UIBase
     [SerializeField] private List<InventorySlot> inputSlots; // 3칸
     [SerializeField] private InventorySlot resultSlot;       // 1칸
     [SerializeField] private AnimationCurve JellyAnimationCurve;
+    private CookPotObject boundCookPot;
+    private int cookIndex;
 
-    public void Initialize(int cookPotIndex)
+    public void Initialize(int cookPotIndex, CookPotObject cookPot)
     {
+        boundCookPot = cookPot;
+        cookIndex = cookPotIndex;
+        
         int inputStart = SlotIndexScheme.GetCookInputStart(cookPotIndex);
         for (int i = 0; i < inputSlots.Count; i++)
         {
@@ -18,6 +23,14 @@ public class UICookPot : UIBase
 
         int resultIndex = SlotIndexScheme.GetCookResultIndex(cookPotIndex); 
         resultSlot.Initialize(resultIndex);
+        
+        InventoryManager.Instance.OnSlotChanged += OnAnySlotChanged;
+    }
+    
+    private void OnDisable()
+    {
+        if (InventoryManager.HasInstance)
+            InventoryManager.Instance.OnSlotChanged -= OnAnySlotChanged;
     }
 
     public void Refresh()
@@ -27,6 +40,37 @@ public class UICookPot : UIBase
             slot.Refresh();
         }
         resultSlot.Refresh();
+        // cpo.tryCook()
+    }
+    
+    private void OnAnySlotChanged(int changedIndex)
+    {
+        int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
+        int inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
+
+        if (changedIndex >= inputStart && changedIndex < inputEnd)
+        {
+            TryCookIfReady();
+        }
+    }
+    
+    private void TryCookIfReady()
+    {
+        bool allFilled = true;
+        foreach (var slot in inputSlots)
+        {
+            var data = slot.GetData();
+            if (data == null || !data.IsValid)
+            {
+                allFilled = false;
+                break;
+            }
+        }
+
+        if (allFilled)
+        {
+            boundCookPot.TryCook();
+        }
     }
 
     public override void Open()

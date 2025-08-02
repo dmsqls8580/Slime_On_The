@@ -1,6 +1,7 @@
 using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections;
+using System;
 using UnityEngine;
 
 public enum CookingState
@@ -16,6 +17,8 @@ public class CookPotObject : MonoBehaviour
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
+    public int GetCookIndex() => cookIndex;
+    private bool hasCooked = false;
 
     private CookingState currentState = CookingState.Idle;
     private ItemSO finishedItem;
@@ -37,6 +40,20 @@ public class CookPotObject : MonoBehaviour
         {
             cookIndex = inventoryManager.GetNextAvailableCookIndex();
         }
+    }
+
+    // TODO: 요리하는거 동작 추가
+
+    private void OnDisable()
+    {
+        InventoryManager.Instance.ReleaseCookIndex(cookIndex);
+    }
+
+    public void TryCook()
+    {
+        if (hasCooked) return;
+        
+        hasCooked = true;
     }
 
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
