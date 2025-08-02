@@ -64,33 +64,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Minimap"",
-                    ""type"": ""Button"",
-                    ""id"": ""d34067e7-f455-422b-b273-32516713fe1f"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attack0"",
-                    ""type"": ""Button"",
-                    ""id"": ""6f074db5-aacd-416b-9779-4f18554cd269"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Attack1"",
-                    ""type"": ""Button"",
-                    ""id"": ""3b77027f-f9f2-4ea9-849d-9200a5e1b68c"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Interaction"",
                     ""type"": ""Button"",
                     ""id"": ""5f7f1c4b-7a9f-4c46-baae-863539ad6788"",
@@ -118,6 +91,24 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Attack0"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f074db5-aacd-416b-9779-4f18554cd269"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack1"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b77027f-f9f2-4ea9-849d-9200a5e1b68c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Look"",
                     ""type"": ""Value"",
                     ""id"": ""34c0c046-31df-4f32-8c0d-9c202f6dac5b"",
@@ -130,6 +121,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""name"": ""Place"",
                     ""type"": ""Button"",
                     ""id"": ""fbc76744-0014-48e8-a5c5-43ad90d355f5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Minimap"",
+                    ""type"": ""Button"",
+                    ""id"": ""d34067e7-f455-422b-b273-32516713fe1f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -227,39 +227,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b253b84a-972c-4bf8-97ba-36f9c27ffb5e"",
-                    ""path"": ""<Keyboard>/m"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Minimap"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fc8417f9-9280-4dfc-934f-539954e21570"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack0"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""e8d8d1f9-38f6-4889-9dd9-16b4882ecdf2"",
-                    ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""43829066-a0f4-483d-8fb9-12e8b7324d2a"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
@@ -312,6 +279,39 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Place"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b253b84a-972c-4bf8-97ba-36f9c27ffb5e"",
+                    ""path"": ""<Keyboard>/m"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Minimap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc8417f9-9280-4dfc-934f-539954e21570"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8d8d1f9-38f6-4889-9dd9-16b4882ecdf2"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -324,14 +324,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Crafting = m_Player.FindAction("Crafting", throwIfNotFound: true);
-        m_Player_Minimap = m_Player.FindAction("Minimap", throwIfNotFound: true);
-        m_Player_Attack0 = m_Player.FindAction("Attack0", throwIfNotFound: true);
-        m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
         m_Player_Interaction = m_Player.FindAction("Interaction", throwIfNotFound: true);
         m_Player_Gathering = m_Player.FindAction("Gathering", throwIfNotFound: true);
         m_Player_Settings = m_Player.FindAction("Settings", throwIfNotFound: true);
+        m_Player_Attack0 = m_Player.FindAction("Attack0", throwIfNotFound: true);
+        m_Player_Attack1 = m_Player.FindAction("Attack1", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Place = m_Player.FindAction("Place", throwIfNotFound: true);
+        m_Player_Minimap = m_Player.FindAction("Minimap", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -397,14 +397,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Dash;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Crafting;
-    private readonly InputAction m_Player_Minimap;
-    private readonly InputAction m_Player_Attack0;
-    private readonly InputAction m_Player_Attack1;
     private readonly InputAction m_Player_Interaction;
     private readonly InputAction m_Player_Gathering;
     private readonly InputAction m_Player_Settings;
+    private readonly InputAction m_Player_Attack0;
+    private readonly InputAction m_Player_Attack1;
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Place;
+    private readonly InputAction m_Player_Minimap;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
@@ -413,14 +413,14 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Crafting => m_Wrapper.m_Player_Crafting;
-        public InputAction @Minimap => m_Wrapper.m_Player_Minimap;
-        public InputAction @Attack0 => m_Wrapper.m_Player_Attack0;
-        public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
         public InputAction @Interaction => m_Wrapper.m_Player_Interaction;
         public InputAction @Gathering => m_Wrapper.m_Player_Gathering;
         public InputAction @Settings => m_Wrapper.m_Player_Settings;
+        public InputAction @Attack0 => m_Wrapper.m_Player_Attack0;
+        public InputAction @Attack1 => m_Wrapper.m_Player_Attack1;
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Place => m_Wrapper.m_Player_Place;
+        public InputAction @Minimap => m_Wrapper.m_Player_Minimap;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -442,15 +442,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Crafting.started += instance.OnCrafting;
             @Crafting.performed += instance.OnCrafting;
             @Crafting.canceled += instance.OnCrafting;
-            @Minimap.started += instance.OnMinimap;
-            @Minimap.performed += instance.OnMinimap;
-            @Minimap.canceled += instance.OnMinimap;
-            @Attack0.started += instance.OnAttack0;
-            @Attack0.performed += instance.OnAttack0;
-            @Attack0.canceled += instance.OnAttack0;
-            @Attack1.started += instance.OnAttack1;
-            @Attack1.performed += instance.OnAttack1;
-            @Attack1.canceled += instance.OnAttack1;
             @Interaction.started += instance.OnInteraction;
             @Interaction.performed += instance.OnInteraction;
             @Interaction.canceled += instance.OnInteraction;
@@ -460,12 +451,21 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Settings.started += instance.OnSettings;
             @Settings.performed += instance.OnSettings;
             @Settings.canceled += instance.OnSettings;
+            @Attack0.started += instance.OnAttack0;
+            @Attack0.performed += instance.OnAttack0;
+            @Attack0.canceled += instance.OnAttack0;
+            @Attack1.started += instance.OnAttack1;
+            @Attack1.performed += instance.OnAttack1;
+            @Attack1.canceled += instance.OnAttack1;
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
             @Place.started += instance.OnPlace;
             @Place.performed += instance.OnPlace;
             @Place.canceled += instance.OnPlace;
+            @Minimap.started += instance.OnMinimap;
+            @Minimap.performed += instance.OnMinimap;
+            @Minimap.canceled += instance.OnMinimap;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -482,15 +482,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Crafting.started -= instance.OnCrafting;
             @Crafting.performed -= instance.OnCrafting;
             @Crafting.canceled -= instance.OnCrafting;
-            @Minimap.started -= instance.OnMinimap;
-            @Minimap.performed -= instance.OnMinimap;
-            @Minimap.canceled -= instance.OnMinimap;
-            @Attack0.started -= instance.OnAttack0;
-            @Attack0.performed -= instance.OnAttack0;
-            @Attack0.canceled -= instance.OnAttack0;
-            @Attack1.started -= instance.OnAttack1;
-            @Attack1.performed -= instance.OnAttack1;
-            @Attack1.canceled -= instance.OnAttack1;
             @Interaction.started -= instance.OnInteraction;
             @Interaction.performed -= instance.OnInteraction;
             @Interaction.canceled -= instance.OnInteraction;
@@ -500,12 +491,21 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Settings.started -= instance.OnSettings;
             @Settings.performed -= instance.OnSettings;
             @Settings.canceled -= instance.OnSettings;
+            @Attack0.started -= instance.OnAttack0;
+            @Attack0.performed -= instance.OnAttack0;
+            @Attack0.canceled -= instance.OnAttack0;
+            @Attack1.started -= instance.OnAttack1;
+            @Attack1.performed -= instance.OnAttack1;
+            @Attack1.canceled -= instance.OnAttack1;
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
             @Place.started -= instance.OnPlace;
             @Place.performed -= instance.OnPlace;
             @Place.canceled -= instance.OnPlace;
+            @Minimap.started -= instance.OnMinimap;
+            @Minimap.performed -= instance.OnMinimap;
+            @Minimap.canceled -= instance.OnMinimap;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -529,13 +529,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnCrafting(InputAction.CallbackContext context);
-        void OnMinimap(InputAction.CallbackContext context);
-        void OnAttack0(InputAction.CallbackContext context);
-        void OnAttack1(InputAction.CallbackContext context);
         void OnInteraction(InputAction.CallbackContext context);
         void OnGathering(InputAction.CallbackContext context);
         void OnSettings(InputAction.CallbackContext context);
+        void OnAttack0(InputAction.CallbackContext context);
+        void OnAttack1(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
         void OnPlace(InputAction.CallbackContext context);
+        void OnMinimap(InputAction.CallbackContext context);
     }
 }

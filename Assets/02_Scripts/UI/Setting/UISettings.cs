@@ -93,6 +93,8 @@ public class UISettings : UIBase
     
     public override void Close()
     {
+        openTween?.Kill();
+        closeTween?.Kill();
         nowState = -2;
         base.Close();
     }

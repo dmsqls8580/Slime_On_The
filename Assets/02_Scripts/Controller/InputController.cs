@@ -1,8 +1,6 @@
-using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class InputController : MonoBehaviour
+public class InputController : Singleton<InputController>
 {
     public PlayerInput PlayerInputs{get; private set;}
     public PlayerInput.PlayerActions PlayerActions {get; private set;}
@@ -18,6 +16,7 @@ public class InputController : MonoBehaviour
     {
         PlayerInputs = new PlayerInput();
         PlayerActions = PlayerInputs.Player;
+        PlayerInputs.Enable();
     }
 
     public void SetEnable(bool _enable)
