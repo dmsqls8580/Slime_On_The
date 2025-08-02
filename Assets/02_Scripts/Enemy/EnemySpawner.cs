@@ -86,8 +86,13 @@ public class EnemySpawner : MonoBehaviour
         // {
         //     enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         // }
-        
         string poolID = EnemySO.EnemyID.ToString();
+
+        if (!ObjectPoolManager.Instance.HasPool(poolID))
+        {
+            Debug.LogWarning($"EnemySpawner: {poolID} 풀이 아직 초기화되지 않았습니다. 스폰 생략");
+            return;
+        }
 
         for (int i = 0; i < SpawnCount; i++)
         {
@@ -110,6 +115,10 @@ public class EnemySpawner : MonoBehaviour
             {
                 controller.SpawnPos = spawnPos; // 필요시
                 controller.OnSpawnFromPool();
+
+                bool isOnNavMesh = controller.Agent != null && controller.Agent.isOnNavMesh;
+                Debug.Log($"[EnemySpawner] Enemy 스폰 완료: {enemy.name}, 위치: {spawnPos}, NavMesh 여부: {isOnNavMesh}");
+
             }
             else
             {
