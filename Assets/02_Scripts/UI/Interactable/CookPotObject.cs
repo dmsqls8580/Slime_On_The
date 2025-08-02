@@ -1,5 +1,6 @@
 using _02_Scripts.Manager;
 using PlayerStates;
+using System;
 using UnityEngine;
 
 public class CookPotObject : MonoBehaviour, IInteractable
@@ -7,7 +8,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
     [SerializeField] private GameObject dropItemPrefab;
     [SerializeField] private int cookIndex = -1;
     public int GetCookIndex() => cookIndex;
-
+    private bool hasCooked = false;
 
     [Header("Drop Animation")]
     [SerializeField] private float dropUpForce = 5f;
@@ -18,7 +19,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
     [SerializeField] private float maxHealth;
     private float currentHealth;
     private Rigidbody2D rigid;
-
+    
     private void Start()
     {
         if (cookIndex < 0)
@@ -27,13 +28,27 @@ public class CookPotObject : MonoBehaviour, IInteractable
         }
     }
 
+    // TODO: 요리하는거 동작 추가
+
+    private void OnDisable()
+    {
+        InventoryManager.Instance.ReleaseCookIndex(cookIndex);
+    }
+
+    public void TryCook()
+    {
+        if (hasCooked) return;
+        
+        hasCooked = true;
+    }
+
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         switch (_type)
         {
             case InteractionCommandType.F:
                 var ui = UIManager.Instance.GetUIComponent<UICookPot>();
-                ui.Initialize(cookIndex);
+                ui.Initialize(cookIndex, this);
                 UIManager.Instance.Toggle<UICookPot>();
                 break;
 
