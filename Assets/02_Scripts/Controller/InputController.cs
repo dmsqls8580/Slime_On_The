@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class InputController : Singleton<InputController>
 {
-    public PlayerInput PlayerInputs{get; private set;}
-    public PlayerInput.PlayerActions PlayerActions {get; private set;}
+    public PlayerInput PlayerInputs{get; set;}
+    public PlayerInput.PlayerActions PlayerActions {get; set;}
     
     private Vector2 _lookDirection;
     public Vector2 LookDirection

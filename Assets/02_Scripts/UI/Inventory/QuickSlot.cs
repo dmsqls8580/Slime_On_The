@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -52,10 +53,16 @@ public class QuickSlot : SlotBase
         }
         else if (_eventData.button == PointerEventData.InputButton.Right)
         {
+            
             var data = GetData();
             if (data == null || !data.IsValid) return;
-
-            InventoryInteractionHandler.Instance.TryUse(data, this);
+            
+            var uiInventory = UIManager.Instance.GetUIComponent<UIInventory>();
+            if (uiInventory != null)
+            {
+                var realSlot = uiInventory.GetInventorySlotByIndex(quickSlotIndex);
+                InventoryInteractionHandler.Instance.TryUse(data, realSlot);
+            }
         }
     }
 
