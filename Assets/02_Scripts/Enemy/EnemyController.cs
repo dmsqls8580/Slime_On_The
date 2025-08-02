@@ -352,7 +352,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
-            Logger.Log("Init 호출");
         }
         else
         {

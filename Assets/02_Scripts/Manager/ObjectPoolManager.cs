@@ -53,23 +53,22 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         UnityEditor.EditorUtility.SetDirty(this);
     }
 #endif
-    private void Awake()
+    
+    private void Start()
     {
-        // Todo : 게임 매니저에서 할당
-        Init();
+        PrintPoolIDs();
     }
-
+    
+    
     // 외부에서 사용할 수 있도록 public으로 제작한 메서드
     public void InitializePools()
     {
-        Init();
+        StartCoroutine(DelayInitPools());
     }
     
     // 오브젝트 풀링 초기화 메서드
     public void Init()
     {
-        Debug.Log("ObjectPoolManager.Init() 시작");
-
         foreach (var obj in poolObjectList)
         {
             if (obj.TryGetComponent<IPoolObject>(out var ipool))
@@ -86,8 +85,14 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
         {
             CreatePool(pool, pool.PoolSize);
         }
-
-        Debug.Log("ObjectPoolManager.Init() 완료");
+    }
+    
+    // 네브매쉬 베이크와 타이밍을 맞추기 위해 두 프레임 늦춤
+    private IEnumerator DelayInitPools()
+    {
+        yield return null;
+        yield return null;
+        Init();
     }
 
     /// <summary>
@@ -253,5 +258,25 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
     public bool HasPool(string poolId)
     {
         return poolObjects.ContainsKey(poolId);
+    }
+    
+    public void PrintPoolIDs()
+    {
+        foreach (var prefab in poolObjectList)
+        {
+            if (prefab == null)
+            {
+                Debug.LogWarning("poolObjectList에 null 프리팹이 있습니다.");
+                continue;
+            }
+            if (prefab.TryGetComponent<IPoolObject>(out var poolObject))
+            {
+                Debug.Log($"Prefab: {prefab.name}, PoolID: {poolObject.PoolID}");
+            }
+            else
+            {
+                Debug.LogWarning($"Prefab {prefab.name} does not implement IPoolObject");
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace Boss2States
         Idle,
         Wander,
         Chase,
-        Melee,
+        BubbleMelee,
         Bubble1,
         Bubble2,
         Dead
@@ -198,10 +198,10 @@ namespace Boss2States
             {
                 return Boss2State.Idle;
             }
-            // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
+            // 플레이어가 공격 범위 내에 들어올 경우, 근접 공격
             if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
             {
-                // Todo : 패턴 결정
+                return Boss2State.BubbleMelee;
             }
             return Boss2State.Chase;
         }

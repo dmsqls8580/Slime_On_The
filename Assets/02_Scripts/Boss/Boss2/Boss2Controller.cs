@@ -235,7 +235,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
             Boss2State.Idle => new IdleState(),
             Boss2State.Wander => new WanderState(),
             Boss2State.Chase => new ChaseState(),
-            Boss2State.Melee => new BubbleMeleeState(),
+            Boss2State.BubbleMelee => new BubbleMeleeState(),
             Boss2State.Bubble1 => new Bubble1State(),
             Boss2State.Bubble2 => new Bubble2State(),
             Boss2State.Dead => new DeadState(),
