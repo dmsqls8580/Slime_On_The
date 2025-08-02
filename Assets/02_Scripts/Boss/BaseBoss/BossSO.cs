@@ -7,11 +7,8 @@ public class BossSO : ScriptableObject, IStatProvider
 {
     public int BossID;
     public string BossName;
+    public AttackType AttackType;
     public List<ProjectileName> ProjectileID;
-    public float IdleDuration;
-    public float Cast1Duration;
-    public float Cast2Duration;
-    public float StompDuration;
     
     public List<StatData> BossStats;
     public List<StatData> Stats => BossStats;

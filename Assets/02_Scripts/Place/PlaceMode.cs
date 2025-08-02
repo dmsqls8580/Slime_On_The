@@ -4,11 +4,21 @@ using System.Collections.Generic;
 
 public class PlaceMode : MonoBehaviour
 {
+    [Header("감지할 레이어")]
     [SerializeField] private LayerMask layerMask;
-    [SerializeField] private GameObject previewTilePrefab;
+
+    [Header("Clamp Area")]
     [SerializeField] private ClampArea clampArea;
     [SerializeField] private Transform playerTransform;
+
+    [Header("프리뷰 타일 프리팹")]
+    [SerializeField] private GameObject previewTilePrefab;
+
+    [Header("타일맵")]
     [SerializeField] private Tilemap tilemap;
+
+    [Header("스크립트 참조")]
+    [SerializeField] private PlacedObjectManager placedObjectManager;
 
     private GameObject objectPrefab;
     private GameObject prefabInstance;
@@ -16,7 +26,7 @@ public class PlaceMode : MonoBehaviour
     
     private Vector2Int size;
 
-    private List<PreviewTile> previewTiles = new List<PreviewTile>();
+    private List<PreviewTile> previewTiles = new();
 
     private bool canPlace = false;
     public bool CanPlace=>canPlace; 
@@ -76,9 +86,12 @@ public class PlaceMode : MonoBehaviour
         if (!canPlace) return;
         GameObject placedObject = Instantiate(objectPrefab, prefabInstance.transform.position, Quaternion.identity);
         SetObject(placedObject);
-        inventoryManager.TryRemoveItemGlobally(itemSO, 1);
+        if (placedObject.TryGetComponent(out PlacedObject placedObjectComponent))
+        {
+            placedObjectManager.AddPlacedObject(placedObjectComponent);
+        }
+        //inventoryManager.TryRemoveItemGlobally(itemSO, 1);
         SetActiveFalsePlaceMode();
-        canPlace = false;
     }
 
     private void SetObject(GameObject _placedObject)
@@ -126,6 +139,7 @@ public class PlaceMode : MonoBehaviour
         foreach (PreviewTile tile in previewTiles)
             Destroy(tile.gameObject);
         previewTiles.Clear();
+        canPlace = false;
         gameObject.SetActive(false);
     }
 }

@@ -19,8 +19,8 @@ public class PlayerStatusManager : MonoBehaviour
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
-    private float slimeConsumeAmount = 0.05f;
-    public float SlimeConsumeAmount => slimeConsumeAmount;
+    private float slimeDayConsumeAmount = 0.5f;
+    public float SlimeDayConsumeAmount => slimeDayConsumeAmount;
 
     public UnityAction<float> OnHpChanged;
 
@@ -60,7 +60,7 @@ public class PlayerStatusManager : MonoBehaviour
 
     private void Start()
     {
-        daySlimeRoutine  = StartCoroutine(DaySlimeGaugeRoutine(slimeConsumeAmount));
+        daySlimeRoutine  = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
         playerController =  GetComponent<PlayerController>();
     }
 
@@ -96,7 +96,7 @@ public class PlayerStatusManager : MonoBehaviour
 
     private IEnumerator DaySlimeGaugeRoutine(float _amount)
     {
-        _amount = slimeConsumeAmount;
+        _amount = slimeDayConsumeAmount;
 
         while (true)
         {
@@ -113,13 +113,10 @@ public class PlayerStatusManager : MonoBehaviour
 
             switch (timeManager.CurrentTimeOfDay)
             {
-                case TimeOfDay.Morning:
-                case TimeOfDay.Noon:
-                case TimeOfDay.Evening:
+                case TimeOfDay.Day:
                     ConsumeSlimeGauge(_amount);
                     break;
                 case TimeOfDay.Night:
-                case TimeOfDay.Dawn:
                     RecoverSlimeGauge(_amount);
                     break;
             }

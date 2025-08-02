@@ -16,13 +16,14 @@ MonoBehaviour:
   EnemyName: RangedTest
   AttackType: 2
   ProjectileID: 21
+  SpawnTerrain: 0
   EnemyStats:
   - StatType: 0
     ModifierType: 0
     Value: 100
   - StatType: 1
     ModifierType: 0
-    Value: 40
+    Value: 100
   - StatType: 2
     ModifierType: 0
     Value: 1
@@ -54,4 +55,3 @@ MonoBehaviour:
     ModifierType: 0
     Value: 3
   DropItems: []
-  SpawnTerrain: 0

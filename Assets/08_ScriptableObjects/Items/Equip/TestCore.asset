@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 0
   itemName: TestFormChange
   description: 
-  icon: {fileID: 21300000, guid: fd9f9ff0e7ba89543baa258e4af817cd, type: 3}
+  icon: {fileID: 21300000, guid: 3289f6344e9b4ab48885e992d9e0e9ad, type: 3}
   itemTypes: 4
   stackable: 0
   maxStack: 1
@@ -42,6 +42,13 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
   placeableData:
     placeableInfo: {fileID: 0}
   recipe: []

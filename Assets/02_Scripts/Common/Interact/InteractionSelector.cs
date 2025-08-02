@@ -10,13 +10,13 @@ public class InteractionSelector : MonoBehaviour
     [SerializeField] private LayerMask buildingMask;
     [SerializeField] private LayerMask resourceMask;
 
-    [Header("스크립트 참조")]
-    [SerializeField] private InteractionZone interactionZone;
+    [Header("스크립트 참조")] [SerializeField] private InteractionZone interactionZone;
     [SerializeField] private UIQuickSlot uiQuickSlot;
     [SerializeField] private CraftingStationManager craftingStationManager;
 
     // F 키 전용.
     private Collider2D fInteractable;
+
     // Space bar 키 전용.
     private Collider2D spaceInteractable;
     public Collider2D FInteractable => fInteractable;
@@ -67,6 +67,7 @@ public class InteractionSelector : MonoBehaviour
                     {
                         craftingStationManager.UpdateCurrentCraftingStation(type.GetStationType());
                     }
+
                     // 빌딩은 "F", "Space bar" 둘 다 할당.
                     break;
                 }
@@ -88,7 +89,7 @@ public class InteractionSelector : MonoBehaviour
                 if (newSpaceInteractable == null && IsCompatibleWithCurrentQuickSlotItem(collider))
                 {
                     newSpaceInteractable = collider;
-                    
+
                     if (newFInteractable != null)
                     {
                         // 둘 다 찾았으면 종료.
@@ -120,23 +121,24 @@ public class InteractionSelector : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D _collider)
     {
-
-        if (_collider.TryGetComponent(out Resource resource))
+        
+        if (_collider.TryGetComponent(out BaseInteractableObject resource))
         {
-            var selectedSlot = uiQuickSlot?.GetSelectedSlot();
+            ToolType requiredToolType = resource.GetRequiredToolType();
+
+            if (requiredToolType == ToolType.None)
+            {
+                return true;
+            }
             
+            var selectedSlot = uiQuickSlot?.GetSelectedSlot();
             if (selectedSlot.IsUnityNull())
             {
                 return false;
             }
 
-            if (!selectedSlot.IsUnityNull())
-            {
-                PlayerController playerController = GetComponentInParent<PlayerController>();
-                ToolType toolType = selectedSlot.GetToolType();
-                ToolType requiredToolType = resource.GetRequiredToolType();
-                return toolType == requiredToolType;
-            }
+            ToolType toolType = selectedSlot.GetToolType();
+            return toolType == requiredToolType;
         }
 
         return false;

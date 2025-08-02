@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EnemyAttackType
+public enum AttackType
 {
     None,
     Neutral,
@@ -15,6 +15,7 @@ public enum ProjectileName
     Bolt,
     Spark,
     Bubble,
+    BigBubble,
     
     // Boss
     TurtleSpell0 = 40,
@@ -41,7 +42,7 @@ public class EnemySO : ScriptableObject, IStatProvider
 {
     public int EnemyID;                        // Enemy ID
     public string EnemyName;
-    public EnemyAttackType AttackType;         // Enemy 공격 타입
+    public AttackType AttackType;         // Enemy 공격 타입
     public ProjectileName ProjectileID;  // Ranged 일때만 사용
     public Terrain SpawnTerrain;
     
