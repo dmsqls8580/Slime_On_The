@@ -42,33 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Minimap",
-                    "type": "Button",
-                    "id": "d34067e7-f455-422b-b273-32516713fe1f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Attack0",
-                    "type": "Button",
-                    "id": "6f074db5-aacd-416b-9779-4f18554cd269",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Attack1",
-                    "type": "Button",
-                    "id": "3b77027f-f9f2-4ea9-849d-9200a5e1b68c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interaction",
                     "type": "Button",
                     "id": "5f7f1c4b-7a9f-4c46-baae-863539ad6788",
@@ -96,6 +69,24 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Attack0",
+                    "type": "Button",
+                    "id": "6f074db5-aacd-416b-9779-4f18554cd269",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack1",
+                    "type": "Button",
+                    "id": "3b77027f-f9f2-4ea9-849d-9200a5e1b68c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Look",
                     "type": "Value",
                     "id": "34c0c046-31df-4f32-8c0d-9c202f6dac5b",
@@ -108,6 +99,15 @@
                     "name": "Place",
                     "type": "Button",
                     "id": "fbc76744-0014-48e8-a5c5-43ad90d355f5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Minimap",
+                    "type": "Button",
+                    "id": "d34067e7-f455-422b-b273-32516713fe1f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -205,39 +205,6 @@
                 },
                 {
                     "name": "",
-                    "id": "b253b84a-972c-4bf8-97ba-36f9c27ffb5e",
-                    "path": "<Keyboard>/m",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Minimap",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "fc8417f9-9280-4dfc-934f-539954e21570",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack0",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "e8d8d1f9-38f6-4889-9dd9-16b4882ecdf2",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Attack1",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "43829066-a0f4-483d-8fb9-12e8b7324d2a",
                     "path": "<Keyboard>/f",
                     "interactions": "",
@@ -288,6 +255,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Place",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b253b84a-972c-4bf8-97ba-36f9c27ffb5e",
+                    "path": "<Keyboard>/m",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Minimap",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc8417f9-9280-4dfc-934f-539954e21570",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack0",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8d8d1f9-38f6-4889-9dd9-16b4882ecdf2",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
