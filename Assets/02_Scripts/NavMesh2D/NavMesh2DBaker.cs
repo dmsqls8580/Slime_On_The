@@ -7,15 +7,11 @@ using UnityEngine.AI;
 public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
 {
     public NavMeshSurface Surface2D;
-    [SerializeField] private float tickInterval;
 
-    private void Start()
+    protected override void Awake()
     {
+        base.Awake();
         Surface2D = GetComponent<NavMeshSurface>();
-        
-        // Todo : 게임매니저에서 할당
-        // Surface2D.BuildNavMesh();
-        // StartCoroutine(TickUpdate());
     }
 
     // 외부에서 사용할 수 있도록 public으로 제작한 메서드
@@ -30,16 +26,8 @@ public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
         yield return null;
         Logger.Log("Baking NavMesh");
         Surface2D.BuildNavMesh();
-        StartCoroutine(TickUpdate());
     }
-    private IEnumerator TickUpdate()
-    {
-        while (true)
-        {
-            UpdateThisNavMesh();
-            yield return new WaitForSeconds(tickInterval);
-        }
-    }
+
     
     // 오브젝트(자원, 건물, 등) 스폰, 설치, 파괴, 틱(30초) 당 호출
     public void UpdateThisNavMesh()

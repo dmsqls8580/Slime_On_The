@@ -235,7 +235,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
             Boss2State.Idle => new IdleState(),
             Boss2State.Wander => new WanderState(),
             Boss2State.Chase => new ChaseState(),
-            Boss2State.Melee => new MeleeState(),
+            Boss2State.BubbleMelee => new BubbleMeleeState(),
             Boss2State.Bubble1 => new Bubble1State(),
             Boss2State.Bubble2 => new Bubble2State(),
             Boss2State.Dead => new DeadState(),
@@ -249,7 +249,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     }
     
     // Melee 상태에서 호출할 공격 패턴
-    public void Melee()
+    public void BubbleMelee()
     {
         
     }

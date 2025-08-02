@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2345876508738874933}
   - component: {fileID: 23001444466322614}
   - component: {fileID: -1618786653468559973}
+  - component: {fileID: 2614018174766908176}
   m_Layer: 31
   m_Name: Stone (9)
   m_TagString: Untagged
@@ -138,7 +139,7 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
     amount: 5
     dropChance: 100
-  objectType: 1
+  objectType: -1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
@@ -160,3 +161,15 @@ MonoBehaviour:
   m_Area: 1
   m_IgnoreFromBuild: 0
   m_AffectedAgents: ffffffff
+--- !u!114 &2614018174766908176
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1990703441672793448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55aa12a90e80db4f9fb94f8ddfee639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

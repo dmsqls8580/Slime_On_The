@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6737676818348998515}
   - component: {fileID: 347788387398860020}
   - component: {fileID: 7418462684272615884}
-  - component: {fileID: 2006848808384437714}
   m_Layer: 31
   m_Name: bush_small
   m_TagString: Untagged
@@ -108,19 +107,3 @@ MonoBehaviour:
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
---- !u!114 &2006848808384437714
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236685174018697565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff

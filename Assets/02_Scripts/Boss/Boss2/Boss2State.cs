@@ -9,7 +9,7 @@ namespace Boss2States
         Idle,
         Wander,
         Chase,
-        Melee,
+        BubbleMelee,
         Bubble1,
         Bubble2,
         Dead
@@ -19,7 +19,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -36,7 +36,7 @@ namespace Boss2States
             
             owner.Animator.SetBool(isWanderingHash, false);
             owner.Animator.SetBool(isChasingHash, false);
-            owner.Animator.SetBool(isMeleeHash, false);
+            owner.Animator.SetBool(isBubbleMeleeHash, false);
             owner.Animator.SetBool(isBubble1Hash, false);
             owner.Animator.SetBool(isBubble2Hash, false);
         }
@@ -81,7 +81,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -151,7 +151,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -198,20 +198,20 @@ namespace Boss2States
             {
                 return Boss2State.Idle;
             }
-            // 플레이어가 공격 범위 내에 들어올 경우, 랜덤 패턴 출력
+            // 플레이어가 공격 범위 내에 들어올 경우, 근접 공격
             if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
             {
-                // Todo : 패턴 결정
+                return Boss2State.BubbleMelee;
             }
             return Boss2State.Chase;
         }
     }
     
-    public class MeleeState :  IState<Boss2Controller, Boss2State>
+    public class BubbleMeleeState :  IState<Boss2Controller, Boss2State>
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -245,7 +245,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
@@ -279,7 +279,7 @@ namespace Boss2States
     {
         private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
         private readonly int isChasingHash = Animator.StringToHash("IsChasing");
-        private readonly int isMeleeHash = Animator.StringToHash("IsMelee");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
         private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
         private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
         
