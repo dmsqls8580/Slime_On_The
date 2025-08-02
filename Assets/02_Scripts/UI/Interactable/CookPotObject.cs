@@ -1,8 +1,7 @@
 using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum CookingState
@@ -12,10 +11,12 @@ public enum CookingState
     Finished
 }
 
-public class CookPotObject : MonoBehaviour
+public class CookPotObject : MonoBehaviour, IInteractable
 {
     [Header("저장 데이터")]
-    private int cookIndex = -1;
+    [SerializeField] private int cookIndex = -1;
+    private List<InventorySlot> inputSlots;
+    private InventorySlot resultSlot;
     private CookingState currentState = CookingState.Idle;
     private float currentTime = 0f;
     private float cookingTime = 0f;
@@ -45,6 +46,12 @@ public class CookPotObject : MonoBehaviour
         }
     }
 
+    public void Initialize(List<InventorySlot> _inputSlots, InventorySlot _resultSlot)
+    {
+        inputSlots = _inputSlots;
+        resultSlot = _resultSlot;
+    }
+
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         switch (_type)
@@ -64,7 +71,6 @@ public class CookPotObject : MonoBehaviour
         if (currentState == CookingState.Idle)
         {
             currentState = CookingState.Cooking;
-            currentTime = 0;
             cookingTime = _cookingTime;
             finishedItem = _item;
             StartCoroutine(CookRoutine());
@@ -73,27 +79,35 @@ public class CookPotObject : MonoBehaviour
 
     private IEnumerator CookRoutine()
     {
-        while (true)
+        do
         {
+            currentTime = 0;
             while (currentTime < cookingTime)
             {
                 currentTime += Time.deltaTime;
                 yield return null;
             }
 
-            // 완료슬롯에 finishedItem추가.
+            foreach (var slot in inputSlots)
+            {
+                inventoryManager.RemoveItem(slot.SlotIndex, 1);
+            }
+            inventoryManager.TryAddItem(resultSlot.SlotIndex, finishedItem, 1);
 
-            // 다음 요리 가능한지 확인
-            if (currentTime == 3)
-            {
-                currentTime = 0;
-            }
-            else
-            {
-                break;
-            }
-        }
+        } while (CanCook());
 
         currentState = CookingState.Finished;
+    }
+
+    private bool CanCook()
+    {
+        foreach (var slot in inputSlots)
+        {
+            if (!slot.HasItem())
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

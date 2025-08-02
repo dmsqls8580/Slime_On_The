@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class UICookPot : UIBase
 {
-    [SerializeField] private List<InventorySlot> inputSlots; // 3칸
-    [SerializeField] private InventorySlot resultSlot;       // 1칸
+    [SerializeField] private List<InventorySlot> inputSlots;
+    [SerializeField] private InventorySlot resultSlot;
     [SerializeField] private AnimationCurve JellyAnimationCurve;
 
     private InventoryManager inventoryManager;
@@ -35,6 +35,7 @@ public class UICookPot : UIBase
         resultSlot.Initialize(resultIndex);
         
         inventoryManager.OnSlotChanged += OnAnySlotChanged;
+        cookPotObject.Initialize(inputSlots, resultSlot);
     }
     
     private void OnDisable()
@@ -59,6 +60,7 @@ public class UICookPot : UIBase
         foreach (var slot in inputSlots)
         {
             if (!slot.HasItem()) return;
+            // 코루틴종료.
         }
 
         Dictionary<IngredientTag, float> tags = new();
@@ -82,6 +84,7 @@ public class UICookPot : UIBase
             cookingTime += data.cookableData.contributionTime;
         }
 
+        Logger.Log("3개 다넣음.");
         cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
     }
 

@@ -38,7 +38,7 @@ public class QuickSlot : SlotBase
             if (!data.IsUnityNull())
             {
                 if (data.ItemData.itemTypes == ItemType.Placeable)
-                    placeMode.SetActiveTruePlaceMode(data.ItemData);
+                    placeMode.SetActiveTruePlaceMode(data.ItemData, quickSlotIndex);
             }
             
         }
