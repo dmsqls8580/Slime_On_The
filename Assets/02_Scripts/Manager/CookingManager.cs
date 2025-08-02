@@ -1,20 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CookingManager : MonoBehaviour
+public class CookingManager : SceneOnlySingleton<CookingManager>
 {
     [SerializeField] private RecipeDatabase database;
-    //[SerializeField] private CookingPanel cookingPanel;
 
     public void FindMatchingRecipe(Dictionary<IngredientTag, float> _tags, float _cookingTime, CookPotObject _cookPot)
     {
         List<ItemSO> items = database.Items;
-        foreach (ItemSO item in items)
+        foreach (var item in items)
         {
             if (IsMatched(_tags, item.cookedData))
             {
-                //_cookPot.Cook(item, _cookingTime);
-                //cookingPanel.Initialize();
+                _cookPot.StartCook(item, _cookingTime);
                 return;
             }
         }

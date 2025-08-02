@@ -1,7 +1,8 @@
 using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections;
-using System;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CookingState
@@ -13,15 +14,17 @@ public enum CookingState
 
 public class CookPotObject : MonoBehaviour
 {
-    [SerializeField] private int cookIndex = -1;
+    [Header("저장 데이터")]
+    private int cookIndex = -1;
+    private CookingState currentState = CookingState.Idle;
+    private float currentTime = 0f;
+    private float cookingTime = 0f;
+    private ItemSO finishedItem = null;
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
-    public int GetCookIndex() => cookIndex;
-    private bool hasCooked = false;
 
-    private CookingState currentState = CookingState.Idle;
-    private ItemSO finishedItem;
+    public int CookIndex => cookIndex;
 
     private void Awake()
     {
@@ -42,27 +45,13 @@ public class CookPotObject : MonoBehaviour
         }
     }
 
-    // TODO: 요리하는거 동작 추가
-
-    private void OnDisable()
-    {
-        InventoryManager.Instance.ReleaseCookIndex(cookIndex);
-    }
-
-    public void TryCook()
-    {
-        if (hasCooked) return;
-        
-        hasCooked = true;
-    }
-
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         switch (_type)
         {
             case InteractionCommandType.F:
                 var ui = uiManager.GetUIComponent<UICookPot>();
-                ui.Initialize(cookIndex);
+                ui.Initialize(this);
                 uiManager.Toggle<UICookPot>();
                 break;
             case InteractionCommandType.Space:
@@ -74,26 +63,37 @@ public class CookPotObject : MonoBehaviour
     {
         if (currentState == CookingState.Idle)
         {
-            StartCoroutine(CookRoutine(_item, _cookingTime));
+            currentState = CookingState.Cooking;
+            currentTime = 0;
+            cookingTime = _cookingTime;
+            finishedItem = _item;
+            StartCoroutine(CookRoutine());
         }
     }
 
-    private IEnumerator CookRoutine(ItemSO _item, float _cookingTime)
+    private IEnumerator CookRoutine()
     {
-        // 상태 변경 및 변수 설정.
-        currentState = CookingState.Cooking;
-        finishedItem = _item;
+        while (true)
+        {
+            while (currentTime < cookingTime)
+            {
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
 
-        // TODO: 애니메이션 재생(?).
+            // 완료슬롯에 finishedItem추가.
 
-        // 요리 시간만큼 대기.
-        yield return new WaitForSeconds(_cookingTime);
+            // 다음 요리 가능한지 확인
+            if (currentTime == 3)
+            {
+                currentTime = 0;
+            }
+            else
+            {
+                break;
+            }
+        }
 
-        // 요리 완료 처리.
         currentState = CookingState.Finished;
-
-        // TODO: 완료 상태 스프라이트로 변경.
     }
-
-    public int CookIndex => cookIndex;
 }

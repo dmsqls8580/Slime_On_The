@@ -7,42 +7,42 @@ public class UICookPot : UIBase
     [SerializeField] private List<InventorySlot> inputSlots; // 3칸
     [SerializeField] private InventorySlot resultSlot;       // 1칸
     [SerializeField] private AnimationCurve JellyAnimationCurve;
-    private CookPotObject boundCookPot;
+
+    private InventoryManager inventoryManager;
+    private CookingManager cookingManager;
+
+    private CookPotObject cookPotObject;
     private int cookIndex;
 
-    public void Initialize(int cookPotIndex, CookPotObject cookPot)
+    private void Awake()
     {
-        boundCookPot = cookPot;
-        cookIndex = cookPotIndex;
+        inventoryManager = InventoryManager.Instance;
+        cookingManager = CookingManager.Instance;
+    }
+
+    public void Initialize(CookPotObject _cookPotObject)
+    {
+        cookPotObject = _cookPotObject;
+        cookIndex = cookPotObject.CookIndex;
         
-        int inputStart = SlotIndexScheme.GetCookInputStart(cookPotIndex);
+        int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
         for (int i = 0; i < inputSlots.Count; i++)
         {
             inputSlots[i].Initialize(inputStart + i);
         }
 
-        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookPotIndex); 
+        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookIndex); 
         resultSlot.Initialize(resultIndex);
         
-        InventoryManager.Instance.OnSlotChanged += OnAnySlotChanged;
+        inventoryManager.OnSlotChanged += OnAnySlotChanged;
     }
     
     private void OnDisable()
     {
         if (InventoryManager.HasInstance)
-            InventoryManager.Instance.OnSlotChanged -= OnAnySlotChanged;
+            inventoryManager.OnSlotChanged -= OnAnySlotChanged;
     }
 
-    public void Refresh()
-    {
-        foreach (var slot in inputSlots)
-        {
-            slot.Refresh();
-        }
-        resultSlot.Refresh();
-        // cpo.tryCook()
-    }
-    
     private void OnAnySlotChanged(int changedIndex)
     {
         int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
@@ -50,27 +50,39 @@ public class UICookPot : UIBase
 
         if (changedIndex >= inputStart && changedIndex < inputEnd)
         {
-            TryCookIfReady();
+            TryCook();
         }
     }
     
-    private void TryCookIfReady()
+    private void TryCook()
     {
-        bool allFilled = true;
         foreach (var slot in inputSlots)
         {
-            var data = slot.GetData();
-            if (data == null || !data.IsValid)
-            {
-                allFilled = false;
-                break;
-            }
+            if (!slot.HasItem()) return;
         }
 
-        if (allFilled)
+        Dictionary<IngredientTag, float> tags = new();
+        float cookingTime = 0f;
+
+        // 각 슬롯을 순회하며 태그와 시간을 계산.
+        foreach (var slot in inputSlots)
         {
-            boundCookPot.TryCook();
+            ItemSO data = slot.GetData().ItemData;
+            if (data == null || data.cookableData == null) continue;
+
+            // 태그 합산.
+            List<TagValuePair> _tags = data.cookableData.tags;
+            foreach (TagValuePair pair in _tags)
+            {
+                tags.TryGetValue(pair.tag, out float currentValue);
+                tags[pair.tag] = currentValue + pair.value;
+            }
+
+            // 시간 합산.
+            cookingTime += data.cookableData.contributionTime;
         }
+
+        cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
     }
 
     public override void Open()
