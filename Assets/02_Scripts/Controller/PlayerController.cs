@@ -121,6 +121,8 @@ namespace PlayerStates
             action.Crafting.performed += OnCrafting;
             // Place
             action.Place.performed += OnPlace;
+            // Use
+            action.Use.performed += OnUse;
             //Setting
             action.Settings.performed += OnSetting;
         }
@@ -244,6 +246,23 @@ namespace PlayerStates
             {
                 UIManager.Instance.Toggle<UIPauseMenu>();
             }
+        }
+        
+        private void OnUse(InputAction.CallbackContext _context)
+        {
+            var quickSlot = uiQuickSlot.GetSelectedSlot();
+            if (quickSlot == null) return;
+
+            var data = quickSlot.GetData();
+            if (data == null || !data.IsValid) return;
+
+            var uiInventory = UIManager.Instance.GetUIComponent<UIInventory>();
+            if (uiInventory == null) return;
+
+            var realSlot = uiInventory.GetInventorySlotByIndex(uiQuickSlot.SelectedIndex);
+            if (realSlot == null) return;
+
+            InventoryInteractionHandler.Instance.TryUse(data, realSlot);
         }
 
         private void OnPlace(InputAction.CallbackContext _context)

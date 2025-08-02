@@ -165,19 +165,25 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     {
         if (_item == null || !_item.IsValid) return;
 
-        switch (_item.ItemData.itemTypes)
+        var type = _item.ItemData.itemTypes;
+        
+        if ((type & ItemType.Equipable) != 0)
         {
-            case ItemType.Equipable:
-                TryEquip(_item, _originSlot);
-                break;
-
-            case ItemType.Eatable:
-                _item.Quantity--;
-                //TryConsume(_item);
-                break;
-            default:
-                break;
+            TryEquip(_item, _originSlot);
         }
+
+        if ((type & ItemType.Eatable) != 0)
+        {
+            TryConsume(_item, _originSlot);
+        }
+    }
+
+    public void TryConsume(ItemInstanceData _item, SlotBase _originSlot)
+    {
+        // 사용효과 넣기
+        
+        
+        _originSlot.Clear(1);
     }
 
     public void TryEquip(ItemInstanceData _item, SlotBase _originSlot)

@@ -7,6 +7,9 @@ public class UIQuickSlot : MonoBehaviour
     [SerializeField] private QuickSlot[] slots;
     [SerializeField] private ToolController toolController; 
     [SerializeField]private PlayerAnimationController  playerAnimationController;
+    
+    [SerializeField] private UIInventory uiInventory;
+    
     private int selectedIndex = 0;
 
     public int SelectedIndex => selectedIndex;

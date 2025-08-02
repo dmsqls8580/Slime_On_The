@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.SceneManagement;
 
 public class KeyBindManager : Singleton<KeyBindManager>
 {
@@ -24,8 +25,10 @@ public class KeyBindManager : Singleton<KeyBindManager>
     protected override void Awake()
     {
         base.Awake();
-        LoadRebinds();
-        
+    }
+
+    private void Start()
+    {
         var inputActions = InputController.Instance.PlayerInputs.asset;
         
         // 허용된 액션 등록
@@ -46,8 +49,27 @@ public class KeyBindManager : Singleton<KeyBindManager>
                 }
             }
         }
+        
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        LoadRebinds();
+
+        var input = InputController.Instance.PlayerInputs;
+
+        string overrides = PlayerPrefs.GetString("rebinds");
+        input.asset.LoadBindingOverridesFromJson(overrides);
+
+        input.Enable();
+    }
+
     // 외부에서 리바인딩 요청
     public void StartRebind(string target)
     {
@@ -228,9 +250,9 @@ public class KeyBindManager : Singleton<KeyBindManager>
             "down" => "<sprite name=\"kd\">",
             "left" => "<sprite name=\"kl\">",
             "right" => "<sprite name=\"kr\">",
-            "control" => "<sprite name=\"ctrl\">",
-            "left control" => "<sprite name=\"ctrl\">",
-            "right control" => "<sprite name=\"ctrl\">",
+            "Control" => "<sprite name=\"ctrl\">",
+            "Left Control" => "<sprite name=\"ctrl\">",
+            "Right Control" => "<sprite name=\"ctrl\">",
             _ => $"<sprite name=\"{readable.ToLower()}\">"
         };
     }
@@ -238,20 +260,45 @@ public class KeyBindManager : Singleton<KeyBindManager>
     public void SaveRebinds()
     {
         var asset = InputController.Instance.PlayerInputs.asset;
+
+        // 이건 OK (현재 바인딩 전체를 저장)
         string overrides = asset.SaveBindingOverridesAsJson();
+
         PlayerPrefs.SetString("rebinds", overrides);
         PlayerPrefs.Save();
+
+        Debug.Log("[KeyBindManager] Saved Full Rebind JSON:");
+        Debug.Log(overrides);
     }
     
     public void LoadRebinds()
     {
-        if (PlayerPrefs.HasKey("rebinds"))
+        if (!PlayerPrefs.HasKey("rebinds"))
         {
-            var asset = InputController.Instance.PlayerInputs.asset;
-            string overrides = PlayerPrefs.GetString("rebinds");
-            asset.LoadBindingOverridesFromJson(overrides);
-            OnBindingChanged?.Invoke();
+            Debug.Log("[KeyBindManager] No saved rebinds found.");
+            return;
         }
+
+        var controller = InputController.Instance;
+        var input = controller.PlayerInputs;
+
+        if(input == null) return;
+        
+        input.Disable();
+        string overrides = PlayerPrefs.GetString("rebinds");
+        
+        Debug.Log("[KeyBindManager] Loading Rebind JSON:");
+        Debug.Log(overrides);
+        
+        input.asset.LoadBindingOverridesFromJson(overrides);
+
+        controller.PlayerActions = input.Player;
+        input.Enable();
+        
+        Debug.Log("[KeyBindManager] Applied Binding - Inventory: " +
+                  controller.PlayerActions.Inventory.bindings[0].effectivePath);
+
+        OnBindingChanged?.Invoke();
     }
     
     public void ResetToDefault()

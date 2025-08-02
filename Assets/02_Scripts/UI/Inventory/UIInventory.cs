@@ -59,6 +59,11 @@ public class UIInventory : UIBase
         return equipSlots.ToArray();
     }
     
+    public InventorySlot GetInventorySlotByIndex(int index)
+    {
+        if (index < 0 || index >= inventorySlots.Count) return null;
+        return inventorySlots[index];
+    }
     
     public override void Open()
     {
