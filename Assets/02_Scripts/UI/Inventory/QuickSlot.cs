@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -40,7 +41,6 @@ public class QuickSlot : SlotBase
                 if (data.ItemData.itemTypes == ItemType.Placeable)
                     placeMode.SetActiveTruePlaceMode(data.ItemData, quickSlotIndex);
             }
-            
         }
     }
 
@@ -55,18 +55,26 @@ public class QuickSlot : SlotBase
             var data = GetData();
             if (data == null || !data.IsValid) return;
 
-            InventoryInteractionHandler.Instance.TryUse(data, this);
+            var uiInventory = UIManager.Instance.GetUIComponent<UIInventory>();
+            if (uiInventory != null)
+            {
+                var realSlot = uiInventory.GetInventorySlotByIndex(quickSlotIndex);
+                InventoryInteractionHandler.Instance.TryUse(data, realSlot);
+            }
         }
     }
 
     public void EquipToolToController(ToolController _controller)
-    {   
+    {
         var data = GetData();
-        if (data.IsUnityNull()) {
-            return ;
+        if (data.IsUnityNull())
+        {
+            return;
         }
-        if (data.ItemData.IsUnityNull()) {
-            return ;
+
+        if (data.ItemData.IsUnityNull())
+        {
+            return;
         }
 
         if ((data.ItemData.itemTypes & ItemType.Tool) != 0)
@@ -82,12 +90,12 @@ public class QuickSlot : SlotBase
     public ToolType GetToolType()
     {
         var data = GetData();
-        if(data.IsUnityNull()||data.ItemData.IsUnityNull()) 
-            return ToolType.None;
-        if(data.ItemData.itemTypes!=ItemType.Tool)
+        if (data.IsUnityNull() || data.ItemData.IsUnityNull())
             return ToolType.None;
         
+        if ((data.ItemData.itemTypes & ItemType.Tool) == 0)
+            return ToolType.None;
+
         return data.ItemData.toolData.toolType;
-        
     }
 }

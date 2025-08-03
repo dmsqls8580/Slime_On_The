@@ -1,3 +1,6 @@
+using _02_Scripts.Manager;
+using PlayerStates;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HoldManager : SceneOnlySingleton<HoldManager>
@@ -7,6 +10,12 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     
     public ItemInstanceData HeldItem { get; private set; }
     public SlotBase OriginSlot { get; set; }
+    
+    [Header("Drop Settings")]
+    [SerializeField] protected GameObject dropItemPrefab;
+    [SerializeField] protected float dropUpForce = 5f;
+    [SerializeField] protected float dropSideForce = 2f;
+    [SerializeField] protected float dropAngleRange = 60f;
     
     public bool IsHolding => HeldItem != null && HeldItem.IsValid;
     
@@ -113,5 +122,32 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
             holdSlot.SetItem(HeldItem);
             holdSlot.gameObject.SetActive(true);
         }
+    }
+    
+    // 아이템 드랍
+    public void DropHeldItem()
+    {
+        if (!IsHolding) return;
+        
+        ItemInstanceData itemToDrop = HeldItem;
+        
+        Vector3 dropPosition = FindObjectOfType<PlayerController>().transform.position;
+
+        if (dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        var dropObj = Instantiate(dropItemPrefab, dropPosition, Quaternion.identity);
+        var itemDrop = dropObj.GetComponent<ItemDrop>();
+
+        if (itemDrop != null)
+        {
+            itemDrop.Init(itemToDrop.ItemData, itemToDrop.Quantity);
+            var rigid = dropObj.GetComponent<Rigidbody2D>();
+            itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
+        }
+
+        Clear();
     }
 }

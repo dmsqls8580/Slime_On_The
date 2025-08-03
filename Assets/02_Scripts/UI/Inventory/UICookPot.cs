@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class UICookPot : UIBase
 
     private CookPotObject cookPotObject;
     private int cookIndex;
+    public int CookIndex => cookIndex;
 
     private bool ignoreNextSlotChange = false;
     public void IgnoreNextSlotChange() => ignoreNextSlotChange = true;
@@ -122,5 +124,6 @@ public class UICookPot : UIBase
     public override void Close()
     {
         base.Close();
+        cookIndex = -1;
     }
 }

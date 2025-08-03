@@ -1,4 +1,5 @@
 using PlayerStates;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -13,6 +14,8 @@ public class InteractionSelector : MonoBehaviour
     [Header("스크립트 참조")] [SerializeField] private InteractionZone interactionZone;
     [SerializeField] private UIQuickSlot uiQuickSlot;
     [SerializeField] private CraftingStationManager craftingStationManager;
+    private PlayerAnimationController playerAnimationController;
+
 
     // F 키 전용.
     private Collider2D fInteractable;
@@ -29,11 +32,40 @@ public class InteractionSelector : MonoBehaviour
         interactables = interactionZone.Interactables;
     }
 
+    private void Awake()
+    {
+        playerAnimationController = GetComponentInParent<PlayerAnimationController>();
+    }
+
     private void Update()
     {
         Select();
-    }
+        UpdateToolAnimation();
 
+    }
+    private void UpdateToolAnimation()
+    {
+        var selectedSlot = uiQuickSlot?.GetSelectedSlot();
+
+        if (selectedSlot.IsUnityNull() || playerAnimationController.IsUnityNull())
+            return;
+
+        ToolType toolType = selectedSlot.GetToolType();
+
+        if (!spaceInteractable.IsUnityNull()
+            && spaceInteractable.TryGetComponent(out BaseInteractableObject interactable))
+        {
+            if (interactable.ObjectType == ObjectType.UnDestroyed)
+            {
+                // Undestroyed일 때만 강제로 None
+                playerAnimationController.SetToolType(ToolType.None);
+                return;
+            }
+        }
+
+        // 일반 도구 타입 적용
+        playerAnimationController.SetToolType(toolType);
+    }
     private void Select()
     {
         if (interactables.Count <= 0)
@@ -142,5 +174,14 @@ public class InteractionSelector : MonoBehaviour
         }
 
         return false;
+    }
+
+    public ObjectType GetObjectTypeOfInteractable()
+    {
+        if (!spaceInteractable.IsUnityNull() && spaceInteractable.TryGetComponent(out BaseInteractableObject obj))
+        {
+            return obj.ObjectType;
+        }
+        return ObjectType.UnDestroyed;
     }
 }

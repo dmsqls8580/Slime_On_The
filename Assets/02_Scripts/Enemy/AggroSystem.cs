@@ -51,6 +51,7 @@ public class AggroSystem
         if (attackTargetsList.ContainsKey(_aggroObject))
         {
             attackTargetsList[_aggroObject] += _value;
+            Logger.Log($"어그로 수치:{attackTargetsList[_aggroObject]}");
         }
         // 등록되어 있지 않은 경우 _value 값으로 등록
         else
@@ -114,9 +115,19 @@ public class AggroSystem
 
         foreach (var key in keys)
         {
+            // 플레이어가 인식 범위 내에 있을 경우 어그로 수치 감소 X
+            if (key.CompareTag("Player"))
+            {
+                if (isPlayerInSenseRange != null && isPlayerInSenseRange(key))
+                {
+                    UpdateAggroTarget();
+                    continue;
+                }
+            }
             ModifyAggro(key, -_amount);
         }
     }
+    
 
     /// <summary>
     /// 전체 어그로 수치 초기화

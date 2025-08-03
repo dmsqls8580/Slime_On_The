@@ -16,13 +16,6 @@ public class InventorySlot : SlotBase
 
         if (isLeft)
         {
-            var handIcon = FindObjectOfType<ItemHandler>();
-            if (!handIcon.IsUnityNull())
-            {
-                var data = GetData();
-                handIcon.ShowItemIcon(data?.ItemData);
-            }
-
             InventoryInteractionHandler.Instance.HandleLeftClick(this, isShift, isCtrl);
         }
         else if (isRight)
@@ -31,9 +24,9 @@ public class InventorySlot : SlotBase
         }
     }
 
-    public override void Clear(int _amount)
-    {
-        InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
-        Refresh();
-    }
+    // public override void Clear(int _amount)
+    // {
+    //     InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
+    //     Refresh();
+    // }
 }

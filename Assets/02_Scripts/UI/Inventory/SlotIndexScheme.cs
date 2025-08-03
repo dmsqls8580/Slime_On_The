@@ -2,7 +2,7 @@ public static class SlotIndexScheme
 {
     public const int SlotBlockSize = 100;
 
-    public const int ChestStartOffset = 0;
+    public const int ChestStartOffset = 60;
     public const int ChestSlotCount = 12;
 
     public const int CookInputStartOffset = 50;

@@ -1,9 +1,11 @@
 using _02_Scripts.Manager;
 using PlayerStates;
+using System;
 using Unity.VisualScripting;
 
 public class UndestroyableObject : BaseInteractableObject, IInteractable
 {
+
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         if(isInteracted)
@@ -14,7 +16,7 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
 
-        if (objectType == ObjectType.Berry)
+        if (objectType == ObjectType.UnDestroyed)
         {
             DropItems(_playerController.transform);
         }

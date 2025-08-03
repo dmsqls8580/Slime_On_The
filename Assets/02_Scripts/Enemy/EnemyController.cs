@@ -106,6 +106,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Dead();
             }
+            StartCoroutine(ShakeIDamageable());
         }
 
     }
@@ -124,6 +125,30 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
         }
         
+    }
+    
+    private IEnumerator ShakeIDamageable()
+    {
+        float timer = 0f;
+        float shakeDuration = 0.2f;
+        Vector2 currentPos = transform.position;
+        Color currentColor = spriteRenderer.color;
+        
+        while (timer <= shakeDuration)
+        {
+            // shakeDuration 동안 몬스터 흔들림, 붉은색 피격 모션
+            float offsetX = Random.Range(-1f, 1f) * 0.1f;
+            float offsetY = Random.Range(-1f, 1f) * 0.1f;
+            transform.position = new Vector2(currentPos.x + offsetX, currentPos.y + offsetY);
+            
+            spriteRenderer.color = new Color(1f, 200/255f,200/255f,1);
+            
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = currentPos;
+        spriteRenderer.color = currentColor;
     }
     
     /************************ IAttackable ***********************/
@@ -352,7 +377,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Vector2 shootdir = AttackTarget.transform.position - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
-            Logger.Log("Init 호출");
         }
         else
         {
@@ -383,7 +407,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, itemTarget);
+                    itemDrop.Init(item.itemSo,1);
                     
                 }
                 
@@ -409,9 +433,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
 
-    private void OnAggroTargetChanged(GameObject newtarget, float newvalue)
+    private void OnAggroTargetChanged(GameObject newTarget, float newValue)
     {
-        AttackTarget = newtarget;
+        AttackTarget = newTarget;
     }
     
     

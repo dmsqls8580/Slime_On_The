@@ -13,6 +13,7 @@ public class UISettings : UIBase
     [SerializeField] private float tweenDuration = 0.5f;
     [SerializeField] private AnimationCurve openCurve;
     [SerializeField] private AnimationCurve closeCurve;
+    [SerializeField] private float fixedwidth = 100f; 
     [SerializeField] private float fixedHeight = 100f; 
     
     private Tween openTween;
@@ -84,17 +85,29 @@ public class UISettings : UIBase
         nowState = state;
     }
     
+    private void ResetAllButtons()
+    {
+        for (int i = 0; i < menuBtnImage.Length; i++)
+        {
+            menuBtnImage[i].sizeDelta = new Vector2(fixedwidth, fixedHeight);
+            menuBtnText[i].gameObject.SetActive(false);
+            menuSettings[i].SetActive(false);
+        }
+    
+        openTween?.Kill();
+        closeTween?.Kill();
+    }
     
     public override void Open()
     {
         base.Open();
+        ResetAllButtons();
         OnClickMenuButton(0);
     }
     
     public override void Close()
     {
-        openTween?.Kill();
-        closeTween?.Kill();
+        ResetAllButtons();
         nowState = -2;
         base.Close();
     }

@@ -7,6 +7,9 @@ public class UIQuickSlot : MonoBehaviour
     [SerializeField] private QuickSlot[] slots;
     [SerializeField] private ToolController toolController; 
     [SerializeField]private PlayerAnimationController  playerAnimationController;
+    
+    [SerializeField] private UIInventory uiInventory;
+    
     private int selectedIndex = 0;
 
     public int SelectedIndex => selectedIndex;
@@ -38,10 +41,21 @@ public class UIQuickSlot : MonoBehaviour
             return;
 
         selectedIndex = index;
-        
         UpdateSelectedVisual();
-        slots[selectedIndex].EquipToolToController(toolController);
+
+        var selectedSlot = slots[selectedIndex];
+        selectedSlot.EquipToolToController(toolController); // 항상 장착은 수행
+
+        var interactionSelector = FindObjectOfType<InteractionSelector>();
+    
+        if (!interactionSelector.IsUnityNull() &&
+            interactionSelector.GetObjectTypeOfInteractable() == ObjectType.UnDestroyed)
+        {
+            // UnDestroyed 대상일 때는 애니메이션만 None으로 설정
+            playerAnimationController.SetToolType(ToolType.None);
+        }
     }
+
 
     public QuickSlot GetSelectedSlot()
     {

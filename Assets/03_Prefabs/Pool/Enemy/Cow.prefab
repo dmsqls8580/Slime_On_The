@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1127050376331262425}
   - component: {fileID: 4707395201834553043}
   - component: {fileID: 7567127688918209858}
+  - component: {fileID: -40220707540132982}
   m_Layer: 12
   m_Name: Cow
   m_TagString: Untagged
@@ -60,11 +61,10 @@ MonoBehaviour:
   damageTextCanvas: {fileID: 9055869960667158589, guid: 1728c7048a495a849aa72e7071090f1d, type: 3}
   projectileTransform: {fileID: 0}
   EnemyStatus: {fileID: 6591884905984836916}
-  AttackTarget: {fileID: 0}
-  reactiveHitAggro: 30
-  aggroSwitchThreshold: 5
-  targetStickTime: 1
-  IsAttacked: 0
+  stickTime: 1
+  decreaseDelayValue: 2
+  decreaseDelayTime: 1
+  hitAggroValue: 30
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &6591884905984836916
 MonoBehaviour:
@@ -248,6 +248,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-40220707540132982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169597179326076366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &791662893755455023
 GameObject:
   m_ObjectHideFlags: 0

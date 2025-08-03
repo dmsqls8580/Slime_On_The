@@ -73,7 +73,9 @@ namespace PlayerStates
         public IDamageable Target { get; }
 
         public bool IsDead { get; set; }
-        public bool CanRespawn { get; set; }
+        public bool CanRespawn { get; set; } 
+        public bool CanMove { get; private set; } = true;
+
         public Collider2D Collider => GetComponent<Collider2D>();
 
         protected override void Awake()
@@ -121,6 +123,8 @@ namespace PlayerStates
             action.Crafting.performed += OnCrafting;
             // Place
             action.Place.performed += OnPlace;
+            // Use
+            action.Use.performed += OnUse;
             //Setting
             action.Settings.performed += OnSetting;
         }
@@ -128,7 +132,7 @@ namespace PlayerStates
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
-
+            ScanAndAttractItems();
             if (attackCooldown > 0f)
             {
                 attackCooldown -= Time.deltaTime;
@@ -150,6 +154,8 @@ namespace PlayerStates
             }
         }
 
+        
+        
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
         {
             switch (_state)
@@ -245,6 +251,23 @@ namespace PlayerStates
                 UIManager.Instance.Toggle<UIPauseMenu>();
             }
         }
+        
+        private void OnUse(InputAction.CallbackContext _context)
+        {
+            var quickSlot = uiQuickSlot.GetSelectedSlot();
+            if (quickSlot == null) return;
+
+            var data = quickSlot.GetData();
+            if (data == null || !data.IsValid) return;
+
+            var uiInventory = UIManager.Instance.GetUIComponent<UIInventory>();
+            if (uiInventory == null) return;
+
+            var realSlot = uiInventory.GetInventorySlotByIndex(uiQuickSlot.SelectedIndex);
+            if (realSlot == null) return;
+
+            InventoryInteractionHandler.Instance.TryUse(data, realSlot);
+        }
 
         private void OnPlace(InputAction.CallbackContext _context)
         {
@@ -286,6 +309,11 @@ namespace PlayerStates
 
         public override void Movement()
         {
+            if (!CanMove || moveInput.sqrMagnitude < 0.01f)
+            {
+                rigid2D.velocity = Vector2.zero;
+                return;
+            }
             base.Movement();
             
             float speed = PlayerStatusManager.MoveSpeed;
@@ -296,6 +324,8 @@ namespace PlayerStates
 
             rigid2D.velocity = moveVelocity;
         }
+        
+        public void SetCanMove(bool _canMove) => CanMove = _canMove;
         
         // NPC, 창고, 제작대 등 이용
         public void Interaction()
@@ -376,8 +406,23 @@ namespace PlayerStates
 
             float toolActSpd = toolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
+            
+            SetCanMove(false);
+            moveInput = Vector2.zero;
 
             ChangeState(PlayerState.Gathering);
+        }
+        private void ScanAndAttractItems()
+        {
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
+
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent<ItemDrop>(out var itemDrop))
+                {
+                    itemDrop.AttractSetPlayer(transform);
+                }
+            }
         }
 
         private void UpdateAttackPivotRotation()
