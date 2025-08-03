@@ -1,10 +1,11 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteractionHandler>
 {
     [SerializeField] private UIInventory inventoryUI;
-    
+
     private InventoryManager inventoryManager;
     private HoldManager holdManager;
 
@@ -108,11 +109,11 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         if (held == null || !held.IsValid) return;
 
         if (!_slot.IsItemAllowed(held)) return;
-        
+
         var slotData = _slot.GetData();
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
-        
+
         // if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
         // {
         //     if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
@@ -132,7 +133,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         var targetData = _slot.GetData();
         var heldData = holdManager.HeldItem;
         if (heldData == null || !heldData.IsValid) return;
-        
+
         if (!_slot.IsItemAllowed(heldData)) return;
 
         if (targetData == null || !targetData.IsValid)
@@ -152,7 +153,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         //     if (!equipSlot.IsCorrectEquipType(heldData.ItemData.equipableData.equipableType))
         //         return;
         // }
-        
+
         holdManager.SetItem(targetData, _slot);
         InventoryManager.Instance.SetItem(_slot.SlotIndex, heldData);
 
@@ -163,16 +164,23 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     // 사용하기
     public void TryUse(ItemInstanceData _item, SlotBase _originSlot)
     {
-        // _item<<< 얘가 EquipableData 가 Core일때
         if (_item.ItemData.equipableData.equipableType == EquipType.Core)
-        {
+        {  
+            var formChanger = FindObjectOfType<SlimeFormChanger>();
+            if (!formChanger.IsUnityNull() && formChanger.IsChange )
+            {
+                Logger.Log("[TryUse] 폼변환 중 또는 쿨타임 중 - Core 장비 사용 차단");
+                return;
+            }
             // 변신중일때 return
         }
-        
+
         if (_item == null || !_item.IsValid) return;
 
+        // _item<<< 얘가 EquipableData 가 Core일때
+
         var type = _item.ItemData.itemTypes;
-        
+
         if ((type & ItemType.Equipable) != 0)
         {
             TryEquip(_item, _originSlot);
@@ -190,7 +198,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         PlayerStatusManager.Instance.RecoverHp(_item.ItemData.eatableData.recoverHP);
         PlayerStatusManager.Instance.RecoverHunger(_item.ItemData.eatableData.fullness);
         PlayerStatusManager.Instance.RecoverSlimeGauge(_item.ItemData.eatableData.slimeGauge);
-        
+
         _originSlot.Clear(1);
     }
 
@@ -198,7 +206,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     {
         EquipType type = _item.ItemData.equipableData.equipableType;
         int equipSlotIndex = 90 + (int)type;
-        
+
         if (_originSlot.SlotIndex == equipSlotIndex)
         {
             TryUnequip(_item, equipSlotIndex);
@@ -210,7 +218,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
             inventoryManager.SetItem(_originSlot.SlotIndex, prevEquip);
             inventoryManager.SetItem(equipSlotIndex, _item);
         }
-        
+
         // if (_originSlot is EquipSlot)
         // {
         //     TryUnequipFromEquipSlot(_item);
@@ -220,13 +228,14 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         //     TryEquipFromInventory(_item, _originSlot.SlotIndex);
         // }
     }
-    
+
     private void TryUnequip(ItemInstanceData item, int equipSlotIndex)
     {
         if (!inventoryManager.TryAddItemGlobally(item.ItemData, item.Quantity))
         {
             // DropItem(item); // 드랍 처리 필요 시
         }
+
         inventoryManager.ClearItem(equipSlotIndex);
     }
 

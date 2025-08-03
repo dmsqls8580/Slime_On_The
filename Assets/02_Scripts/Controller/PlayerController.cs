@@ -154,8 +154,6 @@ namespace PlayerStates
             }
         }
 
-        
-        
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
         {
             switch (_state)
@@ -265,7 +263,7 @@ namespace PlayerStates
 
             var realSlot = uiInventory.GetInventorySlotByIndex(uiQuickSlot.SelectedIndex);
             if (realSlot == null) return;
-
+            
             InventoryInteractionHandler.Instance.TryUse(data, realSlot);
         }
 

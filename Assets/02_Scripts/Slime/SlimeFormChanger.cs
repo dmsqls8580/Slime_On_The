@@ -28,8 +28,11 @@ public class SlimeFormChanger : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
     
+    private bool isChange;
+    public bool IsChange => isChange;
+    
     private Dictionary<int, FormData> formDataDic;
-
+    
     public event Action<FormData> OnFormChanged;
     
     private void Awake()
@@ -52,6 +55,7 @@ public class SlimeFormChanger : MonoBehaviour
     {
         if (!changeEffect.IsUnityNull())
         {
+            isChange = true;
             uiBlockerPanel.SetActive(true);
             changeEffect.StartFormChangeEffect(() =>
             {
@@ -68,6 +72,7 @@ public class SlimeFormChanger : MonoBehaviour
     private IEnumerator UnblockUIAfterCooldown()
     {
         yield return new WaitForSeconds(changeCooldown);
+        isChange = false;
         uiBlockerPanel.SetActive(false);
     }
 
