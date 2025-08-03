@@ -58,16 +58,29 @@ Marsh
 
  */
 
-public class EnemySpawner : MonoBehaviour
+public class EnemySpawner : MonoBehaviour, ISpawner
 {
+    public Transform Transform { get; set; }
+    
     [Header("스폰 몬스터 설정")]
     public int SpawnCount = 5;
     public float SpawnRadius = 10f;
     public EnemySO EnemySO;
+    int ISpawner.SpawnCount
+    {
+        get => SpawnCount;
+        set => SpawnCount = value;
+    }
+
+    float ISpawner.SpawnRadius
+    {
+        get => SpawnRadius;
+        set => SpawnRadius = value;
+    }
 
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
-    // private EnemyTable enemyTable;
+    private GameObject player;
 
     private void Awake()
     {
@@ -76,16 +89,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void Start()
     {
-        // enemyTable = TableManager.Instance.GetTable<EnemyTable>();
         InitCollider();
+        Transform = transform;
     }
 
     public void SpawnEnemies()
     {
-        // if (enemyTable.IsUnityNull())
-        // {
-        //     enemyTable = TableManager.Instance.GetTable<EnemyTable>();
-        // }
         string poolID = EnemySO.EnemyID.ToString();
 
         if (!ObjectPoolManager.Instance.HasPool(poolID))
@@ -93,8 +102,15 @@ public class EnemySpawner : MonoBehaviour
             Debug.LogWarning($"EnemySpawner: {poolID} 풀이 아직 초기화되지 않았습니다. 스폰 생략");
             return;
         }
+        
+        // 남은 스폰 가능한 적 수 계산
+        int canSpawnCount = SpawnCount - spawnedEnemies.Count;
+        if (canSpawnCount <= 0)
+        {
+            return;
+        }
 
-        for (int i = 0; i < SpawnCount; i++)
+        for (int i = 0; i < canSpawnCount; i++)
         {
             Vector3 spawnPos = GetRandomPosition(transform.position, SpawnRadius);
             GameObject enemy = ObjectPoolManager.Instance.GetObject(poolID);
@@ -124,10 +140,23 @@ public class EnemySpawner : MonoBehaviour
             {
                 Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {EnemySO.EnemyID.ToString()}");
             }
+
+            // Enemy의 SpriteCuller에 Player 등록
+            if (enemy.TryGetComponent<SpriteCuller>(out var culler))
+            {
+                culler.Player = player;
+                culler.Spawner = this;
+            }
             
             spawnedEnemies.Add(enemy); // 생성된 적 리스트에 추가
         }
         
+    }
+
+    public void RemoveObject(GameObject _enemy)
+    {
+        ObjectPoolManager.Instance.ReturnObject(_enemy);
+        spawnedEnemies.Remove(_enemy);
     }
     
     // 생성된 적 모두를 풀에 반환하고 리스트 초기화
@@ -137,7 +166,7 @@ public class EnemySpawner : MonoBehaviour
         {
             if (enemy != null)
             {
-                ObjectPoolManager.Instance.ReturnFixedObject(enemy);
+                ObjectPoolManager.Instance.ReturnObject(enemy);
             }
         }
         spawnedEnemies.Clear();
@@ -161,11 +190,12 @@ public class EnemySpawner : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        SpawnEnemies();
+        if (collision.CompareTag("Player"))
+        {
+            player = collision.gameObject;
+            SpawnEnemies();
+        }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        ClearEnemies();
-    }
+    
 }
