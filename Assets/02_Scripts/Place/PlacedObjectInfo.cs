@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [System.Serializable]
-
 public class PlacedObjectInfo
 {
     public int idx;
