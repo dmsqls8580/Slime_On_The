@@ -64,7 +64,9 @@ public class UICookPot : UIBase
             return;
         }
 
-        if (cookPotObject.CurrentState == CookingState.Finished && changedIndex == resultSlot.SlotIndex)
+        if (changedIndex == resultSlot.SlotIndex &&
+            (cookPotObject.CurrentState == CookingState.Idle ||
+            cookPotObject.CurrentState == CookingState.Finished))
         {
             cookPotObject.ChangeState(CookingState.Idle);
             TryCook();
