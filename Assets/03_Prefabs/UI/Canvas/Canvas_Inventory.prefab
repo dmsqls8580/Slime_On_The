@@ -72,6 +72,81 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &134522800926120840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8479496984736547486}
+  - component: {fileID: 4601131418927707341}
+  - component: {fileID: 5939919166288092899}
+  m_Layer: 0
+  m_Name: UnblockImage
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &8479496984736547486
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134522800926120840}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1537908757989334161}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -387.5}
+  m_SizeDelta: {x: -1040, y: -775}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4601131418927707341
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134522800926120840}
+  m_CullTransparentMesh: 1
+--- !u!114 &5939919166288092899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134522800926120840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &711412871489607220
 GameObject:
   m_ObjectHideFlags: 0
@@ -180,8 +255,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: dbf92c4f0ff78384d932c532a3da7fee, type: 2}
-  m_sharedMaterial: {fileID: -3502386663072510902, guid: dbf92c4f0ff78384d932c532a3da7fee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: fbb20dae08fd21a45a2dbcb9560573fc, type: 2}
+  m_sharedMaterial: {fileID: -8581860888431149511, guid: fbb20dae08fd21a45a2dbcb9560573fc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -205,10 +280,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 70
-  m_fontSizeBase: 36
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -897,6 +972,7 @@ RectTransform:
   - {fileID: 977209898881354555}
   - {fileID: 1691235241795400325}
   - {fileID: 5529939687493401204}
+  - {fileID: 8479496984736547486}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3082,10 +3158,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EquipSlot_Amulet
       objectReference: {fileID: 0}
-    - target: {fileID: 7479053968665963319, guid: adc156d20171b384cae6d128653b6d6b, type: 3}
-      propertyPath: equipType
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4103,10 +4175,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: EquipSlot_Boots
       objectReference: {fileID: 0}
-    - target: {fileID: 7479053968665963319, guid: 57108ab00eb9c2348b3ecc6464ceeb82, type: 3}
-      propertyPath: equipType
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4445,10 +4513,6 @@ PrefabInstance:
     - target: {fileID: 6058167882196815880, guid: d6f971a409f7544428e34c623b3bf4df, type: 3}
       propertyPath: m_Name
       value: EquipSlot_Ring
-      objectReference: {fileID: 0}
-    - target: {fileID: 7479053968665963319, guid: d6f971a409f7544428e34c623b3bf4df, type: 3}
-      propertyPath: equipType
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4898,41 +4962,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1987567710549645865, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1987567710549645865, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1987567710549645865, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3252768018927240644, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3252768018927240644, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3252768018927240644, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 3252768018927240644, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6058167882196815880, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
       propertyPath: m_Name
       value: EquipSlot_Core
-      objectReference: {fileID: 0}
-    - target: {fileID: 7479053968665963319, guid: f90dd023a41523e48a1221f7063d3ccc, type: 3}
-      propertyPath: equipType
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6335,10 +6367,6 @@ PrefabInstance:
     - target: {fileID: 6058167882196815880, guid: 375217e929c55ef4ab40b250b960edec, type: 3}
       propertyPath: m_Name
       value: EquipSlot_Leg
-      objectReference: {fileID: 0}
-    - target: {fileID: 7479053968665963319, guid: 375217e929c55ef4ab40b250b960edec, type: 3}
-      propertyPath: equipType
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

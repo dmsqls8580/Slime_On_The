@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 7784666276946209392}
   - component: {fileID: 2291572383324374654}
   - component: {fileID: 6053396489938016275}
+  - component: {fileID: -5659783786166669139}
   m_Layer: 12
   m_Name: Cat
   m_TagString: Untagged
@@ -140,7 +141,6 @@ MonoBehaviour:
   decreaseDelayValue: 2
   decreaseDelayTime: 1
   hitAggroValue: 30
-  IsAttacked: 0
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &434384408529830673
 MonoBehaviour:
@@ -324,6 +324,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-5659783786166669139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4868767181633410294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &5022899434583256568
 GameObject:
   m_ObjectHideFlags: 0

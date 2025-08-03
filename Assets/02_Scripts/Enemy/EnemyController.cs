@@ -433,9 +433,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
 
-    private void OnAggroTargetChanged(GameObject newtarget, float newvalue)
+    private void OnAggroTargetChanged(GameObject newTarget, float newValue)
     {
-        AttackTarget = newtarget;
+        AttackTarget = newTarget;
     }
     
     
