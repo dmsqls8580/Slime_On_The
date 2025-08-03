@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class UICookPot : UIBase
     [SerializeField] private AnimationCurve JellyAnimationCurve;
     private CookPotObject boundCookPot;
     private int cookIndex;
+    public int CookIndex => cookIndex;
 
     public void Initialize(int cookPotIndex, CookPotObject cookPot)
     {
@@ -83,5 +85,6 @@ public class UICookPot : UIBase
     public override void Close()
     {
         base.Close();
+        cookIndex = -1;
     }
 }
