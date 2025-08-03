@@ -25,4 +25,5 @@ public class ModifierObject : MonoBehaviour
             NavMesh2DManager.Instance.UpdateThisNavMesh();
         }
     }
+
 }
