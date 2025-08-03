@@ -291,7 +291,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, itemTarget);
+                    itemDrop.Init(item.itemSo,1);
                     
                 }
                 

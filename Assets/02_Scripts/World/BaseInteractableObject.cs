@@ -85,7 +85,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo, 1, _player);
+                    itemDrop.Init(item.itemSo, 1);
                 }
 
                 rigid = dropObj.GetComponent<Rigidbody2D>();

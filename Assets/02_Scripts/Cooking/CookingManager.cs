@@ -4,7 +4,6 @@ using UnityEngine;
 public class CookingManager : MonoBehaviour
 {
     [SerializeField] private RecipeDatabase database;
-    [SerializeField] private CookingPanel cookingPanel;
 
     public void FindMatchingRecipe(Dictionary<IngredientTag, float> _tags, float _cookingTime, CookingPot _cookingPot)
     {
@@ -14,7 +13,6 @@ public class CookingManager : MonoBehaviour
             if (IsMatched(_tags, item.cookedData))
             {
                 _cookingPot.Cook(item, _cookingTime);
-                cookingPanel.Initialize();
                 return;
             }
         }

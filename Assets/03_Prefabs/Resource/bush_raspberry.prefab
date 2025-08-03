@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6737676818348998515}
   - component: {fileID: 347788387398860020}
-  - component: {fileID: 7418462684272615884}
+  - component: {fileID: -7507247690184545667}
+  - component: {fileID: 1225999444709927055}
   m_Layer: 31
   m_Name: bush_raspberry
   m_TagString: Untagged
@@ -85,7 +86,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &7418462684272615884
+--- !u!114 &-7507247690184545667
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,16 +95,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 1236685174018697565}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Script: {fileID: 11500000, guid: e7e1ff343960a7e4f80ac1903b66069a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dropItems:
-  - itemSo: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
+  - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
     amount: 1
     dropChance: 100
-  objectType: 0
+  - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
+    amount: 2
+    dropChance: 30
+  objectType: -1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
+--- !u!58 &1225999444709927055
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236685174018697565}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.4
