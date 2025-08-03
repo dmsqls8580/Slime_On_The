@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InventoryManager : SceneOnlySingleton<InventoryManager>
@@ -37,6 +38,23 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public void SetItem(int _index, ItemInstanceData _newData)
     {
         if (_index < 0 || _index >= MaxSlotCount) return;
+
+        if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
+        {
+            var prevItem = GetItem(_index);
+            if (!prevItem.IsUnityNull() && prevItem.IsValid)
+            { 
+                PlayerStatusManager.Instance.ApplyEquipStat(prevItem, false);
+            }
+
+            inventorySlots[_index] = _newData;
+            if (!_newData.IsUnityNull() && _newData.IsValid)
+            {
+                PlayerStatusManager.Instance.ApplyEquipStat(_newData, true);
+            }
+            OnSlotChanged?.Invoke(_index);
+        }
+
         inventorySlots[_index] = _newData;
         OnSlotChanged?.Invoke(_index);
     }

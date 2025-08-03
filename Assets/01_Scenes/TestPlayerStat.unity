@@ -2585,8 +2585,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 655f64c77d589a14896c6b2eb35b5d69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Surface2D: {fileID: 979607189}
-  tickInterval: 5
 --- !u!114 &979607188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5560,11 +5558,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: testItems.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: quantities.Array.size
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: testItems.Array.data[3]
@@ -5579,6 +5577,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 76698687986164e4289109beaa4c4bfc, type: 2}
     - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: testItems.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 22b60e39b94da6a4084b231728a63396, type: 2}
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: quantities.Array.data[3]
       value: 1
       objectReference: {fileID: 0}
@@ -5588,6 +5590,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: quantities.Array.data[5]
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: quantities.Array.data[6]
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3027746625766542306, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
@@ -7238,7 +7244,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1232520716}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3895693573737440218, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}

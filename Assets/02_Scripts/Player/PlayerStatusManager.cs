@@ -16,6 +16,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private StatManager statManager;
     private PlayerController playerController;
+    private SlimeFormChanger formChanger;
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
@@ -46,6 +47,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public float MoveSpeed => statManager.GetValue(StatType.MoveSpeed) + additionalMoveSpeed;
     private float additionalMoveSpeed = 0f;
+
     public float UpdateMoveSpeed
     {
         set { additionalMoveSpeed += value; }
@@ -53,6 +55,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private void Awake()
     {
+        formChanger = GetComponent<SlimeFormChanger>();
         statManager = GetComponent<StatManager>();
         ISlimeTextOut = GetComponent<SlimeTextController>();
         statManager.OnStatChange += UpdateAllGaugeUI;
@@ -60,8 +63,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private void Start()
     {
-        daySlimeRoutine  = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
-        playerController =  GetComponent<PlayerController>();
+        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
+        playerController = GetComponent<PlayerController>();
     }
 
     public void Init(IStatProvider _statProvider, IDamageable _owner = null)
@@ -148,17 +151,18 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     {
         statManager.Consume(StatType.CurrentHp, StatModifierType.Base, _amount);
 
-        NotifyHpChanged();      
+        NotifyHpChanged();
         UpdateHpUI();
     }
 
     public void RecoverHp(float _amount)
     {
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
-  
+
         NotifyHpChanged();
         UpdateHpUI();
     }
+
     private void UpdateHpUI()
     {
         if (hpGaugeImage.IsUnityNull())
@@ -186,7 +190,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
-        
+
         if (!staminaRecoverRoutine.IsUnityNull())
         {
             StopCoroutine(staminaRecoverRoutine);
@@ -263,10 +267,11 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
                 staminaRecoverRoutine = null;
                 yield break;
             }
+
             yield return new WaitForSeconds(0.5f);
         }
     }
-    
+
     private void UpdateStaminaGaugeUI()
     {
         if (staminaGaugeImage.IsUnityNull())
@@ -310,18 +315,46 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         OnHpChanged?.Invoke(ratio);
     }
 
-    public void TakeDamage(float _damage)
+    public void ApplyEquipStat(ItemInstanceData _item, bool _apply)
     {
-        if(CurrentHp > 0)
-        {
-            ConsumeHp(_damage);
-        }
+        var equipData = _item.ItemData.equipableData;
+        if (equipData.IsUnityNull()) return;
+
+        int stack = _apply ? 1 : -1;
+        statManager.ApplyStat(StatType.MaxHp, StatModifierType.Equipment, equipData.maxHealth * stack);
+        statManager.ApplyStat(StatType.Attack, StatModifierType.Equipment, equipData.atk * stack);
+        statManager.ApplyStat(StatType.Defense, StatModifierType.Equipment, equipData.def * stack);
+        statManager.ApplyStat(StatType.MoveSpeed, StatModifierType.Equipment, equipData.spd * stack);
+
+        Logger.Log($"[장비스탯 적용:{(_apply ? "장착" : "해제")}] " +
+                   $"MaxHp: {statManager.GetValue(StatType.MaxHp)}, " +
+                   $"Atk: {statManager.GetValue(StatType.Attack)}, " +
+                   $"Def: {statManager.GetValue(StatType.Defense)}, " +
+                   $"Spd: {statManager.GetValue(StatType.MoveSpeed)}");
         
-        if(CurrentHp <= 0)
+        if (equipData.equipableType == EquipType.Core)
         {
-            playerController.Dead();
+            if (_apply)
+            {
+                formChanger.RequestFormChange(equipData.formId);
+            }
+            else
+                formChanger.ResetForm();
         }
-        Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
-        
     }
-}
+
+    public void TakeDamage(float _damage)
+        {
+            if (CurrentHp > 0)
+            {
+                ConsumeHp(_damage);
+            }
+
+            if (CurrentHp <= 0)
+            {
+                playerController.Dead();
+            }
+
+            Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
+        }
+    }
