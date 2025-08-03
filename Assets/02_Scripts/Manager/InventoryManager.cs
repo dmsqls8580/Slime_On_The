@@ -42,53 +42,55 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 
         if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
         {
-            var prevItem = GetItem(_index);
-            if (!prevItem.IsUnityNull() && prevItem.IsValid)
-            { 
-                PlayerStatusManager.Instance.ApplyEquipStat(prevItem, false);
-            }
-
-            inventorySlots[_index] = _newData;
-            if (!_newData.IsUnityNull() && _newData.IsValid)
-            {
-                PlayerStatusManager.Instance.ApplyEquipStat(_newData, true);
-            }
-            OnSlotChanged?.Invoke(_index);
+            RefreshEquipStat(_index, _newData);
         }
 
         inventorySlots[_index] = _newData;
         OnSlotChanged?.Invoke(_index);
     }
 
+    
+
     public void ClearItem(int _index)
     {
         if (_index < 0 || _index >= MaxSlotCount) return;
+        
+        if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
+        {
+            RefreshEquipStat(_index, null);
+        }
+        
         inventorySlots[_index] = null;
         OnSlotChanged?.Invoke(_index);
     }
 
     // 한 슬롯에 아이템 추가시도(추가한 양 반환)
-    public int TryAddItem(int _index, ItemSO _itemData, int _amount)
+    public int TryAddItem(int _index, ItemInstanceData _item, int _amount)
     {
-        if (_index < 0 || _index >= MaxSlotCount || _itemData == null || _amount <= 0)
+        if (_index < 0 || _index >= MaxSlotCount || _item == null || _amount <= 0)
             return 0;
-
+        
         var current = inventorySlots[_index];
 
         if (current == null)
         {
-            int placed = Mathf.Min(_amount, _itemData.maxStack);
-            inventorySlots[_index] = new ItemInstanceData(_itemData, placed);
+            if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
+            {
+                RefreshEquipStat(_index, _item);
+            }
+            int placed = Mathf.Min(_amount, _item.ItemData.maxStack);
+            inventorySlots[_index] = new ItemInstanceData(_item.ItemData, placed);
             OnSlotChanged?.Invoke(_index);
             return placed;
         }
 
-        if (current.ItemData != _itemData || current.Quantity >= _itemData.maxStack)
+        if (current.ItemData != _item.ItemData || current.Quantity >= _item.ItemData.maxStack)
             return 0;
 
-        int addable = _itemData.maxStack - current.Quantity;
+        int addable = _item.ItemData.maxStack - current.Quantity;
         int placedAmount = Mathf.Min(addable, _amount);
         current.Quantity += placedAmount;
+
         uiCookPot.IgnoreNextSlotChange();
         OnSlotChanged?.Invoke(_index);
         return placedAmount;
@@ -97,6 +99,11 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     // 한 슬롯에서 아이템 제거시도
     public void RemoveItem(int _index, int _amount)
     {
+        if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
+        {
+            RefreshEquipStat(_index, null);
+        }
+        
         Debug.Log($"[RemoveItem] index: {_index}, amount: {_amount}");
         if (_index < 0 || _index >= MaxSlotCount || _amount <= 0)
         {
@@ -261,6 +268,22 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public bool IsSlotLocked(int _index)
     {
         return _index >= unlockedSlotCount;
+    }
+    
+    private void RefreshEquipStat(int _index, ItemInstanceData _newData)
+    {
+        var prevItem = GetItem(_index);
+        if (!prevItem.IsUnityNull() && prevItem.IsValid)
+        { 
+            PlayerStatusManager.Instance.ApplyEquipStat(prevItem, false);
+        }
+
+        inventorySlots[_index] = _newData;
+        if (!_newData.IsUnityNull() && _newData.IsValid)
+        {
+            PlayerStatusManager.Instance.ApplyEquipStat(_newData, true);
+        }
+        //OnSlotChanged?.Invoke(_index);
     }
     
     // chest 설치
