@@ -1,0 +1,703 @@
+fileFormatVersion: 2
+guid: 8f3cd9a55ddbd5e4b8c6e15c6cced5c8
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 16
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 638898554006051729
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: pickaxe_form01_Frame_0
+    originalName: 
+    pivot: {x: 0.49999997, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 70
+      width: 16
+      height: 26
+    spriteID: 4d7d2aa43a7e9fa40b06d27f50eb2c31
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 70}
+  - name: pickaxe_form01_Frame_1
+    originalName: 
+    pivot: {x: 0.5333333, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 137
+      width: 15
+      height: 26
+    spriteID: 69229094ccc160743adbec36be1977c7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 137}
+  - name: pickaxe_form01_Frame_2
+    originalName: 
+    pivot: {x: 0.4666667, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 171
+      width: 15
+      height: 25
+    spriteID: c6f5e80229a0a354296b82d68e6bfa48
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 171}
+  - name: pickaxe_form01_Frame_3
+    originalName: 
+    pivot: {x: 0.5333333, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 62
+      y: 100
+      width: 15
+      height: 23
+    spriteID: 0632ab1c079898948b077a68b0a97057
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 62, y: 100}
+  - name: pickaxe_form01_Frame_4
+    originalName: 
+    pivot: {x: 0.5333333, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 204
+      width: 15
+      height: 24
+    spriteID: 657cb0853b638474eb190c976e124803
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 204}
+  - name: pickaxe_form01_Frame_5
+    originalName: 
+    pivot: {x: 0.6, y: -0.041666668}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 62
+      y: 4
+      width: 15
+      height: 24
+    spriteID: 0a43ec64c3fad9a4ea9e42251b05ee96
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 62, y: 4}
+  - name: pickaxe_form01_Frame_6
+    originalName: 
+    pivot: {x: 0.73684216, y: -0.041666668}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 72
+      width: 19
+      height: 24
+    spriteID: 197f4c9b1ca4b4c47a6fa71e530a6121
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 72}
+  - name: pickaxe_form01_Frame_7
+    originalName: 
+    pivot: {x: 0.5199999, y: -0.04}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 25
+      height: 25
+    spriteID: 3b5ff5e92c69e16458393d1fb53a3cbc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: pickaxe_form01_Frame_8
+    originalName: 
+    pivot: {x: 0.3, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 37
+      width: 20
+      height: 27
+    spriteID: 092be51edf52e184ea00eab6b79d49f9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 37}
+  - name: pickaxe_form01_Frame_9
+    originalName: 
+    pivot: {x: 0.27777776, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 104
+      width: 18
+      height: 25
+    spriteID: f2edea4d9a52dcf45a234d0847a70905
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 104}
+  - name: pickaxe_form01_Frame_10
+    originalName: 
+    pivot: {x: 0.42105258, y: -0.04347826}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 137
+      width: 19
+      height: 23
+    spriteID: 46a3076842acba8438ea8639a139f5f0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 137}
+  - name: pickaxe_form01_Frame_11
+    originalName: 
+    pivot: {x: 0.5333333, y: -0.041666668}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 62
+      y: 36
+      width: 15
+      height: 24
+    spriteID: 5c23b3ed61c353944ad1e52bab3ba86d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 62, y: 36}
+  - name: pickaxe_form01_Frame_12
+    originalName: 
+    pivot: {x: 0.5882353, y: -0.04}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 4
+      width: 17
+      height: 25
+    spriteID: 443ca52301f26df44aaf91742dafa670
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 4}
+  - name: pickaxe_form01_Frame_13
+    originalName: 
+    pivot: {x: 0.5625, y: -0.04}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 104
+      width: 16
+      height: 25
+    spriteID: dae482be9c357414ea42fe789119cd6a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 104}
+  - name: pickaxe_form01_Frame_14
+    originalName: 
+    pivot: {x: 0.5333333, y: 0.1724138}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 168
+      width: 15
+      height: 29
+    spriteID: 06b2f9cca670cf0419ee2a126d314d83
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 168}
+  - name: pickaxe_form01_Frame_15
+    originalName: 
+    pivot: {x: 0.5333333, y: 0.13793103}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 205
+      width: 15
+      height: 29
+    spriteID: 9800f24888df7dc45b1db79b7a2ca5ef
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 205}
+  - name: pickaxe_form01_Frame_16
+    originalName: 
+    pivot: {x: 0.5333333, y: -0.041666668}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 62
+      y: 68
+      width: 15
+      height: 24
+    spriteID: b1cf6818822bb624fa8ab111cb491a08
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 62, y: 68}
+  - name: pickaxe_form01_Frame_17
+    originalName: 
+    pivot: {x: 0.4705882, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 37
+      y: 37
+      width: 17
+      height: 25
+    spriteID: a577a9c1be2e8184eb2276198baa48aa
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 37, y: 37}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -952804463
+    name: pickaxe_form01
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: pickaxe_form01_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 16
+        y: 0
+        width: 16
+        height: 26
+      spriteId: 4d7d2aa43a7e9fa40b06d27f50eb2c31
+    - name: pickaxe_form01_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 16
+        y: 0
+        width: 15
+        height: 26
+      spriteId: 69229094ccc160743adbec36be1977c7
+    - name: pickaxe_form01_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 17
+        y: 0
+        width: 15
+        height: 25
+      spriteId: c6f5e80229a0a354296b82d68e6bfa48
+    - name: pickaxe_form01_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 16
+        y: 0
+        width: 15
+        height: 23
+      spriteId: 0632ab1c079898948b077a68b0a97057
+    - name: pickaxe_form01_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 16
+        y: 0
+        width: 15
+        height: 24
+      spriteId: 657cb0853b638474eb190c976e124803
+    - name: pickaxe_form01_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 15
+        y: 1
+        width: 15
+        height: 24
+      spriteId: 0a43ec64c3fad9a4ea9e42251b05ee96
+    - name: pickaxe_form01_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 10
+        y: 1
+        width: 19
+        height: 24
+      spriteId: 197f4c9b1ca4b4c47a6fa71e530a6121
+    - name: pickaxe_form01_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 11
+        y: 1
+        width: 25
+        height: 25
+      spriteId: 3b5ff5e92c69e16458393d1fb53a3cbc
+    - name: pickaxe_form01_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 18
+        y: 0
+        width: 20
+        height: 27
+      spriteId: 092be51edf52e184ea00eab6b79d49f9
+    - name: pickaxe_form01_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 19
+        y: 0
+        width: 18
+        height: 25
+      spriteId: f2edea4d9a52dcf45a234d0847a70905
+    - name: pickaxe_form01_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 16
+        y: 1
+        width: 19
+        height: 23
+      spriteId: 46a3076842acba8438ea8639a139f5f0
+    - name: pickaxe_form01_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 16
+        y: 1
+        width: 15
+        height: 24
+      spriteId: 5c23b3ed61c353944ad1e52bab3ba86d
+    - name: pickaxe_form01_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 14
+        y: 1
+        width: 17
+        height: 25
+      spriteId: 443ca52301f26df44aaf91742dafa670
+    - name: pickaxe_form01_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 15
+        y: 1
+        width: 16
+        height: 25
+      spriteId: dae482be9c357414ea42fe789119cd6a
+    - name: pickaxe_form01_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 16
+        y: -5
+        width: 15
+        height: 29
+      spriteId: 06b2f9cca670cf0419ee2a126d314d83
+    - name: pickaxe_form01_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 16
+        y: -4
+        width: 15
+        height: 29
+      spriteId: 9800f24888df7dc45b1db79b7a2ca5ef
+    - name: pickaxe_form01_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 16
+        y: 1
+        width: 15
+        height: 24
+      spriteId: b1cf6818822bb624fa8ab111cb491a08
+    - name: pickaxe_form01_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 16
+        y: 0
+        width: 17
+        height: 25
+      spriteId: a577a9c1be2e8184eb2276198baa48aa
+    linkedCells: []
+    parentIndex: -1
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  generatePhysicsShape: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 48, y: 32}
