@@ -39,5 +39,6 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,rottenable,toolType,p
 602,Wood Fence Gate,,,64,y,99,,,,,,,,,,,,,,,,,,,Building
 701,Apple,Icon Number: 29
 IngredientTag = 2,,Material|Eatable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
-801,Cooked Meat,Restores health and fills you up.,cooked_meat,Eatable,y,40,,,,,,,,,,,,,20,15,5,0,y,100,
-802,Winter Dinner,Food,,Eatable,y,40,,,,,,,,,,,,,100,50,20,0,y,100,
+801,Apple,Icon Number: 29
+IngredientTag = Fruit,cooked_meat,Material|Eatable|Cookable,y,99,,,,,,,,,,,,,0,10,0,0,y,100,
+802,Meat,Meat,,Eatable|Cookable,y,99,,,,,,,,,,,,,5,15,0,0,y,100,

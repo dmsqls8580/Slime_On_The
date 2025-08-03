@@ -5,5 +5,4 @@ public class PlacedObject : MonoBehaviour
 {
     [SerializeField] private ItemSO itemSO;
     public ItemSO ItemSO => itemSO;
-    //public CraftingStation GetStationType() => CraftingStation.Workbench;
 }

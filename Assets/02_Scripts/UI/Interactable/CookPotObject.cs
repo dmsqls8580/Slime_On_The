@@ -2,6 +2,7 @@ using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CookingState
@@ -26,6 +27,20 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
+
+    [Header("Drop Item Health")]
+    [SerializeField] private float maxHealth;
+    private float currentHealth;
+    private Rigidbody2D rigid;
+
+    [Header("Drop Animation")]
+    [SerializeField] private float dropUpForce = 5f;
+    [SerializeField] private float dropSideForce = 2f;
+    [SerializeField] private float dropAngleRange = 60f;
+
+    [Header("Drop Item Data Info(SO, 개수, 확률)")]
+    [SerializeField] protected List<DropItemData> dropItems;
+    [SerializeField] protected GameObject dropItemPrefab;
 
     public int CookIndex => cookIndex;
     public CookingState CurrentState => currentState;
@@ -64,11 +79,31 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 var ui = uiManager.GetUIComponent<UICookPot>();
                 ui.Initialize(this);
                 uiManager.Toggle<UICookPot>();
-                uiManager.Toggle<UIInventory>();
+                if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                {
+                    uiManager.Toggle<UIInventory>();
+                }
                 break;
             case InteractionCommandType.Space:
+                var toolController = _playerController.GetComponent<ToolController>();
+                float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
+                TakeInteraction(toolPower);
+
+                if (currentHealth <= 0)
+                {
+                    DropItems(_playerController.transform);
+                    InventoryManager.Instance.ReleaseCookIndex(cookIndex);
+                    Destroy(gameObject);
+                }
                 break;
         }
+    }
+
+    private void TakeInteraction(float _damage)
+    {
+        currentHealth -= _damage;
+        Logger.Log($"{currentHealth}");
+        currentHealth = Mathf.Max(currentHealth, 0);
     }
 
     public void StartCook(ItemSO _item, float _cookingTime)
@@ -101,7 +136,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
             {
                 inventoryManager.RemoveItem(slot.SlotIndex, 1);
             }
-            inventoryManager.TryAddItem(resultSlot.SlotIndex, finishedItem, 1);
+            inventoryManager.TryAddItem(resultSlot.SlotIndex, new ItemInstanceData(finishedItem, 1), 1);
 
         } while (CanCook());
 
@@ -128,6 +163,37 @@ public class CookPotObject : MonoBehaviour, IInteractable
             StopCoroutine(coroutine);
             currentState = CookingState.Idle;
             elapsedTime = 0f;
+        }
+    }
+
+    private void DropItems(Transform _player)
+    {
+        float randomChance = Random.value;
+
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            for (int i = 0; i < item.amount; i++)
+            {
+                if (randomChance * 100f > item.dropChance)
+                {
+                    continue;
+                }
+
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo, 1);
+                }
+
+                rigid = dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
+            }
         }
     }
 }

@@ -38,13 +38,13 @@ public enum EquipType
 
 public enum IngredientTag
 {
-    None = 0,
     Meat = 1,
-    Fruit = 2,
+    Fish = 2,
     Vegetable = 3,
-    Egg = 4,
-    Monster = 5,
-    Ice = 6,
+    Fruit = 4,
+    Honey = 5,
+    Salt = 6,
+    Stick = 7
 }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Item/Item")]
