@@ -104,7 +104,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         while (true)
         {
             yield return new WaitForSeconds(1f);
-            Logger.Log("daySlimeGauge");
 
             var timeManager = GameManager.Instance?.timeManager;
 

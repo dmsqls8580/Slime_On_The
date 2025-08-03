@@ -35,7 +35,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
     [SerializeField] protected float dropSideForce = 2f;
     [SerializeField] protected float dropAngleRange = 60f;
     
-    [Header("Drop Item Health")]
+    [Header("Resource Health")]
     [SerializeField] protected float maxHealth;
 
     protected float currentHealth;
@@ -100,5 +100,4 @@ public abstract class BaseInteractableObject : MonoBehaviour
         Logger.Log($"{currentHealth}");
         currentHealth = Mathf.Max(currentHealth, 0);
     }
-    
 }

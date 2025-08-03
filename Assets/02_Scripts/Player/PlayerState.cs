@@ -285,7 +285,6 @@ namespace PlayerStates
         private float timer = 0f;
         public void OnEnter(PlayerController _owner)
         {
-            Logger.Log("Gather");
             timer = gatherDuration;
             _owner.Rigid2D.velocity = Vector2.zero; 
             
