@@ -59,6 +59,7 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     // 홀드슬롯에서 아이템 제거
     public void RemoveItem(int _amount)
     {
+        Logger.Log("홀드슬롯에서 아이템 제거함");
         if (!IsHolding) return;
 
         HeldItem.Quantity -= _amount;
@@ -93,7 +94,7 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     {
         if (!IsHolding || OriginSlot == null) return;
 
-        InventoryManager.Instance.TryAddItem(OriginSlot.SlotIndex, HeldItem.ItemData, HeldItem.Quantity);
+        InventoryManager.Instance.TryAddItem(OriginSlot.SlotIndex, HeldItem, HeldItem.Quantity);
         OriginSlot.Refresh();
         Clear();
     }
@@ -112,7 +113,7 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     public void Refresh()
     {
         if (holdSlot == null) return;
-
+        
         if (!IsHolding)
         {
             holdSlot.gameObject.SetActive(false);
