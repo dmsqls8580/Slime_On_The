@@ -8,24 +8,28 @@ public enum CookingState
 {
     Idle,
     Cooking,
+    Finishing,
     Finished
 }
 
 public class CookPotObject : MonoBehaviour, IInteractable
 {
-    [Header("저장 데이터")]
     [SerializeField] private int cookIndex = -1;
     private List<InventorySlot> inputSlots;
     private InventorySlot resultSlot;
-    private CookingState currentState = CookingState.Idle;
-    private float currentTime = 0f;
-    private float cookingTime = 0f;
+    [SerializeField] private CookingState currentState = CookingState.Idle;
     private ItemSO finishedItem = null;
+    private float elapsedTime = 0f;
+    private float cookingTime = 0f;
+
+    private Coroutine coroutine = null;
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
 
     public int CookIndex => cookIndex;
+    public CookingState CurrentState => currentState;
+    public void ChangeState(CookingState _state) => currentState = _state;
 
     private void Awake()
     {
@@ -60,6 +64,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 var ui = uiManager.GetUIComponent<UICookPot>();
                 ui.Initialize(this);
                 uiManager.Toggle<UICookPot>();
+                uiManager.Toggle<UIInventory>();
                 break;
             case InteractionCommandType.Space:
                 break;
@@ -68,25 +73,29 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     public void StartCook(ItemSO _item, float _cookingTime)
     {
-        if (currentState == CookingState.Idle)
-        {
-            currentState = CookingState.Cooking;
-            cookingTime = _cookingTime;
-            finishedItem = _item;
-            StartCoroutine(CookRoutine());
-        }
+        if (resultSlot.HasItem() && resultSlot.GetData().ItemData != _item) return;
+
+        finishedItem = _item;
+        cookingTime = _cookingTime;
+        coroutine = StartCoroutine(CookRoutine());
     }
 
     private IEnumerator CookRoutine()
     {
         do
         {
-            currentTime = 0;
-            while (currentTime < cookingTime)
+            currentState = CookingState.Cooking;
+            elapsedTime = 0f;
+
+            while (elapsedTime < cookingTime)
             {
-                currentTime += Time.deltaTime;
+                elapsedTime += Time.deltaTime;
+                Logger.Log($"{(elapsedTime / cookingTime * 100f):F2}%");
+
                 yield return null;
             }
+
+            currentState = CookingState.Finishing;
 
             foreach (var slot in inputSlots)
             {
@@ -108,6 +117,17 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 return false;
             }
         }
+
         return true;
+    }
+
+    public void StopCook()
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            currentState = CookingState.Idle;
+            elapsedTime = 0f;
+        }
     }
 }

@@ -14,6 +14,9 @@ public class UICookPot : UIBase
     private CookPotObject cookPotObject;
     private int cookIndex;
 
+    private bool ignoreNextSlotChange = false;
+    public void IgnoreNextSlotChange() => ignoreNextSlotChange = true;
+
     private void Awake()
     {
         inventoryManager = InventoryManager.Instance;
@@ -24,43 +27,63 @@ public class UICookPot : UIBase
     {
         cookPotObject = _cookPotObject;
         cookIndex = cookPotObject.CookIndex;
-        
+
         int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
         for (int i = 0; i < inputSlots.Count; i++)
         {
             inputSlots[i].Initialize(inputStart + i);
         }
 
-        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookIndex); 
+        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookIndex);
         resultSlot.Initialize(resultIndex);
-        
+
         inventoryManager.OnSlotChanged += OnAnySlotChanged;
         cookPotObject.Initialize(inputSlots, resultSlot);
     }
-    
+
     private void OnDisable()
     {
         if (InventoryManager.HasInstance)
             inventoryManager.OnSlotChanged -= OnAnySlotChanged;
     }
-
+    
     private void OnAnySlotChanged(int changedIndex)
     {
+        if (ignoreNextSlotChange)
+        {
+            ignoreNextSlotChange = false;
+            return;
+        }
+
         int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
         int inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
 
         if (changedIndex >= inputStart && changedIndex < inputEnd)
         {
             TryCook();
+            return;
+        }
+
+        if (cookPotObject.CurrentState == CookingState.Finished && changedIndex == resultSlot.SlotIndex)
+        {
+            cookPotObject.ChangeState(CookingState.Idle);
+            TryCook();
+            return;
         }
     }
-    
+
     private void TryCook()
     {
+        if (cookPotObject.CurrentState == CookingState.Finishing) return;
+
+        if (cookPotObject.CurrentState == CookingState.Cooking)
+        {
+            cookPotObject.StopCook();
+        }
+
         foreach (var slot in inputSlots)
         {
             if (!slot.HasItem()) return;
-            // 코루틴종료.
         }
 
         Dictionary<IngredientTag, float> tags = new();
@@ -84,7 +107,6 @@ public class UICookPot : UIBase
             cookingTime += data.cookableData.contributionTime;
         }
 
-        Logger.Log("3개 다넣음.");
         cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
     }
 

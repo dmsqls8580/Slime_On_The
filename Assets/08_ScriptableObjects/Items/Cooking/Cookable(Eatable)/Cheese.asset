@@ -18,7 +18,7 @@ MonoBehaviour:
 
     IngredientTag = None'
   icon: {fileID: 1466577526, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
-  itemTypes: 24
+  itemTypes: 40
   stackable: 1
   maxStack: 99
   materialData:
@@ -48,7 +48,7 @@ MonoBehaviour:
     tags: []
     contributionTime: 0
   cookedData:
-    priority: 0
+    priority: 1
     requiredTags: []
     forbiddenTags: []
   placeableData:
