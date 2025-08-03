@@ -23,6 +23,7 @@ public class PlaceMode : MonoBehaviour
     private GameObject objectPrefab;
     private GameObject prefabInstance;
     private ItemSO itemSO;
+    private int quickSlotIndex;
     
     private Vector2Int size;
 
@@ -90,7 +91,7 @@ public class PlaceMode : MonoBehaviour
         {
             placedObjectManager.AddPlacedObject(placedObjectComponent);
         }
-        //inventoryManager.TryRemoveItemGlobally(itemSO, 1);
+        inventoryManager.RemoveItem(quickSlotIndex, 1);
         SetActiveFalsePlaceMode();
     }
 
@@ -109,10 +110,11 @@ public class PlaceMode : MonoBehaviour
         }
     }
 
-    public void SetActiveTruePlaceMode(ItemSO _itemSO)
+    public void SetActiveTruePlaceMode(ItemSO _itemSO, int _quickSlotIndex)
     {
         gameObject.SetActive(true);
         Initialize(_itemSO);
+        quickSlotIndex = _quickSlotIndex;
     }
 
     private void Initialize(ItemSO _itemSO)
