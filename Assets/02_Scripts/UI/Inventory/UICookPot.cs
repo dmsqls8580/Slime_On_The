@@ -10,6 +10,7 @@ public class UICookPot : UIBase
     [SerializeField] private AnimationCurve JellyAnimationCurve;
     private CookPotObject boundCookPot;
     private int cookIndex;
+    public int CookIndex => cookIndex;
 
     public void Initialize(int cookPotIndex, CookPotObject cookPot)
     {
@@ -77,7 +78,6 @@ public class UICookPot : UIBase
     public override void Open()
     {
         base.Open();
-        UIManager.Instance.Toggle<UIInventory>();
         Contents.localScale = Vector3.zero;
         Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
     }
@@ -85,5 +85,6 @@ public class UICookPot : UIBase
     public override void Close()
     {
         base.Close();
+        cookIndex = -1;
     }
 }

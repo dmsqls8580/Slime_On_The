@@ -47,6 +47,10 @@ public class CookPotObject : MonoBehaviour, IInteractable
         switch (_type)
         {
             case InteractionCommandType.F:
+                if (!UIManager.Instance.GetUIComponent<UIInventory>().IsOpen)
+                {
+                    UIManager.Instance.Toggle<UIInventory>();
+                }
                 var ui = UIManager.Instance.GetUIComponent<UICookPot>();
                 ui.Initialize(cookIndex, this);
                 UIManager.Instance.Toggle<UICookPot>();
@@ -121,5 +125,18 @@ public class CookPotObject : MonoBehaviour, IInteractable
         }
     }
 
-    
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        var cookUI = UIManager.Instance.GetUIComponent<UICookPot>();
+        if (cookUI != null && cookUI.IsOpen && cookUI.CookIndex == cookIndex)
+        {
+            UIManager.Instance.Close<UICookPot>();
+            if (UIManager.Instance.GetUIComponent<UIInventory>().IsOpen)
+            {
+                UIManager.Instance.Toggle<UIInventory>();
+            }
+        }
+    }
 }
