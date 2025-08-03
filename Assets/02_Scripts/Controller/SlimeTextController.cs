@@ -38,7 +38,6 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
         {
             GameObject poolObject = ObjectPoolManager.Instance.GetObject("SlimeText");
             SlimeTextUI slimeTextUi = poolObject.GetComponent<SlimeTextUI>();
-            Logger.Log("슬라임 텍스트 출력메서드");
             slimeTextUi.ShowText(message, _worldPos, () =>
             {
                 activeTexts.Remove(_key);
@@ -56,8 +55,6 @@ public class SlimeTextController : MonoBehaviour, ISlimeTextOut
         {
             TryShowSlimeText("maxWarning", per, _worldPos);
         }
-
-        Logger.Log("슬라임 텍스트 게이지 변경");
     }
 
     //todo: 자연재해에 대한 enum&string 조건식으로 재해가 나올때마다 확률적으로 텍스트 출력

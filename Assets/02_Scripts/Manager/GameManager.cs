@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
@@ -8,6 +9,8 @@ public class GameManager : Singleton<GameManager>
     [Header("외부 매니저 참조")]
     public TimeManager timeManager;
     public ProceduralWorldManager worldManager;
+
+    [Header("로딩 화면 설정")]
     public CanvasGroup loadingCanvas;
     public TMP_Text loadingText;
     public Slider loadingBar;
@@ -19,6 +22,8 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
         // 점진적으로 로딩 바를 채움
         if (loadingBar != null && currentProgress < targetProgress)
         {
