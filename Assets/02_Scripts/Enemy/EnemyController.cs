@@ -383,6 +383,16 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             ObjectPoolManager.Instance.ReturnObject(projectileObject);
         }
     }
+
+    public void SelfDestruct()
+    {
+        
+    }
+
+    public void Dash()
+    {
+        
+    }
     
     // 아이템 드롭 메서드
     private void DropItems(Transform transform)
