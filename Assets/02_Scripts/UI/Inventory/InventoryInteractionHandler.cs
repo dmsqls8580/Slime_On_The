@@ -119,7 +119,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         //         return;
         // }
 
-        int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held.ItemData, _amount);
+        int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held, _amount);
         holdManager.RemoveItem(placed);
 
         _slot.Refresh();
@@ -163,6 +163,12 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     // 사용하기
     public void TryUse(ItemInstanceData _item, SlotBase _originSlot)
     {
+        // _item<<< 얘가 EquipableData 가 Core일때
+        if (_item.ItemData.equipableData.equipableType == EquipType.Core)
+        {
+            // 변신중일때 return
+        }
+        
         if (_item == null || !_item.IsValid) return;
 
         var type = _item.ItemData.itemTypes;
