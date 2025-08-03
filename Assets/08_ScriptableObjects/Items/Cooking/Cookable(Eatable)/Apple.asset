@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
   m_Name: Apple
   m_EditorClassIdentifier: 
-  idx: 701
+  idx: 804
   itemName: Apple
   description: 'Icon Number: 29
 
     IngredientTag = Fruit'
   icon: {fileID: 1541863557, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
-  itemTypes: 25
+  itemTypes: 24
   stackable: 1
   maxStack: 99
   materialData:
@@ -46,7 +46,7 @@ MonoBehaviour:
     permanent: 1
   cookableData:
     tags:
-    - tag: 2
+    - tag: 4
       value: 1
     contributionTime: 2
   cookedData:
