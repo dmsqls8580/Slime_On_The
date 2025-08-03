@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,6 +77,7 @@ public class UICookPot : UIBase
     public override void Open()
     {
         base.Open();
+        UIManager.Instance.Toggle<UIInventory>();
         Contents.localScale = Vector3.zero;
         Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
     }
