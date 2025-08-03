@@ -6,6 +6,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
+    [SerializeField] private UICookPot uiCookPot;
 
     public const int MaxSlotCount = 100000;
     private const int EquipSlotStartIndex = 90;
@@ -88,6 +89,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         int addable = _itemData.maxStack - current.Quantity;
         int placedAmount = Mathf.Min(addable, _amount);
         current.Quantity += placedAmount;
+        uiCookPot.IgnoreNextSlotChange();
         OnSlotChanged?.Invoke(_index);
         return placedAmount;
     }

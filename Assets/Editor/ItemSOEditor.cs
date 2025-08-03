@@ -52,6 +52,18 @@ public class ItemSOEditor : Editor
             DrawSafeField("placeableData", true);
         }
 
+        if (item.itemTypes.HasFlag(ItemType.Cookable))
+        {
+            if (item.cookableData == null) item.cookableData = new CookableData();
+            DrawSafeField("cookableData", true);
+        }
+
+        if (item.itemTypes.HasFlag(ItemType.Cooked))
+        {
+            if (item.cookedData == null) item.cookedData = new CookedData();
+            DrawSafeField("cookedData", true);
+        }
+
         serializedObject.ApplyModifiedProperties();
     }
 

@@ -18,7 +18,7 @@ MonoBehaviour:
 
     IngredientTag = Fruit'
   icon: {fileID: 1541863557, guid: af5cf9a3f7684744988b407a40c4ec42, type: 3}
-  itemTypes: 9
+  itemTypes: 25
   stackable: 1
   maxStack: 99
   materialData:
@@ -45,8 +45,10 @@ MonoBehaviour:
     rottenable: 1
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 2
+      value: 1
+    contributionTime: 2
   cookedData:
     priority: 0
     requiredTags: []
