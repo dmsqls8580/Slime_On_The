@@ -18,9 +18,10 @@ public abstract class BaseTable<TKey, TValue> : ScriptableObject, ITable where T
         return DataDic.GetValueOrDefault(_id);
     }
 
-#if UNITY_EDITOR
+
     public void AutoAssignDatas()
-    {      
+    {   
+#if UNITY_EDITOR  
         dataList.Clear();
 
         string[] guids =
@@ -39,7 +40,8 @@ public abstract class BaseTable<TKey, TValue> : ScriptableObject, ITable where T
 
         Debug.Log($"[{typeof(TValue)}] 데이터 등록 완료!");
         UnityEditor.EditorUtility.SetDirty(this);
-    }
 #endif
+    }
+
 }
 
