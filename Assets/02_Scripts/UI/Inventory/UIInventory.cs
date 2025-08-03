@@ -10,7 +10,7 @@ public class UIInventory : UIBase
     [SerializeField] private AnimationCurve openCloseCurve;
     
     [SerializeField] private List<InventorySlot> inventorySlots;
-    [SerializeField] private List<EquipSlot> equipSlots;    
+    [SerializeField] private List<EquipSlot> equipSlots;
 
     private Vector2 originPosition;
     private Vector2 targetPosition;
@@ -40,10 +40,9 @@ public class UIInventory : UIBase
         }
         for (int i = 0; i < equipSlots.Count; i++)
         {
-            equipSlots[i].Initialize(i);
+            equipSlots[i].Initialize(90+i);
         }
     }
-    
 
     public void RefreshAll()
     {

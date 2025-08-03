@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using UnityEngine;
 
 public class HoldManager : SceneOnlySingleton<HoldManager>

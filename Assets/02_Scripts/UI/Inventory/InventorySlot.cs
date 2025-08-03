@@ -31,9 +31,9 @@ public class InventorySlot : SlotBase
         }
     }
 
-    public override void Clear(int _amount)
-    {
-        InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
-        Refresh();
-    }
+    // public override void Clear(int _amount)
+    // {
+    //     InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
+    //     Refresh();
+    // }
 }
