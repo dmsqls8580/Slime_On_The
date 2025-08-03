@@ -7,6 +7,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public PlaceMode placeMode;
 
     public const int MaxSlotCount = 100000;
+    private const int EquipSlotStartIndex = 90;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 40;
     
@@ -19,7 +20,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public event Action<int> OnEquipSlotChanged;
 
     private ItemInstanceData[] inventorySlots = new ItemInstanceData[MaxSlotCount];
-    private ItemInstanceData[] equipSlots = new ItemInstanceData[EquipSlotCount];
+    //private ItemInstanceData[] equipSlots = new ItemInstanceData[EquipSlotCount];
 
     private bool IsValidIndex(int _index) => _index >= 0 && _index < unlockedSlotCount;
     private bool IsEquipIndex(int _index) => _index >= 0 && _index < EquipSlotCount;
@@ -84,14 +85,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         }
 
         var current = inventorySlots[_index];
-        if (current == null)
+        if (current == null || !current.IsValid)
         {
-            Debug.LogWarning("Current is null.");
-            return;
-        }
-        if (!current.IsValid)
-        {
-            Debug.LogWarning($"Current is not valid. ItemData: {current.ItemData}, Quantity: {current.Quantity}");
+            Debug.LogWarning("Invalid item data.");
             return;
         }
 
@@ -101,7 +97,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             inventorySlots[_index] = null;
         }
 
-        Debug.Log($"New quantity: {current?.Quantity}");
         OnSlotChanged?.Invoke(_index);
     }
 
@@ -125,10 +120,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 {
                     if (craft.CraftingSlot != null)
                     {
-                        // 설명 패널 업데이트.
-                        craft.CraftingSlot.UpdateRequiredIngredientPanel();
-                        // 제작 버튼 업데이트.
-                        craft.CanCraft();
+                        UpdateCraftingUI();
                     }
                     return true;
                 }
@@ -148,10 +140,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 {
                     if (craft.CraftingSlot != null)
                     {
-                        // 설명 패널 업데이트.
-                        craft.CraftingSlot.UpdateRequiredIngredientPanel();
-                        // 제작 버튼 업데이트.
-                        craft.CanCraft();
+                        UpdateCraftingUI();
                     }
                     return true;
                 }
@@ -188,6 +177,14 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         return true;
     }
 
+    public void UpdateCraftingUI()
+    {
+        // 설명 패널 업데이트.
+        craft.CraftingSlot.UpdateRequiredIngredientPanel();
+        // 제작 버튼 업데이트.
+        craft.CanCraft();
+    }
+
     // 해당 아이템이 인벤토리에 amount 이상 존재하는지 확인
     public bool CanRemoveItem(ItemSO _itemData, int _amount)
     {
@@ -219,29 +216,19 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         return count;
     }
 
-    public ItemInstanceData GetEquipItem(int _index)
-    {
-        if (_index < 0 || _index >= EquipSlotCount) return null;
-        return equipSlots[_index];
-    }
+    public ItemInstanceData GetEquipItem(int _index) => GetItem(EquipSlotStartIndex + _index);
+    public void SetEquipItem(int _index, ItemInstanceData _data) => SetItem(EquipSlotStartIndex + _index, _data);
+    public void ClearEquipItem(int _index) => ClearItem(EquipSlotStartIndex + _index);
 
-    public void SetEquipItem(int _index, ItemInstanceData _newData)
-    {
-        if (_index < 0 || _index >= EquipSlotCount) return;
-        equipSlots[_index] = _newData;
-        OnSlotChanged?.Invoke(_index);
-    }
-
-    public void ClearEquipItem(int _index)
-    {
-        if (_index < 0 || _index >= EquipSlotCount) return;
-        equipSlots[_index] = null;
-        OnSlotChanged?.Invoke(_index);
-    }
 
     public ItemInstanceData[] GetAllEquippedItems()
     {
-        return equipSlots;
+        ItemInstanceData[] result = new ItemInstanceData[EquipSlotCount];
+        for (int i = 0; i < EquipSlotCount; i++)
+        {
+            result[i] = GetItem(EquipSlotStartIndex + i);
+        }
+        return result;
     }
 
     // 잠긴 슬롯 수 조절

@@ -693,7 +693,7 @@ MonoBehaviour:
   heatwaveVolume: {fileID: 1498964076}
   lightningPrefab: {fileID: 4782630306983444251, guid: be217baa81af74541af70dc5459a7821, type: 3}
   lightningMark: {fileID: 1994173894490680667, guid: 8c299e19fb9aca84da6cef0fe4112442, type: 3}
-  playerStatusManager: {fileID: 480009176074898562}
+  playerStatusManager: {fileID: 0}
 --- !u!1001 &456764275
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2151,7 +2151,7 @@ MonoBehaviour:
   clampArea: {fileID: 866466037}
   playerTransform: {fileID: 480009176074898563}
   previewTilePrefab: {fileID: 3391041295654164922, guid: 85183bfce98b8a84cb0fc923684c7d54, type: 3}
-  tilemap: {fileID: 0}
+  tilemap: {fileID: 1558000329}
   placedObjectManager: {fileID: 0}
 --- !u!4 &866466039
 Transform:
@@ -5536,6 +5536,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1541663166}
   m_CullTransparentMesh: 1
+--- !u!1839735485 &1558000329 stripped
+Tilemap:
+  m_CorrespondingSourceObject: {fileID: 8068515201003153694, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+  m_PrefabInstance: {fileID: 2956151449429015115}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1577644889
 PrefabInstance:
   m_ObjectHideFlags: 0
