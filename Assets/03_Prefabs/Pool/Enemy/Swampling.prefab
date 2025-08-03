@@ -352,6 +352,7 @@ GameObject:
   - component: {fileID: 2784972430006254644}
   - component: {fileID: 1401358496255937781}
   - component: {fileID: 4311070444525519400}
+  - component: {fileID: 2734308358105273142}
   m_Layer: 12
   m_Name: Swampling
   m_TagString: Untagged
@@ -396,11 +397,10 @@ MonoBehaviour:
   damageTextCanvas: {fileID: 9055869960667158589, guid: 1728c7048a495a849aa72e7071090f1d, type: 3}
   projectileTransform: {fileID: 574467429821768579}
   EnemyStatus: {fileID: 1743274038443269394}
-  AttackTarget: {fileID: 0}
-  reactiveHitAggro: 30
-  aggroSwitchThreshold: 5
-  targetStickTime: 1
-  IsAttacked: 0
+  stickTime: 1
+  decreaseDelayValue: 2
+  decreaseDelayTime: 1
+  hitAggroValue: 30
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &1743274038443269394
 MonoBehaviour:
@@ -584,6 +584,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2734308358105273142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6902988881177755770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &6938285767002226511
 GameObject:
   m_ObjectHideFlags: 0

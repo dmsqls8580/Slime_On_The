@@ -1,45 +1,59 @@
 using _02_Scripts.Manager;
 using PlayerStates;
-using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum CookingState
+{
+    Idle,
+    Cooking,
+    Finishing,
+    Finished
+}
 
 public class CookPotObject : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject dropItemPrefab;
     [SerializeField] private int cookIndex = -1;
-    public int GetCookIndex() => cookIndex;
-    private bool hasCooked = false;
+    private List<InventorySlot> inputSlots;
+    private InventorySlot resultSlot;
+    [SerializeField] private CookingState currentState = CookingState.Idle;
+    private ItemSO finishedItem = null;
+    private float elapsedTime = 0f;
+    private float cookingTime = 0f;
 
-    [Header("Drop Animation")]
-    [SerializeField] private float dropUpForce = 5f;
-    [SerializeField] private float dropSideForce = 2f;
-    [SerializeField] private float dropAngleRange = 60f;
+    private Coroutine coroutine = null;
 
-    [Header("Health")]
-    [SerializeField] private float maxHealth;
-    private float currentHealth;
-    private Rigidbody2D rigid;
-    
+    private InventoryManager inventoryManager;
+    private UIManager uiManager;
+
+    public int CookIndex => cookIndex;
+    public CookingState CurrentState => currentState;
+    public void ChangeState(CookingState _state) => currentState = _state;
+
+    private void Awake()
+    {
+        inventoryManager = InventoryManager.Instance;
+        uiManager = UIManager.Instance;
+    }
+
+    private void OnDisable()
+    {
+        inventoryManager.ReleaseCookIndex(cookIndex);
+    }
+
     private void Start()
     {
         if (cookIndex < 0)
         {
-            cookIndex = InventoryManager.Instance.GetNextAvailableCookIndex();
+            cookIndex = inventoryManager.GetNextAvailableCookIndex();
         }
     }
 
-    // TODO: 요리하는거 동작 추가
-
-    private void OnDisable()
+    public void Initialize(List<InventorySlot> _inputSlots, InventorySlot _resultSlot)
     {
-        InventoryManager.Instance.ReleaseCookIndex(cookIndex);
-    }
-
-    public void TryCook()
-    {
-        if (hasCooked) return;
-        
-        hasCooked = true;
+        inputSlots = _inputSlots;
+        resultSlot = _resultSlot;
     }
 
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
@@ -47,79 +61,73 @@ public class CookPotObject : MonoBehaviour, IInteractable
         switch (_type)
         {
             case InteractionCommandType.F:
-                var ui = UIManager.Instance.GetUIComponent<UICookPot>();
-                ui.Initialize(cookIndex, this);
-                UIManager.Instance.Toggle<UICookPot>();
+                var ui = uiManager.GetUIComponent<UICookPot>();
+                ui.Initialize(this);
+                uiManager.Toggle<UICookPot>();
+                uiManager.Toggle<UIInventory>();
                 break;
-
             case InteractionCommandType.Space:
-                var toolController = _playerController.GetComponent<ToolController>();
-                float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
-                TakeInteraction(toolPower);
-
-                if (currentHealth <= 0)
-                {
-                    DropItems(_playerController.transform);
-                    InventoryManager.Instance.ReleaseCookIndex(cookIndex);
-                    Destroy(gameObject);
-                }
                 break;
         }
     }
-    
-    public void TakeInteraction(float damage)
+
+    public void StartCook(ItemSO _item, float _cookingTime)
     {
-        currentHealth -= damage;
-        Logger.Log($"{currentHealth}");
-        currentHealth = Mathf.Max(0, currentHealth);
+        if (resultSlot.HasItem() && resultSlot.GetData().ItemData != _item) return;
+
+        finishedItem = _item;
+        cookingTime = _cookingTime;
+        coroutine = StartCoroutine(CookRoutine());
     }
 
-    private void DropItems(Transform _player)
+    private IEnumerator CookRoutine()
     {
-        int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
-        int resultIndex = SlotIndexScheme.GetCookResultIndex(cookIndex);
-
-        // 드롭 인풋 슬롯
-        for (int i = 0; i < SlotIndexScheme.CookInputSlotCount; i++)
+        do
         {
-            int slotIndex = inputStart + i;
-            var data = InventoryManager.Instance.GetItem(slotIndex);
-            if (data == null || !data.IsValid) continue;
+            currentState = CookingState.Cooking;
+            elapsedTime = 0f;
 
-            for (int j = 0; j < data.Quantity; j++)
+            while (elapsedTime < cookingTime)
             {
-                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
-                var itemDrop = dropObj.GetComponent<ItemDrop>();
-                if (itemDrop != null)
-                {
-                    itemDrop.Init(data.ItemData, 1);
-                    rigid = dropObj.GetComponent<Rigidbody2D>();
-                    itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
-                }
+                elapsedTime += Time.deltaTime;
+                Logger.Log($"{(elapsedTime / cookingTime * 100f):F2}%");
+
+                yield return null;
             }
 
-            InventoryManager.Instance.ClearItem(slotIndex);
-        }
+            currentState = CookingState.Finishing;
 
-        // 드롭 결과 슬롯
-        var result = InventoryManager.Instance.GetItem(resultIndex);
-        if (result != null && result.IsValid)
-        {
-            for (int j = 0; j < result.Quantity; j++)
+            foreach (var slot in inputSlots)
             {
-                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
-                var itemDrop = dropObj.GetComponent<ItemDrop>();
-                if (itemDrop != null)
-                {
-                    itemDrop.Init(result.ItemData, 1);
-                    rigid = dropObj.GetComponent<Rigidbody2D>();
-                    itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
-                }
+                inventoryManager.RemoveItem(slot.SlotIndex, 1);
             }
+            inventoryManager.TryAddItem(resultSlot.SlotIndex, finishedItem, 1);
 
-            InventoryManager.Instance.ClearItem(resultIndex);
-        }
+        } while (CanCook());
+
+        currentState = CookingState.Finished;
     }
 
-    
+    private bool CanCook()
+    {
+        foreach (var slot in inputSlots)
+        {
+            if (!slot.HasItem())
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public void StopCook()
+    {
+        if (coroutine != null)
+        {
+            StopCoroutine(coroutine);
+            currentState = CookingState.Idle;
+            elapsedTime = 0f;
+        }
+    }
 }

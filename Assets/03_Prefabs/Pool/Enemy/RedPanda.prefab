@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 1801244866274878087}
   - component: {fileID: 3013571225757753080}
   - component: {fileID: 5929433403089625047}
+  - component: {fileID: -6240406518077334871}
   m_Layer: 12
   m_Name: RedPanda
   m_TagString: Untagged
@@ -221,11 +222,10 @@ MonoBehaviour:
   damageTextCanvas: {fileID: 0}
   projectileTransform: {fileID: 1107816589963048297}
   EnemyStatus: {fileID: 4265753183297551827}
-  AttackTarget: {fileID: 0}
-  reactiveHitAggro: 30
-  aggroSwitchThreshold: 5
-  targetStickTime: 1
-  IsAttacked: 0
+  stickTime: 1
+  decreaseDelayValue: 2
+  decreaseDelayTime: 1
+  hitAggroValue: 30
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &4265753183297551827
 MonoBehaviour:
@@ -409,6 +409,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6240406518077334871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1055383794798052369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &2569810696415353186
 GameObject:
   m_ObjectHideFlags: 0
