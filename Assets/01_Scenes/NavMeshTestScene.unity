@@ -2617,7 +2617,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Surface2D: {fileID: 979607189}
-  tickInterval: 5
 --- !u!114 &979607188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7493,6 +7492,10 @@ PrefabInstance:
       propertyPath: damageTextCanvas
       value: 
       objectReference: {fileID: 1232520716}
+    - target: {fileID: 9117019147052955047, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

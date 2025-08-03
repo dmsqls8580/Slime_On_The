@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 955300879283321443}
   - component: {fileID: 5568639471135477070}
   - component: {fileID: 6175728003832082641}
+  - component: {fileID: 7267730902352847968}
   m_Layer: 12
   m_Name: FishmanWarrior
   m_TagString: Untagged
@@ -61,11 +62,10 @@ MonoBehaviour:
   damageTextCanvas: {fileID: 0}
   projectileTransform: {fileID: 4126662824722636141}
   EnemyStatus: {fileID: 1023550363043907863}
-  AttackTarget: {fileID: 0}
-  reactiveHitAggro: 30
-  aggroSwitchThreshold: 5
-  targetStickTime: 1
-  IsAttacked: 0
+  stickTime: 1
+  decreaseDelayValue: 2
+  decreaseDelayTime: 1
+  hitAggroValue: 30
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &1023550363043907863
 MonoBehaviour:
@@ -249,6 +249,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7267730902352847968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803010412927630823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &3045789705408238427
 GameObject:
   m_ObjectHideFlags: 0

@@ -92,6 +92,7 @@ GameObject:
   - component: {fileID: 203433030161376173}
   - component: {fileID: 7360797381171343287}
   - component: {fileID: 538303694042300370}
+  - component: {fileID: 543604069380999408}
   m_Layer: 12
   m_Name: Ferret
   m_TagString: Untagged
@@ -136,11 +137,10 @@ MonoBehaviour:
   damageTextCanvas: {fileID: 0}
   projectileTransform: {fileID: 8986898716022043197}
   EnemyStatus: {fileID: 7392327826448700814}
-  AttackTarget: {fileID: 0}
-  reactiveHitAggro: 30
-  aggroSwitchThreshold: 5
-  targetStickTime: 1
-  IsAttacked: 0
+  stickTime: 1
+  decreaseDelayValue: 2
+  decreaseDelayTime: 1
+  hitAggroValue: 30
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!114 &7392327826448700814
 MonoBehaviour:
@@ -324,6 +324,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &543604069380999408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830273002538632621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9dcde823fca4ae4479080cd1a285520c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
+  PlayerDistance: 30
+  SpawnerDistance: 30
+  CheckTimer: 0.2
+  ShouldCull: 0
 --- !u!1 &1889221270579145589
 GameObject:
   m_ObjectHideFlags: 0
