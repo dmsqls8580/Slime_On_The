@@ -2,6 +2,7 @@ using _02_Scripts.Manager;
 using PlayerStates;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CookingState
@@ -26,6 +27,20 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
+
+    [Header("Drop Item Health")]
+    [SerializeField] private float maxHealth;
+    private float currentHealth;
+    private Rigidbody2D rigid;
+
+    [Header("Drop Animation")]
+    [SerializeField] private float dropUpForce = 5f;
+    [SerializeField] private float dropSideForce = 2f;
+    [SerializeField] private float dropAngleRange = 60f;
+
+    [Header("Drop Item Data Info(SO, 개수, 확률)")]
+    [SerializeField] protected List<DropItemData> dropItems;
+    [SerializeField] protected GameObject dropItemPrefab;
 
     public int CookIndex => cookIndex;
     public CookingState CurrentState => currentState;
@@ -61,16 +76,34 @@ public class CookPotObject : MonoBehaviour, IInteractable
         switch (_type)
         {
             case InteractionCommandType.F:
-                if (!UIManager.Instance.GetUIComponent<UIInventory>().IsOpen)
-                {
-                    UIManager.Instance.Toggle<UIInventory>();
-                }
                 var ui = uiManager.GetUIComponent<UICookPot>();
                 ui.Initialize(this);
+                uiManager.Toggle<UICookPot>();
+                if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                {
+                    uiManager.Toggle<UIInventory>();
+                }
                 break;
             case InteractionCommandType.Space:
+                var toolController = _playerController.GetComponent<ToolController>();
+                float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
+                TakeInteraction(toolPower);
+
+                if (currentHealth <= 0)
+                {
+                    DropItems(_playerController.transform);
+                    InventoryManager.Instance.ReleaseCookIndex(cookIndex);
+                    Destroy(gameObject);
+                }
                 break;
         }
+    }
+
+    private void TakeInteraction(float _damage)
+    {
+        currentHealth -= _damage;
+        Logger.Log($"{currentHealth}");
+        currentHealth = Mathf.Max(currentHealth, 0);
     }
 
     public void StartCook(ItemSO _item, float _cookingTime)
@@ -103,7 +136,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
             {
                 inventoryManager.RemoveItem(slot.SlotIndex, 1);
             }
-            inventoryManager.TryAddItem(resultSlot.SlotIndex, finishedItem, 1);
+            inventoryManager.TryAddItem(resultSlot.SlotIndex, new ItemInstanceData(finishedItem, 1), 1);
 
         } while (CanCook());
 
@@ -133,17 +166,33 @@ public class CookPotObject : MonoBehaviour, IInteractable
         }
     }
 
-    private void OnTriggerExit2D(Collider2D other)
+    private void DropItems(Transform _player)
     {
-        if (!other.CompareTag("Player")) return;
+        float randomChance = Random.value;
 
-        var cookUI = UIManager.Instance.GetUIComponent<UICookPot>();
-        if (cookUI != null && cookUI.IsOpen && cookUI.CookIndex == cookIndex)
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
-            UIManager.Instance.Close<UICookPot>();
-            if (UIManager.Instance.GetUIComponent<UIInventory>().IsOpen)
+            return;
+        }
+
+        foreach (var item in dropItems)
+        {
+            for (int i = 0; i < item.amount; i++)
             {
-                UIManager.Instance.Toggle<UIInventory>();
+                if (randomChance * 100f > item.dropChance)
+                {
+                    continue;
+                }
+
+                var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
+                var itemDrop = dropObj.GetComponent<ItemDrop>();
+                if (itemDrop != null)
+                {
+                    itemDrop.Init(item.itemSo, 1);
+                }
+
+                rigid = dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
             }
         }
     }
