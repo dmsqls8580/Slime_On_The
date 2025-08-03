@@ -407,7 +407,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, itemTarget);
+                    itemDrop.Init(item.itemSo,1);
                     
                 }
                 

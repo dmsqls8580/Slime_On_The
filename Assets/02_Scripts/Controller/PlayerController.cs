@@ -132,7 +132,7 @@ namespace PlayerStates
         private void LateUpdate()
         {
             UpdateAttackPivotRotation();
-
+            ScanAndAttractItems();
             if (attackCooldown > 0f)
             {
                 attackCooldown -= Time.deltaTime;
@@ -154,6 +154,8 @@ namespace PlayerStates
             }
         }
 
+        
+        
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
         {
             switch (_state)
@@ -409,6 +411,18 @@ namespace PlayerStates
             moveInput = Vector2.zero;
 
             ChangeState(PlayerState.Gathering);
+        }
+        private void ScanAndAttractItems()
+        {
+            Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
+
+            foreach (var hit in hits)
+            {
+                if (hit.TryGetComponent<ItemDrop>(out var itemDrop))
+                {
+                    itemDrop.AttractSetPlayer(transform);
+                }
+            }
         }
 
         private void UpdateAttackPivotRotation()

@@ -96,7 +96,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(data.ItemData, 1, _player);
+                    itemDrop.Init(data.ItemData, 1);
                     rigid = dropObj.GetComponent<Rigidbody2D>();
                     itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
                 }
@@ -115,7 +115,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(result.ItemData, 1, _player);
+                    itemDrop.Init(result.ItemData, 1);
                     rigid = dropObj.GetComponent<Rigidbody2D>();
                     itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
                 }

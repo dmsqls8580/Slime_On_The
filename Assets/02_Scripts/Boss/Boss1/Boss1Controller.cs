@@ -559,7 +559,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo,1, itemTarget);
+                    itemDrop.Init(item.itemSo,1);
                     
                 }
                 
