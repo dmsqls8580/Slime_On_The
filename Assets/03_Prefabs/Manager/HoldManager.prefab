@@ -224,6 +224,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   holdSlot: {fileID: 5673839966144355913}
   holdCanvas: {fileID: 5234353564102563538}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
 --- !u!1 &5951733602969661426
 GameObject:
   m_ObjectHideFlags: 0
