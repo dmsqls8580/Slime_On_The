@@ -1,0 +1,619 @@
+fileFormatVersion: 2
+guid: 07a27fb914d0afb49a898100f4188593
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 16
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 0
+    generateAnimationClips: 0
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 638898558794792609
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: Dash_form01_Frame_0
+    originalName: 
+    pivot: {x: 0.75, y: -0.06896552}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 42
+      width: 24
+      height: 29
+    spriteID: 15f62fd95ad6391458958a20e135b11c
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 42}
+  - name: Dash_form01_Frame_1
+    originalName: 
+    pivot: {x: 0.7777778, y: -0.033333335}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 27
+      height: 30
+    spriteID: b7a768163fa60224684dba09e72bbba9
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: Dash_form01_Frame_2
+    originalName: 
+    pivot: {x: 0.75, y: -0.06896552}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 79
+      width: 24
+      height: 29
+    spriteID: 099aab74f565ef24e91f5ff51f94c7f2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 79}
+  - name: Dash_form01_Frame_3
+    originalName: 
+    pivot: {x: 0.62499994, y: -0.06451613}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 157
+      width: 16
+      height: 31
+    spriteID: 3f941fafc0fd6384ea2dc9422856d21f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 157}
+  - name: Dash_form01_Frame_4
+    originalName: 
+    pivot: {x: 0.46666664, y: -0.11538462}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 78
+      width: 15
+      height: 26
+    spriteID: afa3bb5d520a15543b848ea5b7aa2159
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 78}
+  - name: Dash_form01_Frame_5
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.10344827}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 4
+      width: 16
+      height: 29
+    spriteID: 8fcf879d0c3ad9445a300cac492b7981
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 4}
+  - name: Dash_form01_Frame_6
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.09090909}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 116
+      width: 16
+      height: 33
+    spriteID: cdb4260f6c9a7c24f8132ba05d0ceed8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 116}
+  - name: Dash_form01_Frame_7
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.10000001}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 196
+      width: 16
+      height: 30
+    spriteID: 1b0e6a2b888e5be4eb0fc34a46e57fb3
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 196}
+  - name: Dash_form01_Frame_8
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.06896552}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 41
+      width: 16
+      height: 29
+    spriteID: 77111ef536735b94aa8849d1c8d66e0f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 41}
+  - name: Dash_form01_Frame_9
+    originalName: 
+    pivot: {x: 0.46666664, y: -0.07692308}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 112
+      width: 15
+      height: 26
+    spriteID: fe9656651f64699429af5bddbb37eef1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 112}
+  - name: Dash_form01_Frame_10
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.14285715}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 209
+      width: 16
+      height: 21
+    spriteID: 64ca6fe7781045e49974950278be83fc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 209}
+  - name: Dash_form01_Frame_11
+    originalName: 
+    pivot: {x: 0.5333333, y: -0.1}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 63
+      y: 33
+      width: 15
+      height: 20
+    spriteID: 2545d1c2c228bbb41a1349ff3801838b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 63, y: 33}
+  - name: Dash_form01_Frame_12
+    originalName: 
+    pivot: {x: 0.5333333, y: -0.04761905}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 63
+      y: 4
+      width: 15
+      height: 21
+    spriteID: 76e89da3e630bee4aa1e423a5d01fafb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 63, y: 4}
+  - name: Dash_form01_Frame_13
+    originalName: 
+    pivot: {x: 0.49999997, y: -0.045454547}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 179
+      width: 16
+      height: 22
+    spriteID: c7a657bdc387dc7428742a35efb631d7
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 179}
+  - name: Dash_form01_Frame_14
+    originalName: 
+    pivot: {x: 0.46666664, y: -0.080000006}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 39
+      y: 146
+      width: 15
+      height: 25
+    spriteID: 8e259330b77206d43b6752eac193ac7b
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 39, y: 146}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -1890733874
+    name: Dash_form01
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: Dash_form01_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 3
+        y: 2
+        width: 24
+        height: 29
+      spriteId: 15f62fd95ad6391458958a20e135b11c
+    - name: Dash_form01_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 0
+        y: 1
+        width: 27
+        height: 30
+      spriteId: b7a768163fa60224684dba09e72bbba9
+    - name: Dash_form01_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 3
+        y: 2
+        width: 24
+        height: 29
+      spriteId: 099aab74f565ef24e91f5ff51f94c7f2
+    - name: Dash_form01_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 11
+        y: 2
+        width: 16
+        height: 31
+      spriteId: 3f941fafc0fd6384ea2dc9422856d21f
+    - name: Dash_form01_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 14
+        y: 3
+        width: 15
+        height: 26
+      spriteId: afa3bb5d520a15543b848ea5b7aa2159
+    - name: Dash_form01_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 13
+        y: 3
+        width: 16
+        height: 29
+      spriteId: 8fcf879d0c3ad9445a300cac492b7981
+    - name: Dash_form01_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 13
+        y: 3
+        width: 16
+        height: 33
+      spriteId: cdb4260f6c9a7c24f8132ba05d0ceed8
+    - name: Dash_form01_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 13
+        y: 3
+        width: 16
+        height: 30
+      spriteId: 1b0e6a2b888e5be4eb0fc34a46e57fb3
+    - name: Dash_form01_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 13
+        y: 2
+        width: 16
+        height: 29
+      spriteId: 77111ef536735b94aa8849d1c8d66e0f
+    - name: Dash_form01_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 14
+        y: 2
+        width: 15
+        height: 26
+      spriteId: fe9656651f64699429af5bddbb37eef1
+    - name: Dash_form01_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 13
+        y: 3
+        width: 16
+        height: 21
+      spriteId: 64ca6fe7781045e49974950278be83fc
+    - name: Dash_form01_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 13
+        y: 2
+        width: 15
+        height: 20
+      spriteId: 2545d1c2c228bbb41a1349ff3801838b
+    - name: Dash_form01_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 13
+        y: 1
+        width: 15
+        height: 21
+      spriteId: 76e89da3e630bee4aa1e423a5d01fafb
+    - name: Dash_form01_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 13
+        y: 1
+        width: 16
+        height: 22
+      spriteId: c7a657bdc387dc7428742a35efb631d7
+    - name: Dash_form01_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 14
+        y: 2
+        width: 15
+        height: 25
+      spriteId: 8e259330b77206d43b6752eac193ac7b
+    linkedCells: []
+    parentIndex: -1
+  platformSettings:
+  - name: DefaultTexturePlatform
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Standalone
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Server
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: Android
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  - name: WebGL
+    overridden: 0
+    ignorePlatformSupport: 0
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    androidETC2FallbackOverride: 0
+  generatePhysicsShape: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 42, y: 36}
