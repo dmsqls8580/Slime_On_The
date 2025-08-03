@@ -16,11 +16,11 @@ public class ItemDrop : MonoBehaviour
     public float attractSpeed = 5f;
     public float attractDistance = 2f;
 
-    public void Init(ItemSO _itemSo, int _amount, Transform _player)
+    public void Init(ItemSO _itemSo, int _amount)
     {
         itemSo = _itemSo;
         amount = _amount;
-        playerTransform = _player;
+        
         if (iconRenderer != null && itemSo != null)
         {
             iconRenderer.sprite = itemSo.icon;
@@ -30,6 +30,11 @@ public class ItemDrop : MonoBehaviour
     private void Update()
     {
         StartItemToPlayer();
+    }
+
+    public void AttractSetPlayer(Transform _playerTransform)
+    {
+        playerTransform = _playerTransform;
     }
 
     public void DropAnimation(Rigidbody2D _rigid, float _dropAngleRange, float _dropUpForce, float _dropSideForce)

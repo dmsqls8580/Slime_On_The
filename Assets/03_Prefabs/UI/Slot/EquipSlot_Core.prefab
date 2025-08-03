@@ -179,7 +179,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 4
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -8
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -341,7 +341,8 @@ MonoBehaviour:
   iconImage: {fileID: 5014978154144261273}
   backgroundImage: {fileID: 4227560540193526471}
   quantityText: {fileID: 5026020606059037838}
-  equipType: 0
+  outLineImage: {fileID: 8429923586935699304}
+  equipType: 5
 --- !u!1 &8772570008979524306
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,8 +370,8 @@ RectTransform:
   m_GameObject: {fileID: 8772570008979524306}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.05, y: 1.05, z: 1.05}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 685949729630036653}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

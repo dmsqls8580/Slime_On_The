@@ -15,7 +15,6 @@ public enum CookingState
 
 public class CookingPot : MonoBehaviour, IInteractable
 {
-    private CookingPanel cookingPanel;
     private InventoryManager inventoryManager;
 
     private CookingState currentState = CookingState.Idle;
@@ -40,7 +39,6 @@ public class CookingPot : MonoBehaviour, IInteractable
 
     private void Awake()
     {
-        cookingPanel = UIManager.Instance.cookingPanel;
         inventoryManager = InventoryManager.Instance;
         currentHealth = maxHealth;
     }
@@ -67,7 +65,7 @@ public class CookingPot : MonoBehaviour, IInteractable
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo, 1, _player);
+                    itemDrop.Init(item.itemSo, 1);
                 }
 
                 rigid = dropObj.GetComponent<Rigidbody2D>();
@@ -84,7 +82,6 @@ public class CookingPot : MonoBehaviour, IInteractable
                 switch (currentState)
                 {
                     case CookingState.Idle:
-                        cookingPanel.Toggle(this, cookingPanel.gameObject.activeSelf);
                         break;
                     case CookingState.Cooking:
                         Logger.Log("요리 중 입니다.");

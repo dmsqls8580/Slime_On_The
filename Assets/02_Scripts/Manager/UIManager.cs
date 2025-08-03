@@ -7,7 +7,6 @@ namespace _02_Scripts.Manager
 {
     public class UIManager : Singleton<UIManager>
     {
-        public CookingPanel cookingPanel;
         private readonly Dictionary<Type, UIBase> UIDict = new();
         private readonly List<UIBase> openedUIList = new();
     

@@ -1,9 +1,11 @@
 using _02_Scripts.Manager;
 using PlayerStates;
+using System;
 using Unity.VisualScripting;
 
 public class UndestroyableObject : BaseInteractableObject, IInteractable
 {
+
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         if(isInteracted)

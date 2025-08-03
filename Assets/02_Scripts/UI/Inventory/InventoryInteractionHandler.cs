@@ -113,11 +113,11 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
         
-        if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
-        {
-            if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
-                return;
-        }
+        // if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
+        // {
+        //     if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
+        //         return;
+        // }
 
         int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held.ItemData, _amount);
         holdManager.RemoveItem(placed);
@@ -147,11 +147,11 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
             return;
         }
 
-        if (_slot is EquipSlot equipSlot && heldData.ItemData.itemTypes== ItemType.Equipable)
-        {
-            if (!equipSlot.IsCorrectEquipType(heldData.ItemData.equipableData.equipableType))
-                return;
-        }
+        // if (_slot is EquipSlot equipSlot && heldData.ItemData.itemTypes== ItemType.Equipable)
+        // {
+        //     if (!equipSlot.IsCorrectEquipType(heldData.ItemData.equipableData.equipableType))
+        //         return;
+        // }
         
         holdManager.SetItem(targetData, _slot);
         InventoryManager.Instance.SetItem(_slot.SlotIndex, heldData);
@@ -190,37 +190,61 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
 
     public void TryEquip(ItemInstanceData _item, SlotBase _originSlot)
     {
-        if (_originSlot is EquipSlot)
-        {
-            TryUnequipFromEquipSlot(_item);
-        }
-        else if (_originSlot is InventorySlot)
-        {
-            TryEquipFromInventory(_item, _originSlot.SlotIndex);
-        }
-    }
-
-    private void TryEquipFromInventory(ItemInstanceData _item, int _inventorySlotIndex)
-    {
         EquipType type = _item.ItemData.equipableData.equipableType;
-        int equipIndex = (int)type;
-
-        var prevEquip = inventoryManager.GetEquipItem(equipIndex);
+        int equipSlotIndex = 90 + (int)type;
         
-        inventoryManager.SetItem(_inventorySlotIndex, prevEquip);
-
-        var equipSlots = inventoryUI.GetEquipSlots();
-        equipSlots[equipIndex].SetItem(_item);
-    }
-
-    private void TryUnequipFromEquipSlot(ItemInstanceData _item)
-    {
-        if (!inventoryManager.TryAddItemGlobally(_item.ItemData, _item.Quantity))
+        if (_originSlot.SlotIndex == equipSlotIndex)
         {
-            // DropItem(_item);
-        }   
-        var equipSlots = inventoryUI.GetEquipSlots();
-        int equipIndex = (int)_item.ItemData.equipableData.equipableType;
-        equipSlots[equipIndex].SetItem(null); 
+            TryUnequip(_item, equipSlotIndex);
+        }
+        else
+        {
+            // 장착: 기존 장비는 원래 슬롯으로 교체
+            var prevEquip = inventoryManager.GetItem(equipSlotIndex);
+            inventoryManager.SetItem(_originSlot.SlotIndex, prevEquip);
+            inventoryManager.SetItem(equipSlotIndex, _item);
+        }
+        
+        // if (_originSlot is EquipSlot)
+        // {
+        //     TryUnequipFromEquipSlot(_item);
+        // }
+        // else if (_originSlot is InventorySlot)
+        // {
+        //     TryEquipFromInventory(_item, _originSlot.SlotIndex);
+        // }
     }
+    
+    private void TryUnequip(ItemInstanceData item, int equipSlotIndex)
+    {
+        if (!inventoryManager.TryAddItemGlobally(item.ItemData, item.Quantity))
+        {
+            // DropItem(item); // 드랍 처리 필요 시
+        }
+        inventoryManager.ClearItem(equipSlotIndex);
+    }
+
+    // private void TryEquipFromInventory(ItemInstanceData _item, int _inventorySlotIndex)
+    // {
+    //     EquipType type = _item.ItemData.equipableData.equipableType;
+    //     int equipIndex = (int)type;
+    //
+    //     var prevEquip = inventoryManager.GetEquipItem(equipIndex);
+    //     
+    //     inventoryManager.SetItem(_inventorySlotIndex, prevEquip);
+    //
+    //     var equipSlots = inventoryUI.GetEquipSlots();
+    //     equipSlots[equipIndex].SetItem(_item);
+    // }
+    //
+    // private void TryUnequipFromEquipSlot(ItemInstanceData _item)
+    // {
+    //     if (!inventoryManager.TryAddItemGlobally(_item.ItemData, _item.Quantity))
+    //     {
+    //         // DropItem(_item);
+    //     }   
+    //     var equipSlots = inventoryUI.GetEquipSlots();
+    //     int equipIndex = (int)_item.ItemData.equipableData.equipableType;
+    //     equipSlots[equipIndex].SetItem(null); 
+    // }
 }

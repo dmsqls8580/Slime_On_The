@@ -58,7 +58,12 @@ namespace PlayerStates
         }
 
         public void OnUpdate(PlayerController _owner)
-        {
+        {   
+            if (!_owner.CanMove)
+            {
+                _owner.Rigid2D.velocity = Vector2.zero;
+                return;
+            }
             _owner.Movement();
 
             Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
@@ -233,7 +238,6 @@ namespace PlayerStates
             _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
@@ -277,25 +281,42 @@ namespace PlayerStates
 
     public class GatherState : IState<PlayerController, PlayerState>
     {
+        private float gatherDuration = 0.5f; // 이동 제한 시간
+        private float timer = 0f;
         public void OnEnter(PlayerController _owner)
         {
             Logger.Log("Gather");
+            timer = gatherDuration;
+            _owner.Rigid2D.velocity = Vector2.zero; 
+            
+            _owner.SetCanMove(false);
             _owner.AnimationController.TriggerGather();
         }
 
-        public void OnUpdate(PlayerController _owner) { }
+        public void OnUpdate(PlayerController _owner)
+        {
+            timer -= Time.deltaTime;
+           
+        }
 
         public void OnFixedUpdate(PlayerController _owner) { }
 
         public void OnExit(PlayerController _owner)
         {
-            Logger.Log("End Gather");
+            _owner.SetCanMove(true);
         }
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            Logger.Log("Change Gather");
-            return PlayerState.Idle;
+            if (timer <= 0f)
+            {
+                if (_owner.MoveInput.sqrMagnitude > 0.01f)
+                    return PlayerState.Move;
+
+                return PlayerState.Idle;
+            }
+
+            return PlayerState.Gathering;
         }
     }
 
