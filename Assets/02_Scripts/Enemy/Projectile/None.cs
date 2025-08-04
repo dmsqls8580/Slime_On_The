@@ -40,12 +40,6 @@ public class None : ProjectileBase
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }
     }
-
-    public override void OnSpawnFromPool()
-    {
-        base.OnSpawnFromPool();
-        Logger.Log("None spawned");
-    }
     
     public override void OnReturnToPool()
     {

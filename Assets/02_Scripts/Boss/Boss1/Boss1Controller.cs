@@ -13,6 +13,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
+    public SpriteCuller SpriteCuller { get; private set; }
     public bool IsBerserked => BossStatus.CurrentHealth <= BossStatus.MaxHealth * 0.5f;
     public float IdleDuration = 2f;
     public float Cast1Duration = 2f;
@@ -76,8 +77,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             ChangeState(Boss1State.Dead);
 
             // 오브젝트 풀 반환
-            // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
-            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
+            SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
             
             DropItems(this.gameObject.transform);
         }
@@ -190,6 +190,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         spriteRenderer =  GetComponent<SpriteRenderer>();
         BossStatus = GetComponent<BossStatus>();
         statManager = GetComponent<StatManager>();
+        SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(BossStatus.BossSO.AttackType,
             target => IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;

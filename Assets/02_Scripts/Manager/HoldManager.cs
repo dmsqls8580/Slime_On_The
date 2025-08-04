@@ -61,7 +61,6 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     // 홀드슬롯에서 아이템 제거
     public void RemoveItem(int _amount)
     {
-        Logger.Log("홀드슬롯에서 아이템 제거함");
         if (!IsHolding) return;
 
         HeldItem.Quantity -= _amount;

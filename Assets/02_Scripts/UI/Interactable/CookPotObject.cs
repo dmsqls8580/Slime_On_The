@@ -16,17 +16,21 @@ public enum CookingState
 public class CookPotObject : MonoBehaviour, IInteractable
 {
     [SerializeField] private int cookIndex = -1;
-    private List<InventorySlot> inputSlots;
-    private InventorySlot resultSlot;
     [SerializeField] private CookingState currentState = CookingState.Idle;
     private ItemSO finishedItem = null;
     private float elapsedTime = 0f;
     private float cookingTime = 0f;
+    public float processPercentage = 1f;
 
     private Coroutine coroutine = null;
 
+    private int inputStart;
+    private int inputEnd;
+    private ItemSO prevTargetItem = null;
+
     private InventoryManager inventoryManager;
     private UIManager uiManager;
+    private UICookPot uiCookPot;
 
     [Header("Drop Item Health")]
     [SerializeField] private float maxHealth;
@@ -50,11 +54,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
     {
         inventoryManager = InventoryManager.Instance;
         uiManager = UIManager.Instance;
-    }
-
-    private void OnDisable()
-    {
-        inventoryManager.ReleaseCookIndex(cookIndex);
+        uiCookPot = uiManager.GetUIComponent<UICookPot>();
     }
 
     private void Start()
@@ -63,12 +63,14 @@ public class CookPotObject : MonoBehaviour, IInteractable
         {
             cookIndex = inventoryManager.GetNextAvailableCookIndex();
         }
+
+        inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
+        inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
     }
 
-    public void Initialize(List<InventorySlot> _inputSlots, InventorySlot _resultSlot)
+    private void OnDisable()
     {
-        inputSlots = _inputSlots;
-        resultSlot = _resultSlot;
+        inventoryManager.ReleaseCookIndex(cookIndex);
     }
 
     public void Interact(InteractionCommandType _type, PlayerController _playerController)
@@ -92,7 +94,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 if (currentHealth <= 0)
                 {
                     DropItems(_playerController.transform);
-                    InventoryManager.Instance.ReleaseCookIndex(cookIndex);
+                    inventoryManager.ReleaseCookIndex(cookIndex);
                     Destroy(gameObject);
                 }
                 break;
@@ -108,11 +110,17 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     public void StartCook(ItemSO _item, float _cookingTime)
     {
-        if (resultSlot.HasItem() && resultSlot.GetData().ItemData != _item) return;
-
+        if (inventoryManager.GetItem(inputEnd) != null &&
+            inventoryManager.GetItem(inputEnd).ItemData != _item) return;
+        
         finishedItem = _item;
         cookingTime = _cookingTime;
-        coroutine = StartCoroutine(CookRoutine());
+
+        if (prevTargetItem != finishedItem)
+        {
+            prevTargetItem = finishedItem;
+            coroutine = StartCoroutine(CookRoutine());
+        }
     }
 
     private IEnumerator CookRoutine()
@@ -125,18 +133,20 @@ public class CookPotObject : MonoBehaviour, IInteractable
             while (elapsedTime < cookingTime)
             {
                 elapsedTime += Time.deltaTime;
-                Logger.Log($"{(elapsedTime / cookingTime * 100f):F2}%");
+                processPercentage = elapsedTime / cookingTime;
+                uiCookPot.RefreshProcessImg(cookIndex, processPercentage);
 
                 yield return null;
             }
 
             currentState = CookingState.Finishing;
 
-            foreach (var slot in inputSlots)
+            for (int i = inputStart; i < inputEnd; i++)
             {
-                inventoryManager.RemoveItem(slot.SlotIndex, 1);
+                inventoryManager.RemoveItem(i, 1);
             }
-            inventoryManager.TryAddItem(resultSlot.SlotIndex, new ItemInstanceData(finishedItem, 1), 1);
+            inventoryManager.TryAddItem(inputEnd, new ItemInstanceData(finishedItem, 1), 1);
+            prevTargetItem = null;
 
         } while (CanCook());
 
@@ -145,9 +155,9 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     private bool CanCook()
     {
-        foreach (var slot in inputSlots)
+        for (int i = inputStart; i < inputEnd; i++)
         {
-            if (!slot.HasItem())
+            if (inventoryManager.GetItem(i) == null)
             {
                 return false;
             }

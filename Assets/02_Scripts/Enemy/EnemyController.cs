@@ -28,21 +28,33 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
+    public SpriteCuller SpriteCuller { get; private set; }
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
     public bool IsIDamageableInAttackRange {get; private set; } // 공격 대상 공격 범위 내 존재 여부
     
     private bool isAttackCooldown = false;
     public bool IsAttackCooldown => isAttackCooldown;
+
+    // 현재 텔레포트하고 있는지 여부
+    private bool isTeleporting = false;
+    public bool IsTeleporting => isTeleporting;
+    
+    // 현재 대쉬하고 있는지 여부
+    private bool isDashing = false;
+    public bool IsDashing => isDashing;
+    
+    // 현재 자폭하고 있는지 여부
+    private bool isBombing;
+    public bool IsBombing  => isBombing;
     
     private float attackCooldownTimer = 0f;
-    
-    private string lastLogMessage = ""; // Todo : 나중에 삭제 
     
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
+    private float curAccelation;                           // 몬스터 Agent 현재 가속도
     private float lastDistanceToTarget = float.MaxValue;
     private float distanceChangeThreshold = 0.3f;          // 최소 변화 거리
 
@@ -114,16 +126,13 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // Enemy 사망 여부 판별
     public void Dead()
     {
-        if (EnemyStatus.CurrentHealth <= 0)
-        {
-            ChangeState(EnemyState.Dead);
+        ChangeState(EnemyState.Dead);
             
-            // 현재 위치에서 아이템 드롭
-            DropItems(this.gameObject.transform);
+        // 현재 위치에서 아이템 드롭
+        DropItems(this.gameObject.transform);
                 
-            // 오브젝트 풀 반환
-            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
-        }
+        // 오브젝트 풀 반환
+        SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
         
     }
     
@@ -235,6 +244,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         spriteRenderer =  GetComponent<SpriteRenderer>();
         EnemyStatus = GetComponent<EnemyStatus>();
         statManager = GetComponent<StatManager>();
+        SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
             target => IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
@@ -268,14 +278,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 attackCooldownTimer = 0f;
             }
         }
-        
-        // Todo : 나중에 삭제
-        // string currentMessage = $"CurrentState = {CurrentState}";
-        // if (currentMessage != lastLogMessage)
-        // {
-        //     Logger.Log(currentMessage);
-        //     lastLogMessage = currentMessage;
-        // }
     }
     
     protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
@@ -384,14 +386,91 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
 
-    public void SelfDestruct()
+    public void SelfBombStart()
     {
-        
+        isBombing = true;
     }
 
+    public void SelfBombEnd()
+    {
+        isBombing = false;
+        // 사망
+        ChangeState(EnemyState.Dead);
+                
+        // 오브젝트 풀 반환
+        SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
+    }
+
+    public void TeleportStart()
+    {
+        if (AttackTarget != null)
+        {
+            isTeleporting = true;
+            
+            // 플레이어 피봇이 아래에 있기 때문에 위치 조정
+            Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
+            
+            // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
+            float offsetX = Random.value < 0.5f 
+                ? -EnemyStatus.AttackRange
+                : EnemyStatus.AttackRange;
+            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0); 
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                Agent.Warp(hit.position);
+            }
+        }
+    }
+
+    public void TeleportEnd()
+    {
+        isTeleporting = false;
+    }
+    
+    // 몬스터 Dash 메서드
     public void Dash()
     {
-        
+        if (AttackTarget != null)
+        {
+            // 초기 가속도 기억
+            curAccelation = Agent.acceleration;
+            Agent.acceleration = 50f;
+            
+            isDashing = true;
+            
+            // 플레이어 피봇이 아래에 있기 때문에 위치 조정
+            Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
+            // 돌진 방향 설정
+            Vector3 dashDir = currentPlayerPos - transform.position;
+            
+            // 대시 출발 위치를 미리 이동시켜 속도 증가하는 느낌 추가
+            // Agent.Warp(transform.position + dashDir.normalized);
+            
+            float dashSpeed = EnemyStatus.MoveSpeed * 5f; // 기존 이동속도의 3배
+            Agent.speed = dashSpeed;
+            
+            // Agent가 돌진할 위치 설정(플레이어보다 조금 뒤로 설정해서 역동성 추가)
+            Vector3 dashTargetPos = transform.position + dashDir.normalized * 5f;
+            
+            // NavMeshAgent를 통해 도착지로 돌진
+            Agent.isStopped = false;
+            Agent.SetDestination(dashTargetPos);
+            
+            // 일정 시간 후 원래 속도 복귀 코루틴 예시
+            StartCoroutine(ResetAgentSpeedAfterDash());
+            
+        }
+    }
+    
+    // Dash 후 원래 속도 복귀용 코루틴
+    private IEnumerator ResetAgentSpeedAfterDash()
+    {
+        yield return new WaitForSeconds(0.5f); // 돌진 지속 시간(0.5초), 실제 상황에 맞게 조정
+        Agent.speed = EnemyStatus.MoveSpeed;
+        Agent.acceleration = curAccelation;
+        isDashing  = false;
     }
     
     // 아이템 드롭 메서드

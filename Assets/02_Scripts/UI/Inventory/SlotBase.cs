@@ -45,7 +45,6 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
     
     public virtual void Clear(int _amount)
     {
-        Logger.Log($"[SlotBase] Clear {_amount} from index {SlotIndex}");
         InventoryManager.Instance.RemoveItem(SlotIndex, _amount);
         Refresh();
     }
