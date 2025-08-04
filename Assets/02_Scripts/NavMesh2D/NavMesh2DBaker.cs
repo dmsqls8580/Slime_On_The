@@ -27,11 +27,13 @@ public class NavMesh2DManager : SceneOnlySingleton<NavMesh2DManager>
         Logger.Log("Baking NavMesh");
         Surface2D.BuildNavMesh();
     }
-
     
-    // 오브젝트(자원, 건물, 등) 스폰, 설치, 파괴, 틱(30초) 당 호출
+    // 오브젝트(자원, 건물, 등) 스폰, 설치, 파괴 시 호출
     public void UpdateThisNavMesh()
     {
-        Surface2D.UpdateNavMesh(Surface2D.navMeshData);
+        if (Surface2D != null)
+        {
+            Surface2D.UpdateNavMesh(Surface2D.navMeshData);
+        }
     }
 }
