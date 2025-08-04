@@ -398,7 +398,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         ChangeState(EnemyState.Dead);
                 
         // 오브젝트 풀 반환
-        SpriteCuller.Spawner.RemoveObject(gameObject, 0.1f);
+        SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
     }
 
     public void TeleportStart()

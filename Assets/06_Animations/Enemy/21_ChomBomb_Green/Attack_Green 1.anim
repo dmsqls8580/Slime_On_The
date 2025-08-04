@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack_Green
+  m_Name: Attack_Green 1
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -36,18 +36,6 @@ AnimationClip:
       value: {fileID: -1330015040, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
     - time: 0.5833333
       value: {fileID: 1779456214, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 0.6666667
-      value: {fileID: 850196258, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 0.75
-      value: {fileID: -645088541, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 0.8333333
-      value: {fileID: 2005123692, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 0.9166667
-      value: {fileID: -2098851588, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 1
-      value: {fileID: 1071281918, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - time: 1.0833334
-      value: {fileID: -24883335, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -78,18 +66,12 @@ AnimationClip:
     - {fileID: -619404884, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
     - {fileID: -1330015040, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
     - {fileID: 1779456214, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: 850196258, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: -645088541, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: 2005123692, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: -2098851588, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: 1071281918, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
-    - {fileID: -24883335, guid: 0a7d5a39eb234c745b65ac6952c61221, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.1666667
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -123,7 +105,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.0833334
+  - time: 0.5833333
     functionName: SelfBombEnd
     data: 
     objectReferenceParameter: {fileID: 0}

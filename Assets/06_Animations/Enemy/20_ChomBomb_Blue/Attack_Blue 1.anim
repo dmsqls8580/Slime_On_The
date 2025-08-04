@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Attack_Blue
+  m_Name: Attack_Blue 1
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -36,18 +36,6 @@ AnimationClip:
       value: {fileID: -343084585, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
     - time: 0.5833333
       value: {fileID: 1669577061, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 0.6666667
-      value: {fileID: 1528194795, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 0.75
-      value: {fileID: -103265281, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 0.8333333
-      value: {fileID: 1679997063, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 0.9166667
-      value: {fileID: 693543723, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 1
-      value: {fileID: 1661606217, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
-    - time: 1.0833334
-      value: {fileID: 189960529, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -59,14 +47,31 @@ AnimationClip:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
   m_ClipBindingConstant:
-    genericBindings: []
-    pptrCurveMapping: []
+    genericBindings:
+    - serializedVersion: 2
+      path: 0
+      attribute: 0
+      script: {fileID: 0}
+      typeID: 212
+      customType: 23
+      isPPtrCurve: 1
+      isIntCurve: 0
+      isSerializeReferenceCurve: 0
+    pptrCurveMapping:
+    - {fileID: 2137649158, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -877645023, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -1523910575, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -638513001, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -303029347, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -1576019668, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: -343084585, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
+    - {fileID: 1669577061, guid: c6c2f94bad2dd4c4195e4e72808467f2, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 1.1666667
+    m_StopTime: 0.6666666
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -100,7 +105,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.0833334
+  - time: 0.5833333
     functionName: SelfBombEnd
     data: 
     objectReferenceParameter: {fileID: 0}
