@@ -34,8 +34,10 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     }
     
     // 홀드슬롯에 아이템 추가
-    public int TryAddItem(ItemSO _itemData, int _amount)
+    public int TryAddItem(SlotBase _originSlot, ItemSO _itemData, int _amount)
     {
+        OriginSlot = _originSlot;
+
         if (_itemData == null || _amount <= 0)
             return 0;
 
@@ -94,7 +96,10 @@ public class HoldManager : SceneOnlySingleton<HoldManager>
     {
         if (!IsHolding || OriginSlot == null) return;
 
-        InventoryManager.Instance.TryAddItem(OriginSlot.SlotIndex, HeldItem, HeldItem.Quantity);
+        if (InventoryManager.Instance.TryAddItem(OriginSlot.SlotIndex, HeldItem, HeldItem.Quantity) == 0)
+        {
+            InventoryManager.Instance.TryAddItemGlobally(HeldItem.ItemData, HeldItem.Quantity);
+        }
         OriginSlot.Refresh();
         Clear();
     }

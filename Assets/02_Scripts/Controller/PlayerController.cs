@@ -201,6 +201,11 @@ namespace PlayerStates
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
+            if (HoldManager.Instance.IsHolding)
+            {
+                HoldManager.Instance.DropHeldItem();
+                return;
+            }
             if (CanAttack)
                 attackQueued = true;
         }
@@ -209,6 +214,13 @@ namespace PlayerStates
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
                 PlayerStatusManager.CurrentSlimeGauge < 5) 
                 return;
+            
+            if (HoldManager.Instance.IsHolding)
+            {
+                HoldManager.Instance.ReturnToOrigin();
+                return;
+            }
+            
             if (CanAttack)
                 attackQueued = true;
         }
