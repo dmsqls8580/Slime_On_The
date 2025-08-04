@@ -83,10 +83,10 @@ public class BossSpawner : MonoBehaviour, ISpawner
         
     }
     
-    public void RemoveObject(GameObject _boss)
+    public void RemoveObject(GameObject _boss, float _returnTime = 0)
     {
-        ObjectPoolManager.Instance.ReturnObject(_boss);
         spawnedboss.Remove(_boss);
+        ObjectPoolManager.Instance.ReturnObject(_boss, _returnTime);
     }
     
     // 생성된 적 모두를 풀에 반환하고 리스트 초기화

@@ -12,7 +12,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
-    
+    public SpriteCuller SpriteCuller { get; private set; }
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
     private CameraController cameraController => AttackTarget != null
         ? AttackTarget.GetComponent<CameraController>() : null;
@@ -69,8 +69,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
             ChangeState(Boss2State.Dead);
 
             // 오브젝트 풀 반환
-            // Todo : 몬스터 사망 후 풀로 반횐될 때까지 시간 const로 만들어주기
-            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
+            SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
             
             DropItems(this.gameObject.transform);
         }
@@ -176,6 +175,7 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         spriteRenderer =  GetComponent<SpriteRenderer>();
         BossStatus = GetComponent<BossStatus>();
         statManager = GetComponent<StatManager>();
+        SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(BossStatus.BossSO.AttackType,
             target => IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;

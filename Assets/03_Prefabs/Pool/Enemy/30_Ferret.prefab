@@ -172,9 +172,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.12, y: 0.76805305}
+  m_Offset: {x: 0, y: 0.24}
   serializedVersion: 2
-  m_Radius: 1.2
+  m_Radius: 0.7
 --- !u!212 &7360797381171343287
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Player: {fileID: 0}
-  PlayerDistance: 30
+  PlayerDistance: 50
   CheckTimer: 0.2
   ShouldCull: 0
 --- !u!1 &1889221270579145589

@@ -28,27 +28,33 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
+    public SpriteCuller SpriteCuller { get; private set; }
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
     public bool IsIDamageableInAttackRange {get; private set; } // 공격 대상 공격 범위 내 존재 여부
     
     private bool isAttackCooldown = false;
     public bool IsAttackCooldown => isAttackCooldown;
 
+    // 현재 텔레포트하고 있는지 여부
     private bool isTeleporting = false;
     public bool IsTeleporting => isTeleporting;
     
+    // 현재 대쉬하고 있는지 여부
     private bool isDashing = false;
     public bool IsDashing => isDashing;
     
-    private float attackCooldownTimer = 0f;
+    // 현재 자폭하고 있는지 여부
+    private bool isBombing;
+    public bool IsBombing  => isBombing;
     
-    private string lastLogMessage = ""; // Todo : 나중에 삭제 
+    private float attackCooldownTimer = 0f;
     
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
+    private float curAccelation;                           // 몬스터 Agent 현재 가속도
     private float lastDistanceToTarget = float.MaxValue;
     private float distanceChangeThreshold = 0.3f;          // 최소 변화 거리
 
@@ -120,16 +126,13 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // Enemy 사망 여부 판별
     public void Dead()
     {
-        if (EnemyStatus.CurrentHealth <= 0)
-        {
-            ChangeState(EnemyState.Dead);
+        ChangeState(EnemyState.Dead);
             
-            // 현재 위치에서 아이템 드롭
-            DropItems(this.gameObject.transform);
+        // 현재 위치에서 아이템 드롭
+        DropItems(this.gameObject.transform);
                 
-            // 오브젝트 풀 반환
-            ObjectPoolManager.Instance.ReturnObject(gameObject, 2f);
-        }
+        // 오브젝트 풀 반환
+        SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
         
     }
     
@@ -241,6 +244,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         spriteRenderer =  GetComponent<SpriteRenderer>();
         EnemyStatus = GetComponent<EnemyStatus>();
         statManager = GetComponent<StatManager>();
+        SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
             target => IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
@@ -274,14 +278,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 attackCooldownTimer = 0f;
             }
         }
-        
-        // Todo : 나중에 삭제
-        // string currentMessage = $"CurrentState = {CurrentState}";
-        // if (currentMessage != lastLogMessage)
-        // {
-        //     Logger.Log(currentMessage);
-        //     lastLogMessage = currentMessage;
-        // }
     }
     
     protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
@@ -390,9 +386,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
     }
 
-    public void SelfDestruct()
+    public void SelfBombStart()
     {
-        
+        isBombing = true;
+    }
+
+    public void SelfBombEnd()
+    {
+        isBombing = false;
+        // 사망
+        ChangeState(EnemyState.Dead);
+                
+        // 오브젝트 풀 반환
+        SpriteCuller.Spawner.RemoveObject(gameObject, 0.1f);
     }
 
     public void TeleportStart()
@@ -422,8 +428,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         isTeleporting = false;
     }
-
-    private float curAccelation;
     
     // 몬스터 Dash 메서드
     public void Dash()

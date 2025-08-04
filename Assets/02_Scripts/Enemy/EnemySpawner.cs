@@ -54,6 +54,7 @@ public class EnemySpawner : MonoBehaviour, ISpawner
         get => SpawnRadius;
         set => SpawnRadius = value;
     }
+    
 
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
@@ -140,10 +141,10 @@ public class EnemySpawner : MonoBehaviour, ISpawner
         
     }
 
-    public void RemoveObject(GameObject _enemy)
+    public void RemoveObject(GameObject _enemy, float _returnTime = 0)
     {
-        ObjectPoolManager.Instance.ReturnObject(_enemy);
         spawnedEnemies.Remove(_enemy);
+        ObjectPoolManager.Instance.ReturnObject(_enemy, _returnTime);
     }
     
     // 생성된 적 모두를 풀에 반환하고 리스트 초기화
