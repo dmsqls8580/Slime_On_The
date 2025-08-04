@@ -15,12 +15,13 @@ public class PoisonSpray : PlayerSkillSO
     
     public override void Execute(PlayerController _owner,float _damage)
     {
-        if (sprayCoroutine != null)
+        GameObject sprayArea= ObjectPoolManager.Instance.GetObject("PoisonSprayArea");
+        if (sprayArea.IsUnityNull())
         {
             return;
         }
-
-        sprayCoroutine = _owner.StartCoroutine(SprayRoutine(_owner));
+        
+        Vector3 sprayDir= _owner.AnimationController.UpdatePlayerDirectionByMouse();
     }
 
     private void Fire(PlayerController _owner)
@@ -44,7 +45,7 @@ public class PoisonSpray : PlayerSkillSO
                 projectile.Init(_owner.StatManager, damage, _owner.gameObject, attackDir, speed, range);
                 projectile.OnSpawnFromPool();
             }
-                
+            
         }
     }
     

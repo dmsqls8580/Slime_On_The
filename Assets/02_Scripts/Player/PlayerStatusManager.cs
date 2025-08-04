@@ -20,7 +20,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
-    private float slimeDayConsumeAmount = 0.5f;
+    private float slimeDayConsumeAmount = 0.1f;
     public float SlimeDayConsumeAmount => slimeDayConsumeAmount;
 
     public UnityAction<float> OnHpChanged;
@@ -63,7 +63,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private void Start()
     {
-        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
         playerController = GetComponent<PlayerController>();
     }
 
@@ -95,6 +94,11 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.Recover(StatType.CurrentSlimeGauge, StatModifierType.Base, _amount);
 
         UpdateSlimeGaugeUI();
+    }
+
+    public void StartDaySlimeGaugeRoutine()
+    {
+        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
     }
 
     private IEnumerator DaySlimeGaugeRoutine(float _amount)
