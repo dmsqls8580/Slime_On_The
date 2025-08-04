@@ -9782,41 +9782,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[1].spawnerEntries.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[1].spawnerEntries.Array.data[1].prefab
-      value: 
-      objectReference: {fileID: 8938891945927107315, guid: c65db7034ede755408dc4191a9f72339, type: 3}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[0].spawnerEntries.Array.data[0].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[1].spawnerEntries.Array.data[0].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[1].spawnerEntries.Array.data[1].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[2].spawnerEntries.Array.data[0].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[2].spawnerEntries.Array.data[1].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[0].density
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[1].density
-      value: 2
+    - target: {fileID: 7830412946180125909, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+      propertyPath: seed
+      value: 52131
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
