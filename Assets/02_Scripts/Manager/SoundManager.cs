@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BGM
 {
-    
+    WeatherRainSound
 }
 
 public enum SFX
@@ -14,6 +14,12 @@ public enum SFX
     Toggle,
     Click,
     Error,
+    WeatherLightningStartSound,
+    WeatherStormSound,
+    ToolAxe,
+    ToolHammer,
+    ToolHand,
+    ToolPickaxe
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -67,6 +73,12 @@ public class SoundManager : Singleton<SoundManager>
             case SFX.Toggle: return 0.2f;
             case SFX.Click: return 0.8f;
             case SFX.Error: return 0.5f;
+            case SFX.WeatherLightningStartSound: return 0.5f;
+            case SFX.WeatherStormSound: return 0.5f;
+            case SFX.ToolAxe: return 0.5f;
+            case SFX.ToolHammer: return 0.5f;
+            case SFX.ToolHand: return 0.5f;
+            case SFX.ToolPickaxe: return 0.5f;
             default: return 1.0f;
         }
     }
