@@ -19,13 +19,9 @@ public class CraftingSlot : MonoBehaviour
 
     private void Awake()
     {
+        inventoryManager = InventoryManager.Instance;
         image = GetComponent<Image>();
         button = GetComponent<Button>();
-        inventoryManager = InventoryManager.Instance;
-    }
-
-    private void Start()
-    {
         button.onClick.AddListener(() => OnClickSlot());
         gameObject.SetActive(false);
     }

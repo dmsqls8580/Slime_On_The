@@ -97,7 +97,7 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
 
         if (holdManager.IsHolding && holdManager.HeldItem.ItemData != data.ItemData) return;
 
-        int taken = holdManager.TryAddItem(data.ItemData, _amount);
+        int taken = holdManager.TryAddItem(_slot, data.ItemData, _amount);
         _slot.Clear(taken);
         holdManager.Refresh();
     }

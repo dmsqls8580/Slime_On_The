@@ -10,8 +10,8 @@ public enum TimeOfDay
 public class TimeManager : MonoBehaviour
 {
     [Header("시간 설정")]
-    private float secondsOfDay = 86400f; // 하루 총 시간 (24시간 기준)
-    [SerializeField] private float timeScale = 180f; // 현실 1초 = 게임 3분
+    [SerializeField] private float secondsOfDay = 480f; // 게임 내 하루는 8분
+    [SerializeField] private float timeScale = 1f; // 현실 1초 = 게임 1초 (배속은 필요시 조절)
 
     [Header("조명 설정")]
     [SerializeField] private Color dayLightColor;
@@ -24,25 +24,21 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private FogVignette fogVignette;
 
     [Header("디버그/테스트용")]
-    [SerializeField] private float time = 21600f; // 오전 6시 시작
+    [SerializeField] private float time = 120f; // 6:00 AM 시작 = 120초
     [SerializeField] private int days = 0;
     [SerializeField] private TimeOfDay currentTimeOfDay;
 
-    // 시간대 구간 (초 단위)
-    private readonly float dawnEnd = 5400f;       // 0.5분
-    private readonly float dayEnd = 37800f;       // 3분
-    private readonly float eveningEnd = 59400f;   // 2분
-
-    // 현재 시각 계산용
-    public float Hours => time / 3600f;
-    public float Minutes => (time % 3600f) / 60f;
+    // 시간 계산 (1시간 = 20초 기준)
+    public float Hours => time / 20f;
+    public float Minutes => (time % 20f) / (20f / 60f);
     public TimeOfDay CurrentTimeOfDay => currentTimeOfDay;
 
     private void Update()
     {
         time += Time.deltaTime * timeScale;
 
-        float curve = lightCurve.Evaluate(Hours);
+        float normalizedTime = time / secondsOfDay; // 0 ~ 1
+        float curve = lightCurve.Evaluate(normalizedTime);
         Color lightColor = Color.Lerp(dayLightColor, nightLightColor, curve);
         globalLight.color = lightColor;
 
@@ -52,7 +48,6 @@ public class TimeManager : MonoBehaviour
             StartCoroutine(NextDay());
     }
 
-    /// 현재 time 값에 따라 TimeOfDay enum 갱신
     private void AutoUpdateTimeOfDay()
     {
 #if UNITY_EDITOR
@@ -70,11 +65,24 @@ public class TimeManager : MonoBehaviour
 
     private TimeOfDay GetCurrentTimeOfDay()
     {
-        if (time < dawnEnd) return TimeOfDay.Dawn;
-        if (time < dayEnd) return TimeOfDay.Day;
-        if (time < eveningEnd) return TimeOfDay.Evening;
-        return TimeOfDay.Night;
+        float t = time;
+
+        // Night: 21:00 ~ 04:30 (390~480 + 0~60)
+        if (t < 60f || t >= 390f)
+            return TimeOfDay.Night;
+
+        // Dawn: 04:30 ~ 07:30 (60~120)
+        if (t < 120f)
+            return TimeOfDay.Dawn;
+
+        // Day: 07:30 ~ 16:30 (120~300)
+        if (t < 300f)
+            return TimeOfDay.Day;
+
+        // Evening: 16:30 ~ 21:00 (300~390)
+        return TimeOfDay.Evening;
     }
+
 
     IEnumerator NextDay()
     {

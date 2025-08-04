@@ -19,7 +19,7 @@ public class UIPauseMenu : UIBase
     // 타이틀
     public void OnClickTitle()
     {
-        UIConfirmPopup.Show("타이틀로 돌아갈꺼예요?", () =>
+        UIConfirmPopup.Show("타이틀로\n돌아갈꺼예요?", () =>
         {
             // 저장기능?
             
