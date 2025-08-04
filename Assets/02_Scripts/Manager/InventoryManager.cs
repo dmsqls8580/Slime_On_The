@@ -7,7 +7,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
-    [SerializeField] private UICookPot uiCookPot;
 
     public const int MaxSlotCount = 100000;
     private const int EquipSlotStartIndex = 90;
@@ -97,7 +96,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         int placedAmount = Mathf.Min(addable, _amount);
         current.Quantity += placedAmount;
 
-        uiCookPot.IgnoreNextSlotChange();
         OnSlotChanged?.Invoke(_index);
         return placedAmount;
     }
@@ -110,20 +108,11 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             RefreshEquipStat(_index, null);
         }
 
-        Debug.Log($"[RemoveItem] index: {_index}, amount: {_amount}");
-        if (_index < 0 || _index >= MaxSlotCount || _amount <= 0)
-        {
-            Debug.LogWarning("Invalid index or amount.");
-            return;
-        }
+        if (_index < 0 || _index >= MaxSlotCount || _amount <= 0) return;
 
         var current = inventorySlots[_index];
-        if (current == null || !current.IsValid)
-        {
-            Debug.LogWarning("Invalid item data.");
-            return;
-        }
-
+        if (current == null || !current.IsValid) return;
+        
         current.Quantity -= _amount;
         if (current.Quantity <= 0)
         {

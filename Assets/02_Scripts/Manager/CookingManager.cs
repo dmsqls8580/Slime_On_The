@@ -5,17 +5,17 @@ public class CookingManager : SceneOnlySingleton<CookingManager>
 {
     [SerializeField] private RecipeDatabase database;
 
-    public void FindMatchingRecipe(Dictionary<IngredientTag, float> _tags, float _cookingTime, CookPotObject _cookPot)
+    public ItemSO FindMatchingRecipe(Dictionary<IngredientTag, float> _tags)
     {
         List<ItemSO> items = database.Items;
         foreach (var item in items)
         {
             if (IsMatched(_tags, item.cookedData))
             {
-                _cookPot.StartCook(item, _cookingTime);
-                return;
+                return item;
             }
         }
+        return null;
     }
 
     private bool IsMatched(Dictionary<IngredientTag, float> _tags, CookedData _data)

@@ -26,6 +26,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
 
     private int inputStart;
     private int inputEnd;
+    private ItemSO prevTargetItem = null;
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
@@ -114,7 +115,12 @@ public class CookPotObject : MonoBehaviour, IInteractable
         
         finishedItem = _item;
         cookingTime = _cookingTime;
-        coroutine = StartCoroutine(CookRoutine());
+
+        if (prevTargetItem != finishedItem)
+        {
+            prevTargetItem = finishedItem;
+            coroutine = StartCoroutine(CookRoutine());
+        }
     }
 
     private IEnumerator CookRoutine()
@@ -128,7 +134,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
             {
                 elapsedTime += Time.deltaTime;
                 processPercentage = elapsedTime / cookingTime;
-                uiCookPot.RefreshProcessImg(processPercentage);
+                uiCookPot.RefreshProcessImg(cookIndex, processPercentage);
 
                 yield return null;
             }
@@ -140,6 +146,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 inventoryManager.RemoveItem(i, 1);
             }
             inventoryManager.TryAddItem(inputEnd, new ItemInstanceData(finishedItem, 1), 1);
+            prevTargetItem = null;
 
         } while (CanCook());
 

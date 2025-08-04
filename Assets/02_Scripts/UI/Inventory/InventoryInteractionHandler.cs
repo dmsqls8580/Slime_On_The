@@ -105,16 +105,12 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     // 놓기 시도
     private void TryPlace(SlotBase _slot, int _amount)
     {
-        Logger.Log("1");
         var held = holdManager.HeldItem;
         if (held == null || !held.IsValid) return;
-        Logger.Log("2");
         if (!_slot.IsItemAllowed(held)) return;
-        Logger.Log("3");
         var slotData = _slot.GetData();
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
-        Logger.Log("4");
         // if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
         // {
         //     if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
@@ -123,7 +119,6 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         
         int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held, _amount);
         holdManager.RemoveItem(placed);
-        Logger.Log("5");
         _slot.Refresh();
         holdManager.Refresh();
     }
