@@ -11,6 +11,9 @@ public enum SFX
 {
     Grount,
     SlimeNormalAttack,
+    Toggle,
+    Click,
+    Error,
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -61,6 +64,9 @@ public class SoundManager : Singleton<SoundManager>
         {
             case SFX.SlimeNormalAttack: return 0.1f;
             case SFX.Grount: return 1.0f;
+            case SFX.Toggle: return 0.2f;
+            case SFX.Click: return 0.8f;
+            case SFX.Error: return 0.5f;
             default: return 1.0f;
         }
     }
