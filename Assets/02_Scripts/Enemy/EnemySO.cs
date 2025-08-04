@@ -17,6 +17,8 @@ public enum ProjectileName
     BubbleMelee,
     Bubble,
     BigBubble,
+    Dash,
+    SelfBomb,
     
     // Boss
     TurtleSpell0 = 40,

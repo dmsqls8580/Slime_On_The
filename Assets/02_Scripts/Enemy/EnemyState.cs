@@ -284,6 +284,21 @@ namespace  Enemystates
                 
                 return;
             }
+            // Enemy가 텔레포트, 대쉬, 자폭하는 중이라면 이동 X
+            if (owner.IsTeleporting)
+            {
+                return;
+            }
+
+            if (owner.IsDashing)
+            {
+                return;
+            }
+
+            if (owner.IsBombing)
+            {
+                return;
+            }
             // Target의 위치를 추적해 이동.
             if (owner.AttackTarget != null)
             {

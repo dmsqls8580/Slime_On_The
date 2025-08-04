@@ -6,7 +6,7 @@ public class SpriteCuller : MonoBehaviour
 {
     public GameObject Player;
     public ISpawner Spawner;
-    public float PlayerDistance = 30f;
+    public float PlayerDistance = 50f;
     public float CheckTimer = 0.2f;
     public bool ShouldCull = false;
 
