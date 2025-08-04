@@ -7,7 +7,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
-    private UICookPot uiCookPot;
+    [SerializeField] private UICookPot uiCookPot;
 
     public const int MaxSlotCount = 100000;
     private const int EquipSlotStartIndex = 90;
@@ -31,15 +31,9 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 
     //public ItemInstanceData GetEquippedItem(EquipType _type) => equipSlots[(int)_type];
 
-
     protected override void Awake()
     {
         base.Awake();
-    }
-
-    private void Start()
-    {
-        uiCookPot = UIManager.Instance.GetUIComponent<UICookPot>();
     }
 
     public ItemInstanceData GetItem(int _index)
