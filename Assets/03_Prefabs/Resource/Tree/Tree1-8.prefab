@@ -225,9 +225,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f8cfac9b6256f743842bd0b5f38908f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8638711861102286571}
+  stumpSprite: {fileID: 1883802580, guid: ad7eddb9bac6e0d49b42905be56b1736, type: 3}
   animator: {fileID: 1695651839912609596}
   leafParticle: {fileID: 811681403982650945}
-  stumpPrefab: {fileID: 1910357014771693851, guid: 06535afea75dc0946b167f3a06faedd4, type: 3}
   fallDuration: 1
 --- !u!1001 &6672238412682221252
 PrefabInstance:

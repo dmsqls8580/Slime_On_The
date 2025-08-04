@@ -95,8 +95,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e12fa9f70d8f1d4478c2ecc448479b04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeScale: 60
-  dayLightColor: {r: 0.98190707, g: 1, b: 0.6839622, a: 0}
+  secondsOfDay: 480
+  timeScale: 1
+  dayLightColor: {r: 0.98190707, g: 1, b: 0.6839622, a: 0.003921569}
   nightLightColor: {r: 0.06786223, g: 0.06786223, b: 0.23584908, a: 0}
   lightCurve:
     serializedVersion: 2
@@ -111,8 +112,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.38783503
     - serializedVersion: 3
-      time: 6
-      value: 0
+      time: 0.125
+      value: 1
       inSlope: -0
       outSlope: -0
       tangentMode: 0
@@ -120,16 +121,34 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.14641435
     - serializedVersion: 3
-      time: 18
+      time: 0.3125
       value: 0
-      inSlope: -0.0005049904
-      outSlope: -0.0005049904
+      inSlope: -0.013560322
+      outSlope: -0.013560322
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5722737
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.6875
+      value: 0
+      inSlope: 0.0072406684
+      outSlope: 0.0072406684
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.3495605
-      outWeight: 0.30554643
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 24
+      time: 0.875
+      value: 1
+      inSlope: 0.03419944
+      outSlope: 0.03419944
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.56178474
+    - serializedVersion: 3
+      time: 1
       value: 1
       inSlope: 0
       outSlope: 0
@@ -138,9 +157,10 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
-    m_PostInfinity: 0
+    m_PostInfinity: 2
     m_RotationOrder: 4
   globalLight: {fileID: 7724282707615553102}
-  time: 24000
+  weatherManager: {fileID: 0}
+  time: 120
   days: 0
-  currentTimeOfDay: 0
+  currentTimeOfDay: 1
