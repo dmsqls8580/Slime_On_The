@@ -42,7 +42,7 @@ public class EnemySpawner : MonoBehaviour, ISpawner
     [Header("스폰 몬스터 설정")]
     public int SpawnCount = 5;
     public float SpawnRadius = 10f;
-    public EnemySO EnemySO;
+    public List<EnemySO> EnemySOList;
     int ISpawner.SpawnCount
     {
         get => SpawnCount;
@@ -72,11 +72,11 @@ public class EnemySpawner : MonoBehaviour, ISpawner
 
     public void SpawnEnemies()
     {
-        string poolID = EnemySO.EnemyID.ToString();
-
-        if (!ObjectPoolManager.Instance.HasPool(poolID))
+        int SOCount = EnemySOList.Count;
+        
+        if (SOCount == 0)
         {
-            Debug.LogWarning($"EnemySpawner: {poolID} 풀이 아직 초기화되지 않았습니다. 스폰 생략");
+            Debug.LogWarning("EnemySpawner: EnemySOList가 비어 있습니다.");
             return;
         }
         
@@ -89,6 +89,16 @@ public class EnemySpawner : MonoBehaviour, ISpawner
 
         for (int i = 0; i < canSpawnCount; i++)
         {
+            // 몬스터 리스트 중에서 랜덤으로 정해서 스폰
+            EnemySO randomSO = EnemySOList[Random.Range(0, SOCount)];
+            string poolID = randomSO.EnemyID.ToString();
+            
+            if (!ObjectPoolManager.Instance.HasPool(poolID))
+            {
+                Debug.LogWarning($"EnemySpawner: {poolID} 풀이 아직 초기화되지 않았습니다. 스폰 생략");
+                return;
+            }
+            
             Vector3 spawnPos = GetRandomPosition(transform.position, SpawnRadius);
             GameObject enemy = ObjectPoolManager.Instance.GetObject(poolID);
             
@@ -115,7 +125,7 @@ public class EnemySpawner : MonoBehaviour, ISpawner
             }
             else
             {
-                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {EnemySO.EnemyID.ToString()}");
+                Debug.LogError($"Pool에서 Enemy를 가져올 수 없습니다. PoolID: {randomSO.EnemyID.ToString()}");
             }
 
             // Enemy의 SpriteCuller에 Player 등록
