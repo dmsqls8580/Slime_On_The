@@ -2438,26 +2438,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1179187423}
     m_Modifications:
-    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
-      propertyPath: BGMClips.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
-      propertyPath: SFXClips.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
-      propertyPath: BGMClips.Array.data[0]
-      value: 
-      objectReference: {fileID: 8300000, guid: 70a68be54559ca441a4c20c3eb73dcb4, type: 3}
-    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
-      propertyPath: SFXClips.Array.data[5]
-      value: 
-      objectReference: {fileID: 8300000, guid: 9261674a86204ef409b3127f0d497d27, type: 3}
-    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
-      propertyPath: SFXClips.Array.data[6]
-      value: 
-      objectReference: {fileID: 8300000, guid: ed5f7c942051ac3429b0da7be57841a1, type: 3}
     - target: {fileID: 2564125911862450370, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
       propertyPath: m_Name
       value: SoundManager
