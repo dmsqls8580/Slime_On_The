@@ -32,6 +32,7 @@ public static class SkillSOToCSVUpdater
             if (int.TryParse(cols[colMap["skillIndex"]], out int rowIdx) && rowIdx == _skill.skillIndex)
             {
                 cols[colMap["skillName"]] = _skill.skillName;
+                cols[colMap["skillActiveType"]]= _skill.skillActiveType.ToString();
                 cols[colMap["damage"]] = _skill.damage.ToString();
                 cols[colMap["speed"]] = _skill.speed.ToString();
                 cols[colMap["range"]] = _skill.range.ToString();
