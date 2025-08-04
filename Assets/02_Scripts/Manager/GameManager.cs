@@ -9,13 +9,16 @@ public class GameManager : Singleton<GameManager>
     [Header("외부 매니저 참조")]
     public TimeManager timeManager;
     public ProceduralWorldManager worldManager;
+    
+    //[SerializeField] private PlayerSpawner playerSpawner;
+
 
     [Header("로딩 화면 설정")]
     public CanvasGroup loadingCanvas;
     public TMP_Text loadingText;
     public Slider loadingBar;
 
-    public bool IsPaused { get; private set; } = false;
+    public bool IsLoading { get; private set; } = false;
 
     private float currentProgress = 0f;
     private float targetProgress = 0f;
@@ -42,7 +45,7 @@ public class GameManager : Singleton<GameManager>
         loadingBar.value = 0f;
         currentProgress = 0f;
         targetProgress = 0f;
-
+        
         int seed = GameSettings.seed != 0 ? GameSettings.seed : Random.Range(int.MinValue, int.MaxValue);
         GameSettings.seed = seed;
         Debug.Log($"[GameManager] 사용된 시드값: {seed}");
@@ -53,7 +56,7 @@ public class GameManager : Singleton<GameManager>
             loadingText.text = msg;
             targetProgress = prog * 0.8f; // 최대 80%
         }));
-
+        
         // 2. 네비 베이크
         loadingText.text = "네비게이션 메쉬 생성 중...";
         targetProgress = 0.85f;
@@ -84,7 +87,9 @@ public class GameManager : Singleton<GameManager>
         loadingText.text = "Loading... 100%";
         yield return new WaitForSeconds(0.4f);
 
+        //playerSpawner.SpawnPlayer();
         // 로딩 종료
+        PlayerStatusManager.Instance.StartDaySlimeGaugeRoutine();
         loadingCanvas.alpha = 0f;
         loadingCanvas.blocksRaycasts = false;
     }
