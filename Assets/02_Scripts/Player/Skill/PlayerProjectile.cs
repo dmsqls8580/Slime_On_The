@@ -58,7 +58,6 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         _damage = isCritical ? _damage * critMultiplier : _damage;
 
         damage = new CalculateStat(StatType.Attack, _damage);
-        Logger.Log($"현재 스킬 대미지: {damage.GetCurrent()}");
 
         gameObject.SetActive(true);
     }
@@ -76,11 +75,6 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
     {
         if (other.TryGetComponent<IDamageable>(out var target) && !other.CompareTag("Player"))
         {
-            if (isCritical)
-            {
-                Logger.Log("Critical Hit");
-            }
-
             var effectData = effectTable.GetDataByID(1);
             if (!effectData.IsUnityNull())
             {

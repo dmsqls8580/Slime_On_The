@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 
 public class UndestroyableObject : BaseInteractableObject, IInteractable
 {
-
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         if(isInteracted)
@@ -15,6 +14,8 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
+
+        SoundManager.Instance.PlaySFX(SFX.ToolHand);
         
         TakeInteraction(toolPower);
 

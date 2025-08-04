@@ -81,7 +81,6 @@ public class PlayerSkillMananger : MonoBehaviour
         while (_owner.IsMouse02Pressed() && _owner.PlayerStatusManager.CurrentSlimeGauge >= slimePerTick)
         {
             _skill.Execute(_owner, _skill.damage); // 스킬 효과 반복(분사 등)
-            Logger.Log($"현재 슬라임 게이지{PlayerStatusManager.Instance.CurrentSlimeGauge}");
             _owner.PlayerStatusManager.ConsumeSlimeGauge(slimePerTick);
             yield return new WaitForSeconds(consumeInterval);
         }

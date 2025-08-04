@@ -359,7 +359,6 @@ namespace PlayerStates
 
             if (target == null)
             {
-                Logger.Log("Target is null");
                 return;
             }
             
@@ -414,14 +413,12 @@ namespace PlayerStates
         {
             if(!CanGathering())
             {
-                Logger.Log("Not Selected Tool");
                 return;
             }
             
             var target = interactionSelector.SpaceInteractable;
             if (target == null)
             {
-                Logger.Log("Target is null");
                 return;
             }
             
@@ -460,16 +457,6 @@ namespace PlayerStates
             if (IsDead || damageDelayTimer > 0f) return;
             if (_attacker != null)
             {
-                // 피격
-                if (PlayerStatusManager == null)
-                {
-                    Logger.Log("EnemyStatus is null");
-                }
-
-                if (_attacker.AttackStat == null)
-                {
-                    Logger.Log("AttackStat is null");
-                }
                 PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
                 damageDelayTimer = damageDelay;

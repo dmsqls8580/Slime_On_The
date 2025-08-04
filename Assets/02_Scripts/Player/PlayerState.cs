@@ -178,7 +178,6 @@ namespace PlayerStates
             _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
