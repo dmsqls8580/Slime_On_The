@@ -5188,11 +5188,11 @@ PrefabInstance:
     - target: {fileID: 3803768538770696001, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
       propertyPath: biomeSetPieces.Array.data[3].setPieces.Array.data[0].prefabs.Array.data[3]
       value: 
-      objectReference: {fileID: 1236685174018697565, guid: 50dc50220f2f8bf40b63083eb47a1203, type: 3}
+      objectReference: {fileID: 1236685174018697565, guid: af378479d1cc88b4eb1764d7e4608b79, type: 3}
     - target: {fileID: 3803768538770696001, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
       propertyPath: biomeSetPieces.Array.data[3].setPieces.Array.data[0].prefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 1236685174018697565, guid: 3a618e11e18926d4bb272ff2293ca069, type: 3}
+      objectReference: {fileID: 1236685174018697565, guid: 08a0f00ed27d9ea4090674d539ea4109, type: 3}
     - target: {fileID: 4976148506311722819, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -7476,6 +7476,14 @@ PrefabInstance:
       propertyPath: craftingStationManager
       value: 
       objectReference: {fileID: 157456490}
+    - target: {fileID: 6635261311526093153, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.20000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 8346237133183146666, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.20000002
+      objectReference: {fileID: 0}
     - target: {fileID: 8810412220238784914, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
       propertyPath: uiDead
       value: 

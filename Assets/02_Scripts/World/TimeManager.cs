@@ -21,6 +21,7 @@ public class TimeManager : MonoBehaviour
 
     [Header("스크립트 참조")]
     [SerializeField] private WeatherManager weatherManager;
+    [SerializeField] private FogVignette fogVignette;
 
     [Header("디버그/테스트용")]
     [SerializeField] private float time = 120f; // 6:00 AM 시작 = 120초
@@ -57,6 +58,7 @@ public class TimeManager : MonoBehaviour
         if (previousTimeOfDay != currentTimeOfDay)
         {
             currentTimeOfDay = previousTimeOfDay;
+            fogVignette.ApplyEffect(CurrentTimeOfDay);
             weatherManager.UpdateDayCount();
         }
     }
