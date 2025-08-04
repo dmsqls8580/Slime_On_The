@@ -22,11 +22,13 @@ public class CookPotObject : MonoBehaviour, IInteractable
     private ItemSO finishedItem = null;
     private float elapsedTime = 0f;
     private float cookingTime = 0f;
+    public float processPercentage = 1f;
 
     private Coroutine coroutine = null;
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
+    private UICookPot uiCookPot;
 
     [Header("Drop Item Health")]
     [SerializeField] private float maxHealth;
@@ -50,6 +52,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
     {
         inventoryManager = InventoryManager.Instance;
         uiManager = UIManager.Instance;
+        uiCookPot = uiManager.GetUIComponent<UICookPot>();
     }
 
     private void OnDisable()
@@ -125,6 +128,8 @@ public class CookPotObject : MonoBehaviour, IInteractable
             while (elapsedTime < cookingTime)
             {
                 elapsedTime += Time.deltaTime;
+                processPercentage = elapsedTime / cookingTime;
+                uiCookPot.RefreshProcessImg(processPercentage);
                 Logger.Log($"{(elapsedTime / cookingTime * 100f):F2}%");
 
                 yield return null;
