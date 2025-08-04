@@ -33,6 +33,7 @@ public class RainEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
+                SoundManager.Instance.ChangeBGM(BGM.WeatherRainSound);
                 break;
             case 2:
                 playerStatusManager.UpdateMoveSpeed = -moveSpeed;
