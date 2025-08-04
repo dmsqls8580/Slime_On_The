@@ -2,12 +2,14 @@ using _02_Scripts.Manager;
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UICookPot : UIBase
 {
     [SerializeField] private List<InventorySlot> inputSlots;
     [SerializeField] private InventorySlot resultSlot;
     [SerializeField] private AnimationCurve JellyAnimationCurve;
+    [SerializeField] private Image processImage;
 
     private InventoryManager inventoryManager;
     private CookingManager cookingManager;
@@ -112,6 +114,11 @@ public class UICookPot : UIBase
         }
 
         cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
+    }
+
+    public void RefreshProcessImg(float processPercentage)
+    {
+        processImage.fillAmount = 1 - processPercentage;
     }
 
     public override void Open()
