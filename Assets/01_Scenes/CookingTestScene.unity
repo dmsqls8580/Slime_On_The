@@ -363,7 +363,7 @@ PrefabInstance:
     - target: {fileID: 8036944420135476844, guid: 1deb66aa12dc6224db0229f58f55e05a, type: 3}
       propertyPath: fogVignette
       value: 
-      objectReference: {fileID: 1421584543}
+      objectReference: {fileID: 1440252526}
     - target: {fileID: 8036944420135476844, guid: 1deb66aa12dc6224db0229f58f55e05a, type: 3}
       propertyPath: weatherManager
       value: 
@@ -4939,17 +4939,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1401489336}
   m_CullTransparentMesh: 1
---- !u!114 &1421584543 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8279302078684160524, guid: 00e19a8f93891134bbc8c4f192aaeea3, type: 3}
-  m_PrefabInstance: {fileID: 870787100}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5f28ffda2d2d5548b2a2696f078f13e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1434239369
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5007,6 +4996,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+--- !u!114 &1440252526 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 200365957018004727, guid: 00e19a8f93891134bbc8c4f192aaeea3, type: 3}
+  m_PrefabInstance: {fileID: 870787100}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f28ffda2d2d5548b2a2696f078f13e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1487062101 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3099906442191913062, guid: f0b5bffe8f02ac542a1728ee5a073e77, type: 3}
