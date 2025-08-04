@@ -27,6 +27,7 @@ namespace PlayerStates
         public PlayerStatusManager PlayerStatusManager { get; private set; }
         
         private ToolController toolController;
+        
         private InputController inputController;
         
         private PlayerAnimationController animationController;
@@ -67,8 +68,18 @@ namespace PlayerStates
 
         public bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
-        
-        public StatBase AttackStat { get; }
+
+        public StatBase AttackStat
+        {
+            get
+            {
+                if (PlayerStatusManager == null) return null;// StatManager 접근 방식에 맞게
+                if (StatManager == null) return null;
+                if (StatManager.Stats.TryGetValue(StatType.Attack, out var stat))
+                    return stat;
+                return null;
+            }
+        }
 
         public IDamageable Target { get; }
 

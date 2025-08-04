@@ -14,17 +14,9 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         isInteracted = true;
         
         var toolController = _playerController.GetComponent<ToolController>();
-        float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
-
-        if (objectType == ObjectType.UnDestroyed)
-        {
-            DropItems(_playerController.transform);
-        }
+        float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
         
         TakeInteraction(toolPower);
-
-        if (_type == InteractionCommandType.F)
-            UIManager.Instance.Toggle<UICrafting>();
 
         if (currentHealth <= 0)
         {

@@ -2,10 +2,17 @@ using PlayerStates;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+public enum SkillActiveType
+{
+    Instant,
+    Press,
+}
+
 public abstract class PlayerSkillSO : ScriptableObject
 {
     public int skillIndex;
     public string skillName;
+    public SkillActiveType skillActiveType;
     private string scriptName;
     public float damage;
     public float speed;

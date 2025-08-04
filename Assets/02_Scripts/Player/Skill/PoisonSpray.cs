@@ -7,21 +7,32 @@ using UnityEngine;
 public class PoisonSpray : PlayerSkillSO
 {
     public float sprayInterval = 0.05f;
-    public float areaLength;
-    public GameObject sprayAreaPrefab;
-    
+    public float areaLength = 2f;
+    private GameObject sprayAreaPrefab;
+
     private Coroutine sprayCoroutine;
-    
-    public override void Execute(PlayerController _owner,float _damage)
+
+    public override void Execute(PlayerController _owner, float _damage)
     {
-        GameObject sprayArea= ObjectPoolManager.Instance.GetObject("PoisonSprayArea");
-        if (sprayArea.IsUnityNull())
+        if (!sprayAreaPrefab.IsUnityNull() && sprayAreaPrefab.activeSelf)
         {
             return;
         }
         
-        Vector3 sprayDir= _owner.AnimationController.UpdatePlayerDirectionByMouse();
-        sprayArea.transform.position = _owner.AttackPivot.position + (Vector3)(sprayDir * areaLength * 0.5f);
-        sprayArea.transform.rotation = Quaternion.FromToRotation(Vector3.right, sprayDir);
+        sprayAreaPrefab = ObjectPoolManager.Instance.GetObject("PoisonSprayArea");
+        if (sprayAreaPrefab.IsUnityNull())
+        {
+            return;
+        }
+
+        Vector3 sprayDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
+        sprayAreaPrefab.transform.position = _owner.AttackPivot.position + (Vector3)(sprayDir * areaLength * 0.5f);
+        sprayAreaPrefab.transform.rotation = Quaternion.FromToRotation(Vector3.right, sprayDir);
+        sprayAreaPrefab.SetActive(true);
+
+        var sprayAreaComponent = sprayAreaPrefab.GetComponent<PoisonAreaZoneObject>();
+        sprayAreaComponent.Init(_owner, _damage, _owner.gameObject, sprayInterval, areaLength);
+        
+        
     }
 }

@@ -5,10 +5,8 @@ using UnityEngine.EventSystems;
 [CreateAssetMenu(menuName = "PlayerSkill/NormalAttack")]
 public class NormalAttack : PlayerSkillSO
 {
-
     public override void Execute(PlayerController _owner, float _damage)
     {
-
         // 공격 방향 계산
         Vector2 attackDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
 

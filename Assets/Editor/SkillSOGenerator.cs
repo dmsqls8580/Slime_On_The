@@ -73,6 +73,12 @@ public class SkillSOGenerator : EditorWindow
             }
             int.TryParse(GetSafe(cols, columnIndex, "skillIndex"), out asset.skillIndex);
             asset.skillName = GetSafe(cols, columnIndex, "skillName");
+            string activeTypeStr = GetSafe(cols, columnIndex, "skillActiveType");
+            if (!string.IsNullOrEmpty(activeTypeStr))
+            {
+                if (Enum.TryParse(typeof(SkillActiveType), activeTypeStr, true, out var at))
+                    asset.skillActiveType = (SkillActiveType)at;
+            }
             float.TryParse(GetSafe(cols, columnIndex, "damage"), out asset.damage);
             float.TryParse(GetSafe(cols, columnIndex, "speed"), out asset.speed);
             float.TryParse(GetSafe(cols, columnIndex, "range"), out asset.range);
