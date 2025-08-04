@@ -16,9 +16,9 @@ public class UICookPot : UIBase
 
     private CookPotObject cookPotObject;
     private int cookIndex;
-    public int CookIndex => cookIndex;
-
     private bool ignoreNextSlotChange = false;
+
+    public int CookIndex => cookIndex;
     public void IgnoreNextSlotChange() => ignoreNextSlotChange = true;
 
     private void Awake()
@@ -42,7 +42,6 @@ public class UICookPot : UIBase
         resultSlot.Initialize(resultIndex);
 
         inventoryManager.OnSlotChanged += OnAnySlotChanged;
-        cookPotObject.Initialize(inputSlots, resultSlot);
     }
 
     private void OnDisable()
@@ -68,7 +67,7 @@ public class UICookPot : UIBase
             return;
         }
 
-        if (changedIndex == resultSlot.SlotIndex &&
+        if (changedIndex == inputEnd &&
             (cookPotObject.CurrentState == CookingState.Idle ||
             cookPotObject.CurrentState == CookingState.Finished))
         {
