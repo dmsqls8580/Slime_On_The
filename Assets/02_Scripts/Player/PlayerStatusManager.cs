@@ -20,8 +20,10 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
-    private float slimeDayConsumeAmount = 0.1f;
-    public float SlimeDayConsumeAmount => slimeDayConsumeAmount;
+    private float slimeDayRecoverAmount = 0.2f;
+    public float SlimeDayConsumeAmount => slimeDayRecoverAmount;  
+    private float slimeNightConsumeAmount = 0.3f;
+    public float SlimeNightConsumeAmount => slimeNightConsumeAmount;
 
     public UnityAction<float> OnHpChanged;
 
@@ -98,12 +100,13 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public void StartDaySlimeGaugeRoutine()
     {
-        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine(slimeDayConsumeAmount));
+        daySlimeRoutine = StartCoroutine(DaySlimeGaugeRoutine(slimeDayRecoverAmount, slimeNightConsumeAmount));
     }
 
-    private IEnumerator DaySlimeGaugeRoutine(float _amount)
+    private IEnumerator DaySlimeGaugeRoutine(float _dayAmount, float _nightAmount)
     {
-        _amount = slimeDayConsumeAmount;
+        _dayAmount = slimeDayRecoverAmount;
+        _nightAmount = slimeNightConsumeAmount;
 
         while (true)
         {
@@ -120,10 +123,10 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
             switch (timeManager.CurrentTimeOfDay)
             {
                 case TimeOfDay.Day:
-                    ConsumeSlimeGauge(_amount);
+                    ConsumeSlimeGauge(_dayAmount);
                     break;
                 case TimeOfDay.Night:
-                    RecoverSlimeGauge(_amount);
+                    RecoverSlimeGauge(_nightAmount);
                     break;
             }
         }

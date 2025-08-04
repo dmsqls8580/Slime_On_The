@@ -1,3 +1,4 @@
+using _02_Scripts.Manager;
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -6,13 +7,13 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
 {
     [SerializeField] private Craft craft;
     public PlaceMode placeMode;
-    [SerializeField] private UICookPot uiCookPot;
+    private UICookPot uiCookPot;
 
     public const int MaxSlotCount = 100000;
     private const int EquipSlotStartIndex = 90;
     public const int EquipSlotCount = 6;
     [SerializeField] private int unlockedSlotCount = 40;
-    
+
     private const int MaxChestCount = 999;
     private const int MaxCookPotCount = 999;
     private bool[] chestSlotInUse = new bool[MaxChestCount];
@@ -29,6 +30,13 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     private bool IsSlotUnlocked(int _index) => _index < unlockedSlotCount;
 
     //public ItemInstanceData GetEquippedItem(EquipType _type) => equipSlots[(int)_type];
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        uiCookPot = UIManager.Instance.GetUIComponent<UICookPot>();
+    }
 
     public ItemInstanceData GetItem(int _index)
     {
@@ -49,17 +57,16 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         OnSlotChanged?.Invoke(_index);
     }
 
-    
 
     public void ClearItem(int _index)
     {
         if (_index < 0 || _index >= MaxSlotCount) return;
-        
+
         if (_index >= EquipSlotStartIndex && _index < EquipSlotStartIndex + EquipSlotCount)
         {
             RefreshEquipStat(_index, null);
         }
-        
+
         inventorySlots[_index] = null;
         OnSlotChanged?.Invoke(_index);
     }
@@ -69,7 +76,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     {
         if (_index < 0 || _index >= MaxSlotCount || _item == null || _amount <= 0)
             return 0;
-        
+
         var current = inventorySlots[_index];
 
         if (current == null)
@@ -78,6 +85,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             {
                 RefreshEquipStat(_index, _item);
             }
+
             int placed = Mathf.Min(_amount, _item.ItemData.maxStack);
             inventorySlots[_index] = new ItemInstanceData(_item.ItemData, placed);
             OnSlotChanged?.Invoke(_index);
@@ -103,7 +111,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         {
             RefreshEquipStat(_index, null);
         }
-        
+
         Debug.Log($"[RemoveItem] index: {_index}, amount: {_amount}");
         if (_index < 0 || _index >= MaxSlotCount || _amount <= 0)
         {
@@ -149,10 +157,12 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                     {
                         UpdateCraftingUI();
                     }
+
                     return true;
                 }
             }
         }
+
         // 빈 칸에 새로 넣기
         for (int i = 0; i < unlockedSlotCount; i++)
         {
@@ -169,6 +179,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                     {
                         UpdateCraftingUI();
                     }
+
                     return true;
                 }
             }
@@ -240,6 +251,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             if (slot != null && slot.ItemData == _itemData)
                 count += slot.Quantity;
         }
+
         return count;
     }
 
@@ -255,6 +267,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         {
             result[i] = GetItem(EquipSlotStartIndex + i);
         }
+
         return result;
     }
 
@@ -269,12 +282,12 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     {
         return _index >= unlockedSlotCount;
     }
-    
+
     private void RefreshEquipStat(int _index, ItemInstanceData _newData)
     {
         var prevItem = GetItem(_index);
         if (!prevItem.IsUnityNull() && prevItem.IsValid)
-        { 
+        {
             PlayerStatusManager.Instance.ApplyEquipStat(prevItem, false);
         }
 
@@ -285,7 +298,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
         }
         //OnSlotChanged?.Invoke(_index);
     }
-    
+
     // chest 설치
     public int GetNextAvailableChestIndex()
     {
@@ -297,9 +310,10 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 return i;
             }
         }
+
         return -1;
     }
-    
+
     // chest 파괴
     public void ReleaseChestIndex(int index)
     {
@@ -308,7 +322,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             chestSlotInUse[index] = false;
         }
     }
-    
+
     // CookPot 설치
     public int GetNextAvailableCookIndex()
     {
@@ -320,9 +334,10 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
                 return i;
             }
         }
+
         return -1;
     }
-    
+
     // CookPot 파괴
     public void ReleaseCookIndex(int index)
     {
