@@ -35,6 +35,10 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    private void Start()
+    {
         uiCookPot = UIManager.Instance.GetUIComponent<UICookPot>();
     }
 

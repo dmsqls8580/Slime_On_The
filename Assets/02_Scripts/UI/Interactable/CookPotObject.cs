@@ -141,7 +141,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
             {
                 inventoryManager.RemoveItem(slot.SlotIndex, 1);
             }
-            inventoryManager.TryAddItem(resultSlot.SlotIndex, new ItemInstanceData(finishedItem, 1), 1);
+            inventoryManager.TryAddItem(SlotIndexScheme.GetCookResultIndex(cookIndex), new ItemInstanceData(finishedItem, 1), 1);
 
         } while (CanCook());
 
