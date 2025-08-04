@@ -1,12 +1,11 @@
 using PlayerStates;
-using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PlayerSkill/PoisonSpray")]
-public class PoisonSpray : PlayerSkillSO
+[CreateAssetMenu(menuName = "PlayerSkill/WaterBall")]
+public class WaterBall : PlayerSkillSO
 {
-    public float sprayInterval = 0.05f;
+    public float damageInterval = 0.05f;
     public float areaLength = 2f;
     private GameObject sprayAreaPrefab;
 
@@ -14,12 +13,12 @@ public class PoisonSpray : PlayerSkillSO
 
     public override void Execute(PlayerController _owner, float _damage)
     {
-        if (!sprayAreaPrefab.IsUnityNull() && sprayAreaPrefab.activeSelf)
+        if (sprayAreaPrefab!=null && sprayAreaPrefab.activeSelf)
         {
             return;
         }
         
-        sprayAreaPrefab = ObjectPoolManager.Instance.GetObject("PoisonSprayArea");
+        sprayAreaPrefab = ObjectPoolManager.Instance.GetObject("WaterBallArea");
         if (sprayAreaPrefab.IsUnityNull())
         {
             return;
@@ -30,9 +29,9 @@ public class PoisonSpray : PlayerSkillSO
         sprayAreaPrefab.transform.rotation = Quaternion.FromToRotation(Vector3.right, sprayDir);
         sprayAreaPrefab.SetActive(true);
 
-        var sprayAreaComponent = sprayAreaPrefab.GetComponent<PoisonAreaZoneObject>();
-        sprayAreaComponent.Init(_owner, _damage, _owner.gameObject, sprayInterval, areaLength);
+        var sprayAreaComponent = sprayAreaPrefab.GetComponent<WaterBallAreaObject>();
+        sprayAreaComponent.Init(_owner, _damage, _owner.gameObject, damageInterval, areaLength);
         
-        
+        sprayAreaComponent.OnReturned += () => sprayAreaPrefab = null;
     }
 }

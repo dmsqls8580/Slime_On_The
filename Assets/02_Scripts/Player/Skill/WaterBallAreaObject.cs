@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PoisonAreaZoneObject : MonoBehaviour, IPoolObject,IAttackable
+public class WaterBallAreaObject : MonoBehaviour, IPoolObject,IAttackable
 {
     public GameObject GameObject => gameObject;
 
-    [SerializeField] private string poolID = "PoisonSprayArea";
+    [SerializeField] private string poolID = "WaterBallArea";
     public string PoolID => poolID;
     [SerializeField] private int poolSize = 2;
     public int PoolSize => poolSize;
@@ -116,13 +116,13 @@ public class PoisonAreaZoneObject : MonoBehaviour, IPoolObject,IAttackable
     public void OnReturnToPool()
     {
         targets.Clear();
-        if (!damageRoutine.IsUnityNull())
-        {
+        if (damageRoutine != null)
             StopCoroutine(damageRoutine);
-        }
-
         damageRoutine = null;
         isActive = false;
+
+        OnReturned?.Invoke(); // SO에 연결된 null처리 콜백 실행
+        OnReturned = null; // 메모리 누수 방지
     }
     
 }

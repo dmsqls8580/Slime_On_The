@@ -26,9 +26,10 @@ MonoBehaviour:
     power: 1.5
     luck: 0.1
     durability: 0
-    actSpd: 1.2
+    actSpd: 1
   equipableData:
     equipableType: 0
+    formId: 0
     maxHealth: 0
     atk: 0
     def: 0
@@ -41,6 +42,15 @@ MonoBehaviour:
     duration: 0
     rottenable: 0
     permanent: 0
+  cookableData:
+    tags: []
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
+  placeableData:
+    placeableInfo: {fileID: 0}
   recipe:
   - item: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
     amount: 4

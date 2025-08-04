@@ -27,6 +27,7 @@ namespace PlayerStates
         public PlayerStatusManager PlayerStatusManager { get; private set; }
         
         private ToolController toolController;
+        public ToolController ToolController => toolController;
         
         private InputController inputController;
         
@@ -37,7 +38,10 @@ namespace PlayerStates
         public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
 
         private InteractionHandler interactionHandler;
+        public InteractionHandler InteractionHandler => interactionHandler;
+        
         private InteractionSelector interactionSelector;
+        public InteractionSelector InteractionSelector => interactionSelector;
         
         private PlayerAfterEffect playerAfterEffect;
         public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
@@ -51,7 +55,7 @@ namespace PlayerStates
         public Vector2 MoveInput => moveInput;
         public Vector2 LastMoveDir => lastMoveDir;
 
-        private float actCoolDown = 0f;
+        public float actCoolDown { get; internal set; }
         
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
@@ -159,10 +163,10 @@ namespace PlayerStates
                 damageDelayTimer -= Time.deltaTime;
             }
 
-            if (Input.GetKey(KeyCode.T))
-            {
-                TestDeath();
-            }
+            // if (Input.GetKey(KeyCode.T))
+            // {
+            //     TestDeath();
+            // }
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
@@ -364,7 +368,7 @@ namespace PlayerStates
         
         // 스페이스바 눌렀을 때 오브젝트 피깎기.
         
-        private bool CanGathering()
+        public bool CanGathering()
         {
             if (uiQuickSlot.IsUnityNull())
             {
@@ -406,9 +410,8 @@ namespace PlayerStates
             return toolType == requiredToolType;
         }
 
-        private void Gathering()
+        public void Gathering()
         {
-            if (actCoolDown > 0) return;
             if(!CanGathering())
             {
                 Logger.Log("Not Selected Tool");
@@ -416,7 +419,6 @@ namespace PlayerStates
             }
             
             var target = interactionSelector.SpaceInteractable;
-
             if (target == null)
             {
                 Logger.Log("Target is null");
@@ -425,14 +427,10 @@ namespace PlayerStates
             
             interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
-            float toolActSpd = toolController.GetAttackSpd();
-            actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
-            
-            SetCanMove(false);
             moveInput = Vector2.zero;
-
             ChangeState(PlayerState.Gathering);
         }
+        
         private void ScanAndAttractItems()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
