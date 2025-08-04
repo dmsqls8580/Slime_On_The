@@ -114,7 +114,9 @@ namespace PlayerStates
             {
                 return;
             }
-
+            
+            SoundManager.Instance.PlaySFX(SFX.PlayerDash);
+            
             _owner.PlayerStatusManager.ConsumeStamina(consumeAmount);
             lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;

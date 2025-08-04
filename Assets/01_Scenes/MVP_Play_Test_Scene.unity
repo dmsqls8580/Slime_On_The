@@ -2438,6 +2438,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1179187423}
     m_Modifications:
+    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
+      propertyPath: SFXClips.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
+      propertyPath: SFXClips.Array.data[11]
+      value: 
+      objectReference: {fileID: 8300000, guid: 10aecfcc6e6683a4ea1769481095c16a, type: 3}
     - target: {fileID: 2564125911862450370, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
       propertyPath: m_Name
       value: SoundManager
