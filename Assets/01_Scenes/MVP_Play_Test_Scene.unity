@@ -1396,52 +1396,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29fa9143defef3040bd0bc58f2800983, type: 3}
---- !u!1 &646735523
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 646735525}
-  - component: {fileID: 646735524}
-  m_Layer: 0
-  m_Name: PlayerSpawner
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &646735524
+--- !u!114 &646735524 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2112808410602892546, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+  m_PrefabInstance: {fileID: 2956151449429015115}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646735523}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0b5c9b1a39abc04aab2c55afa1e4b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4239740537725770930, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
-  defaultSpawnPosition: {x: 0, y: 0, z: 0}
---- !u!4 &646735525
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646735523}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &680739650 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 96719386605847192, guid: f0b5bffe8f02ac542a1728ee5a073e77, type: 3}
@@ -9777,14 +9742,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldGenerator
       objectReference: {fileID: 0}
-    - target: {fileID: 3803768538770696001, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSetPieces.Array.data[3].setPieces.Array.data[0].prefabs.Array.data[3]
-      value: 
-      objectReference: {fileID: 1236685174018697565, guid: af378479d1cc88b4eb1764d7e4608b79, type: 3}
-    - target: {fileID: 3803768538770696001, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSetPieces.Array.data[3].setPieces.Array.data[0].prefabs.Array.data[5]
-      value: 
-      objectReference: {fileID: 1236685174018697565, guid: 08a0f00ed27d9ea4090674d539ea4109, type: 3}
     - target: {fileID: 6861965118106934245, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10135,7 +10092,6 @@ SceneRoots:
   - {fileID: 986712448}
   - {fileID: 1352368023}
   - {fileID: 1179187423}
-  - {fileID: 646735525}
   - {fileID: 1577644889}
   - {fileID: 979607190}
   - {fileID: 896603027}
