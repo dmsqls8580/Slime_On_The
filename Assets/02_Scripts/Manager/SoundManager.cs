@@ -19,7 +19,8 @@ public enum SFX
     ToolAxe,
     ToolHammer,
     ToolHand,
-    ToolPickaxe
+    ToolPickaxe,
+    PlayerDash
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -79,6 +80,7 @@ public class SoundManager : Singleton<SoundManager>
             case SFX.ToolHammer: return 0.5f;
             case SFX.ToolHand: return 0.5f;
             case SFX.ToolPickaxe: return 0.5f;
+            case SFX.PlayerDash: return 0.2f;
             default: return 1.0f;
         }
     }

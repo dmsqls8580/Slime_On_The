@@ -2438,6 +2438,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1179187423}
     m_Modifications:
+    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
+      propertyPath: SFXClips.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2138908696779709663, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
+      propertyPath: SFXClips.Array.data[11]
+      value: 
+      objectReference: {fileID: 8300000, guid: 10aecfcc6e6683a4ea1769481095c16a, type: 3}
     - target: {fileID: 2564125911862450370, guid: 033f6dea20db5c842a5c4a8d105847b9, type: 3}
       propertyPath: m_Name
       value: SoundManager
@@ -2584,6 +2592,10 @@ PrefabInstance:
       propertyPath: craftingStationManager
       value: 
       objectReference: {fileID: 157456490}
+    - target: {fileID: 7676578801928857935, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ff645c816a3ec8d40846bf1a1acaaf72, type: 2}
     - target: {fileID: 8810412220238784914, guid: 47553b41062a7c54ea5b6e933750a2ff, type: 3}
       propertyPath: uiDead
       value: 
@@ -5449,6 +5461,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: testItems.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: quantities.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: testItems.Array.data[6]
+      value: 
+      objectReference: {fileID: 11400000, guid: 76698687986164e4289109beaa4c4bfc, type: 2}
+    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
+      propertyPath: quantities.Array.data[6]
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3027746625766542306, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: m_Name
       value: InventoryTestSpawner
