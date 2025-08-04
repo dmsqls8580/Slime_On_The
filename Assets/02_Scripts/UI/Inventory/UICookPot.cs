@@ -115,14 +115,16 @@ public class UICookPot : UIBase
         cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
     }
 
-    public void RefreshProcessImg(float processPercentage)
+    public void RefreshProcessImg(int index, float processPercentage)
     {
+        if(CookIndex != index) return;
         processImage.fillAmount = 1 - processPercentage;
     }
 
     public override void Open()
     {
         base.Open();
+        processImage.fillAmount = 0;
         Contents.localScale = Vector3.zero;
         Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
     }
