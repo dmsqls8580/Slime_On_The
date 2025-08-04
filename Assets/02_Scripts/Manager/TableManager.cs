@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class TableManager : Singleton<TableManager>
+public class TableManager : SceneOnlySingleton<TableManager>
 {
     
     [SerializeField] private List<ScriptableObject> tableList = new List<ScriptableObject>();
