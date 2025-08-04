@@ -23,7 +23,6 @@ namespace  Enemystates
         
         public void OnEnter(EnemyController owner)
         {
-            Logger.Log(owner.transform.position.ToString());
             owner.Agent.ResetPath(); // Idle에서 이동 멈추기
             
             // 이전 State가 AttackState인 경우, AttackCooldown만큼 IdleState 유지
