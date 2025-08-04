@@ -20,7 +20,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     private ISlimeTextOut ISlimeTextOut;
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
-    private float slimeDayConsumeAmount = 0.5f;
+    private float slimeDayConsumeAmount = 0.1f;
     public float SlimeDayConsumeAmount => slimeDayConsumeAmount;
 
     public UnityAction<float> OnHpChanged;
