@@ -184,5 +184,18 @@ public class EnemySpawner : MonoBehaviour, ISpawner
         }
     }
 
-    
+    private void OnDrawGizmos()
+    {
+        if (circleCollider2D == null)
+        {
+            circleCollider2D = GetComponent<CircleCollider2D>();            
+        }
+        
+        if (circleCollider2D is CircleCollider2D circle)
+        {
+            Gizmos.color = Color.magenta;
+            Vector3 center = circle.transform.TransformPoint(circle.offset);
+            Gizmos.DrawWireSphere(center, circle.radius);
+        }
+    }
 }

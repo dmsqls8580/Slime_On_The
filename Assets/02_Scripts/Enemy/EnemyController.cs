@@ -33,6 +33,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     
     private bool isAttackCooldown = false;
     public bool IsAttackCooldown => isAttackCooldown;
+
+    private bool isTeleporting = false;
+    public bool IsTeleporting => isTeleporting;
+    
+    private bool isDashing = false;
+    public bool IsDashing => isDashing;
     
     private float attackCooldownTimer = 0f;
     
@@ -389,9 +395,78 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         
     }
 
+    public void TeleportStart()
+    {
+        if (AttackTarget != null)
+        {
+            isTeleporting = true;
+            
+            // 플레이어 피봇이 아래에 있기 때문에 위치 조정
+            Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
+            
+            // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
+            float offsetX = Random.value < 0.5f 
+                ? -EnemyStatus.AttackRange
+                : EnemyStatus.AttackRange;
+            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0); 
+            
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                Agent.Warp(hit.position);
+            }
+        }
+    }
+
+    public void TeleportEnd()
+    {
+        isTeleporting = false;
+    }
+
+    private float curAccelation;
+    
+    // 몬스터 Dash 메서드
     public void Dash()
     {
-        
+        if (AttackTarget != null)
+        {
+            // 초기 가속도 기억
+            curAccelation = Agent.acceleration;
+            Agent.acceleration = 50f;
+            
+            isDashing = true;
+            
+            // 플레이어 피봇이 아래에 있기 때문에 위치 조정
+            Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
+            // 돌진 방향 설정
+            Vector3 dashDir = currentPlayerPos - transform.position;
+            
+            // 대시 출발 위치를 미리 이동시켜 속도 증가하는 느낌 추가
+            // Agent.Warp(transform.position + dashDir.normalized);
+            
+            float dashSpeed = EnemyStatus.MoveSpeed * 5f; // 기존 이동속도의 3배
+            Agent.speed = dashSpeed;
+            
+            // Agent가 돌진할 위치 설정(플레이어보다 조금 뒤로 설정해서 역동성 추가)
+            Vector3 dashTargetPos = transform.position + dashDir.normalized * 5f;
+            
+            // NavMeshAgent를 통해 도착지로 돌진
+            Agent.isStopped = false;
+            Agent.SetDestination(dashTargetPos);
+            
+            // 일정 시간 후 원래 속도 복귀 코루틴 예시
+            StartCoroutine(ResetAgentSpeedAfterDash());
+            
+        }
+    }
+    
+    // Dash 후 원래 속도 복귀용 코루틴
+    private IEnumerator ResetAgentSpeedAfterDash()
+    {
+        yield return new WaitForSeconds(0.5f); // 돌진 지속 시간(0.5초), 실제 상황에 맞게 조정
+        Agent.speed = EnemyStatus.MoveSpeed;
+        Agent.acceleration = curAccelation;
+        isDashing  = false;
     }
     
     // 아이템 드롭 메서드

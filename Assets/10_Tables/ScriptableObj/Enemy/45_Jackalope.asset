@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 45
   EnemyName: Jackalope
-  AttackType: 0
-  ProjectileID: 20
+  AttackType: 2
+  ProjectileID: 26
   SpawnTerrain: 4
   EnemyStats:
   - StatType: 0
@@ -50,10 +50,10 @@ MonoBehaviour:
     Value: 7
   - StatType: 65
     ModifierType: 0
-    Value: 0.7
+    Value: 2
   - StatType: 66
     ModifierType: 0
-    Value: 1
+    Value: 0.4
   - StatType: 67
     ModifierType: 0
     Value: 0.1
