@@ -27,7 +27,6 @@ public class CraftingSlot : MonoBehaviour
     private void Start()
     {
         button.onClick.AddListener(() => OnClickSlot());
-        gameObject.SetActive(false);
     }
 
     public void Initialize(ItemSO _itemSO, CraftingItemInfoPanel _craftingItemInfoPanel, CraftingSlotManager _craftingSlotManager)

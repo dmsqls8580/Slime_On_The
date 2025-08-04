@@ -1,6 +1,7 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using System.Collections.Generic;
 
 public class PlaceMode : MonoBehaviour
 {
@@ -39,6 +40,15 @@ public class PlaceMode : MonoBehaviour
     private void Awake()
     {
         inventoryManager = InventoryManager.Instance;
+        if (tilemap == null)
+        {
+            tilemap = FindObjectsOfType<Tilemap>().FirstOrDefault(t => t.gameObject.name == "Ground");
+        }
+        if (playerTransform == null)
+        {
+            playerTransform = FindObjectsOfType<Transform>().FirstOrDefault(t => t.gameObject.name == "testPlayer_ver2");
+        }
+        gameObject.SetActive(false);
     }
 
     private void Update()
