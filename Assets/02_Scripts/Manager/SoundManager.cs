@@ -76,7 +76,7 @@ public class SoundManager : Singleton<SoundManager>
             case SFX.Error: return 0.5f;
             case SFX.WeatherLightningStartSound: return 0.5f;
             case SFX.WeatherStormSound: return 0.5f;
-            case SFX.ToolAxe: return 0.5f;
+            case SFX.ToolAxe: return 0.8f;
             case SFX.ToolHammer: return 0.5f;
             case SFX.ToolHand: return 0.5f;
             case SFX.ToolPickaxe: return 0.5f;
