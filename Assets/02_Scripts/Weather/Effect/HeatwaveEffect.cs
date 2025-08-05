@@ -13,7 +13,7 @@ public class HeatwaveEffect : WeatherEffectBase
     private Coroutine coroutine = null;
     private bool shouldStop = false;
 
-    private readonly float moveSpeed = 2f;
+    private readonly float moveSpeed = 0.5f;
 
     private readonly float effectInterval = 5f;
     private float effectTimer = 0f;
