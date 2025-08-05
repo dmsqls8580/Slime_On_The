@@ -422,6 +422,15 @@ namespace PlayerStates
                 return;
             }
             
+            if (actCoolDown > 0f)
+            {
+                ChangeState(PlayerState.Gathering);
+                return;
+            }
+
+            float toolActSpd = ToolController.GetAttackSpd();
+            actCoolDown=1f/Mathf.Max(toolActSpd, 0.01f);
+            
             interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             moveInput = Vector2.zero;

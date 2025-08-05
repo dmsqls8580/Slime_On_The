@@ -24,6 +24,11 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
 
+        if (_type == InteractionCommandType.F && ObjectType == ObjectType.Placed)
+        {
+            return;
+        }
+        
         switch (ObjectType)
         {
             case ObjectType.Tree:
@@ -53,5 +58,11 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
 
             destroyEffect.TriggerDestroyEffect(_playerController.transform);
         }
+
+    }   
+    
+    public void DropFirstBreakItems()
+    {
+        DropItems(transform, dropItemsOnFirstBreak);
     }
 }
