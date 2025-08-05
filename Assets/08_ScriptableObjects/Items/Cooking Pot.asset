@@ -51,5 +51,11 @@ MonoBehaviour:
     forbiddenTags: []
   placeableData:
     objectPrefab: {fileID: 3805954016894649699, guid: 89c6f4ce27fe0e944bb6a1aef5bb5f47, type: 3}
-    size: {x: 1, y: 2}
-  recipe: []
+    size: {x: 1, y: 1}
+  recipe:
+  - item: {fileID: 11400000, guid: be3b095375242974a94e25a082e20a7c, type: 2}
+    amount: 0
+  - item: {fileID: 11400000, guid: 62dafe759ccf4484ea3214f4dba1fdda, type: 2}
+    amount: 0
+  - item: {fileID: 11400000, guid: b1b0dbd1b8c78d1419a1516374514ff0, type: 2}
+    amount: 0

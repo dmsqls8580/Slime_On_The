@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Berrys Necklace
+  m_Name: Blue Necklace
   m_EditorClassIdentifier: 
   idx: 631
   itemName: Blue Necklace
@@ -30,9 +30,9 @@ MonoBehaviour:
   equipableData:
     equipableType: 3
     formId: 0
-    maxHealth: 0
-    atk: 1
-    def: 2
+    maxHealth: 20
+    atk: 10
+    def: 0
     spd: 3
     crt: 0
   eatableData:
@@ -52,4 +52,8 @@ MonoBehaviour:
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
-  recipe: []
+  recipe:
+  - item: {fileID: 11400000, guid: 033bfbfe72da4a547ac8821524137c0d, type: 2}
+    amount: 100
+  - item: {fileID: 11400000, guid: 62dafe759ccf4484ea3214f4dba1fdda, type: 2}
+    amount: 1
