@@ -12,13 +12,12 @@ public class GameManager : Singleton<GameManager>
     
     //[SerializeField] private PlayerSpawner playerSpawner;
 
-
     [Header("로딩 화면 설정")]
     public CanvasGroup loadingCanvas;
     public TMP_Text loadingText;
     public Slider loadingBar;
 
-    public bool IsLoading { get; private set; } = false;
+    public bool IsLoading { get; private set; } = true;
 
     private float currentProgress = 0f;
     private float targetProgress = 0f;
@@ -93,6 +92,7 @@ public class GameManager : Singleton<GameManager>
         PlayerStatusManager.Instance.StartDaySlimeGaugeRoutine();
         loadingCanvas.alpha = 0f;
         loadingCanvas.blocksRaycasts = false;
+        IsLoading = false;
     }
 
     public void QuitGame()

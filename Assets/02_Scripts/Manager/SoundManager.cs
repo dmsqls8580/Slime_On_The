@@ -25,6 +25,7 @@ public enum SFX
     PlayerWalkRight,
     SlimeImpactStart,
     ItemPickup,
+    Bubble
 }
 
 public class SoundManager : Singleton<SoundManager>
