@@ -1838,10 +1838,6 @@ PrefabInstance:
       propertyPath: placeMode
       value: 
       objectReference: {fileID: 866466038}
-    - target: {fileID: 3997909778206479401, guid: a8fba154fda9f744f914c2197794019a, type: 3}
-      propertyPath: uiCookPot
-      value: 
-      objectReference: {fileID: 1007484834}
     - target: {fileID: 4661482978686752767, guid: a8fba154fda9f744f914c2197794019a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4093,17 +4089,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3750cc51311e0044eaa148eb7be11547, type: 3}
---- !u!114 &1007484834 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2715125582185853453, guid: 3750cc51311e0044eaa148eb7be11547, type: 3}
-  m_PrefabInstance: {fileID: 1007484833}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ff9d4c4b8c54164da1794249f4da4ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1031340339
 GameObject:
   m_ObjectHideFlags: 0
@@ -5238,9 +5223,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1179187423}
     m_Modifications:
+    - target: {fileID: 2650485509858036675, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_fontSize
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2650485509858036675, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2650485509858036675, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_VerticalAlignment
+      value: 1024
+      objectReference: {fileID: 0}
     - target: {fileID: 3993191234020326395, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
       propertyPath: m_Name
-      value: HoldManager
+      value: Hold&TooltipManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671073778707646717, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671073778707646717, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671073778707646717, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 4671073778707646717, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5564998969744459731, guid: 464fdafa6c1b4c54281a58ba993e9f69, type: 3}
       propertyPath: m_LocalPosition.x
