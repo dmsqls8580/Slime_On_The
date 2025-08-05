@@ -85,7 +85,7 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler, IPointerEn
         var item = GetData();
         if (item != null && item.IsValid)
         {
-            TooltipManager.Instance.Show(item.ItemData.itemName);
+            TooltipManager.Instance.Show(item.ItemData.description);
         }
     }
 
