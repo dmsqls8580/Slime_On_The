@@ -63,7 +63,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
         {
             ObjectType.Tree => ToolType.Axe,
             ObjectType.Ore => ToolType.Pickaxe,
-            ObjectType.Placed => ToolType.Shovel,
+            ObjectType.Placed => ToolType.Hammer,
             ObjectType.UnDestroyed => ToolType.None,
         };
     }

@@ -207,6 +207,7 @@ namespace PlayerStates
             timer = 0f;
             attackDone = false;
 
+            SoundManager.Instance.PlaySFX(SFX.SlimeImpactStart);
             _owner.AnimationController.TriggerAttack();
             _owner.SetAttackCoolDown(_skill.cooldown);
         }
@@ -266,6 +267,7 @@ namespace PlayerStates
             timer = 0f;
             attackDone = false;
 
+            SoundManager.Instance.PlaySFX(SFX.SlimeImpactStart);
             _owner.AnimationController.TriggerAttack();
             _owner.SetAttackCoolDown(_skill.cooldown);
         }
