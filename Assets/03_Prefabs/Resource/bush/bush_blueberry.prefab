@@ -100,9 +100,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropItemsOnFirstBreak: []
   dropItemsOnFinalBreak:
-  - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
+  - itemSo: {fileID: 11400000, guid: 033bfbfe72da4a547ac8821524137c0d, type: 2}
     amount: 2
     dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 033bfbfe72da4a547ac8821524137c0d, type: 2}
+    amount: 1
+    dropChance: 50
+  - itemSo: {fileID: 11400000, guid: 033bfbfe72da4a547ac8821524137c0d, type: 2}
+    amount: 1
+    dropChance: 50
   objectType: -1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5

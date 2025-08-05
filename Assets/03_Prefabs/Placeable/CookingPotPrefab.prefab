@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: 21300000, guid: e6b0ffe20aae42041a2f11f94d073232, type: 3}
+  m_Sprite: {fileID: -1137076751, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_FlipX: 0
   m_FlipY: 0
@@ -115,7 +115,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59ecf5921aebdd40b6ddf1338e40765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSO: {fileID: 11400000, guid: 35fee005c317f6c4dad481d794056149, type: 2}
+  itemSO: {fileID: 11400000, guid: c2950bcf421f801419dc98ca09d21235, type: 2}
 --- !u!114 &-7479023644525115619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -128,20 +128,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f8b4df45bea354c8dc33cb97b2de08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItemsOnFirstBreak: []
-  dropItemsOnFinalBreak: []
-  objectType: 2
-  dropItemPrefab: {fileID: 0}
-  dropUpForce: 5
-  dropSideForce: 2
-  dropAngleRange: 60
-  maxHealth: 0
   cookIndex: -1
   currentState: 0
   processPercentage: 1
   maxHealth: 0
+  dropUpForce: 5
+  dropSideForce: 2
+  dropAngleRange: 60
   dropItems: []
-  dropItemPrefab: {fileID: 0}
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
 --- !u!61 &4713157424335962800
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -177,7 +172,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.25}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 2}
     newSize: {x: 2, y: 3}
     adaptiveTilingThreshold: 0.5
