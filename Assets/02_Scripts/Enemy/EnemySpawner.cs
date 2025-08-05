@@ -112,17 +112,12 @@ public class EnemySpawner : MonoBehaviour, ISpawner
             enemy.transform.position = spawnPos;
             enemy.transform.rotation = Quaternion.identity;
             
-            // Todo : EnemyStatus에 EnemySO 정보 전달해주기
-            // 현재 몬스터 프리팹에 EnemySO가 들어가 있어 전달해줄 필요 없음 - 구조 수정 예정
-            
             if (enemy.TryGetComponent<EnemyController>(out var controller))
             {
                 controller.SpawnPos = spawnPos; // 필요시
                 controller.OnSpawnFromPool();
 
                 bool isOnNavMesh = controller.Agent != null && controller.Agent.isOnNavMesh;
-                Debug.Log($"[EnemySpawner] Enemy 스폰 완료: {enemy.name}, 위치: {spawnPos}, NavMesh 여부: {isOnNavMesh}");
-
             }
             else
             {
