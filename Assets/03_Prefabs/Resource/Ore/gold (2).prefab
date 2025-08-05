@@ -135,11 +135,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItems:
-  - itemSo: {fileID: 11400000, guid: 179403ae04e12374ba62f94d2d4919e0, type: 2}
-    amount: 1
-    dropChance: 100
-  - itemSo: {fileID: 11400000, guid: dbe0406fbec74b04ba87212aae284bcb, type: 2}
+  dropItemsOnFirstBreak: []
+  dropItemsOnFinalBreak:
+  - itemSo: {fileID: 11400000, guid: a133227aa6b2a60489fef67196d5a92a, type: 2}
     amount: 1
     dropChance: 100
   objectType: 1

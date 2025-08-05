@@ -38,11 +38,8 @@ namespace PlayerStates
         public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
 
         private InteractionHandler interactionHandler;
-        public InteractionHandler InteractionHandler => interactionHandler;
-
         private InteractionSelector interactionSelector;
-        public InteractionSelector InteractionSelector => interactionSelector;
-
+        
         private PlayerAfterEffect playerAfterEffect;
         public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
 
@@ -50,18 +47,15 @@ namespace PlayerStates
         public Rigidbody2D Rigid2D => rigid2D;
 
         private Vector2 moveInput;
-        private Vector2 lastMoveDir = Vector2.right;
-
         public Vector2 MoveInput => moveInput;
+        
+        private Vector2 lastMoveDir = Vector2.right;
         public Vector2 LastMoveDir => lastMoveDir;
 
         public float actCoolDown { get; internal set; }
 
-        private float damageDelay = 0.5f;
-        private float damageDelayTimer = 0f;
-
+        private string deadDiscription;
         private bool dashTrigger;
-
         public bool DashTrigger
         {
             get => dashTrigger;
@@ -70,7 +64,7 @@ namespace PlayerStates
 
         private bool attackQueued = false;
 
-        public bool CanAttack => attackCooldown <= 0;
+        private bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
 
         public StatBase AttackStat
@@ -152,21 +146,11 @@ namespace PlayerStates
             {
                 attackCooldown -= Time.deltaTime;
             }
-
             if (actCoolDown > 0f)
             {
                 actCoolDown -= Time.deltaTime;
             }
 
-            if (damageDelayTimer > 0f)
-            {
-                damageDelayTimer -= Time.deltaTime;
-            }
-
-            // if (Input.GetKey(KeyCode.T))
-            // {
-            //     TestDeath();
-            // }
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
@@ -480,18 +464,20 @@ namespace PlayerStates
 
         public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
         {
-            if (IsDead || damageDelayTimer > 0f) return;
+            if (IsDead ) return;
             if (_attacker != null)
             {
                 PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f, 0, 0, 0.7f));
-                damageDelayTimer = damageDelay;
 
                 float damage = _attacker.AttackStat.GetCurrent();
                 var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
                 var damageText = textObj.GetComponent<DamageTextUI>();
                 damageText.Init(transform.position, damage, Color.red);
-
+                if (_attackerObj != null && _attackerObj.TryGetComponent(out EnemyController enemyController))
+                {
+                    deadDiscription = enemyController.EnemyStatus.enemySO.EnemyName;
+                }
                 if (PlayerStatusManager.CurrentHp <= 0)
                 {
                     Dead();
@@ -505,33 +491,24 @@ namespace PlayerStates
             {
                 IsDead = true;
                 animationController.TriggerDead();
-                StartCoroutine(DelayDeathUI(3f, "아기 거북이"));
+                StartCoroutine(DelayDeathUI(3f, deadDiscription));
                 ChangeState(PlayerState.Dead);
             }
         }
-
-        public void TestDeath()
-        {
-            PlayerStatusManager.ConsumeHp(50f);
-            IsDead = true;
-            animationController.TriggerDead();
-            StartCoroutine(DelayDeathUI(3f, "행복사"));
-            ChangeState(PlayerState.Dead);
-        }
-
+        
         // 죽음 연출 후 UI 딜레이 호출
         private IEnumerator DelayDeathUI(float _delay, string _reason)
         {
-            yield return new WaitForSeconds(_delay);
-            uiDead.TriggerDeath(1, _reason);
+            yield return new WaitForSecondsRealtime(_delay);
+            uiDead.TriggerDeath(GameManager.Instance.timeManager.Days, _reason);
         }
 
-        public void Respawn(Vector3 _spawnPos)
-        {
-            //PlayerStatus.CurrentHp = PlayerStatus.MaxHp;
-            IsDead = false;
-            transform.position = _spawnPos;
-            ChangeState(PlayerState.Idle);
-        }
+        // public void Respawn(Vector3 _spawnPos)
+        // {
+        //     //PlayerStatus.CurrentHp = PlayerStatus.MaxHp;
+        //     IsDead = false;
+        //     transform.position = _spawnPos;
+        //     ChangeState(PlayerState.Idle);
+        // }
     }
 }
