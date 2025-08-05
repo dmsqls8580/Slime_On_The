@@ -25,6 +25,8 @@ public class Bubble : ProjectileBase
         transform.rotation = Quaternion.Euler(0, 0, angle);
         
         animator.speed = 1;
+        
+        ObjectPoolManager.Instance.ReturnObject(this.gameObject, lifeTime);
     }
     
     protected override void OnTriggerEnter2D(Collider2D other)
@@ -39,7 +41,13 @@ public class Bubble : ProjectileBase
             ObjectPoolManager.Instance.ReturnObject(this.gameObject);
         }
     }
-    
+
+    public override void OnSpawnFromPool()
+    {
+        base.OnSpawnFromPool();
+        SoundManager.Instance.PlaySFX(SFX.Bubble);
+    }
+
     public override void OnReturnToPool()
     {
         base.OnReturnToPool();

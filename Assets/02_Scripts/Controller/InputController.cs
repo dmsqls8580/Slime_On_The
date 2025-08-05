@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class InputController : Singleton<InputController>
+public class InputController : SceneOnlySingleton<InputController>
 {
     public PlayerInput PlayerInputs{get; set;}
     public PlayerInput.PlayerActions PlayerActions {get; set;}

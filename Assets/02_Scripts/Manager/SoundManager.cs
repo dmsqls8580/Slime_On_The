@@ -24,6 +24,7 @@ public enum SFX
     PlayerWalkRight,
     SlimeImpactStart,
     ItemPickup,
+    Bubble
 }
 
 public enum Ambient

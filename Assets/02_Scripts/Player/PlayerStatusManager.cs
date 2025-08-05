@@ -194,15 +194,10 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
-
-        if (!staminaRecoverRoutine.IsUnityNull())
-        {
-            StopCoroutine(staminaRecoverRoutine);
-        }
-
-        staminaRecoverRoutine = StartCoroutine(StartDefaultStaminaRecover());
+        StartStaminaRoutine();
+        
     }
-
+    
     private void UpdateHungerGaugeUI()
     {
         if (hungerGaugeImage.IsUnityNull())
@@ -223,13 +218,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.Consume(StatType.CurrentStamina, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateStaminaGaugeUI();
-
-        if (!staminaRecoverRoutine.IsUnityNull())
-        {
-            StopCoroutine(staminaRecoverRoutine);
-        }
-
-        staminaRecoverRoutine = StartCoroutine(StartDefaultStaminaRecover());
     }
 
     public void RecoverStamina(float _amount)
@@ -276,6 +264,16 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         }
     }
 
+    private void StartStaminaRoutine()
+    {
+        if (!staminaRecoverRoutine.IsUnityNull())
+        {
+            return;
+        }
+
+        staminaRecoverRoutine = StartCoroutine(StartDefaultStaminaRecover());
+    }
+
     private void UpdateStaminaGaugeUI()
     {
         if (staminaGaugeImage.IsUnityNull())
@@ -286,6 +284,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         float cur = CurrentStamina;
         float max = MaxHunger;
         staminaGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
+        
+        StartStaminaRoutine();
     }
     //----------------------
 
@@ -311,6 +311,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         UpdateHungerGaugeUI();
         UpdateStaminaGaugeUI();
         UpdateHpUI();
+        StartStaminaRoutine();
     }
 
     private void NotifyHpChanged()
