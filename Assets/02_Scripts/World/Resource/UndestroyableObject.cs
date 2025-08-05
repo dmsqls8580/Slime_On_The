@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 
 public class UndestroyableObject : BaseInteractableObject, IInteractable
 {
-
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         if(isInteracted)
@@ -14,17 +13,11 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         isInteracted = true;
         
         var toolController = _playerController.GetComponent<ToolController>();
-        float toolPower = toolController.IsUnityNull() ? toolController.GetAttackPow() : 1f;
+        float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
 
-        if (objectType == ObjectType.UnDestroyed)
-        {
-            DropItems(_playerController.transform);
-        }
+        SoundManager.Instance.PlaySFX(SFX.ToolHand);
         
         TakeInteraction(toolPower);
-
-        if (_type == InteractionCommandType.F)
-            UIManager.Instance.Toggle<UICrafting>();
 
         if (currentHealth <= 0)
         {

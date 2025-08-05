@@ -23,7 +23,7 @@ public enum ToolType
     Shovel = 3,
     FishingRod = 4,
     Hoe = 5, 
-    WateringCan = 6, 
+    Hammer = 6, 
 }
 
 public enum EquipType

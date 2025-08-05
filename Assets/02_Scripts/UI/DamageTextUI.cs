@@ -44,7 +44,6 @@ public class DamageTextUI : MonoBehaviour
         rectTransform.position = screenPos;
         startScreenPos = screenPos;
 
-        Logger.Log("DamageText실핼");
         StartCoroutine(DamageTextAnim());
     }
 

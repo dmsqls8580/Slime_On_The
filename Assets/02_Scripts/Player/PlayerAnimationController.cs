@@ -15,8 +15,14 @@ public class PlayerAnimationController : MonoBehaviour
 
     private bool isLook = false;
     private Vector2 lastLookDir = Vector2.right;
+    private Camera _camera;
 
     public Animator Animator { get; private set; }
+
+    private void Start()
+    {
+        _camera = Camera.main;
+    }
 
     private void Awake()
     {
@@ -101,8 +107,8 @@ public class PlayerAnimationController : MonoBehaviour
     public Vector2 UpdatePlayerDirectionByMouse()
     {
         Vector2 mouseScreenPos = inputController.LookDirection;
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
-            Mathf.Abs(Camera.main.transform.position.z)));
+        Vector3 mouseWorldPos = _camera.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
+            Mathf.Abs(_camera.transform.position.z)));
         Vector3 playerPos = transform.position;
         return (mouseWorldPos - playerPos).normalized;
     }

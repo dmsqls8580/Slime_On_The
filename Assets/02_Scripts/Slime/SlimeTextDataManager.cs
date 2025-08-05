@@ -31,8 +31,6 @@ public class SlimeTextDataManager : SceneOnlySingleton<SlimeTextDataManager>
         slimeTextDatas.Clear();
         var data = JsonUtility.FromJson<SlimeDataList>(_json.text);
         slimeTextDatas.AddRange(data.messages);
-
-        Logger.Log($"슬라임텍스트 데이터 로 - [{slimeTextDatas.Count}]개 항목");
     }
 
     public string GetRandomText(string _key, float _gauge)

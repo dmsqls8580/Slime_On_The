@@ -23,7 +23,7 @@ public class StormEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                Logger.Log("날씨: 스톰켜짐");
+                SoundManager.Instance.PlaySFX(SFX.WeatherLightningStartSound);
                 SetNextLightningTimer();
                 break;
         }

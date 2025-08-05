@@ -19,7 +19,6 @@ namespace PlayerStates
 
         public void OnUpdate(PlayerController _owner)
         {
-            
         }
 
         public void OnFixedUpdate(PlayerController _owner) { }
@@ -51,19 +50,19 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
-
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
         }
 
         public void OnUpdate(PlayerController _owner)
-        {   
+        {
             if (!_owner.CanMove)
             {
                 _owner.Rigid2D.velocity = Vector2.zero;
                 return;
             }
+
             _owner.Movement();
 
             Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
@@ -115,6 +114,9 @@ namespace PlayerStates
             {
                 return;
             }
+            
+            SoundManager.Instance.PlaySFX(SFX.PlayerDash);
+            
             _owner.PlayerStatusManager.ConsumeStamina(consumeAmount);
             lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             dashDirection = _owner.LastMoveDir.sqrMagnitude > 0.01f ? _owner.LastMoveDir : Vector2.right;
@@ -145,7 +147,7 @@ namespace PlayerStates
         {
             _owner.Rigid2D.velocity = Vector2.zero;
             _owner.AnimationController.ReleaseLookDir();
-            
+
             _owner.PlayerAfterEffect.SetEffectActive(false);
         }
 
@@ -178,7 +180,6 @@ namespace PlayerStates
             _skill = _owner.PlayerSkillMananger.GetSkillSlot(attackSlot);
             if (_skill == null)
             {
-                Debug.LogError($"Skill not found for index {attackSlot}");
                 attackDone = true;
                 return;
             }
@@ -282,20 +283,38 @@ namespace PlayerStates
     public class GatherState : IState<PlayerController, PlayerState>
     {
         private float gatherDuration = 0.5f; // 이동 제한 시간
-        private float timer = 0f;
+        private float gatherTime = 0f;
+        private float actCoolDown = 0f;
+
         public void OnEnter(PlayerController _owner)
         {
-            timer = gatherDuration;
-            _owner.Rigid2D.velocity = Vector2.zero; 
-            
+            gatherTime = gatherDuration;
+            _owner.Rigid2D.velocity = Vector2.zero;
+            actCoolDown = 0f;
             _owner.SetCanMove(false);
             _owner.AnimationController.TriggerGather();
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            timer -= Time.deltaTime;
-           
+            gatherTime -= Time.deltaTime;
+            actCoolDown -= Time.deltaTime;
+
+            // 쿨타임이 끝났고, 키가 계속 눌려 있고, 다시 채집 가능한 상태라면
+            if (actCoolDown <= 0f &&
+                InputController.Instance.PlayerActions.Gathering.IsPressed() &&
+                _owner.CanGathering())
+            {
+                _owner.InteractionHandler.HandleInteraction(
+                    _owner.InteractionSelector.SpaceInteractable,
+                    InteractionCommandType.Space,
+                    _owner);
+                
+                float toolActSpd = _owner.ToolController.GetAttackSpd();
+                actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
+
+                _owner.AnimationController.TriggerGather();
+            }
         }
 
         public void OnFixedUpdate(PlayerController _owner) { }
@@ -307,12 +326,10 @@ namespace PlayerStates
 
         public PlayerState CheckTransition(PlayerController _owner)
         {
-            if (timer <= 0f)
+            // 누르고 있지 않으면 종료
+            if (!InputController.Instance.PlayerActions.Gathering.IsPressed())
             {
-                if (_owner.MoveInput.sqrMagnitude > 0.01f)
-                    return PlayerState.Move;
-
-                return PlayerState.Idle;
+                return _owner.MoveInput.sqrMagnitude > 0.01f ? PlayerState.Move : PlayerState.Idle;
             }
 
             return PlayerState.Gathering;
@@ -321,7 +338,6 @@ namespace PlayerStates
 
     public class DeadState : IState<PlayerController, PlayerState>
     {
-        
         public void OnEnter(PlayerController _owner)
         {
         }

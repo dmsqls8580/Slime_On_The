@@ -10,6 +10,7 @@ public class LightningStrike : MonoBehaviour
 
     private void Start()
     {
+        SoundManager.Instance.PlaySFX(SFX.WeatherStormSound);
         Destroy(gameObject, lifeTime);
     }
 

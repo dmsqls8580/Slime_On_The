@@ -116,7 +116,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
             if (timeManager == null)
             {
-                Debug.LogWarning("[PlayerStatusManager] TimeManager에 접근할 수 없습니다.");
                 continue;
             }
 
@@ -173,7 +172,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     {
         if (hpGaugeImage.IsUnityNull())
         {
-            Logger.Log("hpGaugeImage is nullasa");
             return;
         }
 
@@ -360,7 +358,5 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
             {
                 playerController.Dead();
             }
-
-            Debug.Log($"대미지 입음! 현제체력: {statManager.GetStat<ResourceStat>(StatType.CurrentHp).CurrentValue}");
         }
     }
