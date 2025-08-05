@@ -29,7 +29,6 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
     private List<GameObject> leafSpells = new List<GameObject>();
-    private string lastLogMessage = ""; // Todo : 나중에 삭제 
     
     /************************ AggroSystem ***********************/
     
@@ -237,14 +236,6 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         
         // Enemy의 이동 방향에 따라 SpriteRenderer flipX
         spriteRenderer.flipX = lastFlipX;
-
-        // Todo : 나중에 삭제
-        string currentMessage = $"CurrentState = {CurrentState}";
-        if (currentMessage != lastLogMessage)
-        {
-            Logger.Log(currentMessage);
-            lastLogMessage = currentMessage;
-        }
     }
     
     protected override IState<Boss1Controller, Boss1State> GetState(Boss1State state)

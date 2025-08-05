@@ -1,5 +1,5 @@
 idx,itemName,description,icon,ItemTypes,stackable,maxStack,toolType,power,durability,actSpd,equipableType,formId,maxHealth,atk,def,spd,crt,recoverHP,fullness,slimeGauge,duration,freshness,CookableDataTag,contributionTIme,priority,Meat,Fish,Vegetable,Fruit,Honey,Salt,Stick,objectPrefab,size
-0,,,,None,n,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,Wood,나무,,Material,y,99,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 1,Stone,돌,,Material,y,99,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 2,Plank,판자,,Material,y,99,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -23,9 +23,9 @@ idx,itemName,description,icon,ItemTypes,stackable,maxStack,toolType,power,durabi
 402,Wood Pickaxe,나무 곡괭이,,Tool,n,1,Pickaxe,3,0,1,,,,,,,,,,,,,,,,,,,,,,,,
 403,Wood Shovel,나무 삽,,Tool,n,1,Shovel,3,0,1,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-411,Stone Shovel,돌 도끼,,Tool,n,1,Axe,4,0,1.05,,,,,,,,,,,,,,,,,,,,,,,,
+411,Stone Axe,돌 도끼,,Tool,n,1,Axe,4,0,1.05,,,,,,,,,,,,,,,,,,,,,,,,
 412,Stone Pickaxe,돌 곡괭이,,Tool,n,1,Pickaxe,4,0,1.05,,,,,,,,,,,,,,,,,,,,,,,,
-413,Wood Shovel,돌 삽,,Tool,n,1,Shovel,4,0,1,,,,,,,,,,,,,,,,,,,,,,,,
+413,Stone Shovel,돌 도끼,,Tool,n,1,Shovel,4,0,1.05,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 421,Copper Axe,구리 도끼,,Tool,n,1,Axe,5,0,1.2,,,,,,,,,,,,,,,,,,,,,,,,
 422,Copper Pickaxe,구리 곡괭이,,Tool,n,1,Pickaxe,5,0,1.2,,,,,,,,,,,,,,,,,,,,,,,,
