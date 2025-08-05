@@ -58,6 +58,7 @@ public class TimeManager : MonoBehaviour
         if (previousTimeOfDay != currentTimeOfDay)
         {
             currentTimeOfDay = previousTimeOfDay;
+            OnTimeChanged(currentTimeOfDay);
             fogVignette.ApplyEffect(CurrentTimeOfDay);
             weatherManager.UpdateDayCount();
         }
@@ -83,12 +84,21 @@ public class TimeManager : MonoBehaviour
         return TimeOfDay.Evening;
     }
 
-
     IEnumerator NextDay()
     {
         days++;
         time = 0;
         Debug.Log($"[TimeManager] 현재 날짜: {days}일차");
         yield break;
+    }
+
+    public void OnTimeChanged(TimeOfDay _newTime)
+    {
+        weatherManager.currentTimeOfDay = _newTime;
+
+        if (_newTime == TimeOfDay.Night)
+            weatherManager.heatwave.OnNightStarted();
+        else if (_newTime == TimeOfDay.Day)
+            weatherManager.heatwave.OnNightEnded();
     }
 }
