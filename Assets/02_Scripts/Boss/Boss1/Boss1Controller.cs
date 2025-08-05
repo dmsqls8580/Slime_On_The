@@ -75,6 +75,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         if (BossStatus.CurrentHealth <= 0)
         {
             ChangeState(Boss1State.Dead);
+            
+            Collider.enabled = false;
 
             // 오브젝트 풀 반환
             SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
@@ -146,6 +148,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     
     public void OnReturnToPool()
     {
+        Collider.enabled = true;
         gameObject.SetActive(false);
     }
     
