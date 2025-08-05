@@ -91,7 +91,13 @@ public class SetPiecePlacer : MonoBehaviour
 
                 // 2. 거리 및 충돌 검사
                 if (placedPositions.Any(p => Vector3.Distance(p, spawnPos) < 1f)) continue;
-                if (Physics2D.OverlapCircleAll(spawnPos, 0.5f).Length > 0) continue;
+                var colliders = Physics2D.OverlapCircleAll(spawnPos, 0.5f);
+
+                // 플레이어를 제외한 충돌체가 있는지 검사
+                bool hasValidCollision = colliders.Any(c =>
+                    !(c.CompareTag("Player"))
+                );
+                if (hasValidCollision) continue;
 
                 // 3. 프리팹 생성
                 GameObject prefab = selected.prefabs[prng.Next(selected.prefabs.Count)];
