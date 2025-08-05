@@ -31,6 +31,7 @@ public class TimeManager : MonoBehaviour
     // 시간 계산 (1시간 = 20초 기준)
     public float Hours => time / 20f;
     public float Minutes => (time % 20f) / (20f / 60f);
+    public int Days => days;
     public TimeOfDay CurrentTimeOfDay => currentTimeOfDay;
 
     private void Update()
