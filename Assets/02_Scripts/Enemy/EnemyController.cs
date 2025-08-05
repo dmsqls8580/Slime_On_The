@@ -314,7 +314,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             lastFlipX = Agent.velocity.x < 0;
         }
         
-        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.None)
+        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.None
+            && !isBombing && !isDashing && !isTeleporting)
         {
             float x = AttackTarget.transform.position.x - transform.position.x;
             bool flipToTarget = x < 0;
@@ -470,6 +471,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private IEnumerator ResetAgentSpeedAfterDash()
     {
         yield return new WaitForSeconds(0.5f); // 돌진 지속 시간(0.5초), 실제 상황에 맞게 조정
+        // 대시 종료 시 이동 완전 정지
+        Agent.isStopped = true;
+
+        // 현재 위치에 즉시 위치 보정 (물리 위치와 NavMeshAgent 위치 싱크)
+        Agent.Warp(transform.position);
+        
         Agent.speed = EnemyStatus.MoveSpeed;
         Agent.acceleration = curAccelation;
         isDashing  = false;
