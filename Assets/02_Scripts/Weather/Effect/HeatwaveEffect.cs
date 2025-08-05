@@ -30,7 +30,6 @@ public class HeatwaveEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                Logger.Log("날씨: 폭염 켜짐");
                 StartHeatwave();
                 break;
             case 2:
@@ -67,7 +66,6 @@ public class HeatwaveEffect : WeatherEffectBase
                 playerStatusManager.UpdateMoveSpeed = moveSpeed;
                 goto case 1;
             case 1:
-                Logger.Log("날씨: 폭염 꺼짐");
                 StopHeatwave();
                 break;
         }
@@ -80,7 +78,7 @@ public class HeatwaveEffect : WeatherEffectBase
         if (coroutine != null)
             weatherManager.StopCoroutine(coroutine);
 
-        weatherManager.StartCoroutine(FadeInToLoop());
+        weatherManager.StartCoroutine(Fade());
     }
 
     private void StopHeatwave()
@@ -88,7 +86,7 @@ public class HeatwaveEffect : WeatherEffectBase
         shouldStop = true;
     }
 
-    private IEnumerator FadeInToLoop()
+    private IEnumerator Fade()
     {
         float duration = 3f;
         float timer = 0f;

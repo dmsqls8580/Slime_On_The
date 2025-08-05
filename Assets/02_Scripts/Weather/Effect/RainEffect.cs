@@ -44,7 +44,6 @@ public class RainEffect : WeatherEffectBase
         {
             weatherManager.StopCoroutine(coroutine);
         }
-        Logger.Log($"날씨: 비 {currentLevel}단계.");
         coroutine = weatherManager.StartCoroutine(Fade(true));
     }
 
@@ -79,11 +78,12 @@ public class RainEffect : WeatherEffectBase
                 break;
         }
 
+        SoundManager.Instance.StopBGM();
+
         if (coroutine != null)
         {
             weatherManager.StopCoroutine(coroutine);
         }
-        Logger.Log("날씨: 비 꺼짐.");
         coroutine = weatherManager.StartCoroutine(Fade(false));
     }
 
