@@ -142,7 +142,8 @@ public class CookedData
 [System.Serializable]
 public class PlaceableData
 {
-    public PlaceableInfo placeableInfo;
+    public GameObject objectPrefab;
+    public Vector2Int size;
 }
 
 [System.Serializable]

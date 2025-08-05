@@ -130,11 +130,10 @@ public class PlaceMode : MonoBehaviour
     private void Initialize(ItemSO _itemSO)
     {
         itemSO = _itemSO;
-        PlaceableInfo info = itemSO.placeableData.placeableInfo;
-        objectPrefab = info.objectPrefab;
+        objectPrefab = itemSO.placeableData.objectPrefab;
         mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        prefabInstance = Instantiate(info.objectPrefab, mouseWorldPos, Quaternion.identity);
-        size = info.size;
+        prefabInstance = Instantiate(objectPrefab, mouseWorldPos, Quaternion.identity);
+        size = itemSO.placeableData.size;
         clampArea.Initialize(tilemap);
 
         for (int i = 0; i < size.x * size.y; i++)
