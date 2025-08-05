@@ -16,6 +16,8 @@ public class SpawnerPrefabWithDensity
 {
     public GameObject prefab;
     public SpawnDensity density;
+    [Tooltip("이 스포너 간 최소 거리 (지정하지 않으면 기본값 사용)")]
+    public float minDistance = -1f;
 }
 
 [System.Serializable]
@@ -32,7 +34,7 @@ public class EnemySpawnerPlacer : MonoBehaviour
     public Tilemap groundTilemap;
     public Transform spawnerParent;
 
-    public float minSpawnerDistance = 50;
+    public float minSpawnerDistance = 30;
     public float safeDistanceFromPlayer = 80;
 
     public int seed = 12345;
@@ -67,8 +69,11 @@ public class EnemySpawnerPlacer : MonoBehaviour
                 if (Vector3.Distance(centerWorldPos, Vector3.zero) < safeDistanceFromPlayer)
                     continue;
 
+                // 개별 스포너의 minDistance 사용 (없으면 기본값)
+                float thisMinDistance = entry.minDistance > 0 ? entry.minDistance : minSpawnerDistance;
+
                 // 기존 스포너들과 거리 확인
-                if (placedSpawnerPositions.Any(p => Vector3.Distance(p, centerWorldPos) < minSpawnerDistance))
+                if (placedSpawnerPositions.Any(p => Vector3.Distance(p, centerWorldPos) < thisMinDistance))
                     continue;
 
                 GameObject instance = Instantiate(prefab, centerWorldPos, Quaternion.identity);
@@ -76,7 +81,6 @@ public class EnemySpawnerPlacer : MonoBehaviour
                 var collider = instance.GetComponent<CircleCollider2D>();
                 if (collider == null)
                 {
-                    Debug.LogWarning($"[EnemySpawnerPlacer] {prefab.name} 에 CircleCollider2D 없음 → 생성 취소");
                     Destroy(instance);
                     continue;
                 }
