@@ -20,29 +20,29 @@ namespace PlayerStates
         [SerializeField] private UIDead uiDead;
         [SerializeField] private UIQuickSlot uiQuickSlot;
         [SerializeField] private PlaceMode placeMode;
-        
+
         public Transform attackPivotRotate;
         public Transform attackPivot;
         public Transform AttackPivot => attackPivot;
         public PlayerStatusManager PlayerStatusManager { get; private set; }
-        
+
         private ToolController toolController;
         public ToolController ToolController => toolController;
-        
+
         private InputController inputController;
-        
+
         private PlayerAnimationController animationController;
         public PlayerAnimationController AnimationController => animationController;
-        
+
         private PlayerSkillMananger playerSkillMananger;
         public PlayerSkillMananger PlayerSkillMananger => playerSkillMananger;
 
         private InteractionHandler interactionHandler;
         public InteractionHandler InteractionHandler => interactionHandler;
-        
+
         private InteractionSelector interactionSelector;
         public InteractionSelector InteractionSelector => interactionSelector;
-        
+
         private PlayerAfterEffect playerAfterEffect;
         public PlayerAfterEffect PlayerAfterEffect => playerAfterEffect;
 
@@ -56,7 +56,7 @@ namespace PlayerStates
         public Vector2 LastMoveDir => lastMoveDir;
 
         public float actCoolDown { get; internal set; }
-        
+
         private float damageDelay = 0.5f;
         private float damageDelayTimer = 0f;
 
@@ -77,7 +77,7 @@ namespace PlayerStates
         {
             get
             {
-                if (PlayerStatusManager == null) return null;// StatManager 접근 방식에 맞게
+                if (PlayerStatusManager == null) return null; // StatManager 접근 방식에 맞게
                 if (StatManager == null) return null;
                 if (StatManager.Stats.TryGetValue(StatType.Attack, out var stat))
                     return stat;
@@ -88,7 +88,7 @@ namespace PlayerStates
         public IDamageable Target { get; }
 
         public bool IsDead { get; set; }
-        public bool CanRespawn { get; set; } 
+        public bool CanRespawn { get; set; }
         public bool CanMove { get; private set; } = true;
 
         public Collider2D Collider => GetComponent<Collider2D>();
@@ -117,12 +117,12 @@ namespace PlayerStates
             StatManager.Init(playerData);
 
             var action = inputController.PlayerActions;
-            
+
             //Look
-            action.Look.performed+=OnLook;
+            action.Look.performed += OnLook;
             // Move
             action.Move.performed += OnMove;
-            action.Move.canceled += CancelMove ;
+            action.Move.canceled += CancelMove;
             // Attack
             action.Attack0.performed += Attack0;
             action.Attack1.performed += Attack1;
@@ -192,7 +192,7 @@ namespace PlayerStates
             }
         }
 
-        public override void FindTarget(){ }
+        public override void FindTarget() { }
 
         //------------------------------------------------------------
 
@@ -200,12 +200,14 @@ namespace PlayerStates
         {
             inputController.LookDirection = _context.ReadValue<Vector2>();
         }
+
         private void OnMove(InputAction.CallbackContext _context)
         {
             moveInput = _context.ReadValue<Vector2>();
             if (moveInput.sqrMagnitude > 0.01f)
                 lastMoveDir = moveInput.normalized;
         }
+
         private void CancelMove(InputAction.CallbackContext _context)
         {
             moveInput = rigid2D.velocity = Vector2.zero;
@@ -221,39 +223,49 @@ namespace PlayerStates
                 HoldManager.Instance.DropHeldItem();
                 return;
             }
+
             if (CanAttack)
                 attackQueued = true;
+            
         }
+
         private void Attack1(InputAction.CallbackContext _context)
         {
             if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
-                PlayerStatusManager.CurrentSlimeGauge < 5) 
+                PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
-            
+
             if (HoldManager.Instance.IsHolding)
             {
                 HoldManager.Instance.ReturnToOrigin();
                 return;
             }
-            
+
             if (CanAttack)
                 attackQueued = true;
+            
         }
 
         private void OnDash(InputAction.CallbackContext _context)
         {
-            if (PlayerStatusManager.CurrentStamina <50)
+            if (PlayerStatusManager.CurrentStamina < 50)
             {
                 return;
             }
+
+            if (UIManager.Instance.IsAnyUIOpen)
+            {
+                return;
+            }
+
             dashTrigger = true;
         }
-        
+
         private void OnInteraction(InputAction.CallbackContext _context)
         {
             Interaction();
         }
-        
+
         private void OnGathering(InputAction.CallbackContext _context)
         {
             Gathering();
@@ -263,7 +275,7 @@ namespace PlayerStates
         {
             UIManager.Instance.Toggle<UIInventory>();
         }
-        
+
         private void OnCrafting(InputAction.CallbackContext _context)
         {
             UIManager.Instance.Toggle<UICrafting>();
@@ -276,7 +288,7 @@ namespace PlayerStates
                 UIManager.Instance.Toggle<UIPauseMenu>();
             }
         }
-        
+
         private void OnUse(InputAction.CallbackContext _context)
         {
             var quickSlot = uiQuickSlot.GetSelectedSlot();
@@ -290,7 +302,7 @@ namespace PlayerStates
 
             var realSlot = uiInventory.GetInventorySlotByIndex(uiQuickSlot.SelectedIndex);
             if (realSlot == null) return;
-            
+
             InventoryInteractionHandler.Instance.TryUse(data, realSlot);
         }
 
@@ -298,14 +310,14 @@ namespace PlayerStates
         {
             placeMode.Place();
         }
-        
+
         //--------------------------------------------------------------
-        
+
         public void Attack()
         {
             attackQueued = false;
         }
-        
+
         private float attackCooldown = 0f;
 
         public void SetAttackCoolDown(float _coolDown)
@@ -321,6 +333,7 @@ namespace PlayerStates
         {
             return inputController.PlayerActions.Attack0.IsPressed();
         }
+
         /// <summary>
         /// 특수공격버튼이 눌리고있는지 확인하는 bool메서드
         /// </summary>
@@ -329,7 +342,7 @@ namespace PlayerStates
         {
             return inputController.PlayerActions.Attack1.IsPressed();
         }
-        
+
         public void ResetAttackTrigger() => attackQueued = false;
 
         public override void Movement()
@@ -339,8 +352,9 @@ namespace PlayerStates
                 rigid2D.velocity = Vector2.zero;
                 return;
             }
+
             base.Movement();
-            
+
             float speed = PlayerStatusManager.MoveSpeed;
 
             Vector2 moveVelocity = Vector2.zero;
@@ -349,9 +363,9 @@ namespace PlayerStates
 
             rigid2D.velocity = moveVelocity;
         }
-        
+
         public void SetCanMove(bool _canMove) => CanMove = _canMove;
-        
+
         // NPC, 창고, 제작대 등 이용
         public void Interaction()
         {
@@ -361,73 +375,85 @@ namespace PlayerStates
             {
                 return;
             }
-            
+
             interactionHandler.HandleInteraction(target, InteractionCommandType.F, this);
         }
-        
+
         // 스페이스바 눌렀을 때 오브젝트 피깎기.
-        
+
         public bool CanGathering()
         {
             if (uiQuickSlot.IsUnityNull())
             {
                 return false;
             }
+
             QuickSlot selectedSlot = uiQuickSlot.GetSelectedSlot();
             if (selectedSlot.IsUnityNull())
             {
                 return false;
             }
-            
+
             if (interactionSelector.IsUnityNull())
             {
                 return false;
             }
-            
+
             var target = interactionSelector.SpaceInteractable;
-            
+
             if (target.IsUnityNull())
             {
                 return false;
             }
-            
+
             if (!target.TryGetComponent(out BaseInteractableObject resource) || resource == null)
             {
                 return false;
             }
-            if(resource.IsInteracted)
+
+            if (resource.IsInteracted)
                 return false;
-            
+
             ToolType toolType = selectedSlot.GetToolType();
             ToolType requiredToolType = resource.GetRequiredToolType();
-            
+
             if (requiredToolType == ToolType.None)
             {
                 // 맨손 상호작용을 허용 (ex: Berry)
                 return true;
             }
+
             return toolType == requiredToolType;
         }
 
         public void Gathering()
         {
-            if(!CanGathering())
+            if (!CanGathering())
             {
                 return;
             }
-            
+
             var target = interactionSelector.SpaceInteractable;
             if (target == null)
             {
                 return;
             }
-            
+
+            if (actCoolDown > 0f)
+            {
+                ChangeState(PlayerState.Gathering);
+                return;
+            }
+
+            float toolActSpd = ToolController.GetAttackSpd();
+            actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
+
             interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             moveInput = Vector2.zero;
             ChangeState(PlayerState.Gathering);
         }
-        
+
         private void ScanAndAttractItems()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
@@ -447,7 +473,7 @@ namespace PlayerStates
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mouseScreenPos.x, mouseScreenPos.y,
                 Mathf.Abs(Camera.main.transform.position.z)));
             Vector2 dir = (mouseWorldPos - attackPivotRotate.position).normalized;
-            
+
             float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             attackPivotRotate.rotation = Quaternion.Euler(0, 0, angle + 180);
         }
@@ -458,14 +484,14 @@ namespace PlayerStates
             if (_attacker != null)
             {
                 PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
-                animationController.TakeDamageAnim(new Color(1f,0,0,0.7f));
+                animationController.TakeDamageAnim(new Color(1f, 0, 0, 0.7f));
                 damageDelayTimer = damageDelay;
-                
+
                 float damage = _attacker.AttackStat.GetCurrent();
                 var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
                 var damageText = textObj.GetComponent<DamageTextUI>();
                 damageText.Init(transform.position, damage, Color.red);
-                
+
                 if (PlayerStatusManager.CurrentHp <= 0)
                 {
                     Dead();
@@ -492,7 +518,7 @@ namespace PlayerStates
             StartCoroutine(DelayDeathUI(3f, "행복사"));
             ChangeState(PlayerState.Dead);
         }
-        
+
         // 죽음 연출 후 UI 딜레이 호출
         private IEnumerator DelayDeathUI(float _delay, string _reason)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BGM
 {
-    WeatherRainSound
+    WeatherRainSound,
 }
 
 public enum SFX
@@ -20,7 +20,11 @@ public enum SFX
     ToolHammer,
     ToolHand,
     ToolPickaxe,
-    PlayerDash
+    PlayerDash,
+    PlayerWalkLeft,
+    PlayerWalkRight,
+    SlimeImpactStart,
+    ItemPickup,
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -32,10 +36,11 @@ public class SoundManager : Singleton<SoundManager>
     [Header("SFX")]
     [SerializeField] private AudioSource SFXSource;
     [SerializeField] private List<AudioClip> SFXClips;
-    
+
+    private BGM? currentBGM = null;
+
     public float GetBGMVolume() => BGMSource.volume;
     public float GetSFXVolume() => SFXSource.volume;
-
 
     protected override void Awake()
     {
@@ -44,9 +49,23 @@ public class SoundManager : Singleton<SoundManager>
     
     public void ChangeBGM(BGM bgm)
     {
+        if (currentBGM != null && currentBGM != bgm)
+        {
+            BGMSource.Stop();
+        }
+
         AudioClip clip = BGMClips[(int)bgm];
         BGMSource.clip = clip;
+        BGMSource.loop = true;
         BGMSource.Play();
+
+        currentBGM = bgm;
+    }
+
+    public void StopBGM()
+    {
+        BGMSource.Stop();
+        currentBGM = null;
     }
 
     public void PlaySFX(SFX sfx)
@@ -69,18 +88,22 @@ public class SoundManager : Singleton<SoundManager>
     {
         switch (sfx)
         {
-            case SFX.SlimeNormalAttack: return 0.1f;
+            case SFX.SlimeNormalAttack: return 0.2f;
             case SFX.Grount: return 1.0f;
             case SFX.Toggle: return 0.2f;
             case SFX.Click: return 0.8f;
             case SFX.Error: return 0.5f;
             case SFX.WeatherLightningStartSound: return 0.5f;
             case SFX.WeatherStormSound: return 0.5f;
-            case SFX.ToolAxe: return 0.5f;
+            case SFX.ToolAxe: return 0.8f;
             case SFX.ToolHammer: return 0.5f;
             case SFX.ToolHand: return 0.5f;
             case SFX.ToolPickaxe: return 0.5f;
-            case SFX.PlayerDash: return 0.2f;
+            case SFX.PlayerDash: return 0.1f;
+            case SFX.PlayerWalkLeft: return 0.2f;
+            case SFX.PlayerWalkRight: return 0.2f;
+            case SFX.SlimeImpactStart: return 0.2f;
+            case SFX.ItemPickup: return 0.1f;
             default: return 1.0f;
         }
     }

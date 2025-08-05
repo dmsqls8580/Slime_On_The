@@ -24,7 +24,10 @@ public class DropItemData
 public abstract class BaseInteractableObject : MonoBehaviour
 {
     [Header("Drop Item Data Info(SO, 개수, 확률)")]
-    [SerializeField] protected List<DropItemData> dropItems;
+    [Header("Drop Item Data")]
+    [SerializeField] protected List<DropItemData> dropItemsOnFirstBreak; // 나무 → 밑둥
+    [SerializeField] protected List<DropItemData> dropItemsOnFinalBreak; // 밑둥 파괴 시
+
     [SerializeField] protected ObjectType objectType;
 
     [SerializeField] protected GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
@@ -60,28 +63,27 @@ public abstract class BaseInteractableObject : MonoBehaviour
         {
             ObjectType.Tree => ToolType.Axe,
             ObjectType.Ore => ToolType.Pickaxe,
-            ObjectType.Placed => ToolType.Shovel,
+            ObjectType.Placed => ToolType.Hammer,
             ObjectType.UnDestroyed => ToolType.None,
         };
     }
-    
+
     protected void DropItems(Transform _player)
+    {
+        DropItems(_player, dropItemsOnFinalBreak);
+    }
+
+    protected void DropItems(Transform _player, List<DropItemData> itemList)
     {
         float randomChance = Random.value;
 
-        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
-        {
-            return;
-        }
+        if (itemList.IsUnityNull() || dropItemPrefab.IsUnityNull()) return;
 
-        foreach (var item in dropItems)
+        foreach (var item in itemList)
         {
             for (int i = 0; i < item.amount; i++)
             {
-                if (randomChance * 100f > item.dropChance)
-                {
-                    continue;
-                }
+                if (randomChance * 100f > item.dropChance) continue;
 
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
@@ -95,7 +97,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
             }
         }
     }
-    
+
     protected void TakeInteraction(float _damage)
     {
         currentHealth -= _damage;

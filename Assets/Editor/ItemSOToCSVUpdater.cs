@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public static class ItemSOToCSVUpdater
 {
-    static string itemCsvPath = "Assets/11_Data/CSV/ItemData_fix.csv";
+    static string itemCsvPath = "Assets/11_Data/CSV/ItemData.csv";
     static string recipeCsvPath = "Assets/11_Data/CSV/RecipeData.csv";
 
     public static void UpdateCSV(ItemSO item)

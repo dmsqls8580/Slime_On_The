@@ -24,6 +24,11 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
 
+        if (_type == InteractionCommandType.F && ObjectType == ObjectType.Placed)
+        {
+            return;
+        }
+        
         switch (ObjectType)
         {
             case ObjectType.Tree:
@@ -36,12 +41,12 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
                 SoundManager.Instance.PlaySFX(SFX.ToolHammer);
                 break;
         }
-        
-        TakeInteraction(toolPower);
+
+        TakeInteraction(toolPower); // 체력 먼저 감소
 
         if (destroyEffect is IHitReactive hitEffect)
         {
-            hitEffect.OnHit(toolPower); // 데미지 전달
+            hitEffect.OnHit(toolPower); // 감소된 체력 기준으로 판정
         }
 
         if (_type == InteractionCommandType.F)
@@ -49,9 +54,13 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
 
         if (currentHealth <= 0)
         {
-            DropItems(_playerController.transform);
-
+            DropItems(_playerController.transform); // 최종 파괴 아이템 드롭
             destroyEffect.TriggerDestroyEffect(_playerController.transform);
         }
+
+    }   
+    public void DropFirstBreakItems()
+    {
+        DropItems(transform, dropItemsOnFirstBreak);
     }
 }

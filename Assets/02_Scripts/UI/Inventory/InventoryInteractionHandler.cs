@@ -111,11 +111,6 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
         var slotData = _slot.GetData();
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
-        // if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
-        // {
-        //     if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
-        //         return;
-        // }
         
         int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held, _amount);
         holdManager.RemoveItem(placed);
