@@ -26,7 +26,7 @@ public class GameManager : Singleton<GameManager>
     private void Update()
     {
         if (EventSystem.current.IsPointerOverGameObject()) return;
-
+    
         // 점진적으로 로딩 바를 채움
         if (loadingBar != null && currentProgress < targetProgress)
         {
@@ -37,7 +37,7 @@ public class GameManager : Singleton<GameManager>
             loadingText.text = $"Loading... {displayPercent}%";
         }
     }
-
+    
     private IEnumerator Start()
     {
         loadingCanvas.alpha = 1f;
@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
         int seed = GameSettings.seed != 0 ? GameSettings.seed : Random.Range(int.MinValue, int.MaxValue);
         GameSettings.seed = seed;
         Debug.Log($"[GameManager] 사용된 시드값: {seed}");
-
+    
         Time.timeScale = 0f;
         // 1. 맵 생성
         yield return StartCoroutine(worldManager.GenerateWorldAsync(seed, (msg, prog) =>
@@ -63,31 +63,31 @@ public class GameManager : Singleton<GameManager>
         targetProgress = 0.85f;
         NavMesh2DManager.Instance.BakeNavMesh();
         yield return new WaitForSeconds(0.2f);
-
+    
         // 3. 풀 초기화
         loadingText.text = "오브젝트 풀 초기화 중...";
         targetProgress = 0.9f;
         ObjectPoolManager.Instance.InitializePools();
         yield return new WaitForSeconds(0.3f);
-
+    
         // 4. 몬스터 스포너
         loadingText.text = "몬스터 스포너 배치 중...";
         targetProgress = 0.95f;
         worldManager.enemySpawnerPlacer.Place(worldManager.regionGenerator.TileToRegionMap, worldManager.biomeAssigner.RegionBiomes);
         yield return new WaitForSeconds(0.1f);
-
+    
         // 5. 보스 스포너
         loadingText.text = "보스 스포너 배치 중...";
         targetProgress = 1.0f;
         worldManager.bossSpawnerPlacer.Place(worldManager.regionGenerator.TileToRegionMap, worldManager.biomeAssigner.RegionBiomes);
         yield return new WaitForSeconds(0.2f);
-
+    
         // 완료 대기
         yield return new WaitUntil(() => currentProgress >= 0.999f);
-
+    
         loadingText.text = "Loading... 100%";
         yield return new WaitForSeconds(0.4f);
-
+    
         //playerSpawner.SpawnPlayer();
         // 로딩 종료
         

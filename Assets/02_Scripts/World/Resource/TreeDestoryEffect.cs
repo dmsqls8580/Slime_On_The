@@ -7,7 +7,6 @@ public class TreeDestroyEffect : MonoBehaviour, IDestroyEffect, IHitReactive
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite stumpSprite;
     [SerializeField] private Animator animator;
-    [SerializeField] private ParticleSystem leafParticle;
     [SerializeField] private float fallDuration = 1f;
 
     private bool isFalling = false;
@@ -24,7 +23,6 @@ public class TreeDestroyEffect : MonoBehaviour, IDestroyEffect, IHitReactive
         TryPreviewStump(damage); // 데미지 기반 판별
 
         animator?.SetTrigger("shake");
-        leafParticle?.Play();
     }
 
     // 마지막 한 대 남았는지 판단 후 스프라이트 교체
@@ -35,9 +33,12 @@ public class TreeDestroyEffect : MonoBehaviour, IDestroyEffect, IHitReactive
         var destroyable = GetComponent<DestroyableObject>();
         if (destroyable != null && destroyable.CurrentHealth <= incomingDamage)
         {
+            // 스프라이트 변경
             spriteRenderer.sprite = stumpSprite;
             isStumpVisualized = true;
-            Debug.Log("[TreeDestroyEffect] 다음 공격에 파괴 예정 → stumpSprite 전환");
+
+            // 1차 드롭 (나무가 밑둥으로 바뀌는 시점)
+            destroyable.DropFirstBreakItems();
         }
     }
 

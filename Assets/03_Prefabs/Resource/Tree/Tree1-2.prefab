@@ -167,19 +167,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItems:
+  dropItemsOnFirstBreak:
   - itemSo: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
-    amount: 2
-    dropChance: 100
+    amount: 3
+    dropChance: 80
   - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
     amount: 1
-    dropChance: 50
+    dropChance: 100
+  dropItemsOnFinalBreak:
+  - itemSo: {fileID: 11400000, guid: cb4aabb7b6703384caf19a864276c2a1, type: 2}
+    amount: 1
+    dropChance: 100
   objectType: 0
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
-  maxHealth: 12
+  maxHealth: 17
 --- !u!114 &-6500195843062937237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,7 +232,6 @@ MonoBehaviour:
   spriteRenderer: {fileID: 7555737976835723168}
   stumpSprite: {fileID: -941261790, guid: ad7eddb9bac6e0d49b42905be56b1736, type: 3}
   animator: {fileID: 4631366360255273662}
-  leafParticle: {fileID: 4875717038269537074}
   fallDuration: 1
 --- !u!1001 &1472994028699964343
 PrefabInstance:
@@ -287,11 +290,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7306373a118f7ad45b60794fbb87ccb5, type: 3}
---- !u!198 &4875717038269537074 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6330696116275693701, guid: 7306373a118f7ad45b60794fbb87ccb5, type: 3}
-  m_PrefabInstance: {fileID: 1472994028699964343}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5685672437244691657 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6527599009540724606, guid: 7306373a118f7ad45b60794fbb87ccb5, type: 3}
