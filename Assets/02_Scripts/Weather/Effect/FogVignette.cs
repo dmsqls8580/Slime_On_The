@@ -60,11 +60,16 @@ public class FogVignette : MonoBehaviour
         {
             StopCoroutine(coroutine);
         }
-        coroutine = StartCoroutine(Fade(targetIntensity, targetContrast));
+        coroutine = StartCoroutine(Fade(targetIntensity, targetContrast, _timeOfDay));
     }
 
-    private IEnumerator Fade(float targetIntensity, float targetContrast)
+    private IEnumerator Fade(float targetIntensity, float targetContrast, TimeOfDay _timeOfDay)
     {
+        if (_timeOfDay == TimeOfDay.Night)
+        {
+            fogVolume.weight = 1f;
+        }
+
         float startIntensity = vignette.intensity.value;
         float startContrast = colorAdjustments.contrast.value;
 
@@ -83,5 +88,9 @@ public class FogVignette : MonoBehaviour
         // 루프가 끝나면 목표값으로 확실하게 설정.
         vignette.intensity.value = targetIntensity;
         colorAdjustments.contrast.value = targetContrast;
+        if (_timeOfDay == TimeOfDay.Day)
+        {
+            fogVolume.weight = 0f;
+        }
     }
 }

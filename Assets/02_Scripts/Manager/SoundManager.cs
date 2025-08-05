@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BGM
 {
-    WeatherRainSound
+    WeatherRainSound,
 }
 
 public enum SFX
@@ -34,10 +34,11 @@ public class SoundManager : Singleton<SoundManager>
     [Header("SFX")]
     [SerializeField] private AudioSource SFXSource;
     [SerializeField] private List<AudioClip> SFXClips;
-    
+
+    private BGM? currentBGM = null;
+
     public float GetBGMVolume() => BGMSource.volume;
     public float GetSFXVolume() => SFXSource.volume;
-
 
     protected override void Awake()
     {
@@ -46,9 +47,23 @@ public class SoundManager : Singleton<SoundManager>
     
     public void ChangeBGM(BGM bgm)
     {
+        if (currentBGM != null && currentBGM != bgm)
+        {
+            BGMSource.Stop();
+        }
+
         AudioClip clip = BGMClips[(int)bgm];
         BGMSource.clip = clip;
+        BGMSource.loop = true;
         BGMSource.Play();
+
+        currentBGM = bgm;
+    }
+
+    public void StopBGM()
+    {
+        BGMSource.Stop();
+        currentBGM = null;
     }
 
     public void PlaySFX(SFX sfx)
