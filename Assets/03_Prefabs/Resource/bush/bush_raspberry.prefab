@@ -98,19 +98,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7e1ff343960a7e4f80ac1903b66069a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItems:
+  dropItemsOnFirstBreak: []
+  dropItemsOnFinalBreak:
   - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
-    amount: 1
+    amount: 3
     dropChance: 100
-  - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
-    amount: 2
-    dropChance: 30
   objectType: -1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
   maxHealth: 0
+  bushType: 0
+  spriteRenderer: {fileID: 347788387398860020}
+  berrylessSprite: {fileID: -2064665496, guid: 32fa68a843a1d77478ea061e0b3373dd, type: 3}
 --- !u!58 &1225999444709927055
 CircleCollider2D:
   m_ObjectHideFlags: 0
