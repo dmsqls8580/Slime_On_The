@@ -39,7 +39,7 @@ public class GameManager : Singleton<GameManager>
     }
     
     private IEnumerator Start()
-    {
+    {  InputController.Instance.SetEnable(false);
         loadingCanvas.alpha = 1f;
         loadingCanvas.blocksRaycasts = true;
         loadingBar.value = 0f;
@@ -89,7 +89,7 @@ public class GameManager : Singleton<GameManager>
     
         //playerSpawner.SpawnPlayer();
         // 로딩 종료
-        
+        InputController.Instance.SetEnable(true);
         PlayerStatusManager.Instance.StartDaySlimeGaugeRoutine();
         loadingCanvas.alpha = 0f;
         loadingCanvas.blocksRaycasts = false;
