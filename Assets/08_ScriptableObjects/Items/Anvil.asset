@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 302
   itemName: Anvil
   description: "\uBAA8\uB8E8"
-  icon: {fileID: 0}
+  icon: {fileID: -1349139262, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 64
   stackable: 0
   maxStack: 1
@@ -50,8 +50,8 @@ MonoBehaviour:
     requiredTags: []
     forbiddenTags: []
   placeableData:
-    objectPrefab: {fileID: 0}
-    size: {x: 0, y: 0}
+    objectPrefab: {fileID: 3805954016894649699, guid: c7835ffd1ad757d40b9d33d9c07e982c, type: 3}
+    size: {x: 1, y: 1}
   recipe:
   - item: {fileID: 11400000, guid: e950ed551d97b2f49b82caf4bc5b4956, type: 2}
-    amount: 8
+    amount: 6
