@@ -1,0 +1,895 @@
+fileFormatVersion: 2
+guid: 9cc40045ba100644db54b87dee7bffd9
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: jorgette-hurt_Frame_0
+    originalName: 
+    pivot: {x: 0.5, y: -0.04761905}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 76
+      width: 20
+      height: 21
+    spriteID: 2266f3e89cc963e4e8b15fe57e0c5284
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 76}
+  - name: jorgette-hurt_Frame_1
+    originalName: 
+    pivot: {x: 0.53846157, y: -0.11111111}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 187
+      width: 26
+      height: 18
+    spriteID: ced3ed7150d2c9c4ca6dc0e18af9478f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 187}
+  - name: jorgette-hurt_Frame_2
+    originalName: 
+    pivot: {x: 0.5, y: -0.11764706}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 137
+      width: 28
+      height: 17
+    spriteID: caa2ac2fb50fe0b4380dd2376c6e91b8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 137}
+  - name: jorgette-hurt_Frame_3
+    originalName: 
+    pivot: {x: 0.5, y: -0.05882353}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 29
+      width: 20
+      height: 17
+    spriteID: e3087ef34365b284ea44fa966c9dc0d1
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 29}
+  - name: jorgette-hurt_Frame_4
+    originalName: 
+    pivot: {x: 0.47619048, y: -0.05}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 105
+      width: 21
+      height: 20
+    spriteID: dbde4d7fbda174348af4ddcb7e2b9296
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 105}
+  - name: jorgette-hurt_Frame_5
+    originalName: 
+    pivot: {x: 0.4814815, y: -0.05263158}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 85
+      width: 27
+      height: 19
+    spriteID: d7f83d251da8bf04db2e5322e77ed17d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 85}
+  - name: jorgette-hurt_Frame_6
+    originalName: 
+    pivot: {x: 0.5, y: -0.055555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 31
+      width: 30
+      height: 18
+    spriteID: 957bf6cfd3055174abe3ef7bcea03bcc
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 31}
+  - name: jorgette-hurt_Frame_7
+    originalName: 
+    pivot: {x: 0.47619048, y: -0.05882353}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 4
+      width: 21
+      height: 17
+    spriteID: 56ddfab8f9ac17343b82fa1dd6e428b8
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 4}
+  - name: jorgette-hurt_Frame_8
+    originalName: 
+    pivot: {x: 0.5, y: -0.05263158}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 133
+      width: 20
+      height: 19
+    spriteID: f242c37318d6b014292de601b2ac8072
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 133}
+  - name: jorgette-hurt_Frame_9
+    originalName: 
+    pivot: {x: 0.53846157, y: -0.055555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 213
+      width: 26
+      height: 18
+    spriteID: 09f56915e5ad7e1478b9f51719fa380a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 213}
+  - name: jorgette-hurt_Frame_10
+    originalName: 
+    pivot: {x: 0.5, y: -0.05882353}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 162
+      width: 28
+      height: 17
+    spriteID: af58ca0a5787db5488cafc5903975b17
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 162}
+  - name: jorgette-hurt_Frame_11
+    originalName: 
+    pivot: {x: 0.5, y: -0.0625}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 54
+      width: 20
+      height: 16
+    spriteID: 7704fea5642ba7941bc82e6cd98d9300
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 54}
+  - name: jorgette-hurt_Frame_12
+    originalName: 
+    pivot: {x: 0.5, y: -0.055555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 186
+      width: 20
+      height: 18
+    spriteID: c56387c3af1c3f14ab51f16cf664413a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 186}
+  - name: jorgette-hurt_Frame_13
+    originalName: 
+    pivot: {x: 0.5, y: -0.11764706}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 51
+      width: 26
+      height: 17
+    spriteID: a259b3148b3fd7240bcb6af529132804
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 51}
+  - name: jorgette-hurt_Frame_14
+    originalName: 
+    pivot: {x: 0.4827586, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 112
+      width: 29
+      height: 17
+    spriteID: 78c5c4f7703eba448aa1425323bddb2d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 112}
+  - name: jorgette-hurt_Frame_15
+    originalName: 
+    pivot: {x: 0.5, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 106
+      width: 16
+      height: 8
+    spriteID: 2ea8e65ff0b17be4280fe8cd98cae0fe
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 106}
+  - name: jorgette-hurt_Frame_16
+    originalName: 
+    pivot: {x: 0.5217391, y: -0.33333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 78
+      width: 23
+      height: 6
+    spriteID: 0aca86a925524944d80db91baafb2021
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 78}
+  - name: jorgette-hurt_Frame_17
+    originalName: 
+    pivot: {x: 0.47619048, y: -0.055555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 160
+      width: 21
+      height: 18
+    spriteID: c46394c8c1789ff49aeef5b6ded2c974
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 160}
+  - name: jorgette-hurt_Frame_18
+    originalName: 
+    pivot: {x: 0.4615385, y: -0.05}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 57
+      width: 26
+      height: 20
+    spriteID: eb84140df011e764093612e9ebda6de4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 57}
+  - name: jorgette-hurt_Frame_19
+    originalName: 
+    pivot: {x: 0.46428573, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 27
+      width: 28
+      height: 16
+    spriteID: ee37a5b485fb4124bb2894768eb94a35
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 27}
+  - name: jorgette-hurt_Frame_20
+    originalName: 
+    pivot: {x: 0.5, y: -0.33333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 238
+      width: 16
+      height: 9
+    spriteID: 9bae561d8deeb2e47833de87614e8b65
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 238}
+  - name: jorgette-hurt_Frame_21
+    originalName: 
+    pivot: {x: 0.5217391, y: -0.2857143}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 239
+      width: 23
+      height: 7
+    spriteID: 5cd1795c5e4109f459cd9a85150d81d4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 239}
+  - name: jorgette-hurt_Frame_22
+    originalName: 
+    pivot: {x: 0.5, y: -0.055555556}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 212
+      width: 20
+      height: 18
+    spriteID: 0e7e17d53dbe09a4cb29a3faf0024453
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 212}
+  - name: jorgette-hurt_Frame_23
+    originalName: 
+    pivot: {x: 0.53333336, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 30
+      height: 19
+    spriteID: 4dd65e3038369554f9a608aa368eb748
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: jorgette-hurt_Frame_24
+    originalName: 
+    pivot: {x: 0.5, y: 0}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 42
+      y: 4
+      width: 32
+      height: 15
+    spriteID: 081aaf128cbe51c4b82986a9ab779ac6
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 42, y: 4}
+  - name: jorgette-hurt_Frame_25
+    originalName: 
+    pivot: {x: 0.5, y: -0.25}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 122
+      width: 16
+      height: 8
+    spriteID: b1daaf42655760b48965cfb65898a83d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 122}
+  - name: jorgette-hurt_Frame_26
+    originalName: 
+    pivot: {x: 0.47826087, y: -0.33333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 82
+      y: 92
+      width: 23
+      height: 6
+    spriteID: 5673f9f46fde24a4b92afee84ec64479
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 82, y: 92}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -1087601786
+    name: jorgette-hurt
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: jorgette-hurt_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 21
+      spriteId: 2266f3e89cc963e4e8b15fe57e0c5284
+    - name: jorgette-hurt_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 2
+        y: 2
+        width: 26
+        height: 18
+      spriteId: ced3ed7150d2c9c4ca6dc0e18af9478f
+    - name: jorgette-hurt_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 2
+        y: 2
+        width: 28
+        height: 17
+      spriteId: caa2ac2fb50fe0b4380dd2376c6e91b8
+    - name: jorgette-hurt_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 17
+      spriteId: e3087ef34365b284ea44fa966c9dc0d1
+    - name: jorgette-hurt_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 6
+        y: 1
+        width: 21
+        height: 20
+      spriteId: dbde4d7fbda174348af4ddcb7e2b9296
+    - name: jorgette-hurt_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 3
+        y: 1
+        width: 27
+        height: 19
+      spriteId: d7f83d251da8bf04db2e5322e77ed17d
+    - name: jorgette-hurt_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 1
+        y: 1
+        width: 30
+        height: 18
+      spriteId: 957bf6cfd3055174abe3ef7bcea03bcc
+    - name: jorgette-hurt_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 6
+        y: 1
+        width: 21
+        height: 17
+      spriteId: 56ddfab8f9ac17343b82fa1dd6e428b8
+    - name: jorgette-hurt_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 19
+      spriteId: f242c37318d6b014292de601b2ac8072
+    - name: jorgette-hurt_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 2
+        y: 1
+        width: 26
+        height: 18
+      spriteId: 09f56915e5ad7e1478b9f51719fa380a
+    - name: jorgette-hurt_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 2
+        y: 1
+        width: 28
+        height: 17
+      spriteId: af58ca0a5787db5488cafc5903975b17
+    - name: jorgette-hurt_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 16
+      spriteId: 7704fea5642ba7941bc82e6cd98d9300
+    - name: jorgette-hurt_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 18
+      spriteId: c56387c3af1c3f14ab51f16cf664413a
+    - name: jorgette-hurt_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 3
+        y: 2
+        width: 26
+        height: 17
+      spriteId: a259b3148b3fd7240bcb6af529132804
+    - name: jorgette-hurt_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 2
+        y: 0
+        width: 29
+        height: 17
+      spriteId: 78c5c4f7703eba448aa1425323bddb2d
+    - name: jorgette-hurt_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 8
+        y: 2
+        width: 16
+        height: 8
+      spriteId: 2ea8e65ff0b17be4280fe8cd98cae0fe
+    - name: jorgette-hurt_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 4
+        y: 2
+        width: 23
+        height: 6
+      spriteId: 0aca86a925524944d80db91baafb2021
+    - name: jorgette-hurt_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 6
+        y: 1
+        width: 21
+        height: 18
+      spriteId: c46394c8c1789ff49aeef5b6ded2c974
+    - name: jorgette-hurt_Frame_18
+      frameIndex: 18
+      cellRect:
+        x: 4
+        y: 1
+        width: 26
+        height: 20
+      spriteId: eb84140df011e764093612e9ebda6de4
+    - name: jorgette-hurt_Frame_19
+      frameIndex: 19
+      cellRect:
+        x: 3
+        y: 0
+        width: 28
+        height: 16
+      spriteId: ee37a5b485fb4124bb2894768eb94a35
+    - name: jorgette-hurt_Frame_20
+      frameIndex: 20
+      cellRect:
+        x: 8
+        y: 3
+        width: 16
+        height: 9
+      spriteId: 9bae561d8deeb2e47833de87614e8b65
+    - name: jorgette-hurt_Frame_21
+      frameIndex: 21
+      cellRect:
+        x: 4
+        y: 2
+        width: 23
+        height: 7
+      spriteId: 5cd1795c5e4109f459cd9a85150d81d4
+    - name: jorgette-hurt_Frame_22
+      frameIndex: 22
+      cellRect:
+        x: 6
+        y: 1
+        width: 20
+        height: 18
+      spriteId: 0e7e17d53dbe09a4cb29a3faf0024453
+    - name: jorgette-hurt_Frame_23
+      frameIndex: 23
+      cellRect:
+        x: 0
+        y: 0
+        width: 30
+        height: 19
+      spriteId: 4dd65e3038369554f9a608aa368eb748
+    - name: jorgette-hurt_Frame_24
+      frameIndex: 24
+      cellRect:
+        x: 0
+        y: 0
+        width: 32
+        height: 15
+      spriteId: 081aaf128cbe51c4b82986a9ab779ac6
+    - name: jorgette-hurt_Frame_25
+      frameIndex: 25
+      cellRect:
+        x: 8
+        y: 2
+        width: 16
+        height: 8
+      spriteId: b1daaf42655760b48965cfb65898a83d
+    - name: jorgette-hurt_Frame_26
+      frameIndex: 26
+      cellRect:
+        x: 5
+        y: 2
+        width: 23
+        height: 6
+      spriteId: 5673f9f46fde24a4b92afee84ec64479
+    linkedCells: []
+    parentIndex: -1
+  platformSettings: []
+  generatePhysicsShape: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 32, y: 32}

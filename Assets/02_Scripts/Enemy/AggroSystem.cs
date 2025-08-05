@@ -51,7 +51,6 @@ public class AggroSystem
         if (attackTargetsList.ContainsKey(_aggroObject))
         {
             attackTargetsList[_aggroObject] += _value;
-            Logger.Log($"어그로 수치:{attackTargetsList[_aggroObject]}");
         }
         // 등록되어 있지 않은 경우 _value 값으로 등록
         else
