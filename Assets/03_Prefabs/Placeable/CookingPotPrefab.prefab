@@ -128,12 +128,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f8b4df45bea354c8dc33cb97b2de08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookIndex: -1
-  currentState: 0
-  maxHealth: 0
+  dropItemsOnFirstBreak: []
+  dropItemsOnFinalBreak: []
+  objectType: 2
+  dropItemPrefab: {fileID: 0}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
+  maxHealth: 0
+  cookIndex: -1
+  currentState: 0
+  processPercentage: 1
+  maxHealth: 0
   dropItems: []
   dropItemPrefab: {fileID: 0}
 --- !u!61 &4713157424335962800

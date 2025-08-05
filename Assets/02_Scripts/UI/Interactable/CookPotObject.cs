@@ -112,15 +112,13 @@ public class CookPotObject : MonoBehaviour, IInteractable
     {
         if (inventoryManager.GetItem(inputEnd) != null &&
             inventoryManager.GetItem(inputEnd).ItemData != _item) return;
+
+        if (currentState == CookingState.Cooking) return;
         
         finishedItem = _item;
         cookingTime = _cookingTime;
 
-        if (prevTargetItem != finishedItem)
-        {
-            prevTargetItem = finishedItem;
-            coroutine = StartCoroutine(CookRoutine());
-        }
+        coroutine = StartCoroutine(CookRoutine());
     }
 
     private IEnumerator CookRoutine()
@@ -173,6 +171,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
             StopCoroutine(coroutine);
             currentState = CookingState.Idle;
             elapsedTime = 0f;
+            uiCookPot.RefreshProcessImg(cookIndex, 1f);
         }
     }
 

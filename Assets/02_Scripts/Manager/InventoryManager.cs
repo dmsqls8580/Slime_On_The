@@ -73,7 +73,6 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     {
         if (_index < 0 || _index >= MaxSlotCount || _item == null || _amount <= 0)
             return 0;
-
         var current = inventorySlots[_index];
 
         if (current == null)
@@ -82,16 +81,14 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
             {
                 RefreshEquipStat(_index, _item);
             }
-
+            
             int placed = Mathf.Min(_amount, _item.ItemData.maxStack);
             inventorySlots[_index] = new ItemInstanceData(_item.ItemData, placed);
             OnSlotChanged?.Invoke(_index);
             return placed;
         }
-
         if (current.ItemData != _item.ItemData || current.Quantity >= _item.ItemData.maxStack)
             return 0;
-
         int addable = _item.ItemData.maxStack - current.Quantity;
         int placedAmount = Mathf.Min(addable, _amount);
         current.Quantity += placedAmount;
