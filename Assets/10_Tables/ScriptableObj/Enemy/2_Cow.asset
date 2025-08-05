@@ -16,6 +16,7 @@ MonoBehaviour:
   EnemyName: Cow
   AttackType: 0
   ProjectileID: 20
+  SpawnTerrain: 0
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -25,28 +26,28 @@ MonoBehaviour:
     Value: 100
   - StatType: 2
     ModifierType: 0
-    Value: 10
+    Value: 20
   - StatType: 3
     ModifierType: 0
     Value: 10
   - StatType: 4
     ModifierType: 0
-    Value: 2
+    Value: 5
   - StatType: 60
     ModifierType: 0
     Value: 2
   - StatType: 61
     ModifierType: 0
-    Value: 5
+    Value: 4
   - StatType: 62
     ModifierType: 0
-    Value: 2
+    Value: 3
   - StatType: 63
     ModifierType: 0
     Value: 5
   - StatType: 64
     ModifierType: 0
-    Value: 5
+    Value: 7
   - StatType: 65
     ModifierType: 0
     Value: 0.5
@@ -60,4 +61,3 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: ec75d4f127417a5479ce14c413d4b478, type: 2}
     amount: 1
     dropChance: 50
-  SpawnTerrain: 0

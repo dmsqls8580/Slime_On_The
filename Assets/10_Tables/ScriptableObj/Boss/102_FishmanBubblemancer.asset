@@ -10,16 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e044fdeec8c70674aabe57a20bf12771, type: 3}
-  m_Name: 101_FishmanBubblemancer
+  m_Name: 102_FishmanBubblemancer
   m_EditorClassIdentifier: 
   BossID: 102
   BossName: FishmanBubblemancer
   AttackType: 2
-  ProjectileID: 1700000018000000
-  IdleDuration: 2
-  Cast1Duration: 2
-  Cast2Duration: 2
-  StompDuration: 2
+  ProjectileID: 170000001800000019000000
+  SpawnTerrain: 0
   BossStats:
   - StatType: 0
     ModifierType: 0
@@ -58,4 +55,3 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: d9f31350f4b94724289a6cd5fbe10d33, type: 2}
     amount: 5
     dropChance: 100
-  SpawnTerrain: 0

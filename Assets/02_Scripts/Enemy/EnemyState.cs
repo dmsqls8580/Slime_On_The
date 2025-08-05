@@ -141,7 +141,6 @@ namespace  Enemystates
                         return EnemyState.Wander;
                     }
                     return EnemyState.Idle;
-                
             }
             return EnemyState.Idle;
         }
@@ -252,6 +251,7 @@ namespace  Enemystates
     
     public class ChaseState : IState<EnemyController, EnemyState>
     {
+        private readonly int isMovingHash = Animator.StringToHash("IsMoving");
         private readonly int isTargetHash = Animator.StringToHash("IsTarget");
         private readonly int isAttackHash = Animator.StringToHash("Attack");
         
@@ -419,7 +419,9 @@ namespace  Enemystates
     
     public class AttackState : IState<EnemyController, EnemyState>
     {
-        private readonly int isAttackHash = Animator.StringToHash("Attack"); 
+        private readonly int isMovingHash = Animator.StringToHash("IsMoving");
+        private readonly int isTargetHash = Animator.StringToHash("IsTarget");
+        private readonly int isAttackHash = Animator.StringToHash("Attack");
         
         public void OnEnter(EnemyController owner)
         {
