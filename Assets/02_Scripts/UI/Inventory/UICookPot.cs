@@ -10,6 +10,7 @@ public class UICookPot : UIBase
     [SerializeField] private InventorySlot resultSlot;
     [SerializeField] private AnimationCurve JellyAnimationCurve;
     [SerializeField] private Image processImage;
+    [SerializeField] private Image targetImage;
 
     private InventoryManager inventoryManager;
     private CookingManager cookingManager;
@@ -51,17 +52,16 @@ public class UICookPot : UIBase
     {
         int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
         int inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
-
-        foreach (var slot in inputSlots)
-        {
-            if (!slot.HasItem()) cookPotObject.StopCook();
-        }
         
         if (changedIndex >= inputStart && changedIndex < inputEnd)
         {
-            foreach (var slot in inputSlots)
+            if (inventoryManager.GetItem(changedIndex) != null)
             {
-                if (!slot.HasItem()) return;
+                if (inventoryManager.GetItem(changedIndex).ItemData != cookPotObject.prevItems[changedIndex % 10])
+                {
+                    cookPotObject.StopCook();
+                }
+                cookPotObject.prevItems[changedIndex%10] = inventoryManager.GetItem(changedIndex).ItemData;
             }
             
             TryCook();
@@ -73,6 +73,7 @@ public class UICookPot : UIBase
             cookPotObject.CurrentState == CookingState.Finished))
         {
             cookPotObject.ChangeState(CookingState.Idle);
+            cookPotObject.finishedItem = null;
             TryCook();
             return;
         }
@@ -80,6 +81,15 @@ public class UICookPot : UIBase
 
     private void TryCook()
     {
+        foreach (var slot in inputSlots)
+        {
+            if (!slot.HasItem())
+            {
+                cookPotObject.StopCook();
+                return;
+            }
+        }
+        
         if (cookPotObject.CurrentState == CookingState.Finishing) return;
 
         Dictionary<IngredientTag, float> tags = new();
@@ -110,6 +120,18 @@ public class UICookPot : UIBase
     {
         if(CookIndex != index) return;
         processImage.fillAmount = 1 - processPercentage;
+    }
+
+    public void RefreshTargetImg(int index, ItemSO target)
+    {
+        if(CookIndex != index) return;
+        
+        if (target == null) targetImage.gameObject.SetActive(false);
+        else
+        {
+            targetImage.gameObject.SetActive(true);
+            targetImage.sprite = target.icon;
+        }
     }
 
     public override void Open()
