@@ -314,7 +314,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             lastFlipX = Agent.velocity.x < 0;
         }
         
-        if (AttackTarget != null)
+        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.None)
         {
             float x = AttackTarget.transform.position.x - transform.position.x;
             bool flipToTarget = x < 0;

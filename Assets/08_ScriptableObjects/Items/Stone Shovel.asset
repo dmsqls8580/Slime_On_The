@@ -10,27 +10,27 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
-  m_Name: Copper Breastplate
+  m_Name: Stone Shovel
   m_EditorClassIdentifier: 
-  idx: 511
-  itemName: Copper Breastplate
-  description: "\uAD6C\uB9AC \uAC11\uC637"
-  icon: {fileID: -995208849, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
-  itemTypes: 4
+  idx: 413
+  itemName: Stone Shovel
+  description: "\uB3CC \uB3C4\uB07C"
+  icon: {fileID: 273934975, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
+  itemTypes: 2
   stackable: 0
   maxStack: 1
   materialData:
     rottenable: 0
   toolData:
-    toolType: 0
-    power: 0
+    toolType: 3
+    power: 4
     luck: 0
     durability: 0
-    actSpd: 0
+    actSpd: 1.05
   equipableData:
     equipableType: 0
     formId: 0
-    maxHealth: 10
+    maxHealth: 0
     atk: 0
     def: 0
     spd: 0
@@ -53,5 +53,7 @@ MonoBehaviour:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
   recipe:
-  - item: {fileID: 11400000, guid: e950ed551d97b2f49b82caf4bc5b4956, type: 2}
-    amount: 8
+  - item: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: b1b0dbd1b8c78d1419a1516374514ff0, type: 2}
+    amount: 3

@@ -14,16 +14,20 @@ public class RainEffect : WeatherEffectBase
     // 비가 내리거나 시작할때 까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
     // 날씨로 인한 이동속도 변화.
-    private readonly float moveSpeed = 2f;
+    private readonly float moveSpeed = 0.5f;
 
     private readonly float effectInterval = 1.5f;
     private float effectTimer = 0f;
+
+    public float CurrentLevel => currentLevel;
 
     public RainEffect(WeatherManager _weatherManager, ParticleSystem _particle, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         particle = _particle;
         playerStatusManager = _playerStatusManager;
+
+        weatherManager.rain = this;
     }
 
     protected override void ApplyEffect()
