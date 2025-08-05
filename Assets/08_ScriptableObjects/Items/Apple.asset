@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 804
   itemName: Apple
   description: "\uC0AC\uACFC"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f3a6ee97e919f264bb8f30c84416cb35, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 4
+      value: 1
+    contributionTime: 2
   cookedData:
     priority: 0
     requiredTags: []
