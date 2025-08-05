@@ -59,6 +59,7 @@ MonoBehaviour:
   attackRangeCollider: {fileID: 9085855195791775751}
   damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
   damageTextCanvas: {fileID: 0}
+  isDefaultFacingRight: 1
   projectileTransform: {fileID: 6469213835428759678}
   EnemyStatus: {fileID: 434384408529830673}
   stickTime: 1
@@ -218,7 +219,7 @@ SpriteRenderer:
   m_SortingOrder: 100
   m_Sprite: {fileID: -664418736, guid: e1d89a3b0d5cf064e9ed059344995add, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 1
+  m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 2, y: 2}
