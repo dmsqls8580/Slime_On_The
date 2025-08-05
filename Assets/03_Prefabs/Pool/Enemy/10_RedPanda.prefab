@@ -194,7 +194,7 @@ Transform:
   m_GameObject: {fileID: 1055383794798052369}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.86, y: 7.48, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -217,8 +217,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   senseRangeCollider: {fileID: 2576301687725780926}
   attackRangeCollider: {fileID: 1612533911948908349}
-  damageTextPrefab: {fileID: 0}
-  damageTextCanvas: {fileID: 0}
+  damageTextPrefab: {fileID: 1544181738003018317, guid: fd2c962ad49a7e341bb58fa94bedc03a, type: 3}
+  damageTextCanvas: {fileID: 9055869960667158589, guid: 1728c7048a495a849aa72e7071090f1d, type: 3}
   isDefaultFacingRight: 1
   projectileTransform: {fileID: 1107816589963048297}
   EnemyStatus: {fileID: 4265753183297551827}

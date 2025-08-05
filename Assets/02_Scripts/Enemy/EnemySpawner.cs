@@ -55,7 +55,6 @@ public class EnemySpawner : MonoBehaviour, ISpawner
         set => SpawnRadius = value;
     }
     
-
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
     private GameObject player;
@@ -116,8 +115,6 @@ public class EnemySpawner : MonoBehaviour, ISpawner
             {
                 controller.SpawnPos = spawnPos; // 필요시
                 controller.OnSpawnFromPool();
-
-                bool isOnNavMesh = controller.Agent != null && controller.Agent.isOnNavMesh;
             }
             else
             {
