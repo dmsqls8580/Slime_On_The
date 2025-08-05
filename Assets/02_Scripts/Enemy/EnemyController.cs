@@ -207,6 +207,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         }
         ChangeState(EnemyState.Idle);
         
+        
         transform.position = SpawnPos; // 혹은 원하는 위치
         if (Agent.isOnNavMesh)
         {

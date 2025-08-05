@@ -115,8 +115,6 @@ public class EnemySpawner : MonoBehaviour, ISpawner
             {
                 controller.SpawnPos = spawnPos; // 필요시
                 controller.OnSpawnFromPool();
-
-                bool isOnNavMesh = controller.Agent != null && controller.Agent.isOnNavMesh;
             }
             else
             {
