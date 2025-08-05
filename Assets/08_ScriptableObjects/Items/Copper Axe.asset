@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 421
   itemName: Copper Axe
   description: "\uAD6C\uB9AC \uB3C4\uB07C"
-  icon: {fileID: 0}
+  icon: {fileID: -712313562, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 2
   stackable: 0
   maxStack: 1
@@ -26,7 +26,7 @@ MonoBehaviour:
     power: 5
     luck: 0
     durability: 0
-    actSpd: 0
+    actSpd: 1.2
   equipableData:
     equipableType: 0
     formId: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
   recipe:
-  - item: {fileID: 11400000, guid: be3b095375242974a94e25a082e20a7c, type: 2}
-    amount: 4
   - item: {fileID: 11400000, guid: 62dafe759ccf4484ea3214f4dba1fdda, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
     amount: 4

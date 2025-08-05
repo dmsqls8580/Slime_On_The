@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Berrys Necklace
   m_EditorClassIdentifier: 
   idx: 631
-  itemName: Berrys Necklace
-  description: "\uC5F4\uB9E4\uBB36\uC74C \uBAA9\uAC78\uC774"
-  icon: {fileID: 0}
+  itemName: Blue Necklace
+  description: "\uD478\uB978 \uBAA9\uAC78\uC774"
+  icon: {fileID: -1519538748, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 4
   stackable: 0
   maxStack: 1
@@ -31,9 +31,9 @@ MonoBehaviour:
     equipableType: 3
     formId: 0
     maxHealth: 0
-    atk: 0
-    def: 0
-    spd: 0
+    atk: 1
+    def: 2
+    spd: 3
     crt: 0
   eatableData:
     recoverHP: 0

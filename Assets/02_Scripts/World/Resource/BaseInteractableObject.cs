@@ -50,7 +50,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
     public bool IsInteracted=>isInteracted;
     public ObjectType ObjectType => objectType;
     
-    protected void Awake()
+    protected virtual void Awake()
     {
         currentHealth = maxHealth;
     }
@@ -68,12 +68,12 @@ public abstract class BaseInteractableObject : MonoBehaviour
         };
     }
 
-    protected void DropItems(Transform _player)
+    protected virtual void DropItems(Transform _player)
     {
         DropItems(_player, dropItemsOnFinalBreak);
     }
 
-    protected void DropItems(Transform _player, List<DropItemData> itemList)
+    protected virtual void DropItems(Transform _player, List<DropItemData> itemList)
     {
         float randomChance = Random.value;
 
