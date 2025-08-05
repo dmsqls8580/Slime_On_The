@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public enum BGM
 {
     WeatherRainSound,
@@ -27,6 +26,11 @@ public enum SFX
     ItemPickup,
 }
 
+public enum Ambient
+{
+    
+}
+
 public class SoundManager : Singleton<SoundManager>
 {
     [Header("BGM")]
@@ -36,11 +40,16 @@ public class SoundManager : Singleton<SoundManager>
     [Header("SFX")]
     [SerializeField] private AudioSource SFXSource;
     [SerializeField] private List<AudioClip> SFXClips;
+    
+    [Header("AmbientSource")]
+    [SerializeField] private AudioSource AmbientSource;
+    [SerializeField] private List<AudioClip> AmbientClips;
 
     private BGM? currentBGM = null;
 
     public float GetBGMVolume() => BGMSource.volume;
     public float GetSFXVolume() => SFXSource.volume;
+    public float GetAmbientVolume() => AmbientSource.volume;
 
     protected override void Awake()
     {
@@ -73,6 +82,14 @@ public class SoundManager : Singleton<SoundManager>
         float volumeScale = GetSFXVolumeScale(sfx);
         SFXSource.PlayOneShot(SFXClips[(int)sfx], volumeScale);
     }
+    
+    public void PlayAmbient(Ambient ambient)
+    {
+        AudioClip clip = BGMClips[(int)ambient];
+        BGMSource.clip = clip;
+        BGMSource.loop = true;
+        BGMSource.Play();
+    }
 
     public void ChangeBGMVolume(float volume)
     {
@@ -82,6 +99,11 @@ public class SoundManager : Singleton<SoundManager>
     public void ChangeSFXVolume(float volume)
     {
         SFXSource.volume = volume;
+    }
+    
+    public void ChangeAmbientVolume(float volume)
+    {
+        AmbientSource.volume = volume;
     }
     
     private float GetSFXVolumeScale(SFX sfx)
