@@ -768,7 +768,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: HammerAnim
+  m_Name: GatheringAnim
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 4280773901920235876}
@@ -796,7 +796,7 @@ BlendTree:
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: 5474699429599614292}
-    m_Threshold: 3
+    m_Threshold: 6
     m_Position: {x: 0, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
@@ -805,7 +805,7 @@ BlendTree:
   m_BlendParameter: toolTypeIndex
   m_BlendParameterY: mouseX
   m_MinThreshold: 0
-  m_MaxThreshold: 3
+  m_MaxThreshold: 6
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
@@ -1036,7 +1036,7 @@ BlendTree:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BlendTree
+  m_Name: HammerAnim
   m_Childs:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 3633664295d8ecd40b91080ecb658a2e, type: 2}

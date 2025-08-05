@@ -13,6 +13,8 @@ public class ItemDrop : MonoBehaviour
     private int amount;
 
     private bool canItemToPlayer = false;
+    private bool isPickupSoundPlayed = false;
+
     public float attractSpeed = 5f;
     public float attractDistance = 2f;
 
@@ -20,7 +22,7 @@ public class ItemDrop : MonoBehaviour
     {
         itemSo = _itemSo;
         amount = _amount;
-        
+
         if (iconRenderer != null && itemSo != null)
         {
             iconRenderer.sprite = itemSo.icon;
@@ -59,16 +61,21 @@ public class ItemDrop : MonoBehaviour
         if (playerTransform.IsUnityNull() || !canItemToPlayer) return;
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
-        
+
         if (distance < attractDistance)
         {
-            float t= 1f-(distance/attractDistance);
-            float itemMoveSpeed= Mathf.Lerp(1f,attractSpeed,t);
-            
+            float t = 1f - (distance / attractDistance);
+            float itemMoveSpeed = Mathf.Lerp(1f, attractSpeed, t);
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 playerTransform.position,
                 itemMoveSpeed * Time.deltaTime);
+            if (!isPickupSoundPlayed && distance < attractDistance * 0.8f)
+            {
+                isPickupSoundPlayed = true;
+                SoundManager.Instance.PlaySFX(SFX.ItemPickup);
+            }
         }
     }
 
@@ -86,9 +93,10 @@ public class ItemDrop : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         canItemToPlayer = true;
     }
+
     private void OnTriggerEnter2D(Collider2D _other)
     {
-        if(!canItemToPlayer) return;
+        if (!canItemToPlayer) return;
 
         if (playerTransform != null && _other.transform == playerTransform)
         {
@@ -96,11 +104,11 @@ public class ItemDrop : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private void OnTriggerStay2D(Collider2D _other)
     {
-        if(!canItemToPlayer) return;
-        
+        if (!canItemToPlayer) return;
+
         if (playerTransform != null && _other.transform == playerTransform)
         {
             AddToInventory();
@@ -110,7 +118,7 @@ public class ItemDrop : MonoBehaviour
 
     private void AddToInventory()
     {
-        if(itemSo.IsUnityNull()||amount <= 0) return;
+        if (itemSo.IsUnityNull() || amount <= 0) return;
 
         if (!itemSo.IsUnityNull())
         {

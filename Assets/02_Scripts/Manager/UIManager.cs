@@ -9,6 +9,8 @@ namespace _02_Scripts.Manager
     {
         private readonly Dictionary<Type, UIBase> UIDict = new();
         private readonly List<UIBase> openedUIList = new();
+        
+        public bool IsAnyUIOpen => openedUIList.Count > 0;
     
         protected override void Awake()
         {
@@ -101,6 +103,14 @@ namespace _02_Scripts.Manager
             openedUIList.RemoveAt(openedUIList.Count - 1);
             topUI.Close();
             return true;
+        }
+        
+        public void CloseAll()
+        {
+            while (openedUIList.Count > 0)
+            {
+                CloseTop();
+            }
         }
 
         public T GetUIComponent<T>() where T : UIBase
