@@ -46,7 +46,7 @@ public class PlaceMode : MonoBehaviour
         }
         if (playerTransform == null)
         {
-            playerTransform = FindObjectsOfType<Transform>().FirstOrDefault(t => t.gameObject.name == "testPlayer_ver2");
+            playerTransform = FindObjectsOfType<Transform>().FirstOrDefault(t => t.gameObject.name == "Player");
         }
         gameObject.SetActive(false);
     }
