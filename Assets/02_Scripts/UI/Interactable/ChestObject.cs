@@ -41,10 +41,21 @@ public class ChestObject : BaseInteractableObject, IInteractable
             case InteractionCommandType.F:
                 var ui = UIManager.Instance.GetUIComponent<UIChest>();
                 ui.Initialize(this);
-                UIManager.Instance.Toggle<UIChest>();
-                if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                if (!ui.IsOpen)
                 {
-                    uiManager.Toggle<UIInventory>();
+                    uiManager.Toggle<UIChest>();
+                    if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                    {
+                        uiManager.Toggle<UIInventory>();
+                    }
+                }
+                else
+                {
+                    uiManager.Toggle<UIChest>();
+                    if (uiManager.GetUIComponent<UIInventory>().IsOpen)
+                    {
+                        uiManager.Toggle<UIInventory>();
+                    }
                 }
                 break;
             case InteractionCommandType.Space:
