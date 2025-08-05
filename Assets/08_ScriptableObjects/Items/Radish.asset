@@ -36,15 +36,17 @@ MonoBehaviour:
     spd: 0
     crt: 0
   eatableData:
-    recoverHP: 10
+    recoverHP: 5
     fullness: 3
     slimeGauge: 0
     duration: 0
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 3
+      value: 1
+    contributionTime: 3
   cookedData:
     priority: 0
     requiredTags: []

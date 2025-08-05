@@ -9,9 +9,9 @@ public class BossSO : ScriptableObject, IStatProvider
     public string BossName;
     public AttackType AttackType;
     public List<ProjectileName> ProjectileID;
+    public Terrain SpawnTerrain;
     
     public List<StatData> BossStats;
     public List<StatData> Stats => BossStats;
     public List<DropItemData> DropItems;
-    public Terrain SpawnTerrain;
 }

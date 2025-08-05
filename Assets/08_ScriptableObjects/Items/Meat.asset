@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 1
+      value: 1
+    contributionTime: 7
   cookedData:
     priority: 0
     requiredTags: []
