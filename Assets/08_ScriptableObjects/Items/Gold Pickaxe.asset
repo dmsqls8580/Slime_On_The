@@ -26,7 +26,7 @@ MonoBehaviour:
     power: 7
     luck: 0
     durability: 0
-    actSpd: 2
+    actSpd: 1.5
   equipableData:
     equipableType: 0
     formId: 0
@@ -52,4 +52,8 @@ MonoBehaviour:
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
-  recipe: []
+  recipe:
+  - item: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
+    amount: 0
+  - item: {fileID: 11400000, guid: 42329a8d4f7fa7743b5602474586d0e7, type: 2}
+    amount: 0

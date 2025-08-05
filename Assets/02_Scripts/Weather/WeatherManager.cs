@@ -18,6 +18,7 @@ public class WeatherManager : MonoBehaviour
     private WeatherType currentWeatherType = WeatherType.Clear;
     private HashSet<WeatherType> currentWeatherTypes = new() { WeatherType.Clear };
     public HeatwaveEffect heatwave = null;
+    public RainEffect rain = null;
     public TimeOfDay currentTimeOfDay;
 
     // 나올 수 있는 이펙트들.
@@ -84,7 +85,7 @@ public class WeatherManager : MonoBehaviour
         // 다음 날씨 상태 결정.
         WeatherType nextWeatherType = GetNextWeatherType();
         HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherType };
-        if (nextWeatherType == WeatherType.Rain && Random.Range(0, 0) == 0)
+        if (nextWeatherType == WeatherType.Rain && rain.CurrentLevel == 1)
         { nextWeatherTypes.Add(WeatherType.Storm); }
 
         HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);

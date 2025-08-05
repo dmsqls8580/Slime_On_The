@@ -52,4 +52,8 @@ MonoBehaviour:
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
-  recipe: []
+  recipe:
+  - item: {fileID: 11400000, guid: 62dafe759ccf4484ea3214f4dba1fdda, type: 2}
+    amount: 4
+  - item: {fileID: 11400000, guid: 575b576a30664114481f590e3e7cffa4, type: 2}
+    amount: 1
