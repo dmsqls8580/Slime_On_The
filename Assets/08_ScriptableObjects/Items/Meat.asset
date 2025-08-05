@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 802
   itemName: Meat
   description: "\uACE0\uAE30"
-  icon: {fileID: 0}
+  icon: {fileID: -1123100530, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 1
+      value: 1
+    contributionTime: 7
   cookedData:
     priority: 0
     requiredTags: []

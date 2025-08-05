@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 810
   itemName: Radish
   description: "\uC21C\uBB34"
-  icon: {fileID: 0}
+  icon: {fileID: 828652257, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -36,15 +36,17 @@ MonoBehaviour:
     spd: 0
     crt: 0
   eatableData:
-    recoverHP: 10
+    recoverHP: 5
     fullness: 3
     slimeGauge: 0
     duration: 0
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 3
+      value: 1
+    contributionTime: 3
   cookedData:
     priority: 0
     requiredTags: []

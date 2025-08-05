@@ -13,7 +13,7 @@ public enum CookingState
     Finished
 }
 
-public class CookPotObject : MonoBehaviour, IInteractable
+public class CookPotObject : BaseInteractableObject, IInteractable
 {
     [SerializeField] private int cookIndex = -1;
     [SerializeField] private CookingState currentState = CookingState.Idle;
@@ -31,27 +31,14 @@ public class CookPotObject : MonoBehaviour, IInteractable
     private InventoryManager inventoryManager;
     private UIManager uiManager;
     private UICookPot uiCookPot;
-
-    [Header("Drop Item Health")]
-    [SerializeField] private float maxHealth;
-    private float currentHealth;
-    private Rigidbody2D rigid;
-
-    [Header("Drop Animation")]
-    [SerializeField] private float dropUpForce = 5f;
-    [SerializeField] private float dropSideForce = 2f;
-    [SerializeField] private float dropAngleRange = 60f;
-
-    [Header("Drop Item Data Info(SO, 개수, 확률)")]
-    [SerializeField] protected List<DropItemData> dropItems;
-    [SerializeField] protected GameObject dropItemPrefab;
-
+    
     public int CookIndex => cookIndex;
     public CookingState CurrentState => currentState;
     public void ChangeState(CookingState _state) => currentState = _state;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         inventoryManager = InventoryManager.Instance;
         uiManager = UIManager.Instance;
         uiCookPot = uiManager.GetUIComponent<UICookPot>();
@@ -73,7 +60,7 @@ public class CookPotObject : MonoBehaviour, IInteractable
         inventoryManager.ReleaseCookIndex(cookIndex);
     }
 
-    public void Interact(InteractionCommandType _type, PlayerController _playerController)
+    public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         switch (_type)
         {
@@ -90,23 +77,23 @@ public class CookPotObject : MonoBehaviour, IInteractable
                 var toolController = _playerController.GetComponent<ToolController>();
                 float toolPower = toolController != null ? toolController.GetAttackPow() : 1f;
                 TakeInteraction(toolPower);
-
                 if (currentHealth <= 0)
                 {
+                    StopCook();
                     DropItems(_playerController.transform);
-                    inventoryManager.ReleaseCookIndex(cookIndex);
+                    //inventoryManager.ReleaseCookIndex(cookIndex);
                     Destroy(gameObject);
                 }
                 break;
         }
     }
-
-    private void TakeInteraction(float _damage)
-    {
-        currentHealth -= _damage;
-        Logger.Log($"{currentHealth}");
-        currentHealth = Mathf.Max(currentHealth, 0);
-    }
+    
+    // private void TakeInteraction(float _damage)
+    // {
+    //     currentHealth -= _damage;
+    //     Logger.Log($"{currentHealth}");
+    //     currentHealth = Mathf.Max(currentHealth, 0);
+    // }
 
     public void StartCook(ItemSO _item, float _cookingTime)
     {
@@ -175,34 +162,33 @@ public class CookPotObject : MonoBehaviour, IInteractable
         }
     }
 
-    private void DropItems(Transform _player)
+    protected override void DropItems(Transform _player)
     {
-        float randomChance = Random.value;
-
-        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
+        base.DropItems(_player);
+        
+        
+        int start = SlotIndexScheme.GetCookInputStart(cookIndex);
+        int count = SlotIndexScheme.CookInputSlotCount + 1;
+    
+        for (int i = 0; i < count; i++)
         {
-            return;
-        }
-
-        foreach (var item in dropItems)
-        {
-            for (int i = 0; i < item.amount; i++)
+            int slotIndex = start + i;
+            var data = InventoryManager.Instance.GetItem(slotIndex);
+            if (data == null || !data.IsValid) continue;
+            
+            for (int j = 0; j < data.Quantity; j++)
             {
-                if (randomChance * 100f > item.dropChance)
-                {
-                    continue;
-                }
-
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo, 1);
+                    itemDrop.Init(data.ItemData, 1);
                 }
-
                 rigid = dropObj.GetComponent<Rigidbody2D>();
                 itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
             }
+            InventoryManager.Instance.ClearItem(slotIndex);
         }
+        
     }
 }

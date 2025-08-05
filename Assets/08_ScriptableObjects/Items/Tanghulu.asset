@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 912
   itemName: Tanghulu
   description: "\uD0D5\uD6C4\uB8E8"
-  icon: {fileID: 0}
+  icon: {fileID: -311374954, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 40
   stackable: 1
   maxStack: 99
@@ -46,8 +46,12 @@ MonoBehaviour:
     tags: []
     contributionTime: 0
   cookedData:
-    priority: 0
-    requiredTags: []
+    priority: 6
+    requiredTags:
+    - tag: 4
+      value: 1
+    - tag: 5
+      value: 1
     forbiddenTags: []
   placeableData:
     objectPrefab: {fileID: 0}

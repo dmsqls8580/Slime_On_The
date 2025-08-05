@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 910
   itemName: Pickle
   description: "\uD53C\uD074"
-  icon: {fileID: 0}
+  icon: {fileID: -958629059, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 40
   stackable: 1
   maxStack: 99
@@ -46,9 +46,21 @@ MonoBehaviour:
     tags: []
     contributionTime: 0
   cookedData:
-    priority: 0
-    requiredTags: []
-    forbiddenTags: []
+    priority: 6
+    requiredTags:
+    - tag: 4
+      value: 1
+    - tag: 6
+      value: 1
+    forbiddenTags:
+    - tag: 1
+      value: 0.5
+    - tag: 2
+      value: 0.5
+    - tag: 5
+      value: 0.5
+    - tag: 7
+      value: 0.5
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}

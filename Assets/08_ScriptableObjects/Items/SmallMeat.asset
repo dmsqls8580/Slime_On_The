@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 801
   itemName: SmallMeat
   description: "\uC791\uC740 \uACE0\uAE30"
-  icon: {fileID: 0}
+  icon: {fileID: 2128510822, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 1
+      value: 0.5
+    contributionTime: 4
   cookedData:
     priority: 0
     requiredTags: []

@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 812
   itemName: Salt
   description: "\uC18C\uAE08"
-  icon: {fileID: 0}
+  icon: {fileID: 300262571, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 6
+      value: 1
+    contributionTime: 1
   cookedData:
     priority: 0
     requiredTags: []

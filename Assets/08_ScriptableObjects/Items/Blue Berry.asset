@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 808
   itemName: Blue Berry
   description: "\uBE14\uB8E8 \uBCA0\uB9AC"
-  icon: {fileID: 0}
+  icon: {fileID: -1207321145, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 24
   stackable: 1
   maxStack: 99
@@ -43,8 +43,10 @@ MonoBehaviour:
     rottenable: 0
     permanent: 1
   cookableData:
-    tags: []
-    contributionTime: 0
+    tags:
+    - tag: 4
+      value: 0.5
+    contributionTime: 2
   cookedData:
     priority: 0
     requiredTags: []

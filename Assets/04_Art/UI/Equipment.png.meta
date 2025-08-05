@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6a073e5fc16c7c64f97bca1c8890d601
+guid: a41ffd96d57c60144a11bc8d4a3fe5f8
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,11 +44,11 @@ TextureImporter:
   lightmap: 0
   compressionQuality: 50
   spriteMode: 2
-  spriteExtrude: 4
+  spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 32
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -72,7 +72,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -136,13 +136,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: EquimentSlotIcons_0
+      name: Equipment_0
       rect:
         serializedVersion: 2
-        x: 2
-        y: 66
-        width: 28
-        height: 28
+        x: 0
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -150,20 +150,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 10349e087a3ee3348806b0b286b208f8
-      internalID: -1209312054
+      spriteID: 0ce504da58ac54743a3ee9d63f89b8a0
+      internalID: 762332873
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EquimentSlotIcons_1
+      name: Equipment_1
       rect:
         serializedVersion: 2
-        x: 34
-        y: 66
-        width: 28
-        height: 28
+        x: 32
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -171,20 +171,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a64ada95bdd55e846bd52394420405ad
-      internalID: 1916009107
+      spriteID: af6c93076723bcb4e8e2f81f226716ac
+      internalID: 2125906704
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EquimentSlotIcons_2
+      name: Equipment_2
       rect:
         serializedVersion: 2
-        x: 2
-        y: 34
-        width: 28
-        height: 28
+        x: 64
+        y: 96
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -192,20 +192,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c08784d9bc0f222498e4a1ad8642f646
-      internalID: 1834701202
+      spriteID: 919e1c135ccb8e44d9463b043e18437d
+      internalID: -956962918
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EquimentSlotIcons_3
+      name: Equipment_3
       rect:
         serializedVersion: 2
-        x: 34
-        y: 34
-        width: 28
-        height: 28
+        x: 0
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,20 +213,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0dd5dda5d7ccfdc4fbf1038e91868e76
-      internalID: 1012391079
+      spriteID: e4008fedbb24cdb4c9b5acfa179ceb8d
+      internalID: -952251264
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EquimentSlotIcons_4
+      name: Equipment_4
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
-        width: 28
-        height: 28
+        x: 32
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -234,20 +234,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7ae2c6e53515956488757774ce18cb7c
-      internalID: 1367431148
+      spriteID: 6e678dc43480f8a4a86f3a050523faee
+      internalID: -153858569
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: EquimentSlotIcons_5
+      name: Equipment_5
       rect:
         serializedVersion: 2
-        x: 34
-        y: 2
-        width: 28
-        height: 28
+        x: 64
+        y: 64
+        width: 32
+        height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -255,8 +255,134 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7739378e80ff51541981f0e70eb35923
-      internalID: -58869026
+      spriteID: fe64801d13fd7c04aa8f70323f93d67c
+      internalID: -1895453901
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_6
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: be442ec8dd41d5e40ae52404c538589b
+      internalID: 1366324990
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_7
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7d8804be81f22f47bd79a868a3cf993
+      internalID: -1235289794
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_8
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 32
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75cb0dedd9a21ca49a908444f676ddc8
+      internalID: -1282636156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_9
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f806a2b41c236604898951284b6d945b
+      internalID: 1685870894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_10
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 47b87df3ffcb9614c9316aa68b3d5936
+      internalID: -1271398305
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Equipment_11
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d36efe3b14bbb4146ba9052fe3210063
+      internalID: 1041206728
       vertices: []
       indices: 
       edges: []
@@ -272,12 +398,18 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      EquimentSlotIcons_0: -1209312054
-      EquimentSlotIcons_1: 1916009107
-      EquimentSlotIcons_2: 1834701202
-      EquimentSlotIcons_3: 1012391079
-      EquimentSlotIcons_4: 1367431148
-      EquimentSlotIcons_5: -58869026
+      Equipment_0: 762332873
+      Equipment_1: 2125906704
+      Equipment_10: -1271398305
+      Equipment_11: 1041206728
+      Equipment_2: -956962918
+      Equipment_3: -952251264
+      Equipment_4: -153858569
+      Equipment_5: -1895453901
+      Equipment_6: 1366324990
+      Equipment_7: -1235289794
+      Equipment_8: -1282636156
+      Equipment_9: 1685870894
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

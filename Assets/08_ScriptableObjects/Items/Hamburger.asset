@@ -15,7 +15,7 @@ MonoBehaviour:
   idx: 903
   itemName: Hamburger
   description: "\uD584\uBD80\uAE30"
-  icon: {fileID: 0}
+  icon: {fileID: -451098977, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   itemTypes: 40
   stackable: 1
   maxStack: 99
@@ -46,9 +46,15 @@ MonoBehaviour:
     tags: []
     contributionTime: 0
   cookedData:
-    priority: 0
-    requiredTags: []
-    forbiddenTags: []
+    priority: 3
+    requiredTags:
+    - tag: 1
+      value: 1
+    - tag: 3
+      value: 1
+    forbiddenTags:
+    - tag: 7
+      value: 0.5
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
