@@ -121,7 +121,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             }
             StartCoroutine(ShakeIDamageable());
         }
-
     }
     
     // Enemy 사망 여부 판별

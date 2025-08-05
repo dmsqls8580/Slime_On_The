@@ -57,4 +57,7 @@ MonoBehaviour:
   - StatType: 67
     ModifierType: 0
     Value: 0.1
-  DropItems: []
+  DropItems:
+  - itemSo: {fileID: 11400000, guid: e1bb4ea7919fd1b46890ecd10b4b2f3f, type: 2}
+    amount: 1
+    dropChance: 100
