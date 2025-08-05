@@ -179,6 +179,7 @@ public class AggroSystem
                 continue;
             }
 
+            // AttackType이 Neutral인 경우, 먼저 공격을 받지 않는 이상 공격 X
             if (attackType == AttackType.Neutral && target.Value < 21f)
             {
                 continue;
