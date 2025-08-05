@@ -143,6 +143,8 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
             var        getPool = pool.Dequeue();
             GameObject go      = getPool.GameObject;
             go.SetActive(true);
+            getPool.OnSpawnFromPool();
+            
             return go;
         }
         else
