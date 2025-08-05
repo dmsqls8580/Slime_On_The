@@ -59,12 +59,6 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
         }
 
     }   
-    
-    public void DropFirstBreakItems()
-    {
-        DropItems(transform, dropItemsOnFirstBreak);
-    }
-
     public void DropFirstBreakItems()
     {
         DropItems(transform, dropItemsOnFirstBreak);

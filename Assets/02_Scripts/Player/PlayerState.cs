@@ -50,9 +50,16 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
+        private float walkSoundInterval = 0.4f; // 걷기 사운드 재생 간격
+        private float walkSoundTimer;
+        
+        private bool isLeftFoot = true;
+        
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
+            walkSoundTimer = 0f;
+            isLeftFoot = true;
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -64,7 +71,18 @@ namespace PlayerStates
             }
 
             _owner.Movement();
-
+            
+            walkSoundTimer -= Time.deltaTime;
+            if (walkSoundTimer <= 0f)
+            {
+                // 왼발/오른발 번갈아가며 SFX 재생
+                var sfx = isLeftFoot ? SFX.PlayerWalkLeft : SFX.PlayerWalkRight;
+                SoundManager.Instance.PlaySFX(sfx);
+            
+                isLeftFoot = !isLeftFoot;
+                walkSoundTimer = walkSoundInterval;
+            }
+            
             Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
         }
