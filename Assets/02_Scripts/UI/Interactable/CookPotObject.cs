@@ -63,10 +63,21 @@ public class CookPotObject : BaseInteractableObject, IInteractable
                 var ui = uiManager.GetUIComponent<UICookPot>();
                 ui.Initialize(this);
                 ui.RefreshTargetImg(cookIndex, finishedItem);
-                uiManager.Toggle<UICookPot>();
-                if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                if (!ui.IsOpen)
                 {
-                    uiManager.Toggle<UIInventory>();
+                    uiManager.Toggle<UICookPot>();
+                    if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
+                    {
+                        uiManager.Toggle<UIInventory>();
+                    }
+                }
+                else
+                {
+                    uiManager.Toggle<UICookPot>();
+                    if (uiManager.GetUIComponent<UIInventory>().IsOpen)
+                    {
+                        uiManager.Toggle<UIInventory>();
+                    }
                 }
                 break;
             case InteractionCommandType.Space:
