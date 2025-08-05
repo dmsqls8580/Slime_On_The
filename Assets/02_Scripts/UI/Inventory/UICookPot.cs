@@ -59,6 +59,11 @@ public class UICookPot : UIBase
         
         if (changedIndex >= inputStart && changedIndex < inputEnd)
         {
+            foreach (var slot in inputSlots)
+            {
+                if (!slot.HasItem()) return;
+            }
+            
             TryCook();
             return;
         }
@@ -77,7 +82,6 @@ public class UICookPot : UIBase
     {
         if (cookPotObject.CurrentState == CookingState.Finishing) return;
 
-
         Dictionary<IngredientTag, float> tags = new();
         float cookingTime = 0f;
 
@@ -86,7 +90,6 @@ public class UICookPot : UIBase
         {
             ItemSO data = slot.GetData().ItemData;
             if (data == null || data.cookableData == null) continue;
-
             // 태그 합산.
             List<TagValuePair> _tags = data.cookableData.tags;
             foreach (TagValuePair pair in _tags)
