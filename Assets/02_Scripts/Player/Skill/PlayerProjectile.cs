@@ -83,7 +83,6 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
                 {
                     var hit = other.ClosestPoint(transform.position);
                     impactEffect.PlayEffect(hit, effectData.duration);
-                    SoundManager.Instance.ChangeSFXVolume(0.1f);
                     SoundManager.Instance.PlaySFX(SFX.SlimeNormalAttack);
                 }
             }

@@ -50,9 +50,16 @@ namespace PlayerStates
 
     public class MoveState : IState<PlayerController, PlayerState>
     {
+        private float walkSoundInterval = 0.4f; // 걷기 사운드 재생 간격
+        private float walkSoundTimer;
+        
+        private bool isLeftFoot = true;
+        
         public void OnEnter(PlayerController _owner)
         {
             _owner.AnimationController.SetMove(true);
+            walkSoundTimer = 0f;
+            isLeftFoot = true;
         }
 
         public void OnUpdate(PlayerController _owner)
@@ -64,7 +71,18 @@ namespace PlayerStates
             }
 
             _owner.Movement();
-
+            
+            walkSoundTimer -= Time.deltaTime;
+            if (walkSoundTimer <= 0f)
+            {
+                // 왼발/오른발 번갈아가며 SFX 재생
+                var sfx = isLeftFoot ? SFX.PlayerWalkLeft : SFX.PlayerWalkRight;
+                SoundManager.Instance.PlaySFX(sfx);
+            
+                isLeftFoot = !isLeftFoot;
+                walkSoundTimer = walkSoundInterval;
+            }
+            
             Vector2 lookDir = _owner.AnimationController.UpdatePlayerDirectionByMouse();
             _owner.AnimationController.UpdateAnimatorParameters(lookDir);
         }
@@ -189,6 +207,7 @@ namespace PlayerStates
             timer = 0f;
             attackDone = false;
 
+            SoundManager.Instance.PlaySFX(SFX.SlimeImpactStart);
             _owner.AnimationController.TriggerAttack();
             _owner.SetAttackCoolDown(_skill.cooldown);
         }
@@ -248,6 +267,7 @@ namespace PlayerStates
             timer = 0f;
             attackDone = false;
 
+            SoundManager.Instance.PlaySFX(SFX.SlimeImpactStart);
             _owner.AnimationController.TriggerAttack();
             _owner.SetAttackCoolDown(_skill.cooldown);
         }
@@ -283,37 +303,24 @@ namespace PlayerStates
     public class GatherState : IState<PlayerController, PlayerState>
     {
         private float gatherDuration = 0.5f; // 이동 제한 시간
-        private float gatherTime = 0f;
-        private float actCoolDown = 0f;
 
         public void OnEnter(PlayerController _owner)
         {
-            gatherTime = gatherDuration;
             _owner.Rigid2D.velocity = Vector2.zero;
-            actCoolDown = 0f;
             _owner.SetCanMove(false);
             _owner.AnimationController.TriggerGather();
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            gatherTime -= Time.deltaTime;
-            actCoolDown -= Time.deltaTime;
+            _owner.actCoolDown -= Time.deltaTime;
 
             // 쿨타임이 끝났고, 키가 계속 눌려 있고, 다시 채집 가능한 상태라면
-            if (actCoolDown <= 0f &&
+            if (_owner.actCoolDown <= 0f &&
                 InputController.Instance.PlayerActions.Gathering.IsPressed() &&
                 _owner.CanGathering())
             {
-                _owner.InteractionHandler.HandleInteraction(
-                    _owner.InteractionSelector.SpaceInteractable,
-                    InteractionCommandType.Space,
-                    _owner);
-                
-                float toolActSpd = _owner.ToolController.GetAttackSpd();
-                actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
-
-                _owner.AnimationController.TriggerGather();
+               _owner.Gathering();
             }
         }
 
