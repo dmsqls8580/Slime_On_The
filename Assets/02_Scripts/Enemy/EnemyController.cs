@@ -13,6 +13,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private Collider2D attackRangeCollider;
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private Canvas damageTextCanvas;
+    [SerializeField] private bool isDefaultFacingRight = true;
     
     public Transform projectileTransform;                  // 발사체 생성 Transform
     
@@ -314,22 +315,13 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         // attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
         // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.Neutral)
-        {
-            Vector2 targetDir = AttackTarget.transform.position - transform.position;
-            lastFlipX = targetDir.x < 0;
-        }
+        // if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.Neutral)
+        // {
+        //     Vector2 targetDir = AttackTarget.transform.position - transform.position;
+        //     lastFlipX = targetDir.x < 0;
+        // }
         
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX, AttackType이 None인 경우, ChaseState를 제외하고 반대로 flip
-        if (EnemyStatus.enemySO.AttackType == AttackType.None
-            && CurrentState != EnemyState.Chase)
-        {
-            spriteRenderer.flipX = !lastFlipX; 
-        }
-        else
-        {
-            spriteRenderer.flipX = lastFlipX; 
-        }
+        spriteRenderer.flipX = isDefaultFacingRight ? lastFlipX : !lastFlipX;
     }
     
     public bool IsEnoughDistanceChange()
