@@ -55,7 +55,6 @@ public class EnemySpawner : MonoBehaviour, ISpawner
         set => SpawnRadius = value;
     }
     
-
     private List<GameObject> spawnedEnemies = new List<GameObject>();
     private CircleCollider2D circleCollider2D;
     private GameObject player;

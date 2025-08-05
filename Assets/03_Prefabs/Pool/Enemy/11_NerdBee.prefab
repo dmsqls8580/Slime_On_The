@@ -145,7 +145,7 @@ Transform:
   m_GameObject: {fileID: 3974199653023377943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.69, y: -0.23, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -170,6 +170,7 @@ MonoBehaviour:
   attackRangeCollider: {fileID: 7645015129374363302}
   damageTextPrefab: {fileID: 0}
   damageTextCanvas: {fileID: 0}
+  isDefaultFacingRight: 1
   projectileTransform: {fileID: 5855320323259367875}
   EnemyStatus: {fileID: 1119790835542035427}
   stickTime: 1
