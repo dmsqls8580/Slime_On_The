@@ -2,12 +2,10 @@ using UnityEngine;
 
 public class ModifierObject : MonoBehaviour
 {
-    private bool onEnabled = false;
     private void OnEnable()
     {
-        if (!onEnabled)
+        if (GameManager.Instance.IsLoading)
         {
-            onEnabled = true;
             return;
         }
         if (NavMesh2DManager.Instance != null)
