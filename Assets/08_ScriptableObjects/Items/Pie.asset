@@ -46,9 +46,17 @@ MonoBehaviour:
     tags: []
     contributionTime: 0
   cookedData:
-    priority: 0
+    priority: 6
     requiredTags: []
-    forbiddenTags: []
+    forbiddenTags:
+    - tag: 1
+      value: 0.5
+    - tag: 2
+      value: 0.5
+    - tag: 6
+      value: 0.5
+    - tag: 7
+      value: 0.5
   placeableData:
     objectPrefab: {fileID: 0}
     size: {x: 0, y: 0}
