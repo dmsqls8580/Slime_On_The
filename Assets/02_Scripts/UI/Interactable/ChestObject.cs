@@ -33,12 +33,6 @@ public class ChestObject : BaseInteractableObject, IInteractable
         chestStart = SlotIndexScheme.GetChestStart(chestIndex);
         chestEnd = chestStart + SlotIndexScheme.ChestSlotCount;
     }
-
-    private void OnDisable()
-    {
-        inventoryManager.ReleaseChestIndex(chestIndex);
-    }
-    
     
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
@@ -59,7 +53,12 @@ public class ChestObject : BaseInteractableObject, IInteractable
                 TakeInteraction(toolPower);
                 if (currentHealth <= 0)
                 {
+                    if (uiManager.GetUIComponent<UIChest>().IsOpen)
+                    {
+                        uiManager.Toggle<UIChest>();
+                    }
                     DropItems(_playerController.transform);
+                    inventoryManager.ReleaseChestIndex(chestIndex);
                     Destroy(gameObject);
                 }
                 break;
