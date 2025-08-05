@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
+public abstract class SlotBase : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] protected Image iconImage;
     [SerializeField] protected Image backgroundImage;
@@ -79,4 +79,18 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler
     }
 
     public abstract void OnPointerClick(PointerEventData _eventData);
+
+    public virtual void OnPointerEnter(PointerEventData _eventData)
+    {
+        var item = GetData();
+        if (item != null && item.IsValid)
+        {
+            TooltipManager.Instance.Show(item.ItemData.itemName);
+        }
+    }
+
+    public virtual void OnPointerExit(PointerEventData _eventData)
+    {
+        TooltipManager.Instance.Hide();
+    }
 }
