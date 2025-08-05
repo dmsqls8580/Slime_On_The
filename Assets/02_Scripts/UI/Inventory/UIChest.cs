@@ -7,20 +7,26 @@ public class UIChest : UIBase
     [SerializeField] private List<InventorySlot> chestSlots;
     [SerializeField] private AnimationCurve JellyAnimationCurve;
 
-    public void Initialize(int chestIndex)
+    private InventoryManager inventoryManager;
+    
+    private ChestObject chestObject;
+    private int chestIndex;
+    public int ChestIndex => chestIndex;
+    
+    private void Awake()
     {
-        int startIndex = SlotIndexScheme.GetChestStart(chestIndex);
+        inventoryManager = InventoryManager.Instance;
+    }
+    
+    public void Initialize(ChestObject _chestObject)
+    {
+        chestObject = _chestObject;
+        chestIndex = chestObject.ChestIndex;
+
+        int chestStart = SlotIndexScheme.GetChestStart(chestIndex);
         for (int i = 0; i < chestSlots.Count; i++)
         {
-            chestSlots[i].Initialize(startIndex + i);
-        }
-    }
-
-    public void Refresh()
-    {
-        foreach (var slot in chestSlots)
-        {
-            slot.Refresh();
+            chestSlots[i].Initialize(chestStart + i);
         }
     }
     
@@ -34,5 +40,6 @@ public class UIChest : UIBase
     public override void Close()
     {
         base.Close();
+        chestIndex = -1;
     }
 }

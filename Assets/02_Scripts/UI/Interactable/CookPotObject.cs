@@ -88,13 +88,6 @@ public class CookPotObject : BaseInteractableObject, IInteractable
         }
     }
     
-    // private void TakeInteraction(float _damage)
-    // {
-    //     currentHealth -= _damage;
-    //     Logger.Log($"{currentHealth}");
-    //     currentHealth = Mathf.Max(currentHealth, 0);
-    // }
-
     public void StartCook(ItemSO _item, float _cookingTime)
     {
         if (inventoryManager.GetItem(inputEnd) != null &&
