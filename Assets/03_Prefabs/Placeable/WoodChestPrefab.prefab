@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: -6641271627093872514}
   - component: {fileID: 1842576535867851315}
   m_Layer: 30
-  m_Name: WorkbenchPrefab
+  m_Name: WoodChestPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
-  m_Sprite: {fileID: -1789053278, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
+  m_Sprite: {fileID: -333017570, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.6666667}
   m_FlipX: 0
   m_FlipY: 0
@@ -139,7 +139,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 1}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 2, y: 3}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59ecf5921aebdd40b6ddf1338e40765, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSO: {fileID: 11400000, guid: 80bfd8bb9945f294ebd3a885de4559b2, type: 2}
+  itemSO: {fileID: 11400000, guid: 51c1787c76a600f448edf2d5b629dadd, type: 2}
 --- !u!114 &252229195948344786
 MonoBehaviour:
   m_ObjectHideFlags: 0
