@@ -17,20 +17,24 @@ public class WeatherManager : MonoBehaviour
     private int maxDayCount = 1;
     private WeatherType currentWeatherType = WeatherType.Clear;
     private HashSet<WeatherType> currentWeatherTypes = new() { WeatherType.Clear };
+    public HeatwaveEffect heatwave = null;
+    public TimeOfDay currentTimeOfDay;
 
     // 나올 수 있는 이펙트들.
     private readonly List<WeatherType> weatherPatterns = new()
     {
         WeatherType.Clear,
-        //WeatherType.Heatwave,
+        WeatherType.Heatwave,
         WeatherType.Rain,
-        WeatherType.Snow,
-        WeatherType.Storm
+        WeatherType.Storm,
+        WeatherType.Snow
     };
     // 날씨 이펙트 저장소.
     private Dictionary<WeatherType, IWeatherEffect> weatherEffects;
     // 작동중인 이펙트들.
     private List<IWeatherEffect> activeEffects = new();
+
+    public void UpdateDayCount() => dayCount++;
 
     private void Awake()
     {
@@ -38,12 +42,10 @@ public class WeatherManager : MonoBehaviour
         weatherEffects = new Dictionary<WeatherType, IWeatherEffect>
         {
             { WeatherType.Clear, new ClearEffect() },
-            //{ WeatherType.Fog, new FogEffect(this, fogVolume) },
-            //{ WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, PlayerStatusManager.Instance) },
+            { WeatherType.Heatwave, new HeatwaveEffect(this, heatwaveVolume, PlayerStatusManager.Instance) },
             { WeatherType.Rain, new RainEffect(this, rainParticle, PlayerStatusManager.Instance) },
             { WeatherType.Storm, new StormEffect(PlayerStatusManager.Instance, lightningPrefab, lightningMark) },
             { WeatherType.Snow, new SnowEffect(this, snowParticle, PlayerStatusManager.Instance) },
-            //{ WeatherType.Wind, new WindEffect() }
         };
 
         // 초기 날씨 설정.
@@ -68,7 +70,7 @@ public class WeatherManager : MonoBehaviour
         if (dayCount >= maxDayCount)
         {
             dayCount = 0;
-            maxDayCount = 1; // Random.Range(1, 11);
+            maxDayCount = 1;// Random.Range(1, 4);
             ChangeWeather();
         }
 
@@ -142,10 +144,5 @@ public class WeatherManager : MonoBehaviour
     {
         // Dictionary를 순회하며 해당 인스턴스와 일치하는 키(WeatherType)를 반환.
         return weatherEffects.FirstOrDefault(x => x.Value == effect).Key;
-    }
-
-    public void UpdateDayCount()
-    {
-        dayCount++;
     }
 }

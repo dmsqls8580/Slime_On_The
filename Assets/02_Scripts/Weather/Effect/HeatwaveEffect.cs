@@ -18,11 +18,16 @@ public class HeatwaveEffect : WeatherEffectBase
     private readonly float effectInterval = 5f;
     private float effectTimer = 0f;
 
+    private bool isNight = false;
+    private bool wasSpeedModified = false;
+
     public HeatwaveEffect(WeatherManager _weatherManager, Volume _volume, PlayerStatusManager _playerStatusManager)
     {
         weatherManager = _weatherManager;
         volume = _volume;
         playerStatusManager = _playerStatusManager;
+
+        weatherManager.heatwave = this;
     }
 
     protected override void ApplyEffect()
@@ -33,13 +38,21 @@ public class HeatwaveEffect : WeatherEffectBase
                 StartHeatwave();
                 break;
             case 2:
-                playerStatusManager.UpdateMoveSpeed = -moveSpeed;
+                // 밤이 아닐 때만 이동속도 감소.
+                if (!isNight)
+                {
+                    playerStatusManager.UpdateMoveSpeed = -moveSpeed;
+                    wasSpeedModified = true;
+                }
                 break;
         }
     }
 
     protected override void UpdateEffect()
     {
+        if (weatherManager.currentTimeOfDay == TimeOfDay.Night ||
+            weatherManager.currentTimeOfDay == TimeOfDay.Dawn) return;
+
         effectTimer += Time.deltaTime;
 
         if (effectTimer >= effectInterval)
@@ -63,7 +76,12 @@ public class HeatwaveEffect : WeatherEffectBase
         switch (currentLevel)
         {
             case 2:
-                playerStatusManager.UpdateMoveSpeed = moveSpeed;
+                // 이동속도를 감소시켰던 경우에만 복구
+                if (wasSpeedModified)
+                {
+                    playerStatusManager.UpdateMoveSpeed = moveSpeed;
+                    wasSpeedModified = false;
+                }
                 goto case 1;
             case 1:
                 StopHeatwave();
@@ -153,6 +171,30 @@ public class HeatwaveEffect : WeatherEffectBase
             }
 
             yield return null;
+        }
+    }
+
+    public void OnNightStarted()
+    {
+        isNight = true;
+
+        // 현재 폭염 중이면 이동속도를 원래대로 돌림
+        if (currentLevel >= 2 && wasSpeedModified)
+        {
+            playerStatusManager.UpdateMoveSpeed = moveSpeed;
+            wasSpeedModified = false;
+        }
+    }
+
+    public void OnNightEnded()
+    {
+        isNight = false;
+
+        // 폭염 중이면 다시 이동속도를 줄여야 함
+        if (currentLevel >= 2)
+        {
+            playerStatusManager.UpdateMoveSpeed = -moveSpeed;
+            wasSpeedModified = true;
         }
     }
 }
