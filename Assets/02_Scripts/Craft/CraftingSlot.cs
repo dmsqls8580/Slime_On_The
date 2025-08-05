@@ -36,6 +36,7 @@ public class CraftingSlot : MonoBehaviour
 
     private void OnClickSlot()
     {
+        SoundManager.Instance.PlaySFX(SFX.Click);
         craftingItemInfoPanel.image.sprite = image.sprite;
         craftingItemInfoPanel.name.text = itemSO.itemName.ToString();
         UpdateRequiredIngredientPanel();
