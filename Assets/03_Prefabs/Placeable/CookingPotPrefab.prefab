@@ -128,15 +128,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f8b4df45bea354c8dc33cb97b2de08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cookIndex: -1
-  currentState: 0
-  processPercentage: 1
-  maxHealth: 0
+  dropItemsOnFirstBreak: []
+  dropItemsOnFinalBreak: []
+  objectType: 2
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
-  dropItems: []
-  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  maxHealth: 0
+  cookIndex: -1
+  currentState: 0
+  processPercentage: 1
 --- !u!61 &4713157424335962800
 BoxCollider2D:
   m_ObjectHideFlags: 0
