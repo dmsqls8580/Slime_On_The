@@ -17,7 +17,8 @@ public class CookPotObject : BaseInteractableObject, IInteractable
 {
     [SerializeField] private int cookIndex = -1;
     [SerializeField] private CookingState currentState = CookingState.Idle;
-    private ItemSO finishedItem = null;
+    public ItemSO[] prevItems = new ItemSO[3];
+    public ItemSO finishedItem = null;
     private float elapsedTime = 0f;
     private float cookingTime = 0f;
     public float processPercentage = 1f;
@@ -26,7 +27,6 @@ public class CookPotObject : BaseInteractableObject, IInteractable
 
     private int inputStart;
     private int inputEnd;
-    private ItemSO prevTargetItem = null;
 
     private InventoryManager inventoryManager;
     private UIManager uiManager;
@@ -55,11 +55,6 @@ public class CookPotObject : BaseInteractableObject, IInteractable
         inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
     }
 
-    private void OnDisable()
-    {
-        inventoryManager.ReleaseCookIndex(cookIndex);
-    }
-
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         switch (_type)
@@ -67,6 +62,7 @@ public class CookPotObject : BaseInteractableObject, IInteractable
             case InteractionCommandType.F:
                 var ui = uiManager.GetUIComponent<UICookPot>();
                 ui.Initialize(this);
+                ui.RefreshTargetImg(cookIndex, finishedItem);
                 uiManager.Toggle<UICookPot>();
                 if (!uiManager.GetUIComponent<UIInventory>().IsOpen)
                 {
@@ -79,9 +75,13 @@ public class CookPotObject : BaseInteractableObject, IInteractable
                 TakeInteraction(toolPower);
                 if (currentHealth <= 0)
                 {
+                    if (uiManager.GetUIComponent<UICookPot>().IsOpen)
+                    {
+                        uiManager.Toggle<UICookPot>();
+                    }
                     StopCook();
                     DropItems(_playerController.transform);
-                    //inventoryManager.ReleaseCookIndex(cookIndex);
+                    inventoryManager.ReleaseCookIndex(cookIndex);
                     Destroy(gameObject);
                 }
                 break;
@@ -98,6 +98,8 @@ public class CookPotObject : BaseInteractableObject, IInteractable
         finishedItem = _item;
         cookingTime = _cookingTime;
 
+        uiCookPot.RefreshTargetImg(cookIndex, finishedItem);
+        
         coroutine = StartCoroutine(CookRoutine());
     }
 
@@ -119,12 +121,13 @@ public class CookPotObject : BaseInteractableObject, IInteractable
 
             currentState = CookingState.Finishing;
 
+            inventoryManager.TryAddItem(inputEnd, new ItemInstanceData(finishedItem, 1), 1);
             for (int i = inputStart; i < inputEnd; i++)
             {
                 inventoryManager.RemoveItem(i, 1);
             }
-            inventoryManager.TryAddItem(inputEnd, new ItemInstanceData(finishedItem, 1), 1);
-            prevTargetItem = null;
+            
+            uiCookPot.RefreshTargetImg(cookIndex, finishedItem);
 
         } while (CanCook());
 
@@ -152,6 +155,8 @@ public class CookPotObject : BaseInteractableObject, IInteractable
             currentState = CookingState.Idle;
             elapsedTime = 0f;
             uiCookPot.RefreshProcessImg(cookIndex, 1f);
+            finishedItem = null;
+            uiCookPot.RefreshTargetImg(cookIndex, finishedItem);
         }
     }
 
