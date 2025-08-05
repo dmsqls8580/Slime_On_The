@@ -194,7 +194,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
         statManager = GetComponent<StatManager>();
         SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(BossStatus.BossSO.AttackType,
-            target => IsPlayerInSenseRange,stickTime);
+            target => target.CompareTag("Player") 
+                      && IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
     

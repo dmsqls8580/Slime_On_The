@@ -250,7 +250,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         statManager = GetComponent<StatManager>();
         SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
-            target => IsPlayerInSenseRange,stickTime);
+            target => target.CompareTag("Player") 
+                      && IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
 
