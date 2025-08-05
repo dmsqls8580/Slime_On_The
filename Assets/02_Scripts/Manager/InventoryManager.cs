@@ -124,6 +124,8 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     {
         if (_itemData == null || _amount <= 0) return false;
         // 같은 아이템 있는 곳에 병합
+        
+        SoundManager.Instance.PlaySFX(SFX.ItemPickup);
         for (int i = 0; i < unlockedSlotCount; i++)
         {
             var slot = inventorySlots[i];

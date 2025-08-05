@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efd90ccf9f6405442a3c59cf49fdca41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnCount: 5
-  SpawnRadius: 20
+  SpawnCount: 1
+  SpawnRadius: 5
   EnemySOList:
   - {fileID: 11400000, guid: 824356aa9b3b48e48b8fc2a6e7fc8b0c, type: 2}
 --- !u!58 &2742108409945374533
@@ -83,4 +83,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 20
+  m_Radius: 5
