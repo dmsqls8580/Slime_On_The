@@ -50,6 +50,7 @@ public class GameManager : Singleton<GameManager>
         GameSettings.seed = seed;
         Debug.Log($"[GameManager] 사용된 시드값: {seed}");
 
+        Time.timeScale = 0f;
         // 1. 맵 생성
         yield return StartCoroutine(worldManager.GenerateWorldAsync(seed, (msg, prog) =>
         {
@@ -89,6 +90,8 @@ public class GameManager : Singleton<GameManager>
 
         //playerSpawner.SpawnPlayer();
         // 로딩 종료
+        
+        Time.timeScale = 1f;
         PlayerStatusManager.Instance.StartDaySlimeGaugeRoutine();
         loadingCanvas.alpha = 0f;
         loadingCanvas.blocksRaycasts = false;

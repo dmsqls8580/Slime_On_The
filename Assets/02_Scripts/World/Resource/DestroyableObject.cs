@@ -24,6 +24,19 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
 
+        switch (ObjectType)
+        {
+            case ObjectType.Tree:
+                SoundManager.Instance.PlaySFX(SFX.ToolAxe);
+                break;
+            case ObjectType.Ore:
+                SoundManager.Instance.PlaySFX(SFX.ToolPickaxe);
+                break;
+            case ObjectType.Placed:
+                SoundManager.Instance.PlaySFX(SFX.ToolHammer);
+                break;
+        }
+        
         TakeInteraction(toolPower);
 
         if (destroyEffect is IHitReactive hitEffect)

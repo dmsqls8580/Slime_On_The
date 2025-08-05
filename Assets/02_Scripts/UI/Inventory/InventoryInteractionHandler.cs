@@ -107,22 +107,18 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
     {
         var held = holdManager.HeldItem;
         if (held == null || !held.IsValid) return;
-
         if (!_slot.IsItemAllowed(held)) return;
-
         var slotData = _slot.GetData();
 
         if (slotData != null && slotData.IsValid && slotData.ItemData != held.ItemData) return;
-
         // if (held.ItemData.itemTypes == ItemType.Equipable && _slot is EquipSlot equipSlot)
         // {
         //     if (!equipSlot.IsCorrectEquipType(held.ItemData.equipableData.equipableType))
         //         return;
         // }
-
+        
         int placed = inventoryManager.TryAddItem(_slot.SlotIndex, held, _amount);
         holdManager.RemoveItem(placed);
-
         _slot.Refresh();
         holdManager.Refresh();
     }
@@ -169,7 +165,6 @@ public class InventoryInteractionHandler : SceneOnlySingleton<InventoryInteracti
             var formChanger = FindObjectOfType<SlimeFormChanger>();
             if (!formChanger.IsUnityNull() && formChanger.IsChange )
             {
-                Logger.Log("[TryUse] 폼변환 중 또는 쿨타임 중 - Core 장비 사용 차단");
                 return;
             }
             // 변신중일때 return

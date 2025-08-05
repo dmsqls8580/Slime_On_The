@@ -18,9 +18,6 @@ public class UICookPot : UIBase
     private int cookIndex;
     public int CookIndex => cookIndex;
 
-    private bool ignoreNextSlotChange = false;
-    public void IgnoreNextSlotChange() => ignoreNextSlotChange = true;
-
     private void Awake()
     {
         inventoryManager = InventoryManager.Instance;
@@ -42,7 +39,6 @@ public class UICookPot : UIBase
         resultSlot.Initialize(resultIndex);
 
         inventoryManager.OnSlotChanged += OnAnySlotChanged;
-        cookPotObject.Initialize(inputSlots, resultSlot);
     }
 
     private void OnDisable()
@@ -53,22 +49,21 @@ public class UICookPot : UIBase
     
     private void OnAnySlotChanged(int changedIndex)
     {
-        if (ignoreNextSlotChange)
-        {
-            ignoreNextSlotChange = false;
-            return;
-        }
-
         int inputStart = SlotIndexScheme.GetCookInputStart(cookIndex);
         int inputEnd = inputStart + SlotIndexScheme.CookInputSlotCount;
 
+        foreach (var slot in inputSlots)
+        {
+            if (!slot.HasItem()) cookPotObject.StopCook();
+        }
+        
         if (changedIndex >= inputStart && changedIndex < inputEnd)
         {
             TryCook();
             return;
         }
 
-        if (changedIndex == resultSlot.SlotIndex &&
+        if (changedIndex == inputEnd &&
             (cookPotObject.CurrentState == CookingState.Idle ||
             cookPotObject.CurrentState == CookingState.Finished))
         {
@@ -82,15 +77,6 @@ public class UICookPot : UIBase
     {
         if (cookPotObject.CurrentState == CookingState.Finishing) return;
 
-        if (cookPotObject.CurrentState == CookingState.Cooking)
-        {
-            cookPotObject.StopCook();
-        }
-
-        foreach (var slot in inputSlots)
-        {
-            if (!slot.HasItem()) return;
-        }
 
         Dictionary<IngredientTag, float> tags = new();
         float cookingTime = 0f;
@@ -113,17 +99,20 @@ public class UICookPot : UIBase
             cookingTime += data.cookableData.contributionTime;
         }
 
-        cookingManager.FindMatchingRecipe(tags, cookingTime, cookPotObject);
+        ItemSO targetItem = cookingManager.FindMatchingRecipe(tags);
+        cookPotObject.StartCook(targetItem, cookingTime);
     }
 
-    public void RefreshProcessImg(float processPercentage)
+    public void RefreshProcessImg(int index, float processPercentage)
     {
+        if(CookIndex != index) return;
         processImage.fillAmount = 1 - processPercentage;
     }
 
     public override void Open()
     {
         base.Open();
+        processImage.fillAmount = 0;
         Contents.localScale = Vector3.zero;
         Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
     }

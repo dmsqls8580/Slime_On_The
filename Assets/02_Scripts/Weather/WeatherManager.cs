@@ -14,7 +14,7 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private GameObject lightningMark;
 
     private int dayCount = 0;
-    private int maxDayCount = 10;
+    private int maxDayCount = 2;
     private WeatherType currentWeatherType = WeatherType.Clear;
     private HashSet<WeatherType> currentWeatherTypes = new() { WeatherType.Clear };
 
@@ -22,7 +22,7 @@ public class WeatherManager : MonoBehaviour
     private readonly List<WeatherType> weatherPatterns = new()
     {
         WeatherType.Clear,
-        WeatherType.Heatwave,
+        //WeatherType.Heatwave,
         WeatherType.Rain,
         WeatherType.Snow,
         WeatherType.Storm
@@ -68,7 +68,7 @@ public class WeatherManager : MonoBehaviour
         if (dayCount >= maxDayCount)
         {
             dayCount = 0;
-            maxDayCount = Random.Range(1, 11);
+            maxDayCount = 2; // Random.Range(1, 11);
             ChangeWeather();
         }
 
@@ -82,7 +82,7 @@ public class WeatherManager : MonoBehaviour
         // 다음 날씨 상태 결정.
         WeatherType nextWeatherType = GetNextWeatherType();
         HashSet<WeatherType> nextWeatherTypes = new HashSet<WeatherType> { nextWeatherType };
-        if (nextWeatherType == WeatherType.Rain && Random.Range(0, 4) == 0)
+        if (nextWeatherType == WeatherType.Rain && Random.Range(0, 0) == 0)
         { nextWeatherTypes.Add(WeatherType.Storm); }
 
         HashSet<WeatherType> typesToRemove = new HashSet<WeatherType>(currentWeatherTypes);

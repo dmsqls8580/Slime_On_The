@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
-public abstract class UIButtonBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class UIButtonBase : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
     protected Vector3 originalScale;
 
@@ -14,6 +14,18 @@ public abstract class UIButtonBase : MonoBehaviour, IPointerEnterHandler, IPoint
         originalScale = transform.localScale;
     }
 
-    public abstract void OnPointerEnter(PointerEventData eventData);
-    public abstract void OnPointerExit(PointerEventData eventData);
+    public virtual void OnPointerClick(PointerEventData eventData)
+    {
+        SoundManager.Instance.PlaySFX(SFX.Click);
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData)
+    {
+        SoundManager.Instance.PlaySFX(SFX.Toggle);
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        
+    }
 }

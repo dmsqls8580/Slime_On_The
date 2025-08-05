@@ -38,7 +38,6 @@ public class Craft : MonoBehaviour
         if (craftingSlot.IsLocked == true)
         {
             // TODO: 버튼 비활성화.
-            Logger.Log("슬롯이 잠김.");
             canCraft = false;
             return;
         }
@@ -47,13 +46,11 @@ public class Craft : MonoBehaviour
             if (!inventoryManager.CanRemoveItem(_recipe.item, _recipe.amount))
             {
                 // TODO: 버튼 비활성화.
-                Logger.Log("재료가 부족합니다. 버튼 비활성화");
                 canCraft = false;
                 return;
             }
         }
         // TODO: 버튼 활성화.
-        Logger.Log("재료가 충분합니다. 버튼 활성화");
         canCraft = true;
     }
 

@@ -10,6 +10,7 @@ public class UpscalingBtn : UIButtonBase
     
     public override void OnPointerEnter(PointerEventData eventData)
     {
+        base.OnPointerEnter(eventData);
         Vector3 targetScale = originalScale * scaleMultiplier;
         transform.DOKill();
         transform.DOScale(targetScale, enterDuration).SetEase(JellyAnimationCurve).SetUpdate(true);

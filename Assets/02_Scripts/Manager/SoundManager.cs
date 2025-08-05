@@ -4,13 +4,23 @@ using UnityEngine;
 
 public enum BGM
 {
-    
+    WeatherRainSound
 }
 
 public enum SFX
 {
     Grount,
     SlimeNormalAttack,
+    Toggle,
+    Click,
+    Error,
+    WeatherLightningStartSound,
+    WeatherStormSound,
+    ToolAxe,
+    ToolHammer,
+    ToolHand,
+    ToolPickaxe,
+    PlayerDash
 }
 
 public class SoundManager : Singleton<SoundManager>
@@ -61,6 +71,16 @@ public class SoundManager : Singleton<SoundManager>
         {
             case SFX.SlimeNormalAttack: return 0.1f;
             case SFX.Grount: return 1.0f;
+            case SFX.Toggle: return 0.2f;
+            case SFX.Click: return 0.8f;
+            case SFX.Error: return 0.5f;
+            case SFX.WeatherLightningStartSound: return 0.5f;
+            case SFX.WeatherStormSound: return 0.5f;
+            case SFX.ToolAxe: return 0.5f;
+            case SFX.ToolHammer: return 0.5f;
+            case SFX.ToolHand: return 0.5f;
+            case SFX.ToolPickaxe: return 0.5f;
+            case SFX.PlayerDash: return 0.2f;
             default: return 1.0f;
         }
     }
