@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BubbleMelee : ProjectileBase
 {
-    private CircleCollider2D circleCollider2D;
+    private CapsuleCollider2D capsuleCollider2D;
 
     public override void Awake()
     {
         base.Awake();
-        circleCollider2D = GetComponent<CircleCollider2D>();
+        capsuleCollider2D = GetComponent<CapsuleCollider2D>();
     }
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
@@ -18,10 +18,6 @@ public class BubbleMelee : ProjectileBase
         damage = _damage;
         projectileHost =  _host;
         
-        if (_radius > 0f)
-        {
-            circleCollider2D.radius = _radius;
-        }
         // lifeTime 후 자동 반환
         ObjectPoolManager.Instance.ReturnObject(this.gameObject, lifeTime);
     }

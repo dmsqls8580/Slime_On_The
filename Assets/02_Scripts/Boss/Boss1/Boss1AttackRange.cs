@@ -13,15 +13,6 @@ public class Boss1AttackRange : MonoBehaviour
         circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
-    private void Update()
-    {
-        if (boss1Controller.IsPlayerInAttackRange)
-        {
-            // Enemy 공격 범위 가시화
-            circleCollider2D.enabled = true;
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.TryGetComponent(out IDamageable iDamageable))
@@ -38,6 +29,7 @@ public class Boss1AttackRange : MonoBehaviour
         }
     }
     
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         if (circleCollider2D == null)
@@ -47,10 +39,11 @@ public class Boss1AttackRange : MonoBehaviour
         
         if (circleCollider2D is CircleCollider2D circle)
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = Color.yellow;
             Vector3 center = circle.transform.TransformPoint(circle.offset);
             Gizmos.DrawWireSphere(center, circle.radius);
         }
     }
+#endif
 
 }

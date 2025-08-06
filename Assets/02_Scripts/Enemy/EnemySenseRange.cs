@@ -15,7 +15,7 @@ public class EnemySenseRange : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            // 인식 범위에 들어가면 어그로 수치 +max(value, 10)
+            // 인식 범위에 들어가면 어그로 수치 +max(value, 20)
             float curAggro = 0f;
             enemyController.Aggro.attackTargetsList.TryGetValue(other.gameObject, out curAggro);
             float newAggro = Mathf.Max(curAggro, 20f);
