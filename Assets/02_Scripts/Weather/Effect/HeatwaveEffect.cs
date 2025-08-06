@@ -62,10 +62,11 @@ public class HeatwaveEffect : WeatherEffectBase
             switch (currentLevel)
             {
                 case 1:
-                    playerStatusManager.ConsumeHp(3f);
+                    playerStatusManager.TakeDamage(1.5f);
                     break;
                 case 2:
-                    playerStatusManager.ConsumeHp(10f);
+                    playerStatusManager.TakeDamage(3f);
+                    playerStatusManager.ConsumeSlimeGauge(2.5f);
                     break;
             }
         }

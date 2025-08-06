@@ -65,7 +65,7 @@ public class RainEffect : WeatherEffectBase
                     playerStatusManager.RecoverSlimeGauge(1f);
                     break;
                 case 2:
-                    playerStatusManager.RecoverSlimeGauge(4f);
+                    playerStatusManager.RecoverSlimeGauge(1.5f);
                     break;
             }
         }
