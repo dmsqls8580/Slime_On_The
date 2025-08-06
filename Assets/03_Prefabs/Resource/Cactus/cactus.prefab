@@ -140,12 +140,15 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: 92a4d132158328d41b138601572df92a, type: 2}
     amount: 1
     dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 92a4d132158328d41b138601572df92a, type: 2}
+    amount: 1
+    dropChance: 50
   objectType: 0
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
-  maxHealth: 0
+  maxHealth: 7
 --- !u!114 &2006848808384437714
 MonoBehaviour:
   m_ObjectHideFlags: 0

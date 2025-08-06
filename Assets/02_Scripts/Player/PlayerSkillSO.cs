@@ -22,5 +22,5 @@ public abstract class PlayerSkillSO : ScriptableObject
     public float useSlimeGauge;
 
     // 스킬 실제 동작 추상 메서드
-    public abstract void Execute(PlayerController _owner,float _damage);
+    public abstract void Execute(PlayerController _owner);
 }

@@ -45,7 +45,17 @@ public class PlayerSkillMananger : MonoBehaviour
             return 1;
         return -1; // 없는 경우
     }
+    
+    public float FinalSkillDamage(PlayerSkillSO _skill, PlayerController _owner, out bool _isCritical)
+    {
+        float damage = _skill.damage;
+        //크리티컬 계산식
+        float critChance = _owner.StatManager.GetValue(StatType.CriticalChance); // 0~100
+        float critMultiplier = _owner.StatManager.GetValue(StatType.CriticalMultiplier);
 
+        _isCritical = Random.Range(0, 100) < critChance;
+        return _isCritical ? damage * critMultiplier : damage;
+    }
     
 // 스킬 사용 요청
     public void UseSkill(int _index, PlayerController _owner)
@@ -57,30 +67,30 @@ public class PlayerSkillMananger : MonoBehaviour
         skillDamage = skill.damage;
         if(skill.skillActiveType== SkillActiveType.Instant)
         {
-            skill.Execute(_owner, skillDamage);
+            skill.Execute(_owner);
             _owner.PlayerStatusManager.ConsumeSlimeGauge(skill.useSlimeGauge);
             skillCooldowns[_index] = skill.cooldown;
         }
+        
         else if(skill.skillActiveType == SkillActiveType.Press)
         {
             _owner.StartCoroutine(UsePressSkillRoutine(skill, _owner));
         }
     }
 
-    public bool CanUseSkill(int _index)
+    private bool CanUseSkill(int _index)
     {
         return !skillCooldowns.ContainsKey(_index) || skillCooldowns[_index] <= 0;
     }
 
     private IEnumerator UsePressSkillRoutine(PlayerSkillSO _skill, PlayerController _owner)
     {
-        float consumeInterval = 0.1f; // 예: 0.1초마다 체크
-        float slimePerTick = _skill.useSlimeGauge * consumeInterval; // 초당 소비량 × 간격
-
-        // 누르고 있는 동안 + 게이지가 남아있는 동안
+        float consumeInterval = 0.1f;
+        float slimePerTick = _skill.useSlimeGauge * consumeInterval; 
+        
         while (_owner.IsMouse02Pressed() && _owner.PlayerStatusManager.CurrentSlimeGauge >= slimePerTick)
         {
-            _skill.Execute(_owner, _skill.damage); // 스킬 효과 반복(분사 등)
+            _skill.Execute(_owner);
             _owner.PlayerStatusManager.ConsumeSlimeGauge(slimePerTick);
             yield return new WaitForSeconds(consumeInterval);
         }
