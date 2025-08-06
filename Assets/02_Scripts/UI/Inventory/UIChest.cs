@@ -39,6 +39,7 @@ public class UIChest : UIBase
 
     public override void Close()
     {
+        TooltipManager.Instance.Hide();
         base.Close();
         chestIndex = -1;
     }

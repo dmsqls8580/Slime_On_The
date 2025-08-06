@@ -18,7 +18,6 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
-        
         if (Input.GetKeyDown(KeyCode.Minus)|| Input.GetKeyDown(KeyCode.KeypadMinus))
         {
             CameraZoomOut();
@@ -26,11 +25,6 @@ public class CameraController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Equals)||Input.GetKeyDown(KeyCode.KeypadPlus))
         {
             CameraZoomIn();
-        }
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            CameraShake(1,1,1);
         }
     }
     

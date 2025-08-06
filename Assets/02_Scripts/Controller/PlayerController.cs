@@ -150,7 +150,7 @@ namespace PlayerStates
             {
                 actCoolDown -= Time.deltaTime;
             }
-
+            
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)
@@ -437,16 +437,11 @@ namespace PlayerStates
             float toolActSpd = ToolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
 
-           StartCoroutine(DelayInteract(target));
-
             moveInput = Vector2.zero;
+            
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
             ChangeState(PlayerState.Gathering);
-        }
 
-        private IEnumerator DelayInteract(Collider2D _target)
-        {
-            yield return new WaitForSeconds(0.5f);
-            interactionHandler.HandleInteraction(_target, InteractionCommandType.Space, this);
         }
         private void ScanAndAttractItems()
         {
@@ -480,16 +475,13 @@ namespace PlayerStates
                 PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f, 0, 0, 0.7f));
 
-                float damage = _attacker.AttackStat.GetCurrent();
-                var textObj = Instantiate(damageTextPrefab, damageTextCanvas.transform);
-                var damageText = textObj.GetComponent<DamageTextUI>();
-                damageText.Init(transform.position, damage, Color.red);
-                if (_attackerObj != null && _attackerObj.TryGetComponent(out EnemyController enemyController))
+                if (_attackerObj != null && _attackerObj.TryGetComponent(out IAttackable attacker))
                 {
-                    deadDiscription = enemyController.EnemyStatus.enemySO.EnemyName;
+                    deadDiscription = attacker.AttackerName;
                 }
                 if (PlayerStatusManager.CurrentHp <= 0)
                 {
+                    InputController.Instance.SetEnable(false);
                     Dead();
                 }
             }

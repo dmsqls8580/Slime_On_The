@@ -65,6 +65,5 @@ public class StormEffect : WeatherEffectBase
 
     protected override void RemoveEffect()
     {
-        Logger.Log("날씨: 번개 꺼짐");
     }
 }

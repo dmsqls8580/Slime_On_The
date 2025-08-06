@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class InventoryTestSpawner : MonoBehaviour
@@ -8,7 +9,7 @@ public class InventoryTestSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.I))
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.I))
         {
             SpawnTestItems();
         }

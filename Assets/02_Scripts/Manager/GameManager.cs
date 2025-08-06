@@ -19,13 +19,13 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsLoading { get; private set; } = true;
 
+    public bool GodMode=false;
+
     private float currentProgress = 0f;
     private float targetProgress = 0f;
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-    
         // 점진적으로 로딩 바를 채움
         if (loadingBar != null && currentProgress < targetProgress)
         {
@@ -35,10 +35,15 @@ public class GameManager : Singleton<GameManager>
             if (displayPercent >= 100) displayPercent = 99;
             loadingText.text = $"Loading... {displayPercent}%";
         }
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.N)) {
+            GodMode = !GodMode;
+        }
     }
     
     private IEnumerator Start()
-    {  InputController.Instance.SetEnable(false);
+    {  
+        InputController.Instance.SetEnable(false);
         loadingCanvas.alpha = 1f;
         loadingCanvas.blocksRaycasts = true;
         loadingBar.value = 0f;

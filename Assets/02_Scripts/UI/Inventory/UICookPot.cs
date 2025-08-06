@@ -145,6 +145,7 @@ public class UICookPot : UIBase
     public override void Close()
     {
         base.Close();
+        TooltipManager.Instance.Hide();
         cookIndex = -1;
     }
 }

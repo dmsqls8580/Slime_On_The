@@ -101,7 +101,6 @@ public abstract class BaseInteractableObject : MonoBehaviour
     protected void TakeInteraction(float _damage)
     {
         currentHealth -= _damage;
-        Logger.Log($"{currentHealth}");
         currentHealth = Mathf.Max(currentHealth, 0);
     }
 }

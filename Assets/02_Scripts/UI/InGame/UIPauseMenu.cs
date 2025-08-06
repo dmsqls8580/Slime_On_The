@@ -34,9 +34,10 @@ public class UIPauseMenu : UIBase
         UIConfirmPopup.Show("타이틀로\n돌아갈꺼예요?", () =>
         {
             // 저장기능?
-            
+
             // 타이틀 씬으로 돌아가기
             Time.timeScale = 1f;
+            UIManager.Instance.CloseAll();
             SceneManager.LoadScene("MainMenuScene");
         });
     }

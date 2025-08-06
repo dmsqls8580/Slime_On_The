@@ -81,6 +81,9 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     //슬라임게이지
     public void ConsumeSlimeGauge(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
+
         if (slimeGaugeImage == null)
         {
             return;
@@ -93,6 +96,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public void RecoverSlimeGauge(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Recover(StatType.CurrentSlimeGauge, StatModifierType.Base, _amount);
 
         UpdateSlimeGaugeUI();
@@ -133,6 +138,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private void UpdateSlimeGaugeUI()
     {
+        if (GameManager.Instance.GodMode)
+            return;
         if (slimeGaugeImage.IsUnityNull())
         {
             return;
@@ -154,6 +161,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     //체력 스탯
     public void ConsumeHp(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Consume(StatType.CurrentHp, StatModifierType.Base, _amount);
 
         NotifyHpChanged();
@@ -162,6 +171,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public void RecoverHp(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Recover(StatType.CurrentHp, StatModifierType.Base, _amount);
 
         NotifyHpChanged();
@@ -184,6 +195,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     //배고픔 스탯
     public void ConsumeHunger(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Consume(StatType.CurrentHunger, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
@@ -191,6 +204,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public void RecoverHunger(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Recover(StatType.CurrentHunger, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
@@ -214,6 +229,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     //스테미나 스탯
     public void ConsumeStamina(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         statManager.Consume(StatType.CurrentStamina, StatModifierType.Base, _amount);
         ClampStaminaByHunger();
         UpdateStaminaGaugeUI();
@@ -221,6 +238,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     public void RecoverStamina(float _amount)
     {
+        if (GameManager.Instance.GodMode)
+            return;
         var stamina = statManager.GetStat<ResourceStat>(StatType.CurrentStamina);
         float max = MaxStaminaByHunger;
         float cur = CurrentStamina;
@@ -291,6 +310,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     //배고픔현재치 = 스테미나 최대치
     private void ClampStaminaByHunger()
     {
+        if (GameManager.Instance.GodMode)
+            return;
         var stamina = statManager.GetStat<ResourceStat>(StatType.CurrentStamina);
         float hunger = CurrentHunger;
 
@@ -315,6 +336,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private void NotifyHpChanged()
     {
+        if (GameManager.Instance.GodMode)
+            return;
         float ratio = MaxHp > 0 ? CurrentHp / MaxHp : 0f;
         OnHpChanged?.Invoke(ratio);
     }
@@ -329,15 +352,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.ApplyStat(StatType.Attack, StatModifierType.Equipment, equipData.atk * stack);
         statManager.ApplyStat(StatType.Defense, StatModifierType.Equipment, equipData.def * stack);
         statManager.ApplyStat(StatType.MoveSpeed, StatModifierType.Equipment, equipData.spd * stack);
-        statManager.ApplyStat(StatType.CriticalChance, StatModifierType.Equipment, equipData.crt* stack);
-
-        Logger.Log($"[장비스탯 적용:{(_apply ? "장착" : "해제")}] " +
-                   $"MaxHp: {statManager.GetValue(StatType.MaxHp)}, " +
-                   $"Atk: {statManager.GetValue(StatType.Attack)}, " +
-                   $"Def: {statManager.GetValue(StatType.Defense)}, " +
-                   $"Spd: {statManager.GetValue(StatType.MoveSpeed)}"+
-                   $"Crt: {statManager.GetValue(StatType.CriticalChance)}");
-
+        statManager.ApplyStat(StatType.CriticalChance, StatModifierType.Equipment, equipData.crt * stack);
+        
         if (equipData.equipableType == EquipType.Core)
         {
             if (_apply)
@@ -351,12 +367,15 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
 
     private float CalculateFinalDamage(float _damage)
     {
-        float defense= Mathf.Clamp01(statManager.GetValue(StatType.Defense));
+        float defense = Mathf.Clamp01(statManager.GetValue(StatType.Defense));
         return Mathf.Max(_damage * (1f - defense), 1);
     }
 
     public void TakeDamage(float _damage)
     {
+        if (GameManager.Instance.GodMode)
+            return;
+        
         if (CurrentHp > 0)
         {
             float finalDamage = CalculateFinalDamage(_damage);

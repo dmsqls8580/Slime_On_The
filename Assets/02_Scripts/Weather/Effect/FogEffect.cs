@@ -43,17 +43,14 @@ public class FogEffect : WeatherEffectBase
         switch (++currentLevel)
         {
             case 1:
-                Logger.Log("밤");
                 targetIntensity = 0.45f;
                 targetContrast = 0f;
                 break;
             case 2:
-                Logger.Log("새벽");
                 targetIntensity = 0.45f;
                 targetContrast = -25f;
                 break;
             case 3:
-                Logger.Log("데이");
                 targetIntensity = 0.45f;
                 targetContrast = 0f;
                 break;
