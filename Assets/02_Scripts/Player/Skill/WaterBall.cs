@@ -11,13 +11,15 @@ public class WaterBall : PlayerSkillSO
 
     private Coroutine sprayCoroutine;
 
-    public override void Execute(PlayerController _owner, float _damage)
+    public override void Execute(PlayerController _owner)
     {
-        if (sprayAreaPrefab!=null && sprayAreaPrefab.activeSelf)
+        bool isCrit;
+        float finalDamage = _owner.PlayerSkillMananger.FinalSkillDamage(this, _owner, out isCrit);
+        if (sprayAreaPrefab != null && sprayAreaPrefab.activeSelf)
         {
             return;
         }
-        
+
         sprayAreaPrefab = ObjectPoolManager.Instance.GetObject("WaterBallArea");
         if (sprayAreaPrefab.IsUnityNull())
         {
@@ -30,8 +32,8 @@ public class WaterBall : PlayerSkillSO
         sprayAreaPrefab.SetActive(true);
 
         var sprayAreaComponent = sprayAreaPrefab.GetComponent<WaterBallAreaObject>();
-        sprayAreaComponent.Init(_owner, _damage, _owner.gameObject, damageInterval, areaLength);
-        
+        sprayAreaComponent.Init(_owner, finalDamage, isCrit, _owner.gameObject, damageInterval, areaLength);
+
         sprayAreaComponent.OnReturned += () => sprayAreaPrefab = null;
     }
 }

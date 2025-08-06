@@ -168,20 +168,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropItemsOnFirstBreak:
-  - itemSo: {fileID: 11400000, guid: 9ee7cd76e2a1eda48b3383961afabf80, type: 2}
+  - itemSo: {fileID: 11400000, guid: be3b095375242974a94e25a082e20a7c, type: 2}
+    amount: 5
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
     amount: 3
-    dropChance: 80
-  - itemSo: {fileID: 11400000, guid: db4879009c69d594089cab0bf5fa4693, type: 2}
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 9823079b2bfdade49b832d262dcb8fd7, type: 2}
     amount: 1
     dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 9823079b2bfdade49b832d262dcb8fd7, type: 2}
+    amount: 1
+    dropChance: 50
   dropItemsOnFinalBreak:
   - itemSo: {fileID: 11400000, guid: be3b095375242974a94e25a082e20a7c, type: 2}
-    amount: 2
+    amount: 1
     dropChance: 100
   objectType: 0
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
-  dropUpForce: 5
-  dropSideForce: 2
+  dropUpForce: 2
+  dropSideForce: 1.5
   dropAngleRange: 60
   maxHealth: 17
 --- !u!114 &-2955746295378708710

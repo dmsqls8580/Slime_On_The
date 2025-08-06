@@ -20,7 +20,7 @@ public class ItemDrop : MonoBehaviour
     {
         itemSo = _itemSo;
         amount = _amount;
-        
+
         if (iconRenderer != null && itemSo != null)
         {
             iconRenderer.sprite = itemSo.icon;
@@ -41,12 +41,15 @@ public class ItemDrop : MonoBehaviour
     {
         if (_rigid != null)
         {
-            float angle = Random.Range(-_dropAngleRange * 0.5f, _dropAngleRange * 0.5f);
+            //float angle = Random.Range(-_dropAngleRange * 0.5f, _dropAngleRange * 0.5f);
+            float angle = Random.Range(0f, 360f);
             float radius = angle * Mathf.Deg2Rad;
-            Vector2 dir = new Vector2(Mathf.Sin(radius), Mathf.Cos(radius)).normalized;
+            Vector2 dir = new Vector2(Mathf.Cos(radius), Mathf.Sin(radius)).normalized;
 
-            float randForce = Random.Range(_dropUpForce, _dropUpForce + 2);
+            float randForce = Random.Range(_dropUpForce, _dropUpForce + 2f);
+
             Vector2 force = dir * randForce + Vector2.right * Random.Range(-_dropSideForce, _dropSideForce);
+            
             _rigid.AddForce(force, ForceMode2D.Impulse);
             _rigid.AddTorque(Random.Range(-3f, 3f), ForceMode2D.Impulse);
 
@@ -59,12 +62,12 @@ public class ItemDrop : MonoBehaviour
         if (playerTransform.IsUnityNull() || !canItemToPlayer) return;
 
         float distance = Vector3.Distance(transform.position, playerTransform.position);
-        
+
         if (distance < attractDistance)
         {
-            float t= 1f-(distance/attractDistance);
-            float itemMoveSpeed= Mathf.Lerp(1f,attractSpeed,t);
-            
+            float t = 1f - (distance / attractDistance);
+            float itemMoveSpeed = Mathf.Lerp(1f, attractSpeed, t);
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
                 playerTransform.position,
@@ -86,9 +89,10 @@ public class ItemDrop : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         canItemToPlayer = true;
     }
+
     private void OnTriggerEnter2D(Collider2D _other)
     {
-        if(!canItemToPlayer) return;
+        if (!canItemToPlayer) return;
 
         if (playerTransform != null && _other.transform == playerTransform)
         {
@@ -96,11 +100,11 @@ public class ItemDrop : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     private void OnTriggerStay2D(Collider2D _other)
     {
-        if(!canItemToPlayer) return;
-        
+        if (!canItemToPlayer) return;
+
         if (playerTransform != null && _other.transform == playerTransform)
         {
             AddToInventory();
@@ -110,7 +114,7 @@ public class ItemDrop : MonoBehaviour
 
     private void AddToInventory()
     {
-        if(itemSo.IsUnityNull()||amount <= 0) return;
+        if (itemSo.IsUnityNull() || amount <= 0) return;
 
         if (!itemSo.IsUnityNull())
         {

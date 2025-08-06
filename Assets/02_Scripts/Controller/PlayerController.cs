@@ -130,8 +130,6 @@ namespace PlayerStates
             action.Inventory.performed += OnInventory;
             // Crafting
             action.Crafting.performed += OnCrafting;
-            // Place
-            action.Place.performed += OnPlace;
             // Use
             action.Use.performed += OnUse;
             //Setting
@@ -199,9 +197,16 @@ namespace PlayerStates
 
         private void Attack0(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+            if (placeMode.gameObject.activeSelf)
+            {
+                OnPlace(_context);
+                return;
+            }
+
+            if (EventSystem.current.IsPointerOverGameObject() ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
+
             if (HoldManager.Instance.IsHolding)
             {
                 HoldManager.Instance.DropHeldItem();
@@ -210,12 +215,11 @@ namespace PlayerStates
 
             if (CanAttack)
                 attackQueued = true;
-            
         }
 
         private void Attack1(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+            if (placeMode.gameObject.activeSelf || EventSystem.current.IsPointerOverGameObject() ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
 
@@ -227,7 +231,6 @@ namespace PlayerStates
 
             if (CanAttack)
                 attackQueued = true;
-            
         }
 
         private void OnDash(InputAction.CallbackContext _context)
@@ -432,12 +435,17 @@ namespace PlayerStates
             float toolActSpd = ToolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
 
-            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
+           StartCoroutine(DelayInteract(target));
 
             moveInput = Vector2.zero;
             ChangeState(PlayerState.Gathering);
         }
 
+        private IEnumerator DelayInteract(Collider2D _target)
+        {
+            yield return new WaitForSeconds(0.5f);
+            interactionHandler.HandleInteraction(_target, InteractionCommandType.Space, this);
+        }
         private void ScanAndAttractItems()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
