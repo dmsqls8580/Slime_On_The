@@ -138,8 +138,11 @@ MonoBehaviour:
   dropItemsOnFirstBreak: []
   dropItemsOnFinalBreak:
   - itemSo: {fileID: 11400000, guid: 7568e8a68a0e9e944a7e501e26e0a9ff, type: 2}
-    amount: 1
+    amount: 4
     dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 7568e8a68a0e9e944a7e501e26e0a9ff, type: 2}
+    amount: 1
+    dropChance: 50
   objectType: 1
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
