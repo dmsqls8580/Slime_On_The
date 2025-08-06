@@ -32,6 +32,8 @@ public class UIDead : UIBase
         Open();
         Time.timeScale = 0f;
         deathVolume.weight = 1f;
+        
+        InputController.Instance.SetEnable(true);
     }
     
     private void LoadDeathScene()

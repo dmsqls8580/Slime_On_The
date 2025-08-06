@@ -357,7 +357,7 @@ namespace PlayerStates
 
         public void OnExit(PlayerController _owner)
         {
-            _owner.CanRespawn = true;
+            
         }
 
         public PlayerState CheckTransition(PlayerController _owner)

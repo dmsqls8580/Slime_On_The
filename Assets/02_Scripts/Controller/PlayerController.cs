@@ -481,12 +481,13 @@ namespace PlayerStates
                 PlayerStatusManager.TakeDamage(_attacker.AttackStat.GetCurrent());
                 animationController.TakeDamageAnim(new Color(1f, 0, 0, 0.7f));
 
-                if (_attackerObj != null && _attackerObj.TryGetComponent(out EnemyController enemyController))
+                if (_attackerObj != null && _attackerObj.TryGetComponent(out IAttackable attacker))
                 {
-                    deadDiscription = enemyController.EnemyStatus.enemySO.EnemyName;
+                    deadDiscription = attacker.AttackerName;
                 }
                 if (PlayerStatusManager.CurrentHp <= 0)
                 {
+                    InputController.Instance.SetEnable(false);
                     Dead();
                 }
             }

@@ -45,7 +45,8 @@ public class GameManager : Singleton<GameManager>
     }
     
     private IEnumerator Start()
-    {  InputController.Instance.SetEnable(false);
+    {  
+        InputController.Instance.SetEnable(false);
         loadingCanvas.alpha = 1f;
         loadingCanvas.blocksRaycasts = true;
         loadingBar.value = 0f;
