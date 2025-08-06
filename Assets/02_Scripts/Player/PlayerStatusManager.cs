@@ -353,14 +353,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.ApplyStat(StatType.Defense, StatModifierType.Equipment, equipData.def * stack);
         statManager.ApplyStat(StatType.MoveSpeed, StatModifierType.Equipment, equipData.spd * stack);
         statManager.ApplyStat(StatType.CriticalChance, StatModifierType.Equipment, equipData.crt * stack);
-
-        Logger.Log($"[장비스탯 적용:{(_apply ? "장착" : "해제")}] " +
-                   $"MaxHp: {statManager.GetValue(StatType.MaxHp)}, " +
-                   $"Atk: {statManager.GetValue(StatType.Attack)}, " +
-                   $"Def: {statManager.GetValue(StatType.Defense)}, " +
-                   $"Spd: {statManager.GetValue(StatType.MoveSpeed)}" +
-                   $"Crt: {statManager.GetValue(StatType.CriticalChance)}");
-
+        
         if (equipData.equipableType == EquipType.Core)
         {
             if (_apply)
@@ -383,8 +376,6 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         if (GameManager.Instance.GodMode)
             return;
         
-        Logger.Log($"데미지받음! 현재 체력: {statManager.GetValue(StatType.CurrentHp)}");
-        Logger.Log($"현재 방어력{statManager.GetValue(StatType.Defense)}");
         if (CurrentHp > 0)
         {
             float finalDamage = CalculateFinalDamage(_damage);

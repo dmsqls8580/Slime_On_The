@@ -439,15 +439,9 @@ namespace PlayerStates
 
             moveInput = Vector2.zero;
             
-           StartCoroutine(DelayInteract(target));
-
-        }
-
-        private IEnumerator DelayInteract(Collider2D _target)
-        {
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
             ChangeState(PlayerState.Gathering);
-            yield return new WaitForSeconds(0.5f);
-            interactionHandler.HandleInteraction(_target, InteractionCommandType.Space, this);
+
         }
         private void ScanAndAttractItems()
         {

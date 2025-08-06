@@ -38,7 +38,6 @@ public class GameManager : Singleton<GameManager>
 
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.N)) {
             GodMode = !GodMode;
-            Logger.Log($"갓모드:{GodMode}");
         }
     }
     

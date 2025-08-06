@@ -53,7 +53,6 @@ public class WaterBallAreaObject : MonoBehaviour, IPoolObject,IAttackable
 
         damage = new CalculateStat(StatType.Attack, _damage);
 
-      //  Logger.Log($"현재 스킬 대미지: {damage.GetCurrent()}");
         damageRoutine = StartCoroutine(StartDamageRoutine());
     }
 

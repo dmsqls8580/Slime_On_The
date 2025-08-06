@@ -29,7 +29,6 @@ public class LightningStrike : MonoBehaviour
         if (canDealDamage && !hasDealtDamage &&
             other.TryGetComponent(out PlayerStatusManager playerStatusManager))
         {
-            Logger.Log("날씨: 전기맞음");
             playerStatusManager.TakeDamage(lightningDamage);
             hasDealtDamage = true;
             return;
