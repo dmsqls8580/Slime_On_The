@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6737676818348998515}
   - component: {fileID: 347788387398860020}
-  - component: {fileID: 266334376324270673}
   - component: {fileID: -9041858212280986650}
+  - component: {fileID: 9015229319560039279}
   m_Layer: 31
   m_Name: bush_small 1
   m_TagString: Untagged
@@ -86,35 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &266334376324270673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1236685174018697565}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7e1ff343960a7e4f80ac1903b66069a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dropItemsOnFirstBreak: []
-  dropItemsOnFinalBreak:
-  - itemSo: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
-    amount: 1
-    dropChance: 100
-  - itemSo: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
-    amount: 1
-    dropChance: 50
-  objectType: -1
-  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
-  dropUpForce: 5
-  dropSideForce: 2
-  dropAngleRange: 60
-  maxHealth: 0
-  bushType: 1
-  spriteRenderer: {fileID: 347788387398860020}
-  berrylessSprite: {fileID: 777526475, guid: 64592110654e81242b5c729db2fcb64d, type: 3}
 --- !u!70 &-9041858212280986650
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -150,3 +121,29 @@ CapsuleCollider2D:
   m_Offset: {x: -0.009695459, y: -0.14543487}
   m_Size: {x: 0.7479157, y: 0.54753894}
   m_Direction: 1
+--- !u!114 &9015229319560039279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1236685174018697565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropItemsOnFirstBreak: []
+  dropItemsOnFinalBreak:
+  - itemSo: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
+    amount: 1
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
+    amount: 1
+    dropChance: 50
+  objectType: -1
+  dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
+  dropUpForce: 2
+  dropSideForce: 1.5
+  dropAngleRange: 60
+  maxHealth: 0
