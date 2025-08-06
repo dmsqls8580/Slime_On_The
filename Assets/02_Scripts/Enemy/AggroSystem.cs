@@ -179,11 +179,17 @@ public class AggroSystem
                 continue;
             }
 
+            // AttackType이 Neutral인 경우, 먼저 공격을 받지 않는 이상 공격 X
+            if (attackType == AttackType.Neutral && target.Value < 21f)
+            {
+                continue;
+            }
+
             // 현재까지 최고 value값으로 어그로 타겟, 수치 갱신
             // 동일한 값을 가지면 마지막으로 순회한 대상을 타겟으로 설정
             if (target.Value >= maxValue)
             {
-                maxValueTarget = target.Key;    
+                maxValueTarget = target.Key;   
                 maxValue = target.Value;
             }
         }
@@ -246,6 +252,7 @@ public class AggroSystem
             }
         }
 
+        // 타겟이 바뀌었다면 이벤트 호출
         if (changed && OnTargetChanged != null)
         {
             OnTargetChanged(currentTarget, currentTargetValue);

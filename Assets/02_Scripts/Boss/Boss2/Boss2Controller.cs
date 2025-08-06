@@ -180,7 +180,8 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         statManager = GetComponent<StatManager>();
         SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(BossStatus.BossSO.AttackType,
-            target => IsPlayerInSenseRange,stickTime);
+            target => target.CompareTag("Player") 
+                      && IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
     
