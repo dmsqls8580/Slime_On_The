@@ -14,7 +14,7 @@ public class WeatherManager : MonoBehaviour
     [SerializeField] private GameObject lightningMark;
 
     private int dayCount = 0;
-    private int maxDayCount = 1;
+    private int maxDayCount = 4;
     private WeatherType currentWeatherType = WeatherType.Clear;
     private HashSet<WeatherType> currentWeatherTypes = new() { WeatherType.Clear };
     public HeatwaveEffect heatwave = null;
@@ -71,7 +71,7 @@ public class WeatherManager : MonoBehaviour
         if (dayCount >= maxDayCount)
         {
             dayCount = 0;
-            maxDayCount = 1;// Random.Range(1, 4);
+            maxDayCount = Random.Range(3, 5);
             ChangeWeather();
         }
 
