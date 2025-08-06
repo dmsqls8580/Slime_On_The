@@ -44,6 +44,7 @@ public class TurtleSpell5 : ProjectileBase
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
+        base.Init(dir, _damage, _host, _radius);
         damage = _damage;
         projectileHost =  _host;
     }

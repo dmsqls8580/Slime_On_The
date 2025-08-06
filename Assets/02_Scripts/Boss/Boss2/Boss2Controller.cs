@@ -111,6 +111,8 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     }
 
     /************************ IAttackable ***********************/
+    public string AttackerName => BossStatus != null
+        ? BossStatus.BossSO.BossName : "Invalid";
     public StatBase AttackStat => StatManager.Stats[StatType.Attack];
     
     public IDamageable Target 

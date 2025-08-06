@@ -19,6 +19,7 @@ public class WaterBallAreaObject : MonoBehaviour, IPoolObject,IAttackable
     private float damageInterval;
     
     private bool isCritical;
+    public string AttackerName => poolID;
     
     private StatBase damage;
     public StatBase AttackStat => damage;

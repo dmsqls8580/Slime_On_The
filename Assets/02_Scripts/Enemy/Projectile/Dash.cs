@@ -21,6 +21,7 @@ public class Dash : ProjectileBase
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {
+        base.Init(dir, _damage, _host, _radius);
         initialized = true;
         damage = _damage;
         projectileHost =  _host;

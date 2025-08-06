@@ -163,6 +163,9 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     }
     
     /************************ IAttackable ***********************/
+    public string AttackerName => EnemyStatus != null
+        ? EnemyStatus.enemySO.EnemyName : "Invalid";
+
     public StatBase AttackStat
     {
         get
@@ -488,7 +491,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
-        Transform itemTarget = AttackTarget.transform;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
