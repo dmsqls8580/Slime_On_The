@@ -47,7 +47,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
     protected Rigidbody2D rigid;
     
     protected bool isInteracted;
-    public bool IsInteracted=>isInteracted;
+    public bool IsInteracted => isInteracted;
     public ObjectType ObjectType => objectType;
     
     protected virtual void Awake()
@@ -91,7 +91,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
                 {
                     itemDrop.Init(item.itemSo, 1);
                 }
-
+                
                 rigid = dropObj.GetComponent<Rigidbody2D>();
                 itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
             }

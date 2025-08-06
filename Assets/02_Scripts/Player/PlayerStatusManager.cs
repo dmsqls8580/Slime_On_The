@@ -21,7 +21,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     private Coroutine daySlimeRoutine;
     private Coroutine staminaRecoverRoutine;
     private float slimeDayRecoverAmount = 0.2f;
-    public float SlimeDayConsumeAmount => slimeDayRecoverAmount;  
+    public float SlimeDayConsumeAmount => slimeDayRecoverAmount;
     private float slimeNightConsumeAmount = 0.3f;
     public float SlimeNightConsumeAmount => slimeNightConsumeAmount;
 
@@ -195,9 +195,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         ClampStaminaByHunger();
         UpdateHungerGaugeUI();
         StartStaminaRoutine();
-        
     }
-    
+
     private void UpdateHungerGaugeUI()
     {
         if (hungerGaugeImage.IsUnityNull())
@@ -284,7 +283,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         float cur = CurrentStamina;
         float max = MaxHunger;
         staminaGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
-        
+
         StartStaminaRoutine();
     }
     //----------------------
@@ -330,13 +329,15 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         statManager.ApplyStat(StatType.Attack, StatModifierType.Equipment, equipData.atk * stack);
         statManager.ApplyStat(StatType.Defense, StatModifierType.Equipment, equipData.def * stack);
         statManager.ApplyStat(StatType.MoveSpeed, StatModifierType.Equipment, equipData.spd * stack);
+        statManager.ApplyStat(StatType.CriticalChance, StatModifierType.Equipment, equipData.crt* stack);
 
         Logger.Log($"[장비스탯 적용:{(_apply ? "장착" : "해제")}] " +
                    $"MaxHp: {statManager.GetValue(StatType.MaxHp)}, " +
                    $"Atk: {statManager.GetValue(StatType.Attack)}, " +
                    $"Def: {statManager.GetValue(StatType.Defense)}, " +
-                   $"Spd: {statManager.GetValue(StatType.MoveSpeed)}");
-        
+                   $"Spd: {statManager.GetValue(StatType.MoveSpeed)}"+
+                   $"Crt: {statManager.GetValue(StatType.CriticalChance)}");
+
         if (equipData.equipableType == EquipType.Core)
         {
             if (_apply)
@@ -348,16 +349,23 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         }
     }
 
-    public void TakeDamage(float _damage)
-        {
-            if (CurrentHp > 0)
-            {
-                ConsumeHp(_damage);
-            }
+    private float CalculateFinalDamage(float _damage)
+    {
+        float defense= Mathf.Clamp01(statManager.GetValue(StatType.Defense));
+        return Mathf.Max(_damage * (1f - defense), 1);
+    }
 
-            if (CurrentHp <= 0)
-            {
-                playerController.Dead();
-            }
+    public void TakeDamage(float _damage)
+    {
+        if (CurrentHp > 0)
+        {
+            float finalDamage = CalculateFinalDamage(_damage);
+            ConsumeHp(finalDamage);
+        }
+
+        if (CurrentHp <= 0)
+        {
+            playerController.Dead();
         }
     }
+}
