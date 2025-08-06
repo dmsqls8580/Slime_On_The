@@ -173,13 +173,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropItemsOnFirstBreak: []
-  dropItemsOnFinalBreak: []
+  dropItemsOnFinalBreak:
+  - itemSo: {fileID: 0}
+    amount: 1
+    dropChance: 100
   objectType: 2
   dropItemPrefab: {fileID: 705588455612325045, guid: 6981af983866554408ef7d87f6dbca6b, type: 3}
   dropUpForce: 5
   dropSideForce: 2
   dropAngleRange: 60
-  maxHealth: 0
+  maxHealth: 4
 --- !u!114 &3686875903369218779
 MonoBehaviour:
   m_ObjectHideFlags: 0
