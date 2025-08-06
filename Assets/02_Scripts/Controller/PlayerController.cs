@@ -199,7 +199,7 @@ namespace PlayerStates
 
         private void Attack0(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+            if (placeMode.gameObject.activeSelf || EventSystem.current.IsPointerOverGameObject() ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
             if (HoldManager.Instance.IsHolding)
@@ -215,7 +215,7 @@ namespace PlayerStates
 
         private void Attack1(InputAction.CallbackContext _context)
         {
-            if (EventSystem.current.IsPointerOverGameObject() || placeMode.CanPlace ||
+            if (placeMode.gameObject.activeSelf || EventSystem.current.IsPointerOverGameObject() ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
 

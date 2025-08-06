@@ -31,7 +31,6 @@ public class PlaceMode : MonoBehaviour
     private List<PreviewTile> previewTiles = new();
 
     private bool canPlace = false;
-    public bool CanPlace=>canPlace; 
     private Vector3 mouseWorldPos = Vector3.zero;
     private Vector3Int baseCell = Vector3Int.zero;
 
