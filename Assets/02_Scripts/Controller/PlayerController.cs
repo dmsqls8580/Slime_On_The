@@ -148,7 +148,7 @@ namespace PlayerStates
             {
                 actCoolDown -= Time.deltaTime;
             }
-
+            
         }
 
         protected override IState<PlayerController, PlayerState> GetState(PlayerState _state)

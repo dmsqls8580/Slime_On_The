@@ -6,13 +6,6 @@ public class InventoryTestSpawner : MonoBehaviour
     public ItemSO[] testItems;
     public int[] quantities;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            SpawnTestItems();
-        }
-    }
 
     private void SpawnTestItems()
     {

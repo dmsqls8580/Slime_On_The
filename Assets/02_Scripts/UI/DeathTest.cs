@@ -13,14 +13,6 @@ public class DeathTest : MonoBehaviour
 
     private bool isDead = false;
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P) && !isDead)
-        {
-            TriggerDeath("죽음 ㅠㅠ", 1);
-        }
-    }
-
     public void TriggerDeath(string reason, int days)
     {
         isDead = true;
