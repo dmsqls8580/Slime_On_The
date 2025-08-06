@@ -174,10 +174,14 @@ public class AggroSystem
             }
             
             // 대상이 플레이어일 경우, 인식 범위 밖으로 나가면 후보에서 제외
-            if (isPlayerInSenseRange == null || !isPlayerInSenseRange(target.Key))
+            if (target.Key.CompareTag("Player"))
             {
-                continue;
+                if (isPlayerInSenseRange == null || !isPlayerInSenseRange(target.Key))
+                {
+                    continue;
+                }
             }
+            
 
             // AttackType이 Neutral인 경우, 먼저 공격을 받지 않는 이상 공격 X
             if (attackType == AttackType.Neutral && target.Value < 21f)

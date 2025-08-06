@@ -93,15 +93,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (_attacker != null)
         {
             // 피격
-            if (EnemyStatus == null)
-            {
-                Logger.Log("EnemyStatus is null");
-            }
-
-            if (_attacker.AttackStat == null)
-            {
-                Logger.Log("AttackStat is null");
-            }
             EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
             
             // 어그로 수치 증가, 피격 시 30 증가

@@ -61,6 +61,18 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             // 피격
             BossStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
             SoundManager.Instance.PlaySFX(SFX.Grount);
+            
+            // 어그로 수치 증가, 피격 시 30 증가
+            if (_attackerObj != null)
+            {
+                Aggro.ModifyAggro(_attackerObj, hitAggroValue);
+                // 코루틴이 없을 때만 시작 (중복 실행 방지)
+                if (aggroCoroutine == null)
+                {
+                    aggroCoroutine = StartCoroutine(DecreaseAggroValue());
+                }
+            }
+            
             if (BossStatus.CurrentHealth <= 0)
             {
                 Dead();

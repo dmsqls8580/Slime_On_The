@@ -35,7 +35,7 @@ public class GameManager : Singleton<GameManager>
             if (displayPercent >= 100) displayPercent = 99;
             loadingText.text = $"Loading... {displayPercent}%";
         }
-
+    
         if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.N)) {
             GodMode = !GodMode;
         }
