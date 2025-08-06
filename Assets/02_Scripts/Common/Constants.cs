@@ -32,5 +32,9 @@ public static class Constants
         public const float SPAWN_TENTACLE_DISTANCE = 3f;			// 촉수 소환 거리(플레이어 기준)
         public const float TENTACLE_SPEED_NOTBERSERKED = 1.0f;		// 체력 50퍼 이상 촉수 시전 속도
         public const float TENTACLE_SPEED_BERSERKED = 1.2f;			// 체력 50퍼 이하 촉수 시전 속도
+        
+        // Fishman Bubble mancer
+        public const float SPAWN_BUBBLES = 3f;
+        public const int SPAWN_BUBBLES_RADIUS = 12;
     }
 }
