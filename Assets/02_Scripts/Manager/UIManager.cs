@@ -58,6 +58,13 @@ namespace _02_Scripts.Manager
     
         public void Toggle<T>() where T : UIBase
         {
+            if (typeof(T) == typeof(UISettings) &&
+                UIDict.TryGetValue(typeof(UIDead), out var deadUI) &&
+                deadUI.IsOpen)
+            {
+                return;
+            }
+            
             if (UIDict.TryGetValue(typeof(T), out var ui))
             {
                 if (ui.IsOpen)

@@ -1,9 +1,21 @@
 using _02_Scripts.Manager;
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIPauseMenu : UIBase
 {
+    [SerializeField] private Button blockPanel;
+
+    private void Awake()
+    {
+        if (blockPanel != null)
+        {
+            blockPanel.onClick.AddListener(() => UIManager.Instance.Toggle<UIPauseMenu>());
+        };
+    }
+
     // 계속하기
     public void OnClickResume()
     {

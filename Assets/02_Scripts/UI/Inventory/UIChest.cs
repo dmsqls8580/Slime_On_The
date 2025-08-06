@@ -34,7 +34,7 @@ public class UIChest : UIBase
     {
         base.Open();
         Contents.localScale = Vector3.zero;
-        Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve).SetUpdate(true);
+        Contents.DOScale(Vector3.one, 0.3f).SetEase(JellyAnimationCurve);
     }
 
     public override void Close()
