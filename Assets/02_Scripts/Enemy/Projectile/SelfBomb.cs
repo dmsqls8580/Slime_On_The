@@ -14,6 +14,7 @@ public class SelfBomb : ProjectileBase
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius = 0)
     {
+        base.Init(dir, _damage, _host, _radius);
         initialized = true;
         damage = _damage;
         projectileHost =  _host;

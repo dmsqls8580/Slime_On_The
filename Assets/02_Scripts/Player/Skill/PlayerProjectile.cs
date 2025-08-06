@@ -9,6 +9,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
     private StatBase damage;
     public StatBase AttackStat => damage;
     private GameObject projectileHost;
+    public string AttackerName => poolID;
     public IDamageable Target => null;
     private Rigidbody2D rigid;
     

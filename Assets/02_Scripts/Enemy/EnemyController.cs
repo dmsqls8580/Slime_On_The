@@ -14,85 +14,82 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private Canvas damageTextCanvas;
     [SerializeField] private bool isDefaultFacingRight = true;
-
-    public Transform projectileTransform; // 발사체 생성 Transform
-
-    public EnemyStatus EnemyStatus; // EnemyStatus
-
+    
+    public Transform projectileTransform;                  // 발사체 생성 Transform
+    
+    public EnemyStatus EnemyStatus;                        // EnemyStatus
+   
     private GameObject attackTarget;
-
-    public GameObject AttackTarget // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
+    public GameObject AttackTarget                         // 공격 대상, 인스펙터에서 확인하기 위해 GameObject로 설정
     {
         get => attackTarget;
-        private set => attackTarget = value; // 내부에서만 설정 가능 (혹은 protected)
-    }
-
-    public EnemyState PreviousState { get; set; } // 이전 State
-    public Vector3 SpawnPos { get; set; } // 스폰 위치
-    public Animator Animator { get; private set; } // 애니메이터
-    public NavMeshAgent Agent { get; private set; } // NavMesh Agent
+        private set => attackTarget = value;  // 내부에서만 설정 가능 (혹은 protected)
+    } 
+    public EnemyState PreviousState      { get; set; }     // 이전 State
+    public Vector3 SpawnPos      { get;  set; }            // 스폰 위치
+    public Animator Animator     { get; private set; }     // 애니메이터
+    public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public SpriteCuller SpriteCuller { get; private set; }
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
-    public bool IsIDamageableInAttackRange { get; private set; } // 공격 대상 공격 범위 내 존재 여부
-
+    public bool IsIDamageableInAttackRange {get; private set; } // 공격 대상 공격 범위 내 존재 여부
+    
     private bool isAttackCooldown = false;
     public bool IsAttackCooldown => isAttackCooldown;
 
     // 현재 텔레포트하고 있는지 여부
     private bool isTeleporting = false;
     public bool IsTeleporting => isTeleporting;
-
+    
     // 현재 대쉬하고 있는지 여부
     private bool isDashing = false;
     public bool IsDashing => isDashing;
-
+    
     // 현재 자폭하고 있는지 여부
     private bool isBombing;
-    public bool IsBombing => isBombing;
-
+    public bool IsBombing  => isBombing;
+    
     private float attackCooldownTimer = 0f;
-
+    
     private StatManager statManager;
     private Rigidbody2D dropItemRigidbody;
-    private SpriteRenderer spriteRenderer; // 몬스터 스프라이트 (보는 방향에 따라 수정) 
-    private float lastAngle; // 몬스터 공격 범위 각도 기억용 필드
-    private bool lastFlipX = false; // 몬스터 회전 상태 기억용 필드
-    private float curAccelation; // 몬스터 Agent 현재 가속도
+    private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
+    private float lastAngle;                               // 몬스터 공격 범위 각도 기억용 필드
+    private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
+    private float curAccelation;                           // 몬스터 Agent 현재 가속도
     private float lastDistanceToTarget = float.MaxValue;
-    private float distanceChangeThreshold = 0.3f; // 최소 변화 거리
+    private float distanceChangeThreshold = 0.3f;          // 최소 변화 거리
 
     /************************ AggroSystem ***********************/
-
-    [Header("Aggro Settings")] public AggroSystem Aggro;
-    [SerializeField] private float stickTime = 1f; // 타겟 최소 유지 시간
-    [SerializeField] private float decreaseDelayValue = 2f; // 초당 감소하는 어그로 수치
-    [SerializeField] private float decreaseDelayTime = 1f; // 어그로 수치 감소 사이 시간
-    [SerializeField] private float hitAggroValue = 30f; // 피격 시 추가 어그로 (플레이어/몬스터 공통)
-
+    
+    [Header("Aggro Settings")] 
+    public AggroSystem Aggro;
+    [SerializeField] private float stickTime = 1f;             // 타겟 최소 유지 시간
+    [SerializeField] private float decreaseDelayValue = 2f;    // 초당 감소하는 어그로 수치
+    [SerializeField] private float decreaseDelayTime = 1f;     // 어그로 수치 감소 사이 시간
+    [SerializeField] private float hitAggroValue = 30f;        // 피격 시 추가 어그로 (플레이어/몬스터 공통)
+    
     public Coroutine aggroCoroutine;
-
+    
     /************************ Item Drop ***********************/
-    [Header("Drop Item Prefab")] [SerializeField]
-    private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
-
+    [Header("Drop Item Prefab")]
+    [SerializeField]private GameObject dropItemPrefab; //DropItem 스크립트가 붙은 빈 오브젝트 프리팹
     private List<DropItemData> dropItems => EnemyStatus.enemySO.DropItems;
-
+    
     private float dropUpForce = 3f;
     private float dropSideForce = 2f;
     private float dropAngleRange = 60f;
-
+    
     /************************ IDamageable ***********************/
-    public bool IsDead => EnemyStatus.IsDead; // 사망 여부
-    public Collider2D Collider => GetComponent<Collider2D>(); // 몬스터 피격 콜라이더
-
+    public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
+    public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
+    
     // Enemy 피격 메서드
-    public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
+    public void TakeDamage(IAttackable _attacker,  GameObject _attackerObj)
     {
         if (IsDead)
         {
             return;
         }
-
         if (_attacker != null)
         {
             // 피격
@@ -105,9 +102,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Logger.Log("AttackStat is null");
             }
-
             EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
-
+            
             // 어그로 수치 증가, 피격 시 30 증가
             if (_attackerObj != null)
             {
@@ -118,46 +114,46 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                     aggroCoroutine = StartCoroutine(DecreaseAggroValue());
                 }
             }
-
+            
             if (EnemyStatus.CurrentHealth <= 0)
             {
                 Dead();
             }
-
             StartCoroutine(ShakeIDamageable());
         }
     }
-
+    
     // Enemy 사망 여부 판별
     public void Dead()
     {
         ChangeState(EnemyState.Dead);
-
+        
         Collider.enabled = false;
-
+            
         // 현재 위치에서 아이템 드롭
         DropItems(this.gameObject.transform);
-
+        
         // 오브젝트 풀 반환
         SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
+        
     }
-
+    
     private IEnumerator ShakeIDamageable()
     {
         float timer = 0f;
         float shakeDuration = 0.2f;
         Vector2 currentPos = transform.position;
         Color currentColor = spriteRenderer.color;
-
+        
         while (timer <= shakeDuration)
         {
             // shakeDuration 동안 몬스터 흔들림, 붉은색 피격 모션
             float offsetX = Random.Range(-1f, 1f) * 0.1f;
             float offsetY = Random.Range(-1f, 1f) * 0.1f;
             transform.position = new Vector2(currentPos.x + offsetX, currentPos.y + offsetY);
-
-            spriteRenderer.color = new Color(1f, 200 / 255f, 200 / 255f, 1);
-
+            
+            spriteRenderer.color = new Color(1f, 200/255f,200/255f,1);
+            
             timer += Time.deltaTime;
             yield return null;
         }
@@ -165,8 +161,11 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         transform.position = currentPos;
         spriteRenderer.color = currentColor;
     }
-
+    
     /************************ IAttackable ***********************/
+    public string AttackerName => EnemyStatus != null
+        ? EnemyStatus.enemySO.EnemyName : "Invalid";
+
     public StatBase AttackStat
     {
         get
@@ -176,13 +175,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 return stat;
             }
-
             return null;
         }
     }
 
-    public IDamageable Target
-        => AttackTarget.TryGetComponent<IDamageable>(out var damageable) ? damageable : null;
+    public IDamageable Target 
+        => AttackTarget.TryGetComponent<IDamageable>(out var damageable)? damageable : null;
 
     public void Attack()
     {
@@ -193,35 +191,32 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             StartAttackCooldown(cooldown);
         }
     }
-
+    
     /************************ IPoolObject ***********************/
     public GameObject GameObject => this.gameObject;
-
     public string PoolID => EnemyStatus.enemySO != null
-        ? EnemyStatus.enemySO.EnemyID.ToString()
-        : "Invalid";
-
+        ? EnemyStatus.enemySO.EnemyID.ToString() : "Invalid";
     public int PoolSize { get; } = 10;
-
+    
     public void OnSpawnFromPool()
     {
         statManager.Init(EnemyStatus.enemySO);
         ResetAttackState();
-
+        
         // 상태머신이 초기화되지 않았다면 초기화
         if (stateMachine == null || states == null)
         {
             SetupState();
         }
-
         ChangeState(EnemyState.Idle);
-
-
+        
+        
         transform.position = SpawnPos; // 혹은 원하는 위치
         if (Agent.isOnNavMesh)
         {
             Agent.Warp(transform.position);
         }
+        
     }
 
     private void ResetAttackState()
@@ -243,23 +238,23 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         Collider.enabled = true;
         gameObject.SetActive(false);
     }
-
+    
     /************************ EnemyController ***********************/
-
+    
     protected override void Awake()
     {
         base.Awake();
         Agent = GetComponent<NavMeshAgent>();
-        Agent.updateRotation = false; // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
-        Agent.updateUpAxis = false; // 회전 비활성화
+        Agent.updateRotation = false;                       // NavMeshAgent는 월드의 수직방향으로 생성되기 때문에
+        Agent.updateUpAxis = false;                         // 회전 비활성화
         Animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer =  GetComponent<SpriteRenderer>();
         EnemyStatus = GetComponent<EnemyStatus>();
         statManager = GetComponent<StatManager>();
         SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
-            target => target.CompareTag("Player")
-                      && IsPlayerInSenseRange, stickTime);
+            target => target.CompareTag("Player") 
+                      && IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
 
@@ -267,7 +262,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         base.Start();
         ChangeState(EnemyState.Idle);
-
+        
         // SpawnPos에 현재 위치 저장
         SpawnPos = transform.position;
         // Collider에 Range 적용
@@ -292,7 +287,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             }
         }
     }
-
+    
     protected override IState<EnemyController, EnemyState> GetState(EnemyState state)
     {
         return state switch
@@ -305,43 +300,45 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             _ => null
         };
     }
-
+    
     public override void FindTarget()
     {
+        
     }
 
     private void Spriteflip()
     {
         bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
-
+        
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
-
+        
         // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
         if (velocityMagnitude > 0.01f)
         {
             lastFlipX = Agent.velocity.x < 0;
         }
-
+        
         if (AttackTarget != null && EnemyStatus.enemySO.AttackType != AttackType.None
-                                 && !isBombing && !isDashing && !isTeleporting)
+            && !isBombing && !isDashing && !isTeleporting)
         {
             float x = AttackTarget.transform.position.x - transform.position.x;
             bool flipToTarget = x < 0;
             flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
         }
-
+        
         spriteRenderer.flipX = flip;
-
+        
         // ProjectileTransform 위치 동기화
         Vector3 projectileLocalPos = projectileTransform.localPosition;
         projectileTransform.localPosition =
             new Vector3(flip ? -projectileLocalPos.x : projectileLocalPos.x,
                 projectileLocalPos.y,
                 projectileLocalPos.z);
+        
     }
-
-
+    
+    
     public bool IsEnoughDistanceChange()
     {
         if (AttackTarget == null) return false;
@@ -358,35 +355,35 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         isAttackCooldown = true;
         attackCooldownTimer = cooldown;
     }
-
+    
     // 공격 대상이 Enemy 공격 범위 진입 여부 메서드
     // 플레이어뿐만 아니라 몬스터도 공격 대상이 될 수 있음
     public void SetIDamageableInAttackRange(bool _inRange)
     {
         IsIDamageableInAttackRange = _inRange;
     }
-
+    
     // 플레이어가 Enemy 인식 범위 진입 여부 메서드
     // 인식 범위 진입 여부는 플레이어만 판별
     public void SetPlayerInSenseRange(bool _inRange)
     {
         IsPlayerInSenseRange = _inRange;
     }
-
+    
     // 애니메이션 이벤트로 호출
     public void ShootProjectile()
     {
         string projectileID = EnemyStatus.enemySO.ProjectileID.ToString();
         GameObject projectileObject = ObjectPoolManager.Instance.GetObject(projectileID);
         projectileObject.transform.position = projectileTransform.position;
-
+        
         // 애니메이션 실행 시점과 애니메이션 이벤트 호출 타이밍 사이
         // 플레이어가 AttackTarget에서 벗어나는 문제로 인해 새로운 게임 오브젝트 SensedAttackTarget 추가
         // SensedAttackTarget을 이용해 초기화
         if (projectileObject.TryGetComponent<ProjectileBase>(out var projectile)
             && AttackTarget != null)
         {
-            Vector2 shootdir = (AttackTarget.transform.position + Vector3.up * 0.5f) - projectileTransform.position;
+            Vector2 shootdir = (AttackTarget.transform.position + Vector3.up * 0.5f ) - projectileTransform.position;
             Vector2 direction = shootdir.normalized;
             projectile.Init(direction, AttackStat, gameObject, EnemyStatus.AttackRadius);
         }
@@ -407,7 +404,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         Collider.enabled = false;
         // 사망
         ChangeState(EnemyState.Dead);
-
+                
         // 오브젝트 풀 반환
         SpriteCuller.Spawner.RemoveObject(gameObject, 2f);
     }
@@ -417,16 +414,16 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (AttackTarget != null)
         {
             isTeleporting = true;
-
+            
             // 플레이어 피봇이 아래에 있기 때문에 위치 조정
             Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
-
+            
             // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
-            float offsetX = Random.value < 0.5f
+            float offsetX = Random.value < 0.5f 
                 ? -EnemyStatus.AttackRange
                 : EnemyStatus.AttackRange;
-            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0);
-
+            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0); 
+            
             NavMeshHit hit;
             if (NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {
@@ -439,7 +436,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         isTeleporting = false;
     }
-
+    
     // 몬스터 Dash 메서드
     public void Dash()
     {
@@ -448,32 +445,33 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             // 초기 가속도 기억
             curAccelation = Agent.acceleration;
             Agent.acceleration = 50f;
-
+            
             isDashing = true;
-
+            
             // 플레이어 피봇이 아래에 있기 때문에 위치 조정
             Vector3 currentPlayerPos = AttackTarget.transform.position + Vector3.up;
             // 돌진 방향 설정
             Vector3 dashDir = currentPlayerPos - transform.position;
-
+            
             // 대시 출발 위치를 미리 이동시켜 속도 증가하는 느낌 추가
             // Agent.Warp(transform.position + dashDir.normalized);
-
+            
             float dashSpeed = EnemyStatus.MoveSpeed * 5f; // 기존 이동속도의 3배
             Agent.speed = dashSpeed;
-
+            
             // Agent가 돌진할 위치 설정(플레이어보다 조금 뒤로 설정해서 역동성 추가)
             Vector3 dashTargetPos = transform.position + dashDir.normalized * 5f;
-
+            
             // NavMeshAgent를 통해 도착지로 돌진
             Agent.isStopped = false;
             Agent.SetDestination(dashTargetPos);
-
+            
             // 일정 시간 후 원래 속도 복귀 코루틴 예시
             StartCoroutine(ResetAgentSpeedAfterDash());
+            
         }
     }
-
+    
     // Dash 후 원래 속도 복귀용 코루틴
     private IEnumerator ResetAgentSpeedAfterDash()
     {
@@ -483,45 +481,44 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
         // 현재 위치에 즉시 위치 보정 (물리 위치와 NavMeshAgent 위치 싱크)
         Agent.Warp(transform.position);
-
+        
         Agent.speed = EnemyStatus.MoveSpeed;
         Agent.acceleration = curAccelation;
-        isDashing = false;
+        isDashing  = false;
     }
-
+    
     // 아이템 드롭 메서드
     private void DropItems(Transform transform)
     {
         float randomChance = Random.value;
-        Transform itemTarget = AttackTarget.transform;
-
-        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull() || dropItems.Count == 0)
+        
+        if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
             return;
         }
-
+        
         foreach (var item in dropItems)
         {
             if (randomChance * 100f > item.dropChance)
             {
                 continue;
             }
-
             for (int i = 0; i < item.amount; i++)
             {
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
                 if (itemDrop != null)
                 {
-                    itemDrop.Init(item.itemSo, 1);
+                    itemDrop.Init(item.itemSo,1);
+                    
                 }
-
-                dropItemRigidbody = dropObj.GetComponent<Rigidbody2D>();
-                itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce);
-            }
+                
+                dropItemRigidbody= dropObj.GetComponent<Rigidbody2D>();
+                itemDrop.DropAnimation(dropItemRigidbody, dropAngleRange, dropUpForce, dropSideForce); 
+            } 
         }
     }
-
+    
     // 1초에 어그로 수치 2씩 감소 
     public IEnumerator DecreaseAggroValue()
     {
@@ -534,7 +531,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
                 aggroCoroutine = null;
                 yield break;
             }
-
             yield return new WaitForSeconds(decreaseDelayTime);
         }
     }
@@ -543,4 +539,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     {
         AttackTarget = newTarget;
     }
+    
+    
 }

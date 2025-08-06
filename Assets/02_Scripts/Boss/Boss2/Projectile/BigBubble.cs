@@ -13,6 +13,7 @@ public class BigBubble : ProjectileBase
     }
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius = 0)
     {
+        base.Init(dir, _damage, _host, _radius);
         damage = _damage;
         projectileHost = _host;
         

@@ -6,7 +6,7 @@ public class AfterEffectImage : MonoBehaviour, IPoolObject
 
     [SerializeField]private string poolID = "AfterEffect";
     public string PoolID => poolID;
-
+    
     [SerializeField] private int poolSize = 16;
     public int PoolSize => poolSize;
     
