@@ -38,7 +38,7 @@ public class ObjectPoolManager : SceneOnlySingleton<ObjectPoolManager>
     
     private void Start()
     {
-        Init();
+        // Init();
         PrintPoolIDs();
     }
     
