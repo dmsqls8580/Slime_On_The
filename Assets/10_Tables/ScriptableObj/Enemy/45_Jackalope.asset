@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 45
   EnemyName: Jackalope
-  AttackType: 2
+  AttackType: 0
   ProjectileID: 26
-  SpawnTerrain: 4
+  SpawnTerrain: 0
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -61,3 +61,6 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: bb55cb635f42f4a4688907cfdd874297, type: 2}
     amount: 2
     dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 2bd31bf2635b0134c918431cbb4b87f2, type: 2}
+    amount: 1
+    dropChance: 0.01

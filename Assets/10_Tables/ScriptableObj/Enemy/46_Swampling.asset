@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 46
   EnemyName: Swampling
-  AttackType: 1
+  AttackType: 0
   ProjectileID: 20
-  SpawnTerrain: 4
+  SpawnTerrain: 0
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -82,6 +82,9 @@ MonoBehaviour:
   - itemSo: {fileID: 11400000, guid: b1b0dbd1b8c78d1419a1516374514ff0, type: 2}
     amount: 1
     dropChance: 50
+  - itemSo: {fileID: 11400000, guid: 2bd31bf2635b0134c918431cbb4b87f2, type: 2}
+    amount: 1
+    dropChance: 0.1
   - itemSo: {fileID: 11400000, guid: 55a019c1c3a7aba499e011596eec9683, type: 2}
     amount: 1
     dropChance: 0.1

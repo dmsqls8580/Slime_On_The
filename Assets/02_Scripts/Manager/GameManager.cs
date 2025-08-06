@@ -26,8 +26,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        if (EventSystem.current.IsPointerOverGameObject()) return;
-    
         // 점진적으로 로딩 바를 채움
         if (loadingBar != null && currentProgress < targetProgress)
         {

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnemyID: 31
   EnemyName: BlackPudding
-  AttackType: 2
+  AttackType: 0
   ProjectileID: 20
-  SpawnTerrain: 3
+  SpawnTerrain: 0
   EnemyStats:
   - StatType: 0
     ModifierType: 0
@@ -57,4 +57,7 @@ MonoBehaviour:
   - StatType: 67
     ModifierType: 0
     Value: 0.1
-  DropItems: []
+  DropItems:
+  - itemSo: {fileID: 11400000, guid: 2bd31bf2635b0134c918431cbb4b87f2, type: 2}
+    amount: 1
+    dropChance: 0.2

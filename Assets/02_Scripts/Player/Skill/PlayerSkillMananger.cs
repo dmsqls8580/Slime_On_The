@@ -53,7 +53,7 @@ public class PlayerSkillMananger : MonoBehaviour
         float critChance = _owner.StatManager.GetValue(StatType.CriticalChance); // 0~100
         float critMultiplier = _owner.StatManager.GetValue(StatType.CriticalMultiplier);
 
-        _isCritical = Random.Range(0, 100) < critChance;
+        _isCritical = Random.Range(0, 100) <= critChance;
         return _isCritical ? damage * critMultiplier : damage;
     }
     

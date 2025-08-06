@@ -382,6 +382,9 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     {
         if (GameManager.Instance.GodMode)
             return;
+        
+        Logger.Log($"데미지받음! 현재 체력: {statManager.GetValue(StatType.CurrentHp)}");
+        Logger.Log($"현재 방어력{statManager.GetValue(StatType.Defense)}");
         if (CurrentHp > 0)
         {
             float finalDamage = CalculateFinalDamage(_damage);
