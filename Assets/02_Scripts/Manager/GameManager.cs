@@ -44,7 +44,7 @@ public class GameManager : Singleton<GameManager>
         loadingBar.value = 0f;
         currentProgress = 0f;
         targetProgress = 0f;
-
+    
         int seed = GameSettings.seed != 0 ? GameSettings.seed : Random.Range(int.MinValue, int.MaxValue);
         GameSettings.seed = seed;
         Debug.Log($"[GameManager] 사용된 시드값: {seed}");
