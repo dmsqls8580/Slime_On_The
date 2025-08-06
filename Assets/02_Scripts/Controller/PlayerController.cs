@@ -66,6 +66,8 @@ namespace PlayerStates
 
         private bool CanAttack => attackCooldown <= 0;
         public bool AttackTrigger => attackQueued && CanAttack;
+        
+        public string AttackerName { get; } = "거치대";
 
         public StatBase AttackStat
         {

@@ -10,6 +10,7 @@ public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
     protected bool initialized = false;
     
     /************************ IAttackable ***********************/
+    public string AttackerName { get; private set; }
     public virtual StatBase AttackStat => damage;
     public virtual IDamageable Target => null; // OntriggerEnter2D에서 처리하기 때문에 불필요
     public virtual void Attack() { }
@@ -40,7 +41,14 @@ public abstract class ProjectileBase : MonoBehaviour, IAttackable, IPoolObject
         rigid = GetComponent<Rigidbody2D>();
     }
 
-    public abstract void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius = 0f);
+    public virtual void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius = 0f)
+    {
+        if (_host.TryGetComponent<IAttackable>(out var attacker))
+        {
+            AttackerName = attacker.AttackerName;
+        }
+    }
+        
 
     protected virtual void OnTriggerEnter2D(Collider2D other) {}
     protected virtual void OnTriggerStay2D(Collider2D other) {}
