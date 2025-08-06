@@ -13,6 +13,8 @@ public class SnowEffect : WeatherEffectBase
 
     // 눈이 내리거나 멈출때까지 걸리는 시간.
     private readonly float transitionDuration = 3f;
+    // 날씨로 인한 이동속도 변화.
+    private readonly float moveSpeed = 1f;
 
     private readonly float effectInterval = 5f;
     private float effectTimer = 0f;
@@ -33,7 +35,7 @@ public class SnowEffect : WeatherEffectBase
             case 1:
                 break;
             case 2:
-                // TODO: 플레이어 미끄러짐 효과 적용. PlayerController.Movement();
+                playerStatusManager.UpdateMoveSpeed = -moveSpeed;
                 break;
         }
 
@@ -41,7 +43,6 @@ public class SnowEffect : WeatherEffectBase
         {
             weatherManager.StopCoroutine(coroutine);
         }
-        Logger.Log($"날씨: 눈 {currentLevel}단계");
         coroutine = weatherManager.StartCoroutine(Fade(true));
     }
 
@@ -56,10 +57,10 @@ public class SnowEffect : WeatherEffectBase
             switch (currentLevel)
             {
                 case 1:
-                    playerStatusManager.ConsumeHp(3f);
+                    playerStatusManager.TakeDamage(1f);
                     break;
                 case 2:
-                    playerStatusManager.ConsumeHp(10f);
+                    playerStatusManager.TakeDamage(3f);
                     break;
             }
         }
@@ -70,7 +71,7 @@ public class SnowEffect : WeatherEffectBase
         switch (currentLevel)
         {
             case 2:
-                // TODO: 플레이어 미끄러짐 효과 제거.
+                playerStatusManager.UpdateMoveSpeed = moveSpeed;
                 goto case 1;
             case 1:
                 break;
@@ -80,7 +81,6 @@ public class SnowEffect : WeatherEffectBase
         {
             weatherManager.StopCoroutine(coroutine);
         }
-        Logger.Log("날씨: 눈 꺼짐.");
         coroutine = weatherManager.StartCoroutine(Fade(false));
     }
 
