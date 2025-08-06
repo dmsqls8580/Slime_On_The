@@ -15,13 +15,13 @@ public class IngredientSlot : MonoBehaviour
         // 재료 불충분.
         if (_having < _required)
         {
-            amount.color = Color.red;
+            amount.color = new Color(0.8f, 0.3f, 0.3f);
         }
         else
         {
             amount.color = new Color(0.3f, 0.8f, 0.3f);
         }
             
-        amount.text = $"{_having} / {_required}";
+        amount.text = $"{_having}/{_required}";
     }
 }
