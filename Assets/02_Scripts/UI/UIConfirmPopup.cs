@@ -7,6 +7,16 @@ using DG.Tweening;
 
 public class UIConfirmPopup : UIBase
 {
+    [SerializeField] private Button blockPanel;
+
+    private void Awake()
+    {
+        if (blockPanel != null)
+        {
+            blockPanel.onClick.AddListener(() => UIManager.Instance.Toggle<UIConfirmPopup>());
+        };
+    }
+    
     [SerializeField] private TextMeshProUGUI messageText;
     [SerializeField] private Button confirmButton;
     [SerializeField] private Button cancelButton;

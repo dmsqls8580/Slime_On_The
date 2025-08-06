@@ -2,9 +2,20 @@ using _02_Scripts.Manager;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIStartGame : UIBase
 {
+    [SerializeField] private Button blockPanel;
+
+    private void Awake()
+    {
+        if (blockPanel != null)
+        {
+            blockPanel.onClick.AddListener(() => UIManager.Instance.Toggle<UIStartGame>());
+        };
+    }
+    
     [SerializeField] private AnimationCurve JellyAnimationCurve;
     [SerializeField] private RectTransform content;
 
