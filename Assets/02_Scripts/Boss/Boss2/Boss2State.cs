@@ -58,22 +58,42 @@ namespace Boss2States
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
-            // 몬스터 사망시 Dead 모드로 전환.
-            if (owner.IsDead)
+            // 비전투 중
+            if (!owner.IsCombat)
             {
-                return Boss2State.Dead;
+                // 몬스터 사망시 Dead 모드로 전환.
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return Boss2State.Wander;
+                }
+                return Boss2State.Idle;
             }
-            // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
-            if (owner.AttackTarget != null)
+            // 전투 중
+            else
             {
-                return Boss2State.Chase;
+                // 몬스터 사망시 Dead 모드로 전환.
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Chase;
+                }
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return Boss2State.Wander;
+                }
+                return Boss2State.Idle;
             }
-            // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
-            if (idleTimer >= idleDuration)
-            {
-                return Boss2State.Wander;
-            }
-            return Boss2State.Idle;
+            
         }
     }
     
@@ -109,21 +129,40 @@ namespace Boss2States
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
-            if (owner.IsDead)
+            // 비전투중
+            if (!owner.IsCombat)
             {
-                return Boss2State.Dead;
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Wander;
             }
-            // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
-            if (owner.AttackTarget != null)
+            // 전투 중
+            else
             {
-                return Boss2State.Chase;
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Chase;
+                }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Wander;
             }
-            // 목적지로 이동이 끝나면 idle 모드로 전환.
-            if (ReachedDesination(owner))
-            {
-                return Boss2State.Idle;
-            }
-            return Boss2State.Wander;
+            
         }
         
         // wanderRadius 내 랜덤한 위치로 이동
@@ -189,21 +228,49 @@ namespace Boss2States
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
-            if (owner.IsDead)
+            // 비전투 중
+            if (!owner.IsCombat)
             {
-                return Boss2State.Dead;
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+                if (owner.AttackTarget == null)
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Chase;
             }
-            // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
-            if (owner.AttackTarget == null)
+            // 전투 중
+            else
             {
-                return Boss2State.Idle;
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+                if (owner.AttackTarget == null)
+                {
+                    return Boss2State.Idle;
+                }
+                // 공격 쿨타임 중이면 Chase 혹은 Wander
+                if (owner.IsAttackCooldown)
+                {
+                    return Boss2State.Chase;
+                }
+                // 플레이어가 공격 범위 내에 들어올 경우, 근접 공격
+                if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
+                {
+                    // BubbleMelee, Bubble1 중 랜덤 패턴 출력
+                    return owner.EnterRandomPattern();
+                }
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Bubble2;
+                }
+                return Boss2State.Chase;
             }
-            // 플레이어가 공격 범위 내에 들어올 경우, 근접 공격
-            if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
-            {
-                return Boss2State.BubbleMelee;
-            }
-            return Boss2State.Chase;
         }
     }
     
@@ -217,27 +284,39 @@ namespace Boss2States
         
         public void OnEnter(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubbleMeleeHash, true);
         }
 
         public void OnUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnFixedUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnExit(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubbleMeleeHash, false);
         }
 
         public Boss2State CheckTransition(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            if (!owner.IsCombat)
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                
+            }
+            else
+            {
+                
+            }
+            return Boss2State.BubbleMelee;
         }
     }
     
@@ -251,22 +330,22 @@ namespace Boss2States
         
         public void OnEnter(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubble1Hash, true);
         }
 
         public void OnUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnFixedUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnExit(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubble1Hash, false);
         }
 
         public Boss2State CheckTransition(Boss2Controller owner)
@@ -285,22 +364,22 @@ namespace Boss2States
         
         public void OnEnter(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubble2Hash, true);
         }
 
         public void OnUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnFixedUpdate(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnExit(Boss2Controller owner)
         {
-            throw new System.NotImplementedException();
+            owner.Animator.SetBool(isBubble2Hash, false);
         }
 
         public Boss2State CheckTransition(Boss2Controller owner)

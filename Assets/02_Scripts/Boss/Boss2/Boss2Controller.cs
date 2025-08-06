@@ -9,11 +9,16 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
 {
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
+    [SerializeField] private bool isDefaultFacingRight = true;
     
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
     public SpriteCuller SpriteCuller { get; private set; }
     public bool IsPlayerInSenseRange { get; private set; } // 플레이어 인식 범위 내 존재 여부
+    public bool IsCombat => AttackTarget != null;          // AttackTarget이 null이 아니라면 전투 중으로 판정
+    
+    public Transform projectileTransform;
+    
     private CameraController cameraController => AttackTarget != null
         ? AttackTarget.GetComponent<CameraController>() : null;
     private StatManager statManager;
@@ -21,7 +26,11 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     private bool lastFlipX = false;                        // 몬스터 회전 상태 기억용 필드
     private Rigidbody2D dropItemRigidbody;
     private SpriteRenderer spriteRenderer;                 // 몬스터 스프라이트 (보는 방향에 따라 수정) 
-    private string lastLogMessage = ""; // Todo : 나중에 삭제 
+    
+    private bool isAttackCooldown = false;
+    public bool IsAttackCooldown => isAttackCooldown;
+    
+    private float attackCooldownTimer = 0f;
     
     /************************ AggroSystem ***********************/
     
@@ -201,34 +210,17 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     protected override void Update()
     {
         base.Update();
-        
-        Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
-        float velocityMagnitude = Agent.velocity.magnitude;
-        // 이동 중일 때만 각도/flipX 갱신
-        if (velocityMagnitude > 0.01f)
-        {
-            lastAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
-            lastFlipX = Agent.velocity.x < 0;
-        }
-        // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
-        attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
-        
-        // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null)
-        {
-            Vector2 targetDir = AttackTarget.transform.position - transform.position;
-            lastFlipX = targetDir.x < 0;
-        }
-        
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX
-        spriteRenderer.flipX = lastFlipX;
 
-        // Todo : 나중에 삭제
-        string currentMessage = $"CurrentState = {CurrentState}";
-        if (currentMessage != lastLogMessage)
+        Spriteflip();
+        
+        if (isAttackCooldown)
         {
-            Logger.Log(currentMessage);
-            lastLogMessage = currentMessage;
+            attackCooldownTimer -= Time.deltaTime;
+            if (attackCooldownTimer <= 0f)
+            {
+                isAttackCooldown = false;
+                attackCooldownTimer = 0f;
+            }
         }
     }
     
@@ -251,17 +243,96 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
     {
         
     }
+
+    public Boss2State EnterRandomPattern()
+    {
+        Boss2State[] patterns = { Boss2State.BubbleMelee, Boss2State.Bubble1 };
+        Boss2State nextPattern = patterns[Random.Range(0, patterns.Length)];
+        ChangeState(nextPattern);
+        return nextPattern;
+    }
+    
+    private void Spriteflip()
+    {
+        bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
+        
+        Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
+        float velocityMagnitude = Agent.velocity.magnitude;
+        
+        // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
+        if (velocityMagnitude > 0.01f)
+        {
+            lastFlipX = Agent.velocity.x < 0;
+        }
+        
+        if (AttackTarget != null && BossStatus.BossSO.AttackType != AttackType.None)
+        {
+            float x = AttackTarget.transform.position.x - transform.position.x;
+            bool flipToTarget = x < 0;
+            flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
+        }
+        
+        spriteRenderer.flipX = flip;
+        
+        // ProjectileTransform 위치 동기화
+        Vector3 projectileLocalPos = projectileTransform.localPosition;
+        projectileTransform.localPosition =
+            new Vector3(flip ? -projectileLocalPos.x : projectileLocalPos.x,
+                projectileLocalPos.y,
+                projectileLocalPos.z);
+        
+    }
     
     // Melee 상태에서 호출할 공격 패턴
     public void BubbleMelee()
     {
+        string objectName = BossStatus.BossSO.ProjectileID[0].ToString();
+        GameObject BubbleMelee = ObjectPoolManager.Instance.GetObject(objectName);
+        BubbleMelee.transform.position = projectileTransform.position;
         
+        float x = projectileTransform.position.x - transform.position.x;
+        if (BubbleMelee.TryGetComponent<CapsuleCollider2D>(out CapsuleCollider2D capsule)) 
+        {
+            var offset = capsule.offset;
+            offset.x = Mathf.Abs(offset.x) * (x < 0f ? -1f : 1f);
+            capsule.offset = offset;
+        }
+
+        if (BubbleMelee.TryGetComponent<ProjectileBase>(out ProjectileBase projectile))
+        {
+            projectile.Init(Vector3.zero, AttackStat, gameObject);
+        }
     }
     
     // Bubble1 상태에서 호출할 공격 패턴
     public void Bubble1()
     {
+        SpawnBubbles(transform.position, Constants.Boss.SPAWN_BUBBLES, Constants.Boss.SPAWN_BUBBLES_RADIUS);
+    }
+
+    private List<GameObject> SpawnBubbles(Vector3 _bossPos, float _radius, int _count)
+    {
+        string objectName = BossStatus.BossSO.ProjectileID[1].ToString();
         
+        List<GameObject> spawnedBubbles = new List<GameObject>();
+
+        for (int i = 0; i < _count; i++)
+        {
+            float angle = (2 * Mathf.PI / _count) * i;
+            Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle));
+            Vector3 spawnPos = _bossPos + direction;
+            
+            // 오브젝트 풀링으로 생성
+            GameObject bubble = ObjectPoolManager.Instance.GetObject(objectName);
+            bubble.transform.position = spawnPos;
+            bubble.transform.rotation = Quaternion.Euler(0, 0, angle);
+            
+            if (bubble.TryGetComponent<ProjectileBase>(out ProjectileBase projectile))
+            {
+                projectile.Init(direction, AttackStat, gameObject);
+            }
+        }
+        return spawnedBubbles;
     }
     
     
