@@ -253,8 +253,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         statManager = GetComponent<StatManager>();
         SpriteCuller = GetComponent<SpriteCuller>();
         Aggro = new AggroSystem(EnemyStatus.enemySO.AttackType,
-            target => target.CompareTag("Player") 
-                      && IsPlayerInSenseRange,stickTime);
+            target => IsPlayerInSenseRange,stickTime);
         Aggro.OnTargetChanged += OnAggroTargetChanged;
     }
 
@@ -460,7 +459,7 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             Agent.speed = dashSpeed;
             
             // Agent가 돌진할 위치 설정(플레이어보다 조금 뒤로 설정해서 역동성 추가)
-            Vector3 dashTargetPos = transform.position + dashDir.normalized * 5f;
+            Vector3 dashTargetPos = AttackTarget.transform.position + dashDir.normalized * 5f;
             
             // NavMeshAgent를 통해 도착지로 돌진
             Agent.isStopped = false;
