@@ -7044,6 +7044,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+      propertyPath: biomeSpawners.Array.data[2].spawnerEntries.Array.data[1].minDistance
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[0].minDistance
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
+      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[1].minDistance
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

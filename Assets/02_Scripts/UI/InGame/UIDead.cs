@@ -35,13 +35,13 @@ public class UIDead : UIBase
         
         InputController.Instance.SetEnable(true);
     }
-    
+
     private void LoadDeathScene()
     {
         Time.timeScale = 1f; // Time.timeScale 복구
+        UIManager.Instance.CloseAll();
         SceneManager.LoadScene("01_Scenes/MainMenuScene"); // 여기에 이동할 씬 이름 입력
     }
-    
     public override void Open()
     {
         base.Open();
