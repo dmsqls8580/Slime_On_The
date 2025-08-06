@@ -15,31 +15,34 @@ public class WaterBallAreaObject : MonoBehaviour, IPoolObject,IAttackable
     [SerializeField] private int poolSize = 2;
     public int PoolSize => poolSize;
 
+    private float areaLength;
+    private float damageInterval;
+    
+    private bool isCritical;
+    
     private StatBase damage;
+    public StatBase AttackStat => damage;
     
     public IDamageable Target => null;
     public void Attack() { }
     
     public event Action OnReturned;
     
-    public StatBase AttackStat => damage;
-    
     private PlayerController owner;
     private GameObject projectileHost;
-    private float areaLength;
-    private float damageInterval;
     private Coroutine damageRoutine;
     private HashSet<IDamageable> targets = new ();
 
     private bool isActive = false;
 
-    public void Init(PlayerController _owner, float _damage, GameObject  _host, float _damageInterval, float _areaLength)
+    public void Init(PlayerController _owner, float _damage,bool _isCritical, GameObject  _host, float _damageInterval, float _areaLength)
     {
         owner = _owner;
         projectileHost=_host;
         damageInterval = _damageInterval;
         areaLength = _areaLength;
 
+        isCritical = _isCritical;
         isActive = true;
 
         if (!damageRoutine.IsUnityNull())

@@ -41,7 +41,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         effectTable.CreateTable();
     }
 
-    public void Init(StatManager _statManager,float _damage, GameObject  _host, Vector2 _dir, float _speed, float _range)
+    public void Init(StatManager _statManager,float _damage, bool _isCritical, GameObject  _host, Vector2 _dir, float _speed, float _range)
     {
         statManager = _statManager;
         direction = _dir.normalized;
@@ -50,12 +50,7 @@ public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
         range = _range; 
         startAttackPos = transform.position;
 
-        //크리티컬 계산식
-        float critChance = statManager.GetValue(StatType.CriticalChance); // 0~100
-        float critMultiplier = statManager.GetValue(StatType.CriticalMultiplier);
-
-        isCritical = Random.Range(0, 100) < critChance;
-        _damage = isCritical ? _damage * critMultiplier : _damage;
+        isCritical = _isCritical;
 
         damage = new CalculateStat(StatType.Attack, _damage);
 

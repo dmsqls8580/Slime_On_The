@@ -47,7 +47,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
     protected Rigidbody2D rigid;
     
     protected bool isInteracted;
-    public bool IsInteracted=>isInteracted;
+    public bool IsInteracted => isInteracted;
     public ObjectType ObjectType => objectType;
     
     protected virtual void Awake()
