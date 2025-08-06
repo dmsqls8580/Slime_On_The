@@ -31,7 +31,6 @@ public class PlaceMode : MonoBehaviour
     private List<PreviewTile> previewTiles = new();
 
     private bool canPlace = false;
-    public bool CanPlace=>canPlace; 
     private Vector3 mouseWorldPos = Vector3.zero;
     private Vector3Int baseCell = Vector3Int.zero;
 
@@ -97,10 +96,6 @@ public class PlaceMode : MonoBehaviour
         if (!canPlace) return;
         GameObject placedObject = Instantiate(objectPrefab, prefabInstance.transform.position, Quaternion.identity);
         SetObject(placedObject);
-        if (placedObject.TryGetComponent(out PlacedObject placedObjectComponent))
-        {
-            placedObjectManager.AddPlacedObject(placedObjectComponent);
-        }
         inventoryManager.RemoveItem(quickSlotIndex, 1);
         SetActiveFalsePlaceMode();
     }
@@ -117,6 +112,15 @@ public class PlaceMode : MonoBehaviour
             Color color = spriteRenderer.color;
             color.a = 1f;
             spriteRenderer.color = color;
+        }
+
+        ModifierObject modifier = _placedObject.GetComponent<ModifierObject>();
+        if (modifier != null)
+            modifier.enabled = true;
+
+        if (_placedObject.TryGetComponent(out PlacedObject placedObjectComponent))
+        {
+            placedObjectManager.AddPlacedObject(placedObjectComponent);
         }
     }
 
