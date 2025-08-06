@@ -1,10 +1,22 @@
+using _02_Scripts.Manager;
 using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UISettings : UIBase
 {
+    [SerializeField] private Button blockPanel;
+
+    private void Awake()
+    {
+        if (blockPanel != null)
+        {
+            blockPanel.onClick.AddListener(() => UIManager.Instance.Toggle<UISettings>());
+        };
+    }
+    
     [SerializeField] private int nowState;
     [SerializeField] private RectTransform[] menuBtnImage;
     [SerializeField] private TextMeshProUGUI[] menuBtnText;
