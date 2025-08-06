@@ -130,8 +130,6 @@ namespace PlayerStates
             action.Inventory.performed += OnInventory;
             // Crafting
             action.Crafting.performed += OnCrafting;
-            // Place
-            action.Place.performed += OnPlace;
             // Use
             action.Use.performed += OnUse;
             //Setting
@@ -199,9 +197,16 @@ namespace PlayerStates
 
         private void Attack0(InputAction.CallbackContext _context)
         {
-            if (placeMode.gameObject.activeSelf || EventSystem.current.IsPointerOverGameObject() ||
+            if (placeMode.gameObject.activeSelf)
+            {
+                OnPlace(_context);
+                return;
+            }
+
+            if (EventSystem.current.IsPointerOverGameObject() ||
                 PlayerStatusManager.CurrentSlimeGauge < 5)
                 return;
+
             if (HoldManager.Instance.IsHolding)
             {
                 HoldManager.Instance.DropHeldItem();
@@ -210,7 +215,6 @@ namespace PlayerStates
 
             if (CanAttack)
                 attackQueued = true;
-            
         }
 
         private void Attack1(InputAction.CallbackContext _context)
@@ -227,7 +231,6 @@ namespace PlayerStates
 
             if (CanAttack)
                 attackQueued = true;
-            
         }
 
         private void OnDash(InputAction.CallbackContext _context)
