@@ -19,6 +19,8 @@ public class GameManager : Singleton<GameManager>
 
     public bool IsLoading { get; private set; } = true;
 
+    public bool GodMode=false;
+
     private float currentProgress = 0f;
     private float targetProgress = 0f;
 
@@ -34,6 +36,11 @@ public class GameManager : Singleton<GameManager>
             int displayPercent = Mathf.FloorToInt(currentProgress * 100f);
             if (displayPercent >= 100) displayPercent = 99;
             loadingText.text = $"Loading... {displayPercent}%";
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift) && Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.N)) {
+            GodMode = !GodMode;
+            Logger.Log($"갓모드:{GodMode}");
         }
     }
     
