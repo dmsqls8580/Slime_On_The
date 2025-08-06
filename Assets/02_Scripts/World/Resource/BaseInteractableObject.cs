@@ -91,7 +91,7 @@ public abstract class BaseInteractableObject : MonoBehaviour
                 {
                     itemDrop.Init(item.itemSo, 1);
                 }
-
+                
                 rigid = dropObj.GetComponent<Rigidbody2D>();
                 itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
             }
