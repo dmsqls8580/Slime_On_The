@@ -49,9 +49,6 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
             hitEffect.OnHit(toolPower); // 감소된 체력 기준으로 판정
         }
 
-        if (_type == InteractionCommandType.F)
-            UIManager.Instance.Toggle<UICrafting>();
-
         if (currentHealth <= 0)
         {
             DropItems(_playerController.transform); // 최종 파괴 아이템 드롭

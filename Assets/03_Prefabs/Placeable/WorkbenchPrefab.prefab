@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 4713157424335962800}
   - component: {fileID: 2673366622011271337}
   - component: {fileID: 252229195948344786}
-  - component: {fileID: -614078119747838112}
   - component: {fileID: -6641271627093872514}
   - component: {fileID: 1842576535867851315}
   m_Layer: 30
@@ -171,18 +170,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: deda4b8676cc04943ab59d02237a4f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-614078119747838112
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3805954016894649699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b45fb6db428ead42a7fb7e8d4cd660c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dropItemsOnFirstBreak: []
