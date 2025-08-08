@@ -578,8 +578,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     
     private void DropItems(Transform transform)
     {
-        float randomChance = Random.value;
-        Transform itemTarget = AttackTarget.transform;
+        float randomChance = 0f;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -588,6 +587,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 
         foreach (var item in dropItems)
         {
+            randomChance = Random.value;
+            
             if (randomChance * 100f > item.dropChance)
             {
                 continue;

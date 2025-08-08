@@ -74,7 +74,7 @@ public abstract class BaseInteractableObject : MonoBehaviour, IInteractable
 
     protected virtual void DropItems(Transform _player, List<DropItemData> itemList)
     {
-        float randomChance = Random.value;
+        float randomChance = 0f;
 
         if (itemList.IsUnityNull() || dropItemPrefab.IsUnityNull()) return;
 
@@ -82,6 +82,7 @@ public abstract class BaseInteractableObject : MonoBehaviour, IInteractable
         {
             for (int i = 0; i < item.amount; i++)
             {
+                randomChance = Random.value;
                 if (randomChance * 100f > item.dropChance) continue;
 
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);

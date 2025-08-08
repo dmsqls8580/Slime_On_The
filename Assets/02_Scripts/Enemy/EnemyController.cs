@@ -497,19 +497,22 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // 아이템 드롭 메서드
     private void DropItems(Transform transform)
     {
-        float randomChance = Random.value;
+        float randomChance = 0f;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
             return;
         }
-        
+
         foreach (var item in dropItems)
         {
+            randomChance = Random.value;
+            
             if (randomChance * 100f > item.dropChance)
             {
                 continue;
             }
+
             for (int i = 0; i < item.amount; i++)
             {
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
