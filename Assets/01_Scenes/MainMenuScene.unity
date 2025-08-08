@@ -389,6 +389,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 9029595099508316216, guid: 974fd88d05dcfbf41b03ad2a7d19ac48, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -754,6 +758,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1813708418}
     m_Modifications:
+    - target: {fileID: 2496341186063600241, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3053722362651012365, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1d09f9b3e0ed88840a77e296c0f377bb, type: 3}
     - target: {fileID: 3631944121509164045, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -769,6 +781,18 @@ PrefabInstance:
     - target: {fileID: 3631944121509164045, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892799600673074555, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892799600673074555, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 800
+      objectReference: {fileID: 0}
+    - target: {fileID: 3892799600673074555, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5075700136809857517, guid: f64c9598e5e5cea4280a5b68cb254e25, type: 3}
       propertyPath: m_Pivot.x

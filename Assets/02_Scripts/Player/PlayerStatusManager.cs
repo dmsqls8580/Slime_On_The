@@ -24,6 +24,8 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     public float SlimeDayConsumeAmount => slimeDayRecoverAmount;
     private float slimeNightConsumeAmount = 0.3f;
     public float SlimeNightConsumeAmount => slimeNightConsumeAmount;
+    
+    private float playerHungerConsumeAmount = 0.3f;
 
     public UnityAction<float> OnHpChanged;
 
@@ -66,6 +68,7 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
+        StartCoroutine(HungerConsumeRoutine());
     }
 
     public void Init(IStatProvider _statProvider, IDamageable _owner = null)
@@ -222,6 +225,19 @@ public class PlayerStatusManager : SceneOnlySingleton<PlayerStatusManager>
         float cur = CurrentHunger;
         float max = MaxHunger;
         hungerGaugeImage.fillAmount = max > 0f ? cur / max : 0f;
+    }
+    
+    private IEnumerator HungerConsumeRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (!GameManager.Instance.GodMode)
+            {
+                ConsumeHunger(playerHungerConsumeAmount);
+            }
+        }
     }
 
     //----------------------
