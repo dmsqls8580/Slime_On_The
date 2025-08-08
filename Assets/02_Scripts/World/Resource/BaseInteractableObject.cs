@@ -20,8 +20,7 @@ public class DropItemData
     [Range(0f, 100f)] public float dropChance = 100f; //아이템 드랍확률 100%
 }
 
-
-public abstract class BaseInteractableObject : MonoBehaviour
+public abstract class BaseInteractableObject : MonoBehaviour, IInteractable
 {
     [Header("Drop Item Data Info(SO, 개수, 확률)")]
     [Header("Drop Item Data")]

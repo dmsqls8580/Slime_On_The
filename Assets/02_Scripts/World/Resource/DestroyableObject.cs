@@ -3,7 +3,7 @@ using PlayerStates;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class DestroyableObject : BaseInteractableObject, IInteractable
+public class DestroyableObject : BaseInteractableObject
 {
     private IDestroyEffect destroyEffect;
 
@@ -39,6 +39,9 @@ public class DestroyableObject : BaseInteractableObject, IInteractable
                 break;
             case ObjectType.Placed:
                 SoundManager.Instance.PlaySFX(SFX.ToolHammer);
+                break;
+            case ObjectType.UnDestroyed:
+                SoundManager.Instance.PlaySFX(SFX.ToolHand);
                 break;
         }
 

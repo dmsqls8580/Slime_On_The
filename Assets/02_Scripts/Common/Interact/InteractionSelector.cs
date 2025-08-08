@@ -150,7 +150,6 @@ public class InteractionSelector : MonoBehaviour
         return (mask.value & (1 << layer)) != 0;
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     private bool IsCompatibleWithCurrentQuickSlotItem(Collider2D _collider)
     {
         
