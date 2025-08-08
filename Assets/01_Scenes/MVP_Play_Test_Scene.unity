@@ -3718,46 +3718,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: testItems.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: quantities.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: testItems.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3e3718e9394092b4f96f2d2c3861f03c, type: 2}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: testItems.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4991bacee1954b943ae5ef979bf14da0, type: 2}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: testItems.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6b0392f54b6861a4898c220f9d5d831a, type: 2}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: testItems.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1f2ab207d3978624a89ecb09100334f2, type: 2}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: quantities.Array.data[5]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: quantities.Array.data[6]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: quantities.Array.data[7]
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2490766163572738506, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
-      propertyPath: quantities.Array.data[8]
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3027746625766542306, guid: 466111de3c940d64fa3237caa06e481c, type: 3}
       propertyPath: m_Name
       value: InventoryTestSpawner
@@ -7018,18 +6978,6 @@ PrefabInstance:
     - target: {fileID: 6861965118106934245, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[2].spawnerEntries.Array.data[1].minDistance
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[0].minDistance
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7416236546553038977, guid: ebca6edceaf75b04c8fef5745957c22b, type: 3}
-      propertyPath: biomeSpawners.Array.data[3].spawnerEntries.Array.data[1].minDistance
-      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
