@@ -76,6 +76,7 @@ public abstract class SlotBase : MonoBehaviour, IPointerClickHandler, IPointerEn
             iconImage.enabled = false;
             quantityText.text = "";
         }
+        
     }
 
     public abstract void OnPointerClick(PointerEventData _eventData);
