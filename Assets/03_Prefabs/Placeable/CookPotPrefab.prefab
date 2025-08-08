@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5671554130124638564}
   - component: {fileID: 8681375229835667272}
   - component: {fileID: -7479023644525115619}
-  - component: {fileID: 4713157424335962800}
   - component: {fileID: 8607970029673836497}
   - component: {fileID: -3009691391294839842}
+  - component: {fileID: 4476383128811073796}
   m_Layer: 30
   m_Name: CookPotPrefab
   m_TagString: Untagged
@@ -102,7 +102,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!114 &8681375229835667272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,8 +153,36 @@ MonoBehaviour:
   - {fileID: 0}
   finishedItem: {fileID: 0}
   processPercentage: 1
---- !u!61 &4713157424335962800
-BoxCollider2D:
+--- !u!114 &8607970029673836497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805954016894649699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 1
+  m_Area: 1
+  m_IgnoreFromBuild: 0
+  m_AffectedAgents: ffffffff
+--- !u!114 &-3009691391294839842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3805954016894649699}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b55aa12a90e80db4f9fb94f8ddfee639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!70 &4476383128811073796
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -185,47 +213,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.0017700195, y: -0.34994507}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 2, y: 3}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.7619629, y: 0.30010986}
-  m_EdgeRadius: 0
---- !u!114 &8607970029673836497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3805954016894649699}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_OverrideArea: 1
-  m_Area: 1
-  m_IgnoreFromBuild: 0
-  m_AffectedAgents: ffffffff
---- !u!114 &-3009691391294839842
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3805954016894649699}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b55aa12a90e80db4f9fb94f8ddfee639, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.76, y: 0.465}
+  m_Direction: 1
 --- !u!1 &7070882300879079212
 GameObject:
   m_ObjectHideFlags: 0
