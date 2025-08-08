@@ -12,10 +12,10 @@ public class AggroSystem
     
     public readonly Dictionary<GameObject, float> attackTargetsList = new();
     
-    public GameObject CurrentTarget => currentTarget;      // 현재 타겟을 외부에서 조회 가능
+    public GameObject CurrentTarget => currentTarget;
     private GameObject currentTarget;                      // 현재 가장 높은 어그로 수치를 가진 대상
     
-    public float CurrentTargetValue => currentTargetValue; // 현재 타겟 어그로 수치를 조회 가능
+    public float CurrentTargetValue => currentTargetValue; 
     private float currentTargetValue;                      // 현재 타겟의 어그로 수치
 
     private float lastTargetChangeTime = -100f;            // 마지막으로 타겟이 바뀐 시간

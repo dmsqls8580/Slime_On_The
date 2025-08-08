@@ -53,6 +53,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
     public Collider2D Collider  => GetComponent<Collider2D>();
+    
+    private Coroutine shakeCoroutine;
     public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
     {
         if (IsDead) return;
@@ -77,7 +79,12 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             {
                 Dead();
             }
-            StartCoroutine(ShakeIDamageable());
+            
+            if (shakeCoroutine != null)
+            {
+                StopCoroutine(shakeCoroutine);
+            }
+            shakeCoroutine = StartCoroutine(ShakeIDamageable());
         }
     }
 

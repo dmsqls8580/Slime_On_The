@@ -303,40 +303,48 @@ namespace  Enemystates
             {
                 Vector2 ownerPos = owner.Agent.transform.position;
                 Vector2 targetPos = owner.AttackTarget.transform.position;
+                Vector2 dir = (ownerPos - targetPos).normalized;
+                
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(owner.AttackTarget.transform.position,
+                        out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    owner.Agent.SetDestination(hit.position);
+                }
+                
                 // 방향
-                float fleeDistance = owner.EnemyStatus.FleeDistance;
-                float distance = Vector2.Distance(ownerPos, targetPos);
-                float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
-                float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
+                // float fleeDistance = owner.EnemyStatus.FleeDistance;
+                // float distance = Vector2.Distance(ownerPos, targetPos);
+                // float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
+                // float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
 
-                // 공격 타겟과의 거리가 fleeDistance보다 가까우면 타겟 반대방향으로 이동
-                if (distance < minDist)
-                {
-                    Vector2 dir = (ownerPos - targetPos).normalized;
-                    Vector2 destination = targetPos + dir * fleeDistance;
-
-                    NavMeshHit hit;
-                    if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
-                    {
-                        owner.Agent.SetDestination(hit.position);
-                    }
-                }
-                // 공격 타겟과의 거리가 fleeDistance보다 멀면 타겟 방향으로 이동
-                else if (distance > maxDist)
-                {
-                    Vector2 dir = (targetPos - ownerPos).normalized;
-                    Vector2 destination = targetPos - dir * fleeDistance;
-                    
-                    NavMeshHit hit;
-                    if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
-                    {
-                        owner.Agent.SetDestination(hit.position);
-                    }
-                }
-                else
-                {
-                    owner.Agent.ResetPath();
-                }
+                // // 공격 타겟과의 거리가 fleeDistance보다 가까우면 타겟 반대방향으로 이동
+                // if (distance < minDist)
+                // {
+                //     Vector2 destination = targetPos + dir * fleeDistance;
+                //
+                //     NavMeshHit hit;
+                //     if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
+                //     {
+                //         owner.Agent.SetDestination(hit.position);
+                //     }
+                // }
+                // // 공격 타겟과의 거리가 fleeDistance보다 멀면 타겟 방향으로 이동
+                // else if (distance > maxDist)
+                // {
+                //     Vector2 destination = targetPos - dir * fleeDistance;
+                //     
+                //     NavMeshHit hit;
+                //     if (NavMesh.SamplePosition(destination, out hit, fleeDistance, NavMesh.AllAreas))
+                //     {
+                //         owner.Agent.SetDestination(hit.position);
+                //     }
+                // }
+                
+            }
+            else
+            {
+                owner.Agent.ResetPath();
             }
         }
 
@@ -354,10 +362,10 @@ namespace  Enemystates
         public EnemyState CheckTransition(EnemyController owner)
         {
             AttackType attackType = owner.EnemyStatus.enemySO.AttackType;
-            float dist = owner.AttackTarget == null ? float.MaxValue :
-                Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
-            float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
-            float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
+            // float dist = owner.AttackTarget == null ? float.MaxValue :
+            //     Vector2.Distance(owner.transform.position, owner.AttackTarget.transform.position);
+            // float minDist = owner.EnemyStatus.FleeDistance - 0.5f;
+            // float maxDist = owner.EnemyStatus.FleeDistance + 0.5f;
             
             if (owner.IsDead)
             {
@@ -384,8 +392,8 @@ namespace  Enemystates
                         // 거리 변화가 없다면 상태 유지
                         if (!owner.IsEnoughDistanceChange())
                             return EnemyState.Idle;
-                        if (dist < minDist || dist > maxDist)
-                            return EnemyState.Idle;
+                        // if (dist < minDist || dist > maxDist)
+                        //     return EnemyState.Idle;
                         return EnemyState.Chase;
                     }
 
@@ -403,8 +411,8 @@ namespace  Enemystates
                         // 거리 변화가 없다면 상태 유지
                         if (!owner.IsEnoughDistanceChange())
                             return EnemyState.Idle;
-                        if (dist < minDist || dist > maxDist)
-                            return EnemyState.Idle;
+                        // if (dist < minDist || dist > maxDist)
+                        //     return EnemyState.Idle;
                         return EnemyState.Chase;
                     }
 
@@ -427,6 +435,10 @@ namespace  Enemystates
         {
             owner.Animator.SetTrigger(isAttackHash);
             owner.StartAttackCooldown(owner.EnemyStatus.AttackCooldown);
+            
+            // NavMeshAgent 이동 정지
+            owner.Agent.isStopped = true;          
+            owner.Agent.velocity = Vector3.zero;
         }
 
         public void OnUpdate(EnemyController owner)
@@ -441,6 +453,8 @@ namespace  Enemystates
 
         public void OnExit(EnemyController owner)
         {
+            owner.Agent.isStopped = false;
+            
             owner.PreviousState = EnemyState.Attack;
         }
 

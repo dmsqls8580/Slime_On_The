@@ -83,6 +83,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
+    private Coroutine shakeCoroutine;
+    
     // Enemy 피격 메서드
     public void TakeDamage(IAttackable _attacker,  GameObject _attackerObj)
     {
@@ -110,7 +112,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Dead();
             }
-            StartCoroutine(ShakeIDamageable());
+
+            if (shakeCoroutine != null)
+            {
+                StopCoroutine(shakeCoroutine);
+            }
+            shakeCoroutine = StartCoroutine(ShakeIDamageable());
         }
     }
     
@@ -412,13 +419,20 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             float offsetX = Random.value < 0.5f 
                 ? -EnemyStatus.AttackRange
                 : EnemyStatus.AttackRange;
-            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0); 
+            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0);
             
             NavMeshHit hit;
+            // 첫번째 위치가 NavMesh가 Walkable인 위치인지 확인
             if (NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {
                 Agent.Warp(hit.position);
             }
+
+            else
+            {
+                Agent.Warp(transform.position);
+            }
+            
         }
     }
 
