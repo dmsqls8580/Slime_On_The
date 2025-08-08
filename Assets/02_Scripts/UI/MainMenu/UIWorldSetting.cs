@@ -50,7 +50,7 @@ public class UIWorldSetting : UIBase
     public void OnClickApply()
     {
         //GameManager.Instance.ApplySettings(BuildSnapshot());
-        SceneManager.LoadScene("MVP_Play_Test_Scene");
+        SceneManager.LoadScene("InGameScene");
     }
     
     public void OnClickCancel()
