@@ -60,7 +60,7 @@ Transform:
   m_GameObject: {fileID: 288877907862692532}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.20000002, z: -13.333334}
+  m_LocalPosition: {x: 0, y: 0.20000005, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5197,7 +5197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2178875924879441689}
   - component: {fileID: 496066044408639314}
-  - component: {fileID: 1385263711906212168}
+  - component: {fileID: 7014672883939888087}
   - component: {fileID: 4113110635569048219}
   - component: {fileID: 7676578801928857935}
   - component: {fileID: 2263581524882212771}
@@ -5293,8 +5293,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &1385263711906212168
-BoxCollider2D:
+--- !u!70 &7014672883939888087
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -5325,19 +5325,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.4375}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.46153846, y: -0.095238104}
-    oldSize: {x: 0.8125, y: 1.3125}
-    newSize: {x: 0.6875, y: 0.875}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.6875, y: 0.875}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0.03125, y: 0.78125}
+  m_Size: {x: 0.65, y: 1.1}
+  m_Direction: 0
 --- !u!50 &4113110635569048219
 Rigidbody2D:
   serializedVersion: 4
@@ -10549,7 +10539,7 @@ Transform:
   m_GameObject: {fileID: 7650520237985061277}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.20000002, z: -13.333334}
+  m_LocalPosition: {x: -0.5973334, y: -0.33600003, z: -13.333334}
   m_LocalScale: {x: 1.25, y: 1.25, z: 1.25}
   m_ConstrainProportionsScale: 0
   m_Children:

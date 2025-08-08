@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bubble : ProjectileBase
 {
     private Animator animator;
-
+    public override int PoolSize => 10;
     public override void Awake()
     {
         base.Awake();
