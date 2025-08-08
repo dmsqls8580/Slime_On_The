@@ -305,6 +305,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     private void Spriteflip()
     {
+        if (CurrentState == EnemyState.Dead)
+        {
+            return;
+        }
         bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
@@ -427,7 +431,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Agent.Warp(hit.position);
             }
-
             else
             {
                 Agent.Warp(transform.position);

@@ -231,6 +231,33 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         }
     }
     
+    private void Spriteflip()
+    {
+        if (CurrentState == Boss2State.Dead)
+        {
+            return;
+        }
+        bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
+        
+        Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
+        float velocityMagnitude = Agent.velocity.magnitude;
+        
+        // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
+        if (velocityMagnitude > 0.01f)
+        {
+            lastFlipX = Agent.velocity.x < 0;
+        }
+        
+        if (AttackTarget != null && BossStatus.BossSO.AttackType != AttackType.None)
+        {
+            float x = AttackTarget.transform.position.x - transform.position.x;
+            bool flipToTarget = x < 0;
+            flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
+        }
+        
+        spriteRenderer.flipX = flip;
+    }
+    
     protected override IState<Boss2Controller, Boss2State> GetState(Boss2State state)
     {
         return state switch
@@ -259,36 +286,6 @@ public class Boss2Controller :  BaseController<Boss2Controller, Boss2State>, IDa
         return nextPattern;
     }
     
-    private void Spriteflip()
-    {
-        bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
-        
-        Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
-        float velocityMagnitude = Agent.velocity.magnitude;
-        
-        // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
-        if (velocityMagnitude > 0.01f)
-        {
-            lastFlipX = Agent.velocity.x < 0;
-        }
-        
-        if (AttackTarget != null && BossStatus.BossSO.AttackType != AttackType.None)
-        {
-            float x = AttackTarget.transform.position.x - transform.position.x;
-            bool flipToTarget = x < 0;
-            flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
-        }
-        
-        spriteRenderer.flipX = flip;
-        
-        // ProjectileTransform 위치 동기화
-        Vector3 projectileLocalPos = projectileTransform.localPosition;
-        projectileTransform.localPosition =
-            new Vector3(flip ? -projectileLocalPos.x : projectileLocalPos.x,
-                projectileLocalPos.y,
-                projectileLocalPos.z);
-        
-    }
     
     // Melee 상태에서 호출할 공격 패턴
     public void BubbleMelee()

@@ -476,6 +476,10 @@ namespace  Enemystates
         public void OnEnter(EnemyController owner)
         {
             owner.Animator.SetTrigger(isDeadHash);
+            
+            // NavMeshAgent 이동 정지
+            owner.Agent.isStopped = true;          
+            owner.Agent.velocity = Vector3.zero;
         }
 
         public void OnUpdate(EnemyController owner)

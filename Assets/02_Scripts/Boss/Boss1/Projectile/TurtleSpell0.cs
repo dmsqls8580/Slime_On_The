@@ -25,6 +25,11 @@ public class TurtleSpell0 : ProjectileBase
     {
         canDealDamage = true;
     }
+
+    private void OffDamageFrame()
+    {
+        canDealDamage = false;
+    }
     
     public override void Init(Vector2 dir, StatBase _damage, GameObject _host, float _radius)
     {

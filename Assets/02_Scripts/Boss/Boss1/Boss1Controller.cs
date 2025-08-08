@@ -10,6 +10,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 {
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
+    [SerializeField] private bool isDefaultFacingRight = true;
     
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
@@ -235,28 +236,35 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     protected override void Update()
     {
         base.Update();
+
+        Spriteflip();
+    }
+    
+    private void Spriteflip()
+    {
+        if (CurrentState == Boss1State.Dead)
+        {
+            return;
+        }
+        bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
         
-        // 이동 중일 때만 각도/flipX 갱신
+        // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
         if (velocityMagnitude > 0.01f)
         {
-            lastAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
             lastFlipX = Agent.velocity.x < 0;
         }
-        // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
-        attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
-        // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null)
+        if (AttackTarget != null && BossStatus.BossSO.AttackType != AttackType.None)
         {
-            Vector2 targetDir = AttackTarget.transform.position - transform.position;
-            lastFlipX = targetDir.x < 0;
+            float x = AttackTarget.transform.position.x - transform.position.x;
+            bool flipToTarget = x < 0;
+            flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
         }
         
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX
-        spriteRenderer.flipX = lastFlipX;
+        spriteRenderer.flipX = flip;
     }
     
     protected override IState<Boss1Controller, Boss1State> GetState(Boss1State state)
