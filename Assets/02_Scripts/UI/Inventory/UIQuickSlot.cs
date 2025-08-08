@@ -9,7 +9,7 @@ public class UIQuickSlot : MonoBehaviour
     [SerializeField]private PlayerAnimationController  playerAnimationController;
     
     [SerializeField] private UIInventory uiInventory;
-    
+    public ToolController ToolController => toolController;
     private int selectedIndex = 0;
 
     public int SelectedIndex => selectedIndex;
