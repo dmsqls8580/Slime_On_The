@@ -47,6 +47,6 @@ public class HoldSlot : SlotBase
     
     public override void OnPointerClick(PointerEventData eventData)
     {
-        //
+        
     }
 }
