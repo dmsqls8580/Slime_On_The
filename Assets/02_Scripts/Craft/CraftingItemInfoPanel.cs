@@ -12,6 +12,8 @@ public class CraftingItemInfoPanel : MonoBehaviour
 
     private InventoryManager inventoryManager;
 
+    private ItemSO itemSO;
+
     private void Awake()
     {
         inventoryManager = InventoryManager.Instance;
@@ -22,7 +24,6 @@ public class CraftingItemInfoPanel : MonoBehaviour
         foreach (Transform _slot in requiredIngredient)
         {
             Destroy(_slot.gameObject);
-            //_slot.gameObject.SetActive(false);
         }
 
         foreach (RecipeIngredient _recipe in _itemSO.recipe)

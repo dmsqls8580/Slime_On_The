@@ -204,7 +204,7 @@ public class InventoryManager : SceneOnlySingleton<InventoryManager>
     public void UpdateCraftingUI()
     {
         // 설명 패널 업데이트.
-        craft.CraftingSlot.UpdateRequiredIngredientPanel();
+        craft.CraftingSlot.UpdatePanel();
         // 제작 버튼 업데이트.
         craft.CanCraft();
     }

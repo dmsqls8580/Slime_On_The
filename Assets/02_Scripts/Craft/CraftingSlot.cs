@@ -45,4 +45,9 @@ public class CraftingSlot : MonoBehaviour
         isLocked = _isLocked;
         Lock.SetActive(isLocked);
     }
+
+    public void UpdatePanel()
+    {
+        craftingItemInfoPanel.UpdateRequiredIngredientPanel(itemSO);
+    }
 }
