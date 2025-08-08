@@ -13,7 +13,7 @@ public enum CookingState
     Finished
 }
 
-public class CookPotObject : BaseInteractableObject, IInteractable
+public class CookPotObject : BaseInteractableObject
 {
     [SerializeField] private int cookIndex = -1;
     [SerializeField] private CookingState currentState = CookingState.Idle;

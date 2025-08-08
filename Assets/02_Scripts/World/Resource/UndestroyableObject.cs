@@ -9,7 +9,7 @@ public enum BushType
     BerryBush,  // 베리 덤불: 상호작용 시 베리 드롭 + 스프라이트 변경
     TwigBush    // 잔가지 덤불: 잔가지 드롭, 스프라이트 변경 없음
 }
-public class UndestroyableObject : BaseInteractableObject, IInteractable
+public class UndestroyableObject : BaseInteractableObject
 {   
     [Header("Bush Type")]
     [SerializeField] private BushType bushType;
@@ -17,6 +17,7 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
     [Header("Sprite Settings (for BerryBush only)")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite berrylessSprite;
+
     public override void Interact(InteractionCommandType _type, PlayerController _playerController)
     {
         if(isInteracted)
@@ -28,7 +29,6 @@ public class UndestroyableObject : BaseInteractableObject, IInteractable
         }
 
         isInteracted = true;
-        
         var toolController = _playerController.GetComponent<ToolController>();
         float toolPower = toolController.IsUnityNull() ? 1f : toolController.GetAttackPow();
 

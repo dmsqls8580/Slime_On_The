@@ -1,7 +1,7 @@
 using _02_Scripts.Manager;
 using PlayerStates;
 
-public class WorkbenchObject : BaseInteractableObject, IInteractable, IStationType
+public class WorkbenchObject : BaseInteractableObject, IStationType
 {
     public CraftingStation GetStationType() => CraftingStation.Workbench;
     UIManager uiManager;

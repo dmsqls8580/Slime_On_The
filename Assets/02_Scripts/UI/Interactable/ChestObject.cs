@@ -2,7 +2,7 @@ using _02_Scripts.Manager;
 using PlayerStates;
 using UnityEngine;
 
-public class ChestObject : BaseInteractableObject, IInteractable
+public class ChestObject : BaseInteractableObject
 {
     [SerializeField] private int chestIndex = -1;
 
