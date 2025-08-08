@@ -299,6 +299,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Cast1 상태에서 호출할 공격 패턴
     public void Cast1()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!IsBerserked)
         {
             StartCoroutine(Spikedelay(Constants.Boss.SPIKE_DELAY_NOTBERSERKED));
@@ -389,6 +393,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Cast2 상태에서 호출할 공격 패턴
     public void Cast2()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!IsBerserked)
         {
             SpawnTentacle();
@@ -401,32 +409,36 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 
     private void SpawnTentacle()
     {
-        // 보스가 광폭화되었을 경우, 디버프를 주는 효과 추가
-        string objectName = !IsBerserked
-            ? BossStatus.BossSO.ProjectileID[2].ToString()
-            : BossStatus.BossSO.ProjectileID[3].ToString();
-        
-        // 플레이어 위치
-        Vector2 playerPos = AttackTarget.transform.position;
-        
-        // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
-        float offsetX = Random.value < 0.5f 
-            ? -Constants.Boss.SPAWN_TENTACLE_DISTANCE
-            : Constants.Boss.SPAWN_TENTACLE_DISTANCE;
-        Vector2 spawnPos = playerPos + new Vector2(offsetX, 0); 
-        
-        // Tentacle 방향 벡터
-        Vector2 dirTarget = (playerPos - spawnPos).normalized;
-        
-        // Tentacle 소환 및 초기화
-        GameObject tentacle = ObjectPoolManager.Instance.GetObject(objectName);
-        tentacle.transform.position = spawnPos;
-        tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽 공격
-
-        if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
+        if (AttackTarget != null)
         {
-            projectile.Init(dirTarget, AttackStat, gameObject);
+            // 보스가 광폭화되었을 경우, 디버프를 주는 효과 추가
+            string objectName = !IsBerserked
+                ? BossStatus.BossSO.ProjectileID[2].ToString()
+                : BossStatus.BossSO.ProjectileID[3].ToString();
+        
+            // 플레이어 위치
+            Vector2 playerPos = AttackTarget.transform.position;
+        
+            // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
+            float offsetX = Random.value < 0.5f 
+                ? -Constants.Boss.SPAWN_TENTACLE_DISTANCE
+                : Constants.Boss.SPAWN_TENTACLE_DISTANCE;
+            Vector2 spawnPos = playerPos + new Vector2(offsetX, 0); 
+        
+            // Tentacle 방향 벡터
+            Vector2 dirTarget = (playerPos - spawnPos).normalized;
+        
+            // Tentacle 소환 및 초기화
+            GameObject tentacle = ObjectPoolManager.Instance.GetObject(objectName);
+            tentacle.transform.position = spawnPos;
+            tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽 공격
+
+            if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
+            {
+                projectile.Init(dirTarget, AttackStat, gameObject);
+            }
         }
+        
     }
 
     private IEnumerator DelayTentacle(float _delay)
@@ -439,6 +451,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Stomp 상태에서 호출할 공격 패턴
     public void Stomp()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!cameraController.IsUnityNull())
         {
             cameraController.CameraShake(2, 1, 1);

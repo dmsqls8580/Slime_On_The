@@ -435,10 +435,6 @@ namespace  Enemystates
         {
             owner.Animator.SetTrigger(isAttackHash);
             owner.StartAttackCooldown(owner.EnemyStatus.AttackCooldown);
-            
-            // NavMeshAgent 이동 정지
-            owner.Agent.isStopped = true;          
-            owner.Agent.velocity = Vector3.zero;
         }
 
         public void OnUpdate(EnemyController owner)
