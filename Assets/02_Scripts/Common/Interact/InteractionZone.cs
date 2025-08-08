@@ -25,6 +25,7 @@ public class InteractionZone : MonoBehaviour
             if (_collision.TryGetComponent(out IStationType type))
             {
                 craftingStationManager.UpdateCurrentCraftingStation(type.GetStationType());
+                InventoryManager.Instance.UpdateCraftingUI();
             }
         }
     }
@@ -37,6 +38,7 @@ public class InteractionZone : MonoBehaviour
             if (_collision.TryGetComponent(out IStationType type))
             {
                 craftingStationManager.UpdateCurrentCraftingStation(CraftingStation.Normal);
+                InventoryManager.Instance.UpdateCraftingUI();
             }
         }
     }
