@@ -74,15 +74,14 @@ public abstract class BaseInteractableObject : MonoBehaviour, IInteractable
 
     protected virtual void DropItems(Transform _player, List<DropItemData> itemList)
     {
-        float randomChance = Random.value;
-
         if (itemList.IsUnityNull() || dropItemPrefab.IsUnityNull()) return;
 
         foreach (var item in itemList)
         {
             for (int i = 0; i < item.amount; i++)
             {
-                if (randomChance * 100f > item.dropChance) continue;
+                float chance = Random.value * 100f;
+                if (chance > item.dropChance) continue;
 
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);
                 var itemDrop = dropObj.GetComponent<ItemDrop>();
@@ -90,7 +89,7 @@ public abstract class BaseInteractableObject : MonoBehaviour, IInteractable
                 {
                     itemDrop.Init(item.itemSo, 1);
                 }
-                
+
                 rigid = dropObj.GetComponent<Rigidbody2D>();
                 itemDrop.DropAnimation(rigid, dropAngleRange, dropUpForce, dropSideForce);
             }

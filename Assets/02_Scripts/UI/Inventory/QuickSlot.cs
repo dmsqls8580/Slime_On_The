@@ -89,10 +89,9 @@ public class QuickSlot : SlotBase
     {
         base.OnSlotChanged(_index);
 
-        // 슬롯에 변화가 생겼고, 내가 선택된 슬롯이라면 다시 툴 장착 처리
         if (_index == SlotIndex && owner.SelectedIndex == SlotIndex)
         {
-            EquipToolToController(owner.ToolController); // ToolController 접근 필요
+            EquipToolToController(owner.ToolController); 
         }
     }
     public ToolType GetToolType()
