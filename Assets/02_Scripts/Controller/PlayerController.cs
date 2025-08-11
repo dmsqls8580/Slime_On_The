@@ -372,37 +372,19 @@ namespace PlayerStates
 
         public bool CanGathering()
         {
-            if (uiQuickSlot.IsUnityNull())
-            {
-                return false;
-            }
-
+            if (uiQuickSlot.IsUnityNull()) { return false; }
             QuickSlot selectedSlot = uiQuickSlot.GetSelectedSlot();
-            if (selectedSlot.IsUnityNull())
-            {
-                return false;
-            }
-
-            if (interactionSelector.IsUnityNull())
-            {
-                return false;
-            }
-
+            
+            if (selectedSlot.IsUnityNull()) { return false; }
+            if (interactionSelector.IsUnityNull()) { return false; }
+            
             var target = interactionSelector.SpaceInteractable;
-
-            if (target.IsUnityNull())
-            {
-                return false;
-            }
-
+            if (target.IsUnityNull()) { return false; }
             if (!target.TryGetComponent(out BaseInteractableObject resource) || resource == null)
-            {
-                return false;
-            }
+            { return false; }
+            if (resource.IsInteracted){ return false;}
 
-            if (resource.IsInteracted)
-                return false;
-
+            
             ToolType toolType = selectedSlot.GetToolType();
             ToolType requiredToolType = resource.GetRequiredToolType();
 
@@ -433,16 +415,18 @@ namespace PlayerStates
                 ChangeState(PlayerState.Gathering);
                 return;
             }
+            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
 
             float toolActSpd = ToolController.GetAttackSpd();
             actCoolDown = 1f / Mathf.Max(toolActSpd, 0.01f);
 
-            moveInput = Vector2.zero;
+            animationController.TriggerGather();
             
-            interactionHandler.HandleInteraction(target, InteractionCommandType.Space, this);
+            moveInput = Vector2.zero;
             ChangeState(PlayerState.Gathering);
 
         }
+        
         private void ScanAndAttractItems()
         {
             Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, 2.5f, LayerMask.GetMask("DropItem"));
