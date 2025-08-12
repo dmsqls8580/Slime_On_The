@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void AggroTargetChanged(GameObject newTarget, float value);
 
 public class AggroSystem
 {
     public bool IsEmpty => attackTargetsList.Count == 0;
     
-    public event AggroTargetChanged OnTargetChanged;       // 타겟이 바뀌었을때 실행되는 이벤트
+    public event Action<GameObject, float> OnTargetChanged;       // 타겟이 바뀌었을때 실행되는 이벤트
     
     public readonly Dictionary<GameObject, float> attackTargetsList = new();
     
