@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7219eebf519f6c2428ba980f38271bb9, type: 3}
+  m_Name: Gold Shovel
+  m_EditorClassIdentifier: 
+  idx: 443
+  itemName: Gold Shovel
+  description: "\uAE08 \uC0BD"
+  icon: {fileID: 108058594, guid: 8fb698a8316871647b3fccbca1dd539c, type: 3}
+  itemTypes: 2
+  stackable: 0
+  maxStack: 1
+  materialData:
+    rottenable: 0
+  toolData:
+    toolType: 3
+    power: 7
+    luck: 0
+    durability: 0
+    actSpd: 1.5
+  equipableData:
+    equipableType: 0
+    formId: 0
+    maxHealth: 0
+    atk: 0
+    def: 0
+    spd: 0
+    crt: 0
+  eatableData:
+    recoverHP: 0
+    fullness: 0
+    slimeGauge: 0
+    duration: 0
+    rottenable: 0
+    permanent: 0
+  cookableData:
+    tags: []
+    contributionTime: 0
+  cookedData:
+    priority: 0
+    requiredTags: []
+    forbiddenTags: []
+  placeableData:
+    objectPrefab: {fileID: 0}
+    size: {x: 0, y: 0}
+  recipe:
+  - item: {fileID: 11400000, guid: 17729a46327cb5e4ab6b401786a8412b, type: 2}
+    amount: 2
+  - item: {fileID: 11400000, guid: 42329a8d4f7fa7743b5602474586d0e7, type: 2}
+    amount: 3

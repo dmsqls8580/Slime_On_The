@@ -1,0 +1,47 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public abstract class BaseTable<TKey, TValue> : ScriptableObject, ITable where TKey: notnull where TValue :ScriptableObject
+{
+    [SerializeField] protected List<TValue> dataList = new List<TValue>();
+    public Dictionary<TKey,TValue> DataDic{ get; private set;} = new Dictionary<TKey,TValue>();
+
+    public Type Type { get; protected set;}
+    protected abstract string[] DataPath { get; }
+
+    public abstract void CreateTable();
+
+    public TValue GetDataByID(TKey _id)
+    {
+        return DataDic.GetValueOrDefault(_id);
+    }
+
+
+    public void AutoAssignDatas()
+    {   
+#if UNITY_EDITOR  
+        dataList.Clear();
+
+        string[] guids =
+            UnityEditor.AssetDatabase.FindAssets($"t:{typeof(TValue)}", DataPath);
+
+        foreach (string guid in guids)
+        {
+            string path  = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            var    asset = UnityEditor.AssetDatabase.LoadAssetAtPath<TValue>(path);
+
+            if (asset != null && !dataList.Contains(asset))
+            {
+                dataList.Add(asset);
+            }
+        }
+
+        Debug.Log($"[{typeof(TValue)}] 데이터 등록 완료!");
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
+}
+

@@ -1,0 +1,421 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Boss2States
+{
+    public enum Boss2State
+    {
+        Idle,
+        Wander,
+        Chase,
+        BubbleMelee,
+        Bubble1,
+        Bubble2,
+        Dead
+    }
+
+    public class IdleState : IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        private float idleDuration;
+        private float idleTimer;
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            // MinMoveDelay와 MaxMoveDelay 사이 랜덤한 시간만큼 IdleState 유지
+            idleDuration = Random.Range(owner.BossStatus.MinMoveDelay, owner.BossStatus.MaxMoveDelay);
+            
+            // 초기화
+            idleTimer = 0f;
+            
+            owner.Animator.SetBool(isWanderingHash, false);
+            owner.Animator.SetBool(isChasingHash, false);
+            owner.Animator.SetBool(isBubbleMeleeHash, false);
+            owner.Animator.SetBool(isBubble1Hash, false);
+            owner.Animator.SetBool(isBubble2Hash, false);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            idleTimer += Time.deltaTime;
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            // 비전투 중
+            if (!owner.IsCombat)
+            {
+                // 몬스터 사망시 Dead 모드로 전환.
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return Boss2State.Wander;
+                }
+                return Boss2State.Idle;
+            }
+            // 전투 중
+            else
+            {
+                // 몬스터 사망시 Dead 모드로 전환.
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우 Chase 모드로 전환.
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Chase;
+                }
+                // 일정 시간이 지나면 자동으로 Wander 모드로 전환.
+                if (idleTimer >= idleDuration)
+                {
+                    return Boss2State.Wander;
+                }
+                return Boss2State.Idle;
+            }
+            
+        }
+    }
+    
+    public class WanderState : IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isWanderingHash, true);
+            // 랜덤 방향으로 이동.
+            OnMoveRandom(owner);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isWanderingHash, false);
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            // 비전투중
+            if (!owner.IsCombat)
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Wander;
+            }
+            // 전투 중
+            else
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 몬스터 감지 범위 내에 들어갈 경우, Chase 모드로 전환.
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Chase;
+                }
+                // 목적지로 이동이 끝나면 idle 모드로 전환.
+                if (ReachedDesination(owner))
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Wander;
+            }
+            
+        }
+        
+        // wanderRadius 내 랜덤한 위치로 이동
+        private void OnMoveRandom(Boss2Controller owner)
+        {
+            Vector2 randomCircle = Random.insideUnitCircle * owner.BossStatus.WanderRadius;
+            Vector3 randomPos =  owner.SpawnPos + new Vector3(randomCircle.x, 0, randomCircle.y);
+
+            UnityEngine.AI.NavMeshHit hit;
+            if (UnityEngine.AI.NavMesh.SamplePosition(randomPos, out hit, owner.BossStatus.WanderRadius, UnityEngine.AI.NavMesh.AllAreas))
+            {
+                owner.Agent.SetDestination(hit.position);
+            }
+
+        }
+
+        // 이동이 끝났는지 판별
+        private bool ReachedDesination(Boss2Controller owner)
+        {
+            return !owner.Agent.pathPending && owner.Agent.remainingDistance <= owner.Agent.stoppingDistance;
+        }
+    }
+
+    public class ChaseState : IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isChasingHash, true);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            // Target의 위치를 추적해 이동.
+            if (owner.AttackTarget != null)
+            {
+                if (owner.IsPlayerInAttackRange)
+                {
+                    owner.Agent.ResetPath();
+                }
+                else
+                {
+                    owner.Agent.SetDestination(owner.AttackTarget.transform.position);
+                }
+            }
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            owner.Agent.ResetPath();
+            owner.Animator.SetBool(isChasingHash, false);
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            // 비전투 중
+            if (!owner.IsCombat)
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+                if (owner.AttackTarget == null)
+                {
+                    return Boss2State.Idle;
+                }
+                return Boss2State.Chase;
+            }
+            // 전투 중
+            else
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                // 플레이어가 감지 범위 밖으로 나갈 경우, Idle 모드로 전환.
+                if (owner.AttackTarget == null)
+                {
+                    return Boss2State.Idle;
+                }
+                // 공격 쿨타임 중이면 Chase 혹은 Wander
+                if (owner.IsAttackCooldown)
+                {
+                    return Boss2State.Chase;
+                }
+                // 플레이어가 공격 범위 내에 들어올 경우, 근접 공격
+                if (owner.AttackTarget != null &&  owner.IsPlayerInAttackRange)
+                {
+                    // BubbleMelee, Bubble1 중 랜덤 패턴 출력
+                    return owner.EnterRandomPattern();
+                }
+                if (owner.AttackTarget != null)
+                {
+                    return Boss2State.Bubble2;
+                }
+                return Boss2State.Chase;
+            }
+        }
+    }
+    
+    public class BubbleMeleeState :  IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubbleMeleeHash, true);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubbleMeleeHash, false);
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            if (!owner.IsCombat)
+            {
+                if (owner.IsDead)
+                {
+                    return Boss2State.Dead;
+                }
+                
+            }
+            else
+            {
+                
+            }
+            return Boss2State.BubbleMelee;
+        }
+    }
+    
+    public class Bubble1State :  IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubble1Hash, true);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubble1Hash, false);
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+    
+    public class Bubble2State :  IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isWanderingHash = Animator.StringToHash("IsWandering");
+        private readonly int isChasingHash = Animator.StringToHash("IsChasing");
+        private readonly int isBubbleMeleeHash = Animator.StringToHash("IsBubbleMelee");
+        private readonly int isBubble1Hash = Animator.StringToHash("IsBubble1");
+        private readonly int isBubble2Hash = Animator.StringToHash("isBubble2");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubble2Hash, true);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            owner.Animator.SetBool(isBubble2Hash, false);
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+    
+    public class DeadState :  IState<Boss2Controller, Boss2State>
+    {
+        private readonly int isDeadHash = Animator.StringToHash("Die");
+        
+        public void OnEnter(Boss2Controller owner)
+        {
+            owner.Animator.SetTrigger(isDeadHash);
+        }
+
+        public void OnUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnFixedUpdate(Boss2Controller owner)
+        {
+            
+        }
+
+        public void OnExit(Boss2Controller owner)
+        {
+            
+        }
+
+        public Boss2State CheckTransition(Boss2Controller owner)
+        {
+            return owner.IsDead? Boss2State.Dead : Boss2State.Idle;
+        }
+    }
+}
+

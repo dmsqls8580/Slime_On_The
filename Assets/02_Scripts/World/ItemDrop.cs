@@ -1,0 +1,124 @@
+using System;
+using System.Collections;
+using Unity.VisualScripting;
+using UnityEngine;
+using Random = UnityEngine.Random;
+
+public class ItemDrop : MonoBehaviour
+{
+    [SerializeField] private SpriteRenderer iconRenderer;
+
+    private Transform playerTransform;
+    private ItemSO itemSo;
+    private int amount;
+
+    private bool canItemToPlayer = false;
+    public float attractSpeed = 5f;
+    public float attractDistance = 2f;
+
+    public void Init(ItemSO _itemSo, int _amount)
+    {
+        itemSo = _itemSo;
+        amount = _amount;
+
+        if (iconRenderer != null && itemSo != null)
+        {
+            iconRenderer.sprite = itemSo.icon;
+        }
+    }
+
+    private void Update()
+    {
+        StartItemToPlayer();
+    }
+
+    public void AttractSetPlayer(Transform _playerTransform)
+    {
+        playerTransform = _playerTransform;
+    }
+
+    public void DropAnimation(Rigidbody2D _rigid, float _dropAngleRange, float _dropUpForce, float _dropSideForce)
+    {
+        if (_rigid != null)
+        {
+            //float angle = Random.Range(-_dropAngleRange * 0.5f, _dropAngleRange * 0.5f);
+            float angle = Random.Range(0f, 360f);
+            float radius = angle * Mathf.Deg2Rad;
+            Vector2 dir = new Vector2(Mathf.Cos(radius), Mathf.Sin(radius)).normalized;
+
+            float randForce = Random.Range(_dropUpForce, _dropUpForce + 2f);
+
+            Vector2 force = dir * randForce + Vector2.right * Random.Range(-_dropSideForce, _dropSideForce);
+            
+            _rigid.AddForce(force, ForceMode2D.Impulse);
+            _rigid.AddTorque(Random.Range(-3f, 3f), ForceMode2D.Impulse);
+
+            StartCoroutine(StopDropAnim(_rigid));
+        }
+    }
+
+    private void StartItemToPlayer()
+    {
+        if (playerTransform.IsUnityNull() || !canItemToPlayer) return;
+
+        float distance = Vector3.Distance(transform.position, playerTransform.position);
+
+        if (distance < attractDistance)
+        {
+            float t = 1f - (distance / attractDistance);
+            float itemMoveSpeed = Mathf.Lerp(1f, attractSpeed, t);
+
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                playerTransform.position,
+                itemMoveSpeed * Time.deltaTime);
+        }
+    }
+
+    private IEnumerator StopDropAnim(Rigidbody2D _rigid)
+    {
+        yield return new WaitForSeconds(0.4f);
+        if (_rigid != null)
+        {
+            _rigid.gravityScale = 0f;
+            _rigid.velocity = Vector2.zero;
+            _rigid.angularVelocity = 0f;
+            _rigid.isKinematic = true;
+        }
+
+        yield return new WaitForSeconds(0.8f);
+        canItemToPlayer = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D _other)
+    {
+        if (!canItemToPlayer) return;
+
+        if (playerTransform != null && _other.transform == playerTransform)
+        {
+            AddToInventory();
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D _other)
+    {
+        if (!canItemToPlayer) return;
+    
+        if (playerTransform != null && _other.transform == playerTransform)
+        {
+            AddToInventory();
+            Destroy(gameObject);
+        }
+    }
+
+    private void AddToInventory()
+    {
+        if (itemSo.IsUnityNull() || amount <= 0) return;
+
+        if (!itemSo.IsUnityNull())
+        {
+            InventoryManager.Instance.TryAddItemGlobally(itemSo, amount);
+        }
+    }
+}

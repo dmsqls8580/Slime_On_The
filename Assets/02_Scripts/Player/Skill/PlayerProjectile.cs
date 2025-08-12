@@ -1,0 +1,109 @@
+using _02_Scripts.Player.Effect;
+using PlayerStates;
+using Unity.VisualScripting;
+using UnityEngine;
+
+public class PlayerProjectile : MonoBehaviour, IAttackable, IPoolObject
+{
+    private StatManager statManager;
+    private StatBase damage;
+    public StatBase AttackStat => damage;
+    private GameObject projectileHost;
+    public string AttackerName => poolID;
+    public IDamageable Target => null;
+    private Rigidbody2D rigid;
+    
+    private float speed;
+    private float range;
+
+    private Vector3 direction;
+    private Vector2 startAttackPos;
+
+    private bool isCritical;
+    
+    public GameObject GameObject => gameObject;
+
+    [SerializeField] private string poolID = "playerProjectile";
+    public string PoolID => poolID;
+    [SerializeField] private int poolSize = 5;
+    public int PoolSize => poolSize;
+    
+    private EffectTable effectTable;
+    
+
+    private void Awake()
+    {
+        rigid = GetComponent<Rigidbody2D>();
+    }
+
+    private void Start()
+    {
+        effectTable= TableManager.Instance.GetTable<EffectTable>();
+        effectTable.CreateTable();
+    }
+
+    public void Init(StatManager _statManager,float _damage, bool _isCritical, GameObject  _host, Vector2 _dir, float _speed, float _range)
+    {
+        statManager = _statManager;
+        direction = _dir.normalized;
+        projectileHost =  _host;
+        speed = _speed;
+        range = _range; 
+        startAttackPos = transform.position;
+
+        isCritical = _isCritical;
+
+        damage = new CalculateStat(StatType.Attack, _damage);
+
+        gameObject.SetActive(true);
+    }
+
+    private void FixedUpdate()
+    {
+        rigid.velocity = direction * speed;
+
+        float shootingRange = Vector2.Distance(startAttackPos, transform.position);
+        if (shootingRange >= range)
+            ObjectPoolManager.Instance.ReturnObject(gameObject); // 일정 시간 지나면 반환
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.TryGetComponent<IDamageable>(out var target) && !other.CompareTag("Player"))
+        {
+            var effectData = effectTable.GetDataByID(1);
+            if (!effectData.IsUnityNull())
+            {
+                var effectObj = ObjectPoolManager.Instance.GetObject(effectData.poolID);
+                if (!effectObj.IsUnityNull() && effectObj.TryGetComponent<ImpactEffect>(out var impactEffect))
+                {
+                    var hit = other.ClosestPoint(transform.position);
+                    impactEffect.PlayEffect(hit, effectData.duration);
+                    SoundManager.Instance.PlaySFX(SFX.SlimeNormalAttack);
+                }
+            }
+            
+            target.TakeDamage(this, projectileHost);
+            ObjectPoolManager.Instance.ReturnObject(gameObject);
+        }
+    }
+    
+    public void Attack() { }
+
+    private void OnDisable()
+    {
+        rigid.velocity = Vector2.zero;
+        CancelInvoke();
+    }
+    
+    public void OnSpawnFromPool()
+    {
+        statManager = GetComponentInParent<StatManager>();
+        gameObject.SetActive(true);
+    }
+
+    public void OnReturnToPool()
+    {
+        gameObject.SetActive(false);
+    }
+}

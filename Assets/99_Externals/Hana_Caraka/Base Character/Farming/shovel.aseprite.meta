@@ -1,0 +1,811 @@
+fileFormatVersion: 2
+guid: fbe815d7c6b1d0a4d9676d39790971aa
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  textureImporterSettings:
+    alphaSource: 1
+    mipMapMode: 0
+    enableMipMap: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+    convertToNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
+    isReadable: 0
+    streamingMipmaps: 0
+    streamingMipmapsPriority: 0
+    vTOnly: 0
+    ignoreMipmapLimit: 0
+    nPOTScale: 1
+    sRGBTexture: 1
+    spriteMode: 2
+    spriteExtrude: 1
+    spriteMeshType: 1
+    alignment: 0
+    spritePivot: {x: 0.5, y: 0.5}
+    spritePixelsToUnits: 100
+    spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+    spriteGenerateFallbackPhysicsShape: 0
+    generateCubemap: 6
+    cubemapConvolution: 0
+    seamlessCubemap: 0
+    alphaIsTransparency: 1
+    spriteTessellationDetail: -1
+    textureType: 8
+    textureShape: 1
+    singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
+    ignorePngGamma: 0
+    cookieMode: 0
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+    normalMap: 0
+    textureFormat: 0
+    maxTextureSize: 0
+    lightmap: 0
+    compressionQuality: 0
+    linearTexture: 0
+    grayScaleToAlpha: 0
+    rGBM: 0
+    cubemapConvolutionSteps: 0
+    cubemapConvolutionExponent: 0
+    maxTextureSizeSet: 0
+    compressionQualitySet: 0
+    textureFormatSet: 0
+    applyGammaDecoding: 0
+  previousAsepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  asepriteImporterSettings:
+    fileImportMode: 1
+    importHiddenLayers: 0
+    layerImportMode: 1
+    defaultPivotSpace: 0
+    defaultPivotAlignment: 7
+    customPivotPosition: {x: 0.5, y: 0.5}
+    mosaicPadding: 4
+    spritePadding: 0
+    generateModelPrefab: 1
+    generateAnimationClips: 1
+    addSortingGroup: 1
+    addShadowCasters: 0
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  textureAssetName: 
+  singleSpriteImportData:
+  - name: 
+    originalName: 
+    pivot: {x: 0, y: 0}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 0
+      height: 0
+    spriteID: 
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 0, y: 0}
+  animatedSpriteImportData:
+  - name: shovel_Frame_0
+    originalName: 
+    pivot: {x: 0.41176474, y: -2.357143}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 4
+      width: 17
+      height: 14
+    spriteID: fb610655c3a009a45882928f65c5ce59
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 106, y: 4}
+  - name: shovel_Frame_1
+    originalName: 
+    pivot: {x: 0.49999997, y: -2.357143}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 26
+      width: 16
+      height: 14
+    spriteID: 61f212fbd6863ed48b784d58a7034cdd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 106, y: 26}
+  - name: shovel_Frame_2
+    originalName: 
+    pivot: {x: 0.2631579, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 30
+      y: 108
+      width: 19
+      height: 14
+    spriteID: 56793445ce0c6d64a8f8f4be1ddfad04
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 30, y: 108}
+  - name: shovel_Frame_3
+    originalName: 
+    pivot: {x: 0.2631579, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 57
+      y: 81
+      width: 19
+      height: 14
+    spriteID: f0ab1b50ab636ba499e81f3895caf6d4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 57, y: 81}
+  - name: shovel_Frame_4
+    originalName: 
+    pivot: {x: 0.29999995, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 57
+      y: 4
+      width: 20
+      height: 14
+    spriteID: b619680cd79c8d54192f6798a0bf0714
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 57, y: 4}
+  - name: shovel_Frame_5
+    originalName: 
+    pivot: {x: 0.42105263, y: -1.7368422}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 30
+      y: 4
+      width: 19
+      height: 19
+    spriteID: 8677fda078c2d1e48ae3f7121ece69e4
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 30, y: 4}
+  - name: shovel_Frame_6
+    originalName: 
+    pivot: {x: 0.7333333, y: -1.8333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 57
+      y: 55
+      width: 15
+      height: 18
+    spriteID: ade1a451c8381a94c955ff1017ca4ca2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 57, y: 55}
+  - name: shovel_Frame_7
+    originalName: 
+    pivot: {x: 0.7647059, y: -1.9411765}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 30
+      y: 31
+      width: 17
+      height: 17
+    spriteID: 4b599c207e5413a4e9446df2a84d1b43
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 30, y: 31}
+  - name: shovel_Frame_8
+    originalName: 
+    pivot: {x: 0.53846157, y: -1.4736842}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 57
+      y: 103
+      width: 13
+      height: 19
+    spriteID: 807e55b0e56bd6a408916bab256bcb7d
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 57, y: 103}
+  - name: shovel_Frame_9
+    originalName: 
+    pivot: {x: 0.57142854, y: -2}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 48
+      width: 14
+      height: 16
+    spriteID: 7d9b44dacc95501439020500a8eba0dd
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 106, y: 48}
+  - name: shovel_Frame_10
+    originalName: 
+    pivot: {x: 0.53846157, y: -1.4210527}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 85
+      y: 4
+      width: 13
+      height: 19
+    spriteID: 23fe3e74c5168b14a9e0ab51171f3308
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 85, y: 4}
+  - name: shovel_Frame_11
+    originalName: 
+    pivot: {x: 0.53846157, y: -1.4210527}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 85
+      y: 31
+      width: 13
+      height: 19
+    spriteID: cd243ec1aefd9b74bbaffaa6fff5ff73
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 85, y: 31}
+  - name: shovel_Frame_12
+    originalName: 
+    pivot: {x: 0.53846157, y: -1.2857143}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 57
+      y: 26
+      width: 13
+      height: 21
+    spriteID: eafa1a2372d11c6479e8c5ae8a396a41
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 57, y: 26}
+  - name: shovel_Frame_13
+    originalName: 
+    pivot: {x: 0.6000001, y: -1.5714285}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 62
+      width: 15
+      height: 21
+    spriteID: 0975b58ae0686bd4c962147a6be60d6f
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 62}
+  - name: shovel_Frame_14
+    originalName: 
+    pivot: {x: 0.66666675, y: -1.4347825}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 4
+      width: 18
+      height: 23
+    spriteID: 5700ef69baad5154cbc74573921abc5a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 4}
+  - name: shovel_Frame_15
+    originalName: 
+    pivot: {x: 0.66666675, y: -1.7368422}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 35
+      width: 18
+      height: 19
+    spriteID: 33919323d4724784fb952af2f0b8f55e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 35}
+  - name: shovel_Frame_16
+    originalName: 
+    pivot: {x: 0.53846157, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 95
+      width: 13
+      height: 14
+    spriteID: 627d23a7cc1b3c047ac57395dd1b82eb
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 106, y: 95}
+  - name: shovel_Frame_17
+    originalName: 
+    pivot: {x: 0.50000006, y: -2.1333334}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 106
+      y: 72
+      width: 14
+      height: 15
+    spriteID: 18bc7684a5cd2e84f80818d185c8040a
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 106, y: 72}
+  - name: shovel_Frame_18
+    originalName: 
+    pivot: {x: 0.53846157, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 85
+      y: 85
+      width: 13
+      height: 14
+    spriteID: 09709c9315e5d44418d75bbc01e855e2
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 85, y: 85}
+  - name: shovel_Frame_19
+    originalName: 
+    pivot: {x: 0.53846157, y: -2.2857144}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 85
+      y: 107
+      width: 13
+      height: 14
+    spriteID: 651763a849d5aee4c916ecd9d98dad34
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 85, y: 107}
+  - name: shovel_Frame_20
+    originalName: 
+    pivot: {x: 0.53846157, y: -1.6842107}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 85
+      y: 58
+      width: 13
+      height: 19
+    spriteID: 0fddb42f061a79543be14d7a815827ca
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 85, y: 58}
+  - name: shovel_Frame_21
+    originalName: 
+    pivot: {x: 0.50000006, y: -1.6}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 30
+      y: 80
+      width: 14
+      height: 20
+    spriteID: feda493cf8142584eb9de8600fba8f16
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 30, y: 80}
+  - name: shovel_Frame_22
+    originalName: 
+    pivot: {x: 0.38888893, y: -1.8823531}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 4
+      y: 91
+      width: 18
+      height: 17
+    spriteID: 66614563bab86aa45acaffec92027d31
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 4, y: 91}
+  - name: shovel_Frame_23
+    originalName: 
+    pivot: {x: 0.38888893, y: -2}
+    alignment: 9
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 30
+      y: 56
+      width: 18
+      height: 16
+    spriteID: c003975235ca5e049967415f0073608e
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 30, y: 56}
+  spriteSheetImportData: []
+  asepriteLayers:
+  - layerIndex: 0
+    guid: -246444605
+    name: shovel
+    layerFlags: 0
+    layerType: 0
+    blendMode: 0
+    cells:
+    - name: shovel_Frame_0
+      frameIndex: 0
+      cellRect:
+        x: 33
+        y: 33
+        width: 17
+        height: 14
+      spriteId: fb610655c3a009a45882928f65c5ce59
+    - name: shovel_Frame_1
+      frameIndex: 1
+      cellRect:
+        x: 32
+        y: 33
+        width: 16
+        height: 14
+      spriteId: 61f212fbd6863ed48b784d58a7034cdd
+    - name: shovel_Frame_2
+      frameIndex: 2
+      cellRect:
+        x: 35
+        y: 32
+        width: 19
+        height: 14
+      spriteId: 56793445ce0c6d64a8f8f4be1ddfad04
+    - name: shovel_Frame_3
+      frameIndex: 3
+      cellRect:
+        x: 35
+        y: 32
+        width: 19
+        height: 14
+      spriteId: f0ab1b50ab636ba499e81f3895caf6d4
+    - name: shovel_Frame_4
+      frameIndex: 4
+      cellRect:
+        x: 34
+        y: 32
+        width: 20
+        height: 14
+      spriteId: b619680cd79c8d54192f6798a0bf0714
+    - name: shovel_Frame_5
+      frameIndex: 5
+      cellRect:
+        x: 32
+        y: 33
+        width: 19
+        height: 19
+      spriteId: 8677fda078c2d1e48ae3f7121ece69e4
+    - name: shovel_Frame_6
+      frameIndex: 6
+      cellRect:
+        x: 29
+        y: 33
+        width: 15
+        height: 18
+      spriteId: ade1a451c8381a94c955ff1017ca4ca2
+    - name: shovel_Frame_7
+      frameIndex: 7
+      cellRect:
+        x: 27
+        y: 33
+        width: 17
+        height: 17
+      spriteId: 4b599c207e5413a4e9446df2a84d1b43
+    - name: shovel_Frame_8
+      frameIndex: 8
+      cellRect:
+        x: 33
+        y: 28
+        width: 13
+        height: 19
+      spriteId: 807e55b0e56bd6a408916bab256bcb7d
+    - name: shovel_Frame_9
+      frameIndex: 9
+      cellRect:
+        x: 32
+        y: 32
+        width: 14
+        height: 16
+      spriteId: 7d9b44dacc95501439020500a8eba0dd
+    - name: shovel_Frame_10
+      frameIndex: 10
+      cellRect:
+        x: 33
+        y: 27
+        width: 13
+        height: 19
+      spriteId: 23fe3e74c5168b14a9e0ab51171f3308
+    - name: shovel_Frame_11
+      frameIndex: 11
+      cellRect:
+        x: 33
+        y: 27
+        width: 13
+        height: 19
+      spriteId: cd243ec1aefd9b74bbaffaa6fff5ff73
+    - name: shovel_Frame_12
+      frameIndex: 12
+      cellRect:
+        x: 33
+        y: 27
+        width: 13
+        height: 21
+      spriteId: eafa1a2372d11c6479e8c5ae8a396a41
+    - name: shovel_Frame_13
+      frameIndex: 13
+      cellRect:
+        x: 31
+        y: 33
+        width: 15
+        height: 21
+      spriteId: 0975b58ae0686bd4c962147a6be60d6f
+    - name: shovel_Frame_14
+      frameIndex: 14
+      cellRect:
+        x: 28
+        y: 33
+        width: 18
+        height: 23
+      spriteId: 5700ef69baad5154cbc74573921abc5a
+    - name: shovel_Frame_15
+      frameIndex: 15
+      cellRect:
+        x: 28
+        y: 33
+        width: 18
+        height: 19
+      spriteId: 33919323d4724784fb952af2f0b8f55e
+    - name: shovel_Frame_16
+      frameIndex: 16
+      cellRect:
+        x: 33
+        y: 32
+        width: 13
+        height: 14
+      spriteId: 627d23a7cc1b3c047ac57395dd1b82eb
+    - name: shovel_Frame_17
+      frameIndex: 17
+      cellRect:
+        x: 33
+        y: 32
+        width: 14
+        height: 15
+      spriteId: 18bc7684a5cd2e84f80818d185c8040a
+    - name: shovel_Frame_18
+      frameIndex: 18
+      cellRect:
+        x: 33
+        y: 32
+        width: 13
+        height: 14
+      spriteId: 09709c9315e5d44418d75bbc01e855e2
+    - name: shovel_Frame_19
+      frameIndex: 19
+      cellRect:
+        x: 33
+        y: 32
+        width: 13
+        height: 14
+      spriteId: 651763a849d5aee4c916ecd9d98dad34
+    - name: shovel_Frame_20
+      frameIndex: 20
+      cellRect:
+        x: 33
+        y: 32
+        width: 13
+        height: 19
+      spriteId: 0fddb42f061a79543be14d7a815827ca
+    - name: shovel_Frame_21
+      frameIndex: 21
+      cellRect:
+        x: 33
+        y: 32
+        width: 14
+        height: 20
+      spriteId: feda493cf8142584eb9de8600fba8f16
+    - name: shovel_Frame_22
+      frameIndex: 22
+      cellRect:
+        x: 33
+        y: 32
+        width: 18
+        height: 17
+      spriteId: 66614563bab86aa45acaffec92027d31
+    - name: shovel_Frame_23
+      frameIndex: 23
+      cellRect:
+        x: 33
+        y: 32
+        width: 18
+        height: 16
+      spriteId: c003975235ca5e049967415f0073608e
+    linkedCells: []
+    parentIndex: -1
+  platformSettings: []
+  generatePhysicsShape: 0
+  secondarySpriteTextures: []
+  spritePackingTag: 
+  canvasSize: {x: 80, y: 80}

@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e044fdeec8c70674aabe57a20bf12771, type: 3}
+  m_Name: 101_BabyTurtle
+  m_EditorClassIdentifier: 
+  BossID: 101
+  BossName: BabyTurtle
+  AttackType: 1
+  ProjectileID: 28000000290000002a0000002b0000002c0000002d000000
+  SpawnTerrain: 2
+  BossStats:
+  - StatType: 0
+    ModifierType: 0
+    Value: 2000
+  - StatType: 1
+    ModifierType: 0
+    Value: 2000
+  - StatType: 2
+    ModifierType: 0
+    Value: 50
+  - StatType: 3
+    ModifierType: 0
+    Value: 10
+  - StatType: 4
+    ModifierType: 0
+    Value: 2
+  - StatType: 60
+    ModifierType: 0
+    Value: 3
+  - StatType: 61
+    ModifierType: 0
+    Value: 5
+  - StatType: 62
+    ModifierType: 0
+    Value: 2
+  - StatType: 63
+    ModifierType: 0
+    Value: 5
+  - StatType: 64
+    ModifierType: 0
+    Value: 10
+  - StatType: 65
+    ModifierType: 0
+    Value: 4
+  DropItems:
+  - itemSo: {fileID: 11400000, guid: 1f2ab207d3978624a89ecb09100334f2, type: 2}
+    amount: 1
+    dropChance: 100
+  - itemSo: {fileID: 11400000, guid: 2bd31bf2635b0134c918431cbb4b87f2, type: 2}
+    amount: 1
+    dropChance: 100
