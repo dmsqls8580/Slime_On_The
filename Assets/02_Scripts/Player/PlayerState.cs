@@ -308,12 +308,14 @@ namespace PlayerStates
         {
             _owner.Rigid2D.velocity = Vector2.zero;
             _owner.SetCanMove(false);
-            _owner.AnimationController.TriggerGather();
         }
 
         public void OnUpdate(PlayerController _owner)
         {
-            _owner.actCoolDown -= Time.deltaTime;
+            if(_owner.actCoolDown>0f)
+            {
+                _owner.actCoolDown -= Time.deltaTime;
+            }
 
             // 쿨타임이 끝났고, 키가 계속 눌려 있고, 다시 채집 가능한 상태라면
             if (_owner.actCoolDown <= 0f &&
