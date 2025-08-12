@@ -25,7 +25,8 @@
 
 ---
 ### 🎥 시연 영상
-![제목 없는 동영상 - Clipchamp로 제작](https://github.com/user-attachments/assets/d910b2ea-2e27-4433-84f5-2a3c38236215)
+![릳므](https://github.com/user-attachments/assets/46138f95-4cb1-47b2-8e2c-6a6b1aaebc08)
+
 
 ---
 ### 🧩 주요 기능
@@ -150,4 +151,4 @@
 
 ### 🙌 기여
 피드백, 아이디어, 버그 제보는 언제든 환영입니다.
-이 저장소를 Fork 후 Pull Request로 요청해주세요.
+- [Click here to report](https://forms.gle/KSj25yxzDM7pGTL86)
