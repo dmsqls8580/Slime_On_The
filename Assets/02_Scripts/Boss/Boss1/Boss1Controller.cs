@@ -10,6 +10,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 {
     [SerializeField] private Collider2D senseRangeCollider;
     [SerializeField] private Collider2D attackRangeCollider;
+    [SerializeField] private bool isDefaultFacingRight = true;
     
     public Animator Animator     { get; private set; }     // 애니메이터
     public NavMeshAgent Agent    { get; private set; }     // NavMesh Agent
@@ -53,6 +54,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     /************************ IDamageable ***********************/
     public bool IsDead => BossStatus.IsDead;
     public Collider2D Collider  => GetComponent<Collider2D>();
+    
+    private Coroutine shakeCoroutine;
     public void TakeDamage(IAttackable _attacker, GameObject _attackerObj)
     {
         if (IsDead) return;
@@ -61,11 +64,28 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
             // 피격
             BossStatus.TakeDamage(_attacker.AttackStat.GetCurrent(),StatModifierType.Base);
             SoundManager.Instance.PlaySFX(SFX.Grount);
+            
+            // 어그로 수치 증가, 피격 시 30 증가
+            if (_attackerObj != null)
+            {
+                Aggro.ModifyAggro(_attackerObj, hitAggroValue);
+                // 코루틴이 없을 때만 시작 (중복 실행 방지)
+                if (aggroCoroutine == null)
+                {
+                    aggroCoroutine = StartCoroutine(DecreaseAggroValue());
+                }
+            }
+            
             if (BossStatus.CurrentHealth <= 0)
             {
                 Dead();
             }
-            StartCoroutine(ShakeIDamageable());
+            
+            if (shakeCoroutine != null)
+            {
+                StopCoroutine(shakeCoroutine);
+            }
+            shakeCoroutine = StartCoroutine(ShakeIDamageable());
         }
     }
 
@@ -216,28 +236,35 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     protected override void Update()
     {
         base.Update();
+
+        Spriteflip();
+    }
+    
+    private void Spriteflip()
+    {
+        if (CurrentState == Boss1State.Dead)
+        {
+            return;
+        }
+        bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
         float velocityMagnitude = Agent.velocity.magnitude;
         
-        // 이동 중일 때만 각도/flipX 갱신
+        // 이동 중일 때만 각도/flipX 갱신, 스프라이트가 오른쪽을 보는 상황이 디폴트값
         if (velocityMagnitude > 0.01f)
         {
-            lastAngle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
             lastFlipX = Agent.velocity.x < 0;
         }
-        // 멈췄을 때는 마지막 값을 유지 (멈추면 velocity가 0이 되기 때문에 마지막 값을 기억해 각도와 방향 지정 
-        attackRangeCollider.transform.localRotation = Quaternion.Euler(0, 0, lastAngle);
         
-        // AttackTarget이 존재하는 경우, 그 방향으로 각도 갱신
-        if (AttackTarget != null)
+        if (AttackTarget != null && BossStatus.BossSO.AttackType != AttackType.None)
         {
-            Vector2 targetDir = AttackTarget.transform.position - transform.position;
-            lastFlipX = targetDir.x < 0;
+            float x = AttackTarget.transform.position.x - transform.position.x;
+            bool flipToTarget = x < 0;
+            flip = isDefaultFacingRight ? flipToTarget : !flipToTarget;
         }
         
-        // Enemy의 이동 방향에 따라 SpriteRenderer flipX
-        spriteRenderer.flipX = lastFlipX;
+        spriteRenderer.flipX = flip;
     }
     
     protected override IState<Boss1Controller, Boss1State> GetState(Boss1State state)
@@ -272,6 +299,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Cast1 상태에서 호출할 공격 패턴
     public void Cast1()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!IsBerserked)
         {
             StartCoroutine(Spikedelay(Constants.Boss.SPIKE_DELAY_NOTBERSERKED));
@@ -362,6 +393,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Cast2 상태에서 호출할 공격 패턴
     public void Cast2()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!IsBerserked)
         {
             SpawnTentacle();
@@ -374,32 +409,36 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 
     private void SpawnTentacle()
     {
-        // 보스가 광폭화되었을 경우, 디버프를 주는 효과 추가
-        string objectName = !IsBerserked
-            ? BossStatus.BossSO.ProjectileID[2].ToString()
-            : BossStatus.BossSO.ProjectileID[3].ToString();
-        
-        // 플레이어 위치
-        Vector2 playerPos = AttackTarget.transform.position;
-        
-        // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
-        float offsetX = Random.value < 0.5f 
-            ? -Constants.Boss.SPAWN_TENTACLE_DISTANCE
-            : Constants.Boss.SPAWN_TENTACLE_DISTANCE;
-        Vector2 spawnPos = playerPos + new Vector2(offsetX, 0); 
-        
-        // Tentacle 방향 벡터
-        Vector2 dirTarget = (playerPos - spawnPos).normalized;
-        
-        // Tentacle 소환 및 초기화
-        GameObject tentacle = ObjectPoolManager.Instance.GetObject(objectName);
-        tentacle.transform.position = spawnPos;
-        tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽 공격
-
-        if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
+        if (AttackTarget != null)
         {
-            projectile.Init(dirTarget, AttackStat, gameObject);
+            // 보스가 광폭화되었을 경우, 디버프를 주는 효과 추가
+            string objectName = !IsBerserked
+                ? BossStatus.BossSO.ProjectileID[2].ToString()
+                : BossStatus.BossSO.ProjectileID[3].ToString();
+        
+            // 플레이어 위치
+            Vector2 playerPos = AttackTarget.transform.position;
+        
+            // 플레이어 왼쪽 or 오른쪽 방향 랜덤으로 선택
+            float offsetX = Random.value < 0.5f 
+                ? -Constants.Boss.SPAWN_TENTACLE_DISTANCE
+                : Constants.Boss.SPAWN_TENTACLE_DISTANCE;
+            Vector2 spawnPos = playerPos + new Vector2(offsetX, 0); 
+        
+            // Tentacle 방향 벡터
+            Vector2 dirTarget = (playerPos - spawnPos).normalized;
+        
+            // Tentacle 소환 및 초기화
+            GameObject tentacle = ObjectPoolManager.Instance.GetObject(objectName);
+            tentacle.transform.position = spawnPos;
+            tentacle.transform.rotation = Quaternion.FromToRotation(Vector3.right, dirTarget); // 텐타클 기본이 왼쪽 공격
+
+            if (tentacle.TryGetComponent<ProjectileBase>(out var projectile))
+            {
+                projectile.Init(dirTarget, AttackStat, gameObject);
+            }
         }
+        
     }
 
     private IEnumerator DelayTentacle(float _delay)
@@ -412,6 +451,10 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     // Stomp 상태에서 호출할 공격 패턴
     public void Stomp()
     {
+        if (AttackTarget == null)
+        {
+            return;
+        }
         if (!cameraController.IsUnityNull())
         {
             cameraController.CameraShake(2, 1, 1);
@@ -535,8 +578,7 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
     
     private void DropItems(Transform transform)
     {
-        float randomChance = Random.value;
-        Transform itemTarget = AttackTarget.transform;
+        float randomChance = 0f;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
@@ -545,6 +587,8 @@ public class Boss1Controller : BaseController<Boss1Controller, Boss1State>, IDam
 
         foreach (var item in dropItems)
         {
+            randomChance = Random.value;
+            
             if (randomChance * 100f > item.dropChance)
             {
                 continue;

@@ -104,7 +104,7 @@ public class ItemDrop : MonoBehaviour
     private void OnTriggerStay2D(Collider2D _other)
     {
         if (!canItemToPlayer) return;
-
+    
         if (playerTransform != null && _other.transform == playerTransform)
         {
             AddToInventory();

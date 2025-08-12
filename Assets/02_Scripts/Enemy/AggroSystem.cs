@@ -2,20 +2,19 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public delegate void AggroTargetChanged(GameObject newTarget, float value);
 
 public class AggroSystem
 {
     public bool IsEmpty => attackTargetsList.Count == 0;
     
-    public event AggroTargetChanged OnTargetChanged;       // 타겟이 바뀌었을때 실행되는 이벤트
+    public event Action<GameObject, float> OnTargetChanged;       // 타겟이 바뀌었을때 실행되는 이벤트
     
     public readonly Dictionary<GameObject, float> attackTargetsList = new();
     
-    public GameObject CurrentTarget => currentTarget;      // 현재 타겟을 외부에서 조회 가능
+    public GameObject CurrentTarget => currentTarget;
     private GameObject currentTarget;                      // 현재 가장 높은 어그로 수치를 가진 대상
     
-    public float CurrentTargetValue => currentTargetValue; // 현재 타겟 어그로 수치를 조회 가능
+    public float CurrentTargetValue => currentTargetValue; 
     private float currentTargetValue;                      // 현재 타겟의 어그로 수치
 
     private float lastTargetChangeTime = -100f;            // 마지막으로 타겟이 바뀐 시간
@@ -174,10 +173,14 @@ public class AggroSystem
             }
             
             // 대상이 플레이어일 경우, 인식 범위 밖으로 나가면 후보에서 제외
-            if (isPlayerInSenseRange == null || !isPlayerInSenseRange(target.Key))
+            if (target.Key.CompareTag("Player"))
             {
-                continue;
+                if (isPlayerInSenseRange == null || !isPlayerInSenseRange(target.Key))
+                {
+                    continue;
+                }
             }
+            
 
             // AttackType이 Neutral인 경우, 먼저 공격을 받지 않는 이상 공격 X
             if (attackType == AttackType.Neutral && target.Value < 21f)
