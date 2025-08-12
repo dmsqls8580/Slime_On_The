@@ -101,7 +101,7 @@
 ### 🧪 실행 방법
 
 1. 설치 링크를 통해 파일 다운로드
-- **[Click here to download](https://drive.google.com/file/d/15dozXeBaaJv-m4VEeWyNjmqKjHIsfpj_/view)
+- [Click here to download](https://drive.google.com/file/d/15dozXeBaaJv-m4VEeWyNjmqKjHIsfpj_/view)
 2. 다운 받은 파일을 압축 해제하고 slime.exe 실행
 
 ---
