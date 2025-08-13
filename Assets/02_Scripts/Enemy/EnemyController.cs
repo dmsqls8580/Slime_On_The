@@ -83,6 +83,8 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     public bool IsDead => EnemyStatus.IsDead;                  // 사망 여부
     public Collider2D Collider => GetComponent<Collider2D>();  // 몬스터 피격 콜라이더
     
+    private Coroutine shakeCoroutine;
+    
     // Enemy 피격 메서드
     public void TakeDamage(IAttackable _attacker,  GameObject _attackerObj)
     {
@@ -93,15 +95,6 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
         if (_attacker != null)
         {
             // 피격
-            if (EnemyStatus == null)
-            {
-                Logger.Log("EnemyStatus is null");
-            }
-
-            if (_attacker.AttackStat == null)
-            {
-                Logger.Log("AttackStat is null");
-            }
             EnemyStatus.TakeDamage(_attacker.AttackStat.GetCurrent(), StatModifierType.Base);
             
             // 어그로 수치 증가, 피격 시 30 증가
@@ -119,7 +112,12 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             {
                 Dead();
             }
-            StartCoroutine(ShakeIDamageable());
+
+            if (shakeCoroutine != null)
+            {
+                StopCoroutine(shakeCoroutine);
+            }
+            shakeCoroutine = StartCoroutine(ShakeIDamageable());
         }
     }
     
@@ -307,6 +305,10 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
 
     private void Spriteflip()
     {
+        if (CurrentState == EnemyState.Dead)
+        {
+            return;
+        }
         bool flip = isDefaultFacingRight ? lastFlipX : !lastFlipX;
         
         Vector2 moveDir = Agent.velocity.normalized; // velocity는 목적지로 향하는 방향, 속도
@@ -421,13 +423,19 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
             float offsetX = Random.value < 0.5f 
                 ? -EnemyStatus.AttackRange
                 : EnemyStatus.AttackRange;
-            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0); 
+            Vector3 spawnPos = currentPlayerPos + new Vector3(offsetX, 0);
             
             NavMeshHit hit;
+            // 첫번째 위치가 NavMesh가 Walkable인 위치인지 확인
             if (NavMesh.SamplePosition(spawnPos, out hit, 1.0f, NavMesh.AllAreas))
             {
                 Agent.Warp(hit.position);
             }
+            else
+            {
+                Agent.Warp(transform.position);
+            }
+            
         }
     }
 
@@ -489,19 +497,22 @@ public class EnemyController : BaseController<EnemyController, EnemyState>, IDam
     // 아이템 드롭 메서드
     private void DropItems(Transform transform)
     {
-        float randomChance = Random.value;
+        float randomChance = 0f;
         
         if (dropItems.IsUnityNull() || dropItemPrefab.IsUnityNull())
         {
             return;
         }
-        
+
         foreach (var item in dropItems)
         {
+            randomChance = Random.value;
+            
             if (randomChance * 100f > item.dropChance)
             {
                 continue;
             }
+
             for (int i = 0; i < item.amount; i++)
             {
                 var dropObj = Instantiate(dropItemPrefab, transform.position, Quaternion.identity);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BossID: 101
   BossName: BabyTurtle
-  AttackType: 2
+  AttackType: 1
   ProjectileID: 28000000290000002a0000002b0000002c0000002d000000
   SpawnTerrain: 2
   BossStats:
@@ -23,7 +23,7 @@ MonoBehaviour:
     Value: 2000
   - StatType: 1
     ModifierType: 0
-    Value: 400
+    Value: 2000
   - StatType: 2
     ModifierType: 0
     Value: 50
@@ -35,7 +35,7 @@ MonoBehaviour:
     Value: 2
   - StatType: 60
     ModifierType: 0
-    Value: 2
+    Value: 3
   - StatType: 61
     ModifierType: 0
     Value: 5
