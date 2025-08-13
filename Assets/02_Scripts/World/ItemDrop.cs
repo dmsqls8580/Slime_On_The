@@ -49,7 +49,7 @@ public class ItemDrop : MonoBehaviour
             float randForce = Random.Range(_dropUpForce, _dropUpForce + 2f);
 
             Vector2 force = dir * randForce + Vector2.right * Random.Range(-_dropSideForce, _dropSideForce);
-            
+
             _rigid.AddForce(force, ForceMode2D.Impulse);
             _rigid.AddTorque(Random.Range(-3f, 3f), ForceMode2D.Impulse);
 
@@ -85,8 +85,8 @@ public class ItemDrop : MonoBehaviour
             _rigid.angularVelocity = 0f;
             _rigid.isKinematic = true;
         }
-
         yield return new WaitForSeconds(0.8f);
+        Destroy(gameObject, 100f);
         canItemToPlayer = true;
     }
 
@@ -104,7 +104,7 @@ public class ItemDrop : MonoBehaviour
     private void OnTriggerStay2D(Collider2D _other)
     {
         if (!canItemToPlayer) return;
-    
+
         if (playerTransform != null && _other.transform == playerTransform)
         {
             AddToInventory();
