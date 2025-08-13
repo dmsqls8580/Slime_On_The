@@ -87,6 +87,7 @@ public class ItemDrop : MonoBehaviour
         }
 
         yield return new WaitForSeconds(0.8f);
+        Destroy(gameObject, 5f);
         canItemToPlayer = true;
     }
 
